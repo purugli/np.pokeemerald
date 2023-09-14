@@ -1302,13 +1302,13 @@ static void PlayerPartnerHandleDrawTrainerPic(void)
     {
         trainerPicId = TRAINER_BACK_PIC_STEVEN;
         xPos = 90;
-        yPos = (8 - gTrainerBackPicCoords[trainerPicId].size) * 4 + 80;
+        yPos = 80;
     }
     else
     {
         trainerPicId = GetFrontierTrainerFrontSpriteId(gPartnerTrainerId);
         xPos = 32;
-        yPos = (8 - gTrainerFrontPicCoords[trainerPicId].size) * 4 + 80;
+        yPos = 80;
     }
 
     // Use back pic only if the partner is Steven
@@ -1794,7 +1794,7 @@ static void PlayerPartnerHandleIntroTrainerBallThrow(void)
     if (gPartnerTrainerId == TRAINER_STEVEN_PARTNER)
     {
         u8 spriteId = TRAINER_BACK_PIC_STEVEN;
-        LoadCompressedPalette(gTrainerBackPicPaletteTable[spriteId].data, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+        LoadCompressedPalette(gTrainerBackPicPaletteTable[spriteId], OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
     }
     else
     {

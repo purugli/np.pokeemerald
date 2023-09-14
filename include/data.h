@@ -124,10 +124,9 @@ extern const union AnimCmd *const *const gTrainerFrontAnimsPtrTable[];
 extern const struct MonCoords gTrainerFrontPicCoords[];
 extern const struct CompressedSpriteSheet gTrainerFrontPicTable[];
 extern const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[];
-extern const union AnimCmd *const *const gTrainerBackAnimsPtrTable[];
-extern const struct MonCoords gTrainerBackPicCoords[];
-extern const struct CompressedSpriteSheet gTrainerBackPicTable[]; // functionally unused
-extern const struct CompressedSpritePalette gTrainerBackPicPaletteTable[];
+extern const union AnimCmd *const gBackAnims_4Frames[];
+extern const union AnimCmd *const gBackAnims_5Frames[];
+extern const u32 *const gTrainerBackPicPaletteTable[];
 
 extern const u8 gEnemyMonElevation[NUM_SPECIES];
 

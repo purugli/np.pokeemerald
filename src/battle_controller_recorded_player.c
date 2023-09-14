@@ -1212,14 +1212,14 @@ static void RecordedPlayerHandleDrawTrainerPic(void)
         }
         else
         {
-            yPos = (8 - gTrainerBackPicCoords[trainerPicId].size) * 4 + 80;
+            yPos = 80;
         }
 
     }
     else
     {
         xPos = 80;
-        yPos = (8 - gTrainerBackPicCoords[trainerPicId].size) * 4 + 80;
+        yPos = 80;
     }
 
     if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER)
@@ -1678,7 +1678,7 @@ static void RecordedPlayerHandleIntroTrainerBallThrow(void)
     else
         trainerPicId = gSaveBlock2Ptr->playerGender;
 
-    LoadCompressedPalette(gTrainerBackPicPaletteTable[trainerPicId].data, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+    LoadCompressedPalette(gTrainerBackPicPaletteTable[trainerPicId], OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
 
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.paletteNum = paletteNum;
 

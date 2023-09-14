@@ -89,18 +89,7 @@ static void SpriteCB_BattleSpriteSlideLeft(struct Sprite *sprite);
 static void TurnValuesCleanUp(bool8 var0);
 static void SpriteCB_BounceEffect(struct Sprite *sprite);
 static void BattleStartClearSetData(void);
-static void BattleIntroGetMonsData(void);
-static void BattleIntroPrepareBackgroundSlide(void);
-static void BattleIntroDrawTrainersOrMonsSprites(void);
-static void BattleIntroDrawPartySummaryScreens(void);
-static void BattleIntroPrintTrainerWantsToBattle(void);
-static void BattleIntroPrintWildMonAttacked(void);
-static void BattleIntroPrintOpponentSendsOut(void);
-static void BattleIntroPrintPlayerSendsOut(void);
-static void BattleIntroOpponent1SendsOutMonAnimation(void);
-static void BattleIntroOpponent2SendsOutMonAnimation(void);
-static void BattleIntroRecordMonsToDex(void);
-static void BattleIntroPlayer1SendsOutMonAnimation(void);
+static void DoBattleIntro(void);
 static void TryDoEventsBeforeFirstTurn(void);
 static void HandleTurnActionSelectionState(void);
 static void RunTurnActionsFunctions(void);
@@ -3021,7 +3010,7 @@ void BeginBattleIntro(void)
 {
     BattleStartClearSetData();
     gBattleCommunication[1] = 0;
-    gBattleMainFunc = BattleIntroGetMonsData;
+    gBattleMainFunc = DoBattleIntro;
 }
 
 static void BattleMainCB1(void)
@@ -3353,467 +3342,320 @@ void FaintClearSetData(void)
     ClearBattlerAbilityHistory(gActiveBattler);
 }
 
-static void BattleIntroGetMonsData(void)
+static void BattleIntroDrawPartySummaryScreen(struct Pokemon *party, u32 position)
 {
-    switch (gBattleCommunication[MULTIUSE_STATE])
+    u32 i;
+    struct HpAndStatus hpStatus[PARTY_SIZE];
+
+    for (i = 0; i < PARTY_SIZE; i++)
     {
-    case 0:
+        u32 species = GetMonData(&party[i], MON_DATA_SPECIES_OR_EGG);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+        {
+            hpStatus[i].hp = HP_EMPTY_SLOT;
+            hpStatus[i].status = 0;
+        }
+        else
+        {
+            hpStatus[i].hp = GetMonData(&party[i], MON_DATA_HP);
+            hpStatus[i].status = GetMonData(&party[i], MON_DATA_STATUS);
+        }
+    }
+
+    gActiveBattler = GetBattlerAtPosition(position);
+    BtlController_EmitDrawPartyStatusSummary(BUFFER_A, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
+    MarkBattlerForControllerExec(gActiveBattler);
+}
+
+static bool32 IsBattlerMarkedForControllerExec(u8 battlerId)
+{
+    if (gBattleTypeFlags & BATTLE_TYPE_LINK)
+        return (gBattleControllerExecFlags & (gBitTable[battlerId] << (32 - MAX_BATTLERS_COUNT))) != 0;
+    else
+        return (gBattleControllerExecFlags & (gBitTable[battlerId])) != 0;
+}
+
+enum
+{
+    STATE_GET_MON_DATA,
+    STATE_LOOP_BATTLER_DATA,
+    STATE_PREPARE_BG_SLIDE,
+    STATE_WAIT_FOR_BG_SLIDE,
+    STATE_DRAW_SPRITES,
+    STATE_DRAW_PARTY_SUMMARY,
+    STATE_WAIT_FOR_PARTY_SUMMARY,
+    STATE_INTRO_TEXT,
+    STATE_WAIT_FOR_INTRO_TEXT,
+    STATE_TRAINER_SEND_OUT_TEXT,
+    STATE_WAIT_FOR_TRAINER_SEND_OUT_TEXT,
+    STATE_TRAINER_1_SEND_OUT_ANIM,
+    STATE_TRAINER_2_SEND_OUT_ANIM,
+    STATE_WAIT_FOR_TRAINER_2_SEND_OUT_ANIM,
+    STATE_WAIT_FOR_WILD_BATTLE_TEXT,
+    STATE_PRINT_PLAYER_SEND_OUT_TEXT,
+    STATE_WAIT_FOR_PLAYER_SEND_OUT_TEXT,
+    STATE_PRINT_PLAYER_1_SEND_OUT_TEXT,
+    STATE_PRINT_PLAYER_2_SEND_OUT_TEXT,
+    STATE_SET_DEX_AND_BATTLE_VARS
+};
+
+#define introState wildVictorySong // Temporarily used here to store the intro's current state.
+                                   // It's set back to 0 after the intro for its intended usage later.
+
+static void DoBattleIntro(void)
+{
+    u32 i;
+    u8 *state = &gBattleStruct->introState;
+
+    switch (*state)
+    {
+    case STATE_GET_MON_DATA: // Get data of all battlers.
         gActiveBattler = gBattleCommunication[1];
         BtlController_EmitGetMonData(BUFFER_A, REQUEST_ALL_BATTLE, 0);
         MarkBattlerForControllerExec(gActiveBattler);
-        gBattleCommunication[MULTIUSE_STATE]++;
+        (*state)++;
         break;
-    case 1:
+    case STATE_LOOP_BATTLER_DATA: // Loop through all battlers.
         if (gBattleControllerExecFlags == 0)
         {
-            gBattleCommunication[1]++;
-            if (gBattleCommunication[1] == gBattlersCount)
-                gBattleMainFunc = BattleIntroPrepareBackgroundSlide;
+            if (++gBattleCommunication[1] == gBattlersCount)
+                (*state)++;
             else
-                gBattleCommunication[MULTIUSE_STATE] = 0;
+                *state = STATE_GET_MON_DATA;
         }
         break;
-    }
-}
-
-static void BattleIntroPrepareBackgroundSlide(void)
-{
-    if (gBattleControllerExecFlags == 0)
-    {
-        gActiveBattler = GetBattlerAtPosition(0);
-        BtlController_EmitIntroSlide(BUFFER_A, gBattleTerrain);
-        MarkBattlerForControllerExec(gActiveBattler);
-        gBattleMainFunc = BattleIntroDrawTrainersOrMonsSprites;
-        gBattleCommunication[MULTIUSE_STATE] = 0;
-        gBattleCommunication[SPRITES_INIT_STATE1] = 0;
-    }
-}
-
-static void BattleIntroDrawTrainersOrMonsSprites(void)
-{
-    u8 *ptr;
-    s32 i;
-
-    if (gBattleControllerExecFlags)
-        return;
-
-    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
-    {
-        if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI)
-            && GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+    case STATE_PREPARE_BG_SLIDE: // Start graphical intro slide.
+        if (gBattleControllerExecFlags == 0)
         {
-            ptr = (u8 *)&gBattleMons[gActiveBattler];
-            for (i = 0; i < sizeof(struct BattlePokemon); i++)
-                ptr[i] = 0;
-        }
-        else
-        {
-            u16 *hpOnSwitchout;
-
-            ptr = (u8 *)&gBattleMons[gActiveBattler];
-            for (i = 0; i < sizeof(struct BattlePokemon); i++)
-                ptr[i] = gBattleBufferB[gActiveBattler][4 + i];
-
-            gBattleMons[gActiveBattler].type1 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[0];
-            gBattleMons[gActiveBattler].type2 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[1];
-            gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].abilityNum);
-            hpOnSwitchout = &gBattleStruct->hpOnSwitchout[GetBattlerSide(gActiveBattler)];
-            *hpOnSwitchout = gBattleMons[gActiveBattler].hp;
-            for (i = 0; i < NUM_BATTLE_STATS; i++)
-                gBattleMons[gActiveBattler].statStages[i] = DEFAULT_STAT_STAGE;
-            gBattleMons[gActiveBattler].status2 = 0;
-        }
-
-        if (GetBattlerPosition(gActiveBattler) == B_POSITION_PLAYER_LEFT)
-        {
-            BtlController_EmitDrawTrainerPic(BUFFER_A);
+            gActiveBattler = GetBattlerAtPosition(0);
+            BtlController_EmitIntroSlide(BUFFER_A, gBattleTerrain);
             MarkBattlerForControllerExec(gActiveBattler);
+            gBattleCommunication[MULTIUSE_STATE] = 0;
+            gBattleCommunication[SPRITES_INIT_STATE1] = 0;
+            (*state)++;
+        }
+        break;
+    case STATE_WAIT_FOR_BG_SLIDE: // Wait for intro slide.
+        if (gBattleControllerExecFlags == 0)
+            (*state)++;
+        break;
+    case STATE_DRAW_SPRITES: // Copy battler data from STATE_GET_MON_DATA and STATE_LOOP_BATTLER_DATA. Draw trainer/Pokémon sprite.
+        for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+        {
+            u32 side = GetBattlerSide(gActiveBattler);
+            if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI) && side == B_SIDE_PLAYER)
+            {
+                memset(&gBattleMons[gActiveBattler], 0, sizeof(struct BattlePokemon));
+            }
+            else
+            {
+                memcpy(&gBattleMons[gActiveBattler], &gBattleBufferB[gActiveBattler][4], sizeof(struct BattlePokemon));
+                gBattleMons[gActiveBattler].type1 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[0];
+                gBattleMons[gActiveBattler].type2 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[1];
+                gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].abilityNum);
+                gBattleStruct->hpOnSwitchout[side] = gBattleMons[gActiveBattler].hp;
+                gBattleMons[gActiveBattler].status2 = 0;
+                for (i = 0; i < NUM_BATTLE_STATS; i++)
+                    gBattleMons[gActiveBattler].statStages[i] = DEFAULT_STAT_STAGE;
+            }
+
+            // Draw sprite.
+            switch (GetBattlerPosition(gActiveBattler))
+            {
+            case B_POSITION_PLAYER_LEFT: // Player sprite.
+                BtlController_EmitDrawTrainerPic(BUFFER_A);
+                MarkBattlerForControllerExec(gActiveBattler);
+                break;
+            case B_POSITION_OPPONENT_LEFT: // First opposing trainer sprite.
+                if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+                {
+                    BtlController_EmitDrawTrainerPic(BUFFER_A);
+                    MarkBattlerForControllerExec(gActiveBattler);
+                }
+                else // First wild Pokémon
+                {
+                    BtlController_EmitLoadMonSprite(BUFFER_A);
+                    MarkBattlerForControllerExec(gActiveBattler);
+                    gBattleResults.lastOpponentSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPECIES, NULL);
+                }
+                break;
+            case B_POSITION_PLAYER_RIGHT: // Partner sprite
+                if (gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER))
+                {
+                    BtlController_EmitDrawTrainerPic(BUFFER_A);
+                    MarkBattlerForControllerExec(gActiveBattler);
+                }
+                break;
+            case B_POSITION_OPPONENT_RIGHT: // Second opposing trainer sprite.
+                if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+                {
+                    if (gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_TWO_OPPONENTS)) // opponent 2 if exists
+                    {
+                        BtlController_EmitDrawTrainerPic(BUFFER_A);
+                        MarkBattlerForControllerExec(gActiveBattler);
+                    }
+                }
+                break;
+            }
+
+            if (gBattleTypeFlags & BATTLE_TYPE_ARENA)
+                BattleArena_InitPoints();
         }
 
         if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+            (*state)++;
+        else // Skip party summary since it is a wild battle.
+            *state = STATE_WAIT_FOR_PARTY_SUMMARY; // Wait for sprite to load.
+        break;
+    case STATE_DRAW_PARTY_SUMMARY: // Draw party summary in trainer battles.
+        if (gBattleControllerExecFlags == 0)
         {
-            if (GetBattlerPosition(gActiveBattler) == B_POSITION_OPPONENT_LEFT)
-            {
-                BtlController_EmitDrawTrainerPic(BUFFER_A);
-                MarkBattlerForControllerExec(gActiveBattler);
-            }
-            if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT
-             && !(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
-                                      | BATTLE_TYPE_FRONTIER
-                                      | BATTLE_TYPE_LINK
-                                      | BATTLE_TYPE_RECORDED_LINK
-                                      | BATTLE_TYPE_TRAINER_HILL)))
-            {
-                HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gActiveBattler].species), FLAG_SET_SEEN, gBattleMons[gActiveBattler].personality);
-            }
+            BattleIntroDrawPartySummaryScreen(gEnemyParty, B_POSITION_OPPONENT_LEFT);
+            BattleIntroDrawPartySummaryScreen(gPlayerParty, B_POSITION_PLAYER_LEFT);
+            (*state)++;
         }
-        else
+        break;
+    case STATE_WAIT_FOR_PARTY_SUMMARY: // Wait for previous action to complete.
+        if (gBattleControllerExecFlags == 0)
+            (*state)++;
+        break;
+    case STATE_INTRO_TEXT: // Print battle intro text.
+        i = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+        if (IsBattlerMarkedForControllerExec(i) == FALSE)
         {
-            if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT)
+            PrepareStringBattle(STRINGID_INTROMSG, i);
+            (*state)++;
+        }
+        break;
+    case STATE_WAIT_FOR_INTRO_TEXT: // Wait for intro text to be printed.
+        if (IsBattlerMarkedForControllerExec(i) == FALSE)
+        {
+            if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+                (*state)++;
+            else
+                *state = STATE_WAIT_FOR_TRAINER_2_SEND_OUT_ANIM; // Wait for text and sprite.
+        }
+        break;
+    case STATE_TRAINER_SEND_OUT_TEXT: // Print opposing trainer send out text.
+        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
+            i = B_POSITION_PLAYER_LEFT;
+        else
+            i = B_POSITION_OPPONENT_LEFT;
+        i = GetBattlerAtPosition(i);
+
+        PrepareStringBattle(STRINGID_INTROSENDOUT, i);
+        (*state)++;
+        break;
+    case STATE_WAIT_FOR_TRAINER_SEND_OUT_TEXT: // Wait for opposing trainer send out text to be printed.
+        if (gBattleControllerExecFlags == 0)
+            (*state)++;
+        break;
+    case STATE_TRAINER_1_SEND_OUT_ANIM: // First opposing Pokémon send out animation.
+        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
+            i = B_POSITION_PLAYER_LEFT;
+        else
+            i = B_POSITION_OPPONENT_LEFT;
+        gActiveBattler = GetBattlerAtPosition(i);
+
+        BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
+        MarkBattlerForControllerExec(gActiveBattler);
+        (*state)++;
+        break;
+    case STATE_TRAINER_2_SEND_OUT_ANIM: // Second opposing Pokémon send out animation.
+        if (gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_TWO_OPPONENTS))
+        {
+            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
+                gActiveBattler = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
+            else
+                gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+
+            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
+            MarkBattlerForControllerExec(gActiveBattler);
+        }
+        (*state)++;
+        break;
+    case STATE_WAIT_FOR_TRAINER_2_SEND_OUT_ANIM: // Wait for second opposing Pokémon send out animation.
+        if (gBattleControllerExecFlags == 0)
+            (*state)++;
+        break;
+    case STATE_WAIT_FOR_WILD_BATTLE_TEXT: // Wait for wild battle text to be printed.
+        if (IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)) == FALSE)
+            (*state)++;
+        break;
+    case STATE_PRINT_PLAYER_SEND_OUT_TEXT: // Print player send out text.
+        if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
+        {
+            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
+                gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+            else
+                gActiveBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+
+            PrepareStringBattle(STRINGID_INTROSENDOUT, gActiveBattler);
+        }
+        (*state)++;
+        break;
+    case STATE_WAIT_FOR_PLAYER_SEND_OUT_TEXT: // Wait for player send out text to be printed.
+        if (!(gBattleTypeFlags & BATTLE_TYPE_LINK && gBattleControllerExecFlags))
+        {
+            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
+                gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+            else
+                gActiveBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+
+            if (IsBattlerMarkedForControllerExec(gActiveBattler) == FALSE)
+                (*state)++;
+        }
+        break;
+    case STATE_PRINT_PLAYER_1_SEND_OUT_TEXT: // Print first player Pokémon send out text.
+        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
+            gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        else
+            gActiveBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+
+        BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
+        MarkBattlerForControllerExec(gActiveBattler);
+        (*state)++;
+        break;
+    case STATE_PRINT_PLAYER_2_SEND_OUT_TEXT: // Print second player Pokémon send out text.
+        if (gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER))
+        {
+            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
+                gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+            else
+                gActiveBattler = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
+
+            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
+            MarkBattlerForControllerExec(gActiveBattler);
+        }
+        (*state)++;
+        break;
+    case STATE_SET_DEX_AND_BATTLE_VARS: // Set Pokédex and battle vars.
+        if (gBattleControllerExecFlags == 0)
+        {
+            for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
             {
-                if (!(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
-                                      | BATTLE_TYPE_FRONTIER
-                                      | BATTLE_TYPE_LINK
-                                      | BATTLE_TYPE_RECORDED_LINK
-                                      | BATTLE_TYPE_TRAINER_HILL)))
+                if (GetBattlerSide(gActiveBattler) != B_SIDE_PLAYER
+                 && !(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
+                                          | BATTLE_TYPE_FRONTIER
+                                          | BATTLE_TYPE_LINK
+                                          | BATTLE_TYPE_RECORDED_LINK
+                                          | BATTLE_TYPE_TRAINER_HILL)))
                 {
                     HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gActiveBattler].species), FLAG_SET_SEEN, gBattleMons[gActiveBattler].personality);
                 }
-                BtlController_EmitLoadMonSprite(BUFFER_A);
-                MarkBattlerForControllerExec(gActiveBattler);
-                gBattleResults.lastOpponentSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPECIES, NULL);
             }
+
+            gBattleStruct->switchInAbilitiesCounter = 0;
+            gBattleStruct->switchInItemsCounter = 0;
+            gBattleStruct->overworldWeatherDone = FALSE;
+            gBattleStruct->introState = 0;
+            gBattleMainFunc = TryDoEventsBeforeFirstTurn;
         }
-
-        if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
-        {
-            if (GetBattlerPosition(gActiveBattler) == B_POSITION_PLAYER_RIGHT
-             || GetBattlerPosition(gActiveBattler) == B_POSITION_OPPONENT_RIGHT)
-            {
-                BtlController_EmitDrawTrainerPic(BUFFER_A);
-                MarkBattlerForControllerExec(gActiveBattler);
-            }
-        }
-
-        if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS && GetBattlerPosition(gActiveBattler) == B_POSITION_OPPONENT_RIGHT)
-        {
-            BtlController_EmitDrawTrainerPic(BUFFER_A);
-            MarkBattlerForControllerExec(gActiveBattler);
-        }
-
-        if (gBattleTypeFlags & BATTLE_TYPE_ARENA)
-            BattleArena_InitPoints();
-    }
-    gBattleMainFunc = BattleIntroDrawPartySummaryScreens;
-}
-
-static void BattleIntroDrawPartySummaryScreens(void)
-{
-    s32 i;
-    struct HpAndStatus hpStatus[PARTY_SIZE];
-
-    if (gBattleControllerExecFlags)
-        return;
-
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-    {
-        for (i = 0; i < PARTY_SIZE; i++)
-        {
-            if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE
-             || GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
-            {
-                hpStatus[i].hp = HP_EMPTY_SLOT;
-                hpStatus[i].status = 0;
-            }
-            else
-            {
-                hpStatus[i].hp = GetMonData(&gEnemyParty[i], MON_DATA_HP);
-                hpStatus[i].status = GetMonData(&gEnemyParty[i], MON_DATA_STATUS);
-            }
-        }
-        gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
-        BtlController_EmitDrawPartyStatusSummary(BUFFER_A, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
-        MarkBattlerForControllerExec(gActiveBattler);
-
-        for (i = 0; i < PARTY_SIZE; i++)
-        {
-            if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE
-             || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
-            {
-                hpStatus[i].hp = HP_EMPTY_SLOT;
-                hpStatus[i].status = 0;
-            }
-            else
-            {
-                hpStatus[i].hp = GetMonData(&gPlayerParty[i], MON_DATA_HP);
-                hpStatus[i].status = GetMonData(&gPlayerParty[i], MON_DATA_STATUS);
-            }
-        }
-        gActiveBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-        BtlController_EmitDrawPartyStatusSummary(BUFFER_A, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
-        MarkBattlerForControllerExec(gActiveBattler);
-
-        gBattleMainFunc = BattleIntroPrintTrainerWantsToBattle;
-    }
-    else
-    {
-        // The struct gets set here, but nothing is ever done with it since
-        // wild battles don't show the party summary.
-        // Still, there's no point in having dead code.
-
-        for (i = 0; i < PARTY_SIZE; i++)
-        {
-            if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE
-             || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
-            {
-                hpStatus[i].hp = HP_EMPTY_SLOT;
-                hpStatus[i].status = 0;
-            }
-            else
-            {
-                hpStatus[i].hp = GetMonData(&gPlayerParty[i], MON_DATA_HP);
-                hpStatus[i].status = GetMonData(&gPlayerParty[i], MON_DATA_STATUS);
-            }
-        }
-
-        gBattleMainFunc = BattleIntroPrintWildMonAttacked;
+        break;
     }
 }
 
-static void BattleIntroPrintTrainerWantsToBattle(void)
-{
-    if (gBattleControllerExecFlags == 0)
-    {
-        gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
-        PrepareStringBattle(STRINGID_INTROMSG, gActiveBattler);
-        gBattleMainFunc = BattleIntroPrintOpponentSendsOut;
-    }
-}
-
-static void BattleIntroPrintWildMonAttacked(void)
-{
-    if (gBattleControllerExecFlags == 0)
-    {
-        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
-        PrepareStringBattle(STRINGID_INTROMSG, 0);
-    }
-}
-
-static void BattleIntroPrintOpponentSendsOut(void)
-{
-    u32 position;
-
-    if (gBattleControllerExecFlags)
-        return;
-
-    if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
-        position = B_POSITION_OPPONENT_LEFT;
-    else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
-    {
-        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
-            position = B_POSITION_OPPONENT_LEFT;
-        else
-            position = B_POSITION_PLAYER_LEFT;
-    }
-    else
-        position = B_POSITION_OPPONENT_LEFT;
-
-    PrepareStringBattle(STRINGID_INTROSENDOUT, GetBattlerAtPosition(position));
-    gBattleMainFunc = BattleIntroOpponent1SendsOutMonAnimation;
-}
-
-static void BattleIntroOpponent2SendsOutMonAnimation(void)
-{
-    u32 position;
-
-    if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
-        position = B_POSITION_OPPONENT_RIGHT;
-    else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
-    {
-        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
-            position = B_POSITION_OPPONENT_RIGHT;
-        else
-            position = B_POSITION_PLAYER_RIGHT;
-    }
-    else
-        position = B_POSITION_OPPONENT_RIGHT;
-
-    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
-    {
-        if (GetBattlerPosition(gActiveBattler) == position)
-        {
-            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
-            MarkBattlerForControllerExec(gActiveBattler);
-        }
-    }
-
-    gBattleMainFunc = BattleIntroRecordMonsToDex;
-}
-
-static void BattleIntroOpponent1SendsOutMonAnimation(void)
-{
-    u32 position;
-
-    if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
-    {
-        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
-        {
-            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
-                position = B_POSITION_OPPONENT_LEFT;
-            else
-                position = B_POSITION_PLAYER_LEFT;
-        }
-        else
-            position = B_POSITION_OPPONENT_LEFT;
-    }
-    else
-        position = B_POSITION_OPPONENT_LEFT;
-
-    if (gBattleControllerExecFlags)
-        return;
-
-    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
-    {
-        if (GetBattlerPosition(gActiveBattler) == position)
-        {
-            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
-            MarkBattlerForControllerExec(gActiveBattler);
-            if (gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_TWO_OPPONENTS))
-            {
-                gBattleMainFunc = BattleIntroOpponent2SendsOutMonAnimation;
-                return;
-            }
-        }
-    }
-
-    gBattleMainFunc = BattleIntroRecordMonsToDex;
-}
-
-static void BattleIntroRecordMonsToDex(void)
-{
-    if (gBattleControllerExecFlags == 0)
-    {
-        for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
-        {
-            if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT
-             && !(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
-                                      | BATTLE_TYPE_FRONTIER
-                                      | BATTLE_TYPE_LINK
-                                      | BATTLE_TYPE_RECORDED_LINK
-                                      | BATTLE_TYPE_TRAINER_HILL)))
-            {
-                HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gActiveBattler].species), FLAG_SET_SEEN, gBattleMons[gActiveBattler].personality);
-            }
-        }
-        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
-    }
-}
-
-// Unused
-static void BattleIntroSkipRecordMonsToDex(void)
-{
-    if (gBattleControllerExecFlags == 0)
-        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
-}
-
-static void BattleIntroPrintPlayerSendsOut(void)
-{
-    if (gBattleControllerExecFlags == 0)
-    {
-        u8 position;
-
-        if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
-            position = B_POSITION_PLAYER_LEFT;
-        else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
-        {
-            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
-                position = B_POSITION_PLAYER_LEFT;
-            else
-                position = B_POSITION_OPPONENT_LEFT;
-        }
-        else
-            position = B_POSITION_PLAYER_LEFT;
-
-        if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
-            PrepareStringBattle(STRINGID_INTROSENDOUT, GetBattlerAtPosition(position));
-
-        gBattleMainFunc = BattleIntroPlayer1SendsOutMonAnimation;
-    }
-}
-
-static void BattleIntroPlayer2SendsOutMonAnimation(void)
-{
-    u32 position;
-
-    if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
-        position = B_POSITION_PLAYER_RIGHT;
-    else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
-    {
-        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
-            position = B_POSITION_PLAYER_RIGHT;
-        else
-            position = B_POSITION_OPPONENT_RIGHT;
-    }
-    else
-        position = B_POSITION_PLAYER_RIGHT;
-
-    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
-    {
-        if (GetBattlerPosition(gActiveBattler) == position)
-        {
-            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
-            MarkBattlerForControllerExec(gActiveBattler);
-        }
-    }
-
-    gBattleStruct->switchInAbilitiesCounter = 0;
-    gBattleStruct->switchInItemsCounter = 0;
-    gBattleStruct->overworldWeatherDone = FALSE;
-
-    gBattleMainFunc = TryDoEventsBeforeFirstTurn;
-}
-
-static void BattleIntroPlayer1SendsOutMonAnimation(void)
-{
-    u32 position;
-
-    if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
-        position = B_POSITION_PLAYER_LEFT;
-    else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
-    {
-        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
-            position = B_POSITION_PLAYER_LEFT;
-        else
-            position = B_POSITION_OPPONENT_LEFT;
-    }
-    else
-        position = B_POSITION_PLAYER_LEFT;
-
-    if (gBattleControllerExecFlags)
-        return;
-
-    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
-    {
-        if (GetBattlerPosition(gActiveBattler) == position)
-        {
-            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
-            MarkBattlerForControllerExec(gActiveBattler);
-            if (gBattleTypeFlags & (BATTLE_TYPE_MULTI))
-            {
-                gBattleMainFunc = BattleIntroPlayer2SendsOutMonAnimation;
-                return;
-            }
-        }
-    }
-
-    gBattleStruct->switchInAbilitiesCounter = 0;
-    gBattleStruct->switchInItemsCounter = 0;
-    gBattleStruct->overworldWeatherDone = FALSE;
-
-    gBattleMainFunc = TryDoEventsBeforeFirstTurn;
-}
-
-// Unused
-static void BattleIntroSwitchInPlayerMons(void)
-{
-    if (gBattleControllerExecFlags == 0)
-    {
-        for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
-        {
-            if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
-            {
-                BtlController_EmitSwitchInAnim(BUFFER_A, gBattlerPartyIndexes[gActiveBattler], FALSE);
-                MarkBattlerForControllerExec(gActiveBattler);
-            }
-        }
-
-        gBattleStruct->switchInAbilitiesCounter = 0;
-        gBattleStruct->switchInItemsCounter = 0;
-        gBattleStruct->overworldWeatherDone = FALSE;
-
-        gBattleMainFunc = TryDoEventsBeforeFirstTurn;
-    }
-}
+#undef introState
 
 static void TryDoEventsBeforeFirstTurn(void)
 {

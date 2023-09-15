@@ -167,10 +167,13 @@ void Special_BeginCyclingRoadChallenge(void)
 
 u16 GetPlayerAvatarBike(void)
 {
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE))
-        return 1;
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE))
-        return 2;
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_BIKE))
+    {
+        if (gSaveBlock2Ptr->playerBike != MACH_BIKE)
+            return 1;
+        else
+            return 2;
+    }
     return 0;
 }
 

@@ -41,6 +41,7 @@
 #include "constants/item_effects.h"
 #include "constants/items.h"
 #include "constants/songs.h"
+#include "m4a.h"
 
 static void SetUpItemUseCallback(u8);
 static void FieldCB_UseItemOnField(void);
@@ -228,6 +229,7 @@ static void ItemUseOnFieldCB_Bike(u8 taskId)
     }
     else
     {
+        m4aSongNumStart(SE_BIKE_BELL);
         gSaveBlock2Ptr->playerBike = ItemId_GetSecondaryId(gSpecialVar_ItemId);
         SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_BIKE);
         Overworld_SetSavedMusic(MUS_CYCLING);

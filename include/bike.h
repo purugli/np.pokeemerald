@@ -6,12 +6,6 @@
 struct BikeHistoryInputInfo
 {
     u32 dirHistoryMatch; // the direction you need to press
-    u32 abStartSelectHistoryMatch; // the button you need to press
-    u32 dirHistoryMask; // mask applied so that way only the recent nybble (the recent input) is checked
-    u32 abStartSelectHistoryMask; // mask applied so that way only the recent nybble (the recent input) is checked
-    const u8 *dirTimerHistoryList; // list of timers to check for direction before the button+dir combination can be verified.
-    const u8 *abStartSelectHistoryList; // list of timers to check for buttons before the button+dir combination can be verified.
-    u32 direction; // direction to jump
 };
 
 // Player speeds
@@ -63,13 +57,28 @@ enum
     ACRO_TRANS_WHEELIE_LOWERING_MOVING,
 };
 
+enum
+{
+    BIKE_TRANS_FACE_DIRECTION,
+    BIKE_TRANS_TURNING,
+    BIKE_TRANS_MOVE,
+    BIKE_TRANS_DOWNHILL,
+    BIKE_TRANS_UPHILL,
+};
+
+enum
+{
+    BIKE_STATE_NORMAL,
+    BIKE_STATE_TURNING,
+    BIKE_STATE_SLOPE,
+};
+
 // Exported RAM declarations
 extern bool8 gUnusedBikeCameraAheadPanback;
 
 // Exported ROM declarations
 void MovePlayerOnBike(u8 direction, u16 newKeys, u16 heldKeys);
 void Bike_TryAcroBikeHistoryUpdate(u16 newKeys, u16 heldKeys);
-bool8 RS_IsRunningDisallowed(u8 tile);
 bool8 IsBikingDisallowedByPlayer(void);
 bool8 IsPlayerNotUsingAcroBikeOnBumpySlope(void);
 void BikeClearState(int newDirHistory, int newAbStartHistory);

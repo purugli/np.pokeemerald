@@ -464,6 +464,7 @@
 // Secondary IDs for bikes
 #define MACH_BIKE 0
 #define ACRO_BIKE 1
+#define FRLG_BIKE 2 // The bike from FRLG. Added for the handling of slopes on FRLG's Cycling Road.
 
 // Item type IDs (used to determine the exit callback)
 #define ITEM_USE_MAIL        0

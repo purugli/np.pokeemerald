@@ -34,6 +34,8 @@
 #include "constants/rgb.h"
 #include "trainer_hill.h"
 #include "fldeff.h"
+#include "constants/metatile_behaviors.h"
+#include "m4a.h"
 
 static void Task_ExitNonAnimDoor(u8);
 static void Task_ExitNonDoor(u8);
@@ -45,6 +47,13 @@ static void Task_SpinEnterWarp(u8 taskId);
 static void Task_WarpAndLoadMap(u8 taskId);
 static void Task_DoDoorWarp(u8 taskId);
 static void Task_EnableScriptAfterMusicFade(u8 taskId);
+static void Task_DoStairWarp(u8 taskId);
+static void ForceStairsMovement(u16 behavior, s16 *x, s16 *y);
+static void GetStairsMovementDirection(u8 behavior, s16 *x, s16 *y);
+static void UpdateStairsMovement(s16 speedX, s16 speedY, s16 *offsetX, s16 *offsetY, s16 *timer);
+static void Task_ExitStairs(u8 taskId);
+static void ExitStairsMovement(s16 *speedX, s16 *speedY, s16 *offsetX, s16 *offsetY, s16 *timer);
+static bool8 WaitStairExitMovementFinished(s16 *speedX, s16 *speedY, s16 *offsetX, s16 *offsetY, s16 *timer);
 
 // data[0] is used universally by tasks in this file as a state for switches
 #define tState       data[0]
@@ -265,8 +274,11 @@ static void SetUpWarpExitTask(void)
         func = Task_ExitDoor;
     else if (MetatileBehavior_IsNonAnimDoor(behavior) == TRUE)
         func = Task_ExitNonAnimDoor;
+    else if (behavior >= MB_UP_RIGHT_STAIR_WARP && behavior <= MB_DOWN_LEFT_STAIR_WARP && gExitStairsMovementDisabled == FALSE)
+        func = Task_ExitStairs;
     else
         func = Task_ExitNonDoor;
+    gExitStairsMovementDisabled = FALSE;
     CreateTask(func, 10);
 }
 
@@ -502,6 +514,14 @@ void DoDiveWarp(void)
     CreateTask(Task_WarpAndLoadMap, 10);
 }
 
+void DoStairWarp(u16 metatileBehavior, u16 delay)
+{
+    u8 taskId = CreateTask(Task_DoStairWarp, 10);
+    gTasks[taskId].data[1] = metatileBehavior;
+    gTasks[taskId].data[15] = delay;
+    Task_DoStairWarp(taskId);
+}
+
 void DoWhiteFadeWarp(void)
 {
     LockPlayerFieldControls();
@@ -724,6 +744,178 @@ static void Task_DoDoorWarp(u8 taskId)
         task->tState = 0;
         task->func = Task_WarpAndLoadMap;
         break;
+    }
+}
+
+static void Task_DoStairWarp(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    struct ObjectEvent *playerObj = &gObjectEvents[gPlayerAvatar.objectEventId];
+    struct Sprite *playerSpr = &gSprites[gPlayerAvatar.spriteId];
+    switch (tState)
+    {
+    case 0:
+        LockPlayerFieldControls();
+        FreezeObjectEvents();
+        CameraObjectReset2();
+        tState++;
+        break;
+    case 1:
+        if (!ObjectEventIsMovementOverridden(playerObj) || ObjectEventClearHeldMovementIfFinished(playerObj))
+        {
+            if (data[15] != 0)
+                data[15]--;
+            else
+            {
+                TryFadeOutOldMapMusic();
+                PlayRainStoppingSoundEffect();
+                playerSpr->oam.priority = 1;
+                ForceStairsMovement(data[1], &data[2], &data[3]);
+                m4aSongNumStart(SE_EXIT);
+                tState++;
+            }
+        }
+        break;
+    case 2:
+        UpdateStairsMovement(data[2], data[3], &data[4], &data[5], &data[6]);
+        if (data[15]++ >= 12)
+        {
+            WarpFadeOutScreen();
+            tState++;
+        }
+        break;
+    case 3:
+        UpdateStairsMovement(data[2], data[3], &data[4], &data[5], &data[6]);
+        if (!PaletteFadeActive() && BGMusicStopped())
+            tState++;
+        break;
+    default:
+        gFieldCallback = FieldCB_DefaultWarpExit;
+        WarpIntoMap();
+        SetMainCallback2(CB2_LoadMap);
+        DestroyTask(taskId);
+        break;
+    }
+}
+
+static void UpdateStairsMovement(s16 speedX, s16 speedY, s16 *offsetX, s16 *offsetY, s16 *timer)
+{
+    struct Sprite *playerSpr = &gSprites[gPlayerAvatar.spriteId];
+    struct ObjectEvent *playerObj = &gObjectEvents[gPlayerAvatar.objectEventId];
+    if (speedY > 0 || *timer > 6)
+        *offsetY += speedY;
+    *offsetX += speedX;
+    (*timer)++;
+    playerSpr->x2 = *offsetX >> 5;
+    playerSpr->y2 = *offsetY >> 5;
+    if (playerObj->heldMovementFinished)
+        ObjectEventForceSetHeldMovement(playerObj, GetWalkInPlaceNormalMovementAction(GetPlayerFacingDirection()));
+}
+
+static void ForceStairsMovement(u16 metatileBehavior, s16 *x, s16 *y)
+{
+    ObjectEventForceSetHeldMovement(&gObjectEvents[gPlayerAvatar.objectEventId], GetWalkInPlaceNormalMovementAction(GetPlayerFacingDirection()));
+    GetStairsMovementDirection(metatileBehavior, x, y);
+}
+
+static void GetStairsMovementDirection(u8 metatileBehavior, s16 *x, s16 *y)
+{
+    if (metatileBehavior == MB_UP_RIGHT_STAIR_WARP)
+    {
+        *x = 16;
+        *y = -10;
+    }
+    else if (metatileBehavior == MB_UP_LEFT_STAIR_WARP)
+    {
+        *x = -17;
+        *y = -10;
+    }
+    else if (metatileBehavior == MB_DOWN_RIGHT_STAIR_WARP)
+    {
+        *x = 17;
+        *y = 3;
+    }
+    else if (metatileBehavior == MB_DOWN_LEFT_STAIR_WARP)
+    {
+        *x = -17;
+        *y = 3;
+    }
+    else
+    {
+        *x = 0;
+        *y = 0;
+    }
+}
+
+static void Task_ExitStairs(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    switch (tState)
+    {
+    default:
+        if (WaitForWeatherFadeIn())
+        {
+            CameraObjectReset1();
+            UnlockPlayerFieldControls();
+            DestroyTask(taskId);
+        }
+        break;
+    case 0:
+        Overworld_PlaySpecialMapMusic();
+        WarpFadeInScreen();
+        LockPlayerFieldControls();
+        ExitStairsMovement(&data[1], &data[2], &data[3], &data[4], &data[5]);
+        tState++;
+        break;
+    case 1:
+        if (!WaitStairExitMovementFinished(&data[1], &data[2], &data[3], &data[4], &data[5]))
+            tState++;
+        break;
+    }
+}
+
+static void ExitStairsMovement(s16 *speedX, s16 *speedY, s16 *offsetX, s16 *offsetY, s16 *timer)
+{
+    s16 x, y;
+    u8 metatileBehavior;
+    s32 direction;
+    struct Sprite *sprite;
+    PlayerGetDestCoords(&x, &y);
+    metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    if (metatileBehavior == MB_DOWN_RIGHT_STAIR_WARP || metatileBehavior == MB_UP_RIGHT_STAIR_WARP)
+        direction = DIR_WEST;
+    else
+        direction = DIR_EAST;
+    ObjectEventForceSetHeldMovement(&gObjectEvents[gPlayerAvatar.objectEventId], GetWalkInPlaceSlowMovementAction(direction));
+    GetStairsMovementDirection(metatileBehavior, speedX, speedY);
+    *offsetX = *speedX * 16;
+    *offsetY = *speedY * 16;
+    *timer = 16;
+    sprite = &gSprites[gPlayerAvatar.spriteId];
+    sprite->x2 = *offsetX >> 5;
+    sprite->y2 = *offsetY >> 5;
+    *speedX = -*speedX;
+    *speedY = -*speedY;
+}
+
+static bool8 WaitStairExitMovementFinished(s16 *speedX, s16 *speedY, s16 *offsetX, s16 *offsetY, s16 *timer)
+{
+    struct Sprite *sprite;
+    sprite = &gSprites[gPlayerAvatar.spriteId];
+    if (*timer != 0)
+    {
+        *offsetX += *speedX;
+        *offsetY += *speedY;
+        sprite->x2 = *offsetX >> 5;
+        sprite->y2 = *offsetY >> 5;
+        (*timer)--;
+        return TRUE;
+    }
+    else
+    {
+        sprite->x2 = 0;
+        sprite->y2 = 0;
+        return FALSE;
     }
 }
 

@@ -34,6 +34,7 @@
 #include "constants/map_types.h"
 #include "constants/songs.h"
 #include "constants/trainer_hill.h"
+#include "constants/metatile_behaviors.h"
 
 static EWRAM_DATA u8 sWildEncounterImmunitySteps = 0;
 static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
@@ -693,12 +694,28 @@ static bool8 TryArrowWarp(struct MapPosition *position, u16 metatileBehavior, u8
 {
     s8 warpEventId = GetWarpEventAtMapPosition(&gMapHeader, position);
 
-    if (IsArrowWarpMetatileBehavior(metatileBehavior, direction) == TRUE && warpEventId != WARP_ID_NONE)
+    if (warpEventId != WARP_ID_NONE)
     {
-        StoreInitialPlayerAvatarState();
-        SetupWarp(&gMapHeader, warpEventId, position);
-        DoWarp();
-        return TRUE;
+        if (IsArrowWarpMetatileBehavior(metatileBehavior, direction))
+        {
+            StoreInitialPlayerAvatarState();
+            SetupWarp(&gMapHeader, warpEventId, position);
+            DoWarp();
+            return TRUE;
+        }
+        else if (IsDirectionalStairWarpMetatileBehavior(metatileBehavior, direction))
+        {
+            u16 delay = 0;
+            if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BIKE)
+            {
+                SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
+                delay = 12;
+            }
+            StoreInitialPlayerAvatarState();
+            SetupWarp(&gMapHeader, warpEventId, position);
+            DoStairWarp(metatileBehavior, delay);
+            return TRUE;
+        }
     }
     return FALSE;
 }
@@ -766,6 +783,26 @@ static bool8 IsWarpMetatileBehavior(u16 metatileBehavior)
      && MetatileBehavior_IsUnionRoomWarp(metatileBehavior) != TRUE)
         return FALSE;
     return TRUE;
+}
+
+bool8 IsDirectionalStairWarpMetatileBehavior(u16 metatileBehavior, u8 playerDirection)
+{
+    switch (playerDirection)
+    {
+    case DIR_WEST:
+        if (metatileBehavior == MB_UP_LEFT_STAIR_WARP)
+            return TRUE;
+        if (metatileBehavior == MB_DOWN_LEFT_STAIR_WARP)
+            return TRUE;
+        break;
+    case DIR_EAST:
+        if (metatileBehavior == MB_UP_RIGHT_STAIR_WARP)
+            return TRUE;
+        if (metatileBehavior == MB_DOWN_RIGHT_STAIR_WARP)
+            return TRUE;
+        break;
+    }
+    return FALSE;
 }
 
 static bool8 IsArrowWarpMetatileBehavior(u16 metatileBehavior, u8 direction)

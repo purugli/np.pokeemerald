@@ -29,6 +29,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/trainer_types.h"
+#include "field_control_avatar.h"
 
 #define NUM_FORCED_MOVEMENTS 18
 #define NUM_ACRO_BIKE_COLLISIONS 5
@@ -590,6 +591,10 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
             PlayerJumpLedge(direction);
             return;
         }
+        else if (collision == COLLISION_DIRECTIONAL_STAIR_WARP)
+        {
+            PlayerFaceDirection(direction);
+        }
         else if (collision == COLLISION_OBJECT_EVENT && IsPlayerCollidingWithFarawayIslandMew(direction))
         {
             PlayerNotOnBikeCollideWithFarawayIslandMew(direction);
@@ -628,11 +633,15 @@ static u8 CheckForPlayerAvatarCollision(u8 direction)
 {
     s16 x, y;
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    u8 metatileBehavior;
 
     x = playerObjEvent->currentCoords.x;
     y = playerObjEvent->currentCoords.y;
+    metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    if (IsDirectionalStairWarpMetatileBehavior(metatileBehavior, direction))
+        return COLLISION_DIRECTIONAL_STAIR_WARP;
     MoveCoords(direction, &x, &y);
-    return CheckForObjectEventCollision(playerObjEvent, x, y, direction, MapGridGetMetatileBehaviorAt(x, y));
+    return CheckForObjectEventCollision(playerObjEvent, x, y, direction, metatileBehavior);
 }
 
 static u8 CheckForPlayerAvatarStaticCollision(u8 direction)

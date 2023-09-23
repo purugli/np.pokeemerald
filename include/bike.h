@@ -1,13 +1,6 @@
 #ifndef GUARD_BIKE_H
 #define GUARD_BIKE_H
 
-// the struct below is used for checking button combinations of the last input so that the acro can potentially perform a side/turn jump.
-// its possible that at some point Game Freak intended for the acro bike to have more complex tricks: but only the acro jump combinations can be seen in the final ROM.
-struct BikeHistoryInputInfo
-{
-    u32 dirHistoryMatch; // the direction you need to press
-};
-
 // Player speeds
 enum
 {

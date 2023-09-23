@@ -733,8 +733,8 @@ const struct Tileset gTileset_MirageTower =
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_MirageTower,
     .palettes = gTilesetPalettes_MirageTower,
-    .metatiles = gMetatiles_MirageTower,
-    .metatileAttributes = gMetatileAttributes_MirageTower,
+    .metatiles = gMetatiles_Cave,
+    .metatileAttributes = gMetatileAttributes_Cave,
     .callback = NULL,
 };
 

@@ -181,9 +181,6 @@ const u32 gMetatileAttributes_BattleArena[] = INCBIN_U32("data/tilesets/secondar
 const u16 gMetatiles_BattlePyramid[] = INCBIN_U16("data/tilesets/secondary/battle_pyramid/metatiles.bin");
 const u32 gMetatileAttributes_BattlePyramid[] = INCBIN_U32("data/tilesets/secondary/battle_pyramid/metatile_attributes.bin");
 
-const u16 gMetatiles_MirageTower[] = INCBIN_U16("data/tilesets/secondary/mirage_tower/metatiles.bin");
-const u32 gMetatileAttributes_MirageTower[] = INCBIN_U32("data/tilesets/secondary/mirage_tower/metatile_attributes.bin");
-
 const u16 gMetatiles_MossdeepGameCorner[] = INCBIN_U16("data/tilesets/secondary/mossdeep_game_corner/metatiles.bin");
 const u32 gMetatileAttributes_MossdeepGameCorner[] = INCBIN_U32("data/tilesets/secondary/mossdeep_game_corner/metatile_attributes.bin");
 

@@ -72,15 +72,22 @@ static const u8 sMetatileAttrShifts[METATILE_ATTRIBUTE_COUNT] = {
     [METATILE_ATTRIBUTE_7]              = 31
 };
 
-#define GetBorderBlockAt(x, y)({                                                                   \
-    u16 block;                                                                                     \
-    int i;                                                                                         \
-    const u16 *border = gMapHeader.mapLayout->border; /* Unused, they read it again below */       \
-                                                                                                   \
-    i = (x + 1) & 1;                                                                               \
-    i += ((y + 1) & 1) * 2;                                                                        \
-                                                                                                   \
-    block = gMapHeader.mapLayout->border[i] | MAPGRID_COLLISION_MASK;                              \
+#define GetBorderBlockAt(x, y)({                                                                  \
+    u16 block;                                                                                    \
+    s32 xprime;                                                                                   \
+    s32 yprime;                                                                                   \
+                                                                                                  \
+    const struct MapLayout *mapLayout = gMapHeader.mapLayout;                                     \
+                                                                                                  \
+    xprime = x - MAP_OFFSET;                                                                      \
+    xprime += 8 * mapLayout->borderWidth;                                                         \
+    xprime %= mapLayout->borderWidth;                                                             \
+                                                                                                  \
+    yprime = y - MAP_OFFSET;                                                                      \
+    yprime += 8 * mapLayout->borderHeight;                                                        \
+    yprime %= mapLayout->borderHeight;                                                            \
+                                                                                                  \
+    block = mapLayout->border[xprime + yprime * mapLayout->borderWidth] | MAPGRID_COLLISION_MASK; \
 })
 
 #define AreCoordsWithinMapGridBounds(x, y) (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)

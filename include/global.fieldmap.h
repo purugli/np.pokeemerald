@@ -76,6 +76,8 @@ struct MapLayout
     /*0x0C*/ const u16 *map;
     /*0x10*/ const struct Tileset *primaryTileset;
     /*0x14*/ const struct Tileset *secondaryTileset;
+    /*0x18*/ u8 borderWidth;
+    /*0x19*/ u8 borderHeight;
 };
 
 struct BackupMapLayout

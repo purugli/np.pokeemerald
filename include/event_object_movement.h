@@ -161,6 +161,7 @@ u8 GetWalkFastMovementAction(u32);
 u8 GetRideWaterCurrentMovementAction(u32);
 u8 GetWalkFasterMovementAction(u32);
 u8 GetPlayerRunMovementAction(u32);
+u8 GetPlayerRunOnStairsMovementAction(u32);
 u8 GetJumpInPlaceMovementAction(u32);
 u8 GetAcroWheelieFaceDirectionMovementAction(u32);
 u8 GetAcroPopWheelieFaceDirectionMovementAction(u32);
@@ -189,6 +190,7 @@ void ObjectEventMoveDestCoords(struct ObjectEvent *objEvent, u32 direction, s16 
 u8 AddCameraObject(u8 linkedSpriteId);
 void UpdateObjectEventsForCameraUpdate(s16 x, s16 y);
 u8 GetWalkSlowMovementAction(u32);
+u8 GetWalkOnStairsMovementAction(u32);
 u8 GetJumpMovementAction(u32);
 u8 ElevationToPriority(u8 elevation);
 void ObjectEventUpdateElevation(struct ObjectEvent *objEvent);

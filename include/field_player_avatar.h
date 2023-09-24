@@ -2,6 +2,7 @@
 #define GUARD_FIELD_PLAYER_AVATAR_H
 
 void PlayerStep(u8 direction, u16 newKeys, u16 heldKeys);
+bool32 PlayerIsMovingOnStairs(u8 direction);
 void ClearPlayerAvatarInfo(void);
 void SetPlayerAvatarExtraStateTransition(u8, u8);
 bool8 TestPlayerAvatarFlags(u8);

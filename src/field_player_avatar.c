@@ -30,6 +30,7 @@
 #include "constants/songs.h"
 #include "constants/trainer_types.h"
 #include "field_control_avatar.h"
+#include "constants/metatile_behaviors.h"
 
 #define NUM_FORCED_MOVEMENTS 18
 #define NUM_ACRO_BIKE_COLLISIONS 5
@@ -583,6 +584,7 @@ static void PlayerNotOnBikeTurningInPlace(u8 direction, u16 heldKeys)
 static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
 {
     u8 collision = CheckForPlayerAvatarCollision(direction);
+    bool32 isPlayerOnStairs;
 
     if (collision)
     {
@@ -616,16 +618,45 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         return;
     }
 
+    isPlayerOnStairs = PlayerIsMovingOnStairs(direction);
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (heldKeys & B_BUTTON) && FlagGet(FLAG_SYS_B_DASH)
      && IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior) == 0)
     {
-        PlayerRun(direction);
+        if (isPlayerOnStairs)
+            PlayerSetAnimId(GetPlayerRunOnStairsMovementAction(direction), COPY_MOVE_WALK);
+        else
+            PlayerRun(direction);
         gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
         return;
     }
     else
     {
-        PlayerWalkNormal(direction);
+        if (isPlayerOnStairs)
+            PlayerSetAnimId(GetWalkOnStairsMovementAction(direction), COPY_MOVE_WALK);
+        else
+            PlayerWalkNormal(direction);
+    }
+}
+
+bool32 PlayerIsMovingOnStairs(u8 direction)
+{
+    struct ObjectEvent *objectEvent;
+    s16 x, y;
+
+    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    x = objectEvent->currentCoords.x;
+    y = objectEvent->currentCoords.y;
+    switch (direction)
+    {
+    case DIR_SOUTH:
+        MoveCoords(DIR_SOUTH, &x, &y);
+    case DIR_NORTH:
+        if (MapGridGetMetatileBehaviorAt(x, y) == MB_STAIRS)
+            return TRUE;
+        else
+            return FALSE;
+    default:
+        return FALSE;
     }
 }
 

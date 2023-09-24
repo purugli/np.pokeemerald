@@ -158,6 +158,8 @@ static void DoShadowFieldEffect(struct ObjectEvent *);
 static void SetJumpSpriteData(struct Sprite *, u8, u8, u8);
 static void SetWalkSlowSpriteData(struct Sprite *, u8);
 static bool8 UpdateWalkSlowAnim(struct Sprite *);
+static bool8 UpdateWalkOnStairsAnim(struct Sprite *);
+static bool8 UpdateRunOnStairsAnim(struct Sprite *);
 static u8 DoJumpSpriteMovement(struct Sprite *);
 static u8 DoJumpSpecialSpriteMovement(struct Sprite *);
 static void CreateLevitateMovementTask(struct ObjectEvent *);
@@ -913,6 +915,13 @@ const u8 gWalkSlowMovementActions[] = {
     MOVEMENT_ACTION_WALK_SLOW_LEFT,
     MOVEMENT_ACTION_WALK_SLOW_RIGHT,
 };
+const u8 gWalkOnStairsMovementActions[] = {
+    MOVEMENT_ACTION_WALK_ON_STAIRS_DOWN,
+    MOVEMENT_ACTION_WALK_ON_STAIRS_DOWN,
+    MOVEMENT_ACTION_WALK_ON_STAIRS_UP,
+    MOVEMENT_ACTION_WALK_ON_STAIRS_LEFT,
+    MOVEMENT_ACTION_WALK_ON_STAIRS_RIGHT,
+};
 const u8 gWalkNormalMovementActions[] = {
     MOVEMENT_ACTION_WALK_NORMAL_DOWN,
     MOVEMENT_ACTION_WALK_NORMAL_DOWN,
@@ -954,6 +963,13 @@ const u8 gPlayerRunMovementActions[] = {
     MOVEMENT_ACTION_PLAYER_RUN_UP,
     MOVEMENT_ACTION_PLAYER_RUN_LEFT,
     MOVEMENT_ACTION_PLAYER_RUN_RIGHT,
+};
+const u8 gPlayerRunOnStairsMovementActions[] = {
+    MOVEMENT_ACTION_PLAYER_RUN_ON_STAIRS_DOWN,
+    MOVEMENT_ACTION_PLAYER_RUN_ON_STAIRS_DOWN,
+    MOVEMENT_ACTION_PLAYER_RUN_ON_STAIRS_UP,
+    MOVEMENT_ACTION_PLAYER_RUN_ON_STAIRS_LEFT,
+    MOVEMENT_ACTION_PLAYER_RUN_ON_STAIRS_RIGHT,
 };
 const u8 gJump2MovementActions[] = {
     MOVEMENT_ACTION_JUMP_2_DOWN,
@@ -4950,12 +4966,14 @@ u8 name(u32 idx)\
 
 dirn_to_anim(GetFaceDirectionMovementAction, gFaceDirectionMovementActions);
 dirn_to_anim(GetWalkSlowMovementAction, gWalkSlowMovementActions);
+dirn_to_anim(GetWalkOnStairsMovementAction, gWalkOnStairsMovementActions);
 dirn_to_anim(GetWalkNormalMovementAction, gWalkNormalMovementActions);
 dirn_to_anim(GetWalkFastMovementAction, gWalkFastMovementActions);
 dirn_to_anim(GetRideWaterCurrentMovementAction, gRideWaterCurrentMovementActions);
 dirn_to_anim(GetWalkFasterMovementAction, gWalkFasterMovementActions);
 dirn_to_anim(GetSlideMovementAction, gSlideMovementActions);
 dirn_to_anim(GetPlayerRunMovementAction, gPlayerRunMovementActions);
+dirn_to_anim(GetPlayerRunOnStairsMovementAction, gPlayerRunOnStairsMovementActions);
 dirn_to_anim(GetJump2MovementAction, gJump2MovementActions);
 dirn_to_anim(GetJumpInPlaceMovementAction, gJumpInPlaceMovementActions);
 dirn_to_anim(GetJumpInPlaceTurnAroundMovementAction, gJumpInPlaceTurnAroundMovementActions);
@@ -5279,6 +5297,52 @@ bool8 MovementAction_WalkSlowRight_Step1(struct ObjectEvent *objectEvent, struct
         return TRUE;
     }
     return FALSE;
+}
+
+bool8 UpdateWalkOnStairs(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (UpdateWalkOnStairsAnim(sprite))
+    {
+        ShiftStillObjectEventCoords(objectEvent);
+        objectEvent->triggerGroundEffectsOnStop = TRUE;
+        sprite->animPaused = TRUE;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+bool8 MovementAction_WalkOnStairsDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    InitWalkSlow(objectEvent, sprite, DIR_SOUTH);
+    return MovementAction_WalkOnStairs_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_WalkOnStairs_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (UpdateWalkOnStairs(objectEvent, sprite))
+    {
+        sprite->sActionFuncId = 2;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+bool8 MovementAction_WalkOnStairsUp_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    InitWalkSlow(objectEvent, sprite, DIR_NORTH);
+    return MovementAction_WalkOnStairs_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_WalkOnStairsLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    InitWalkSlow(objectEvent, sprite, DIR_WEST);
+    return MovementAction_WalkOnStairs_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_WalkOnStairsRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    InitWalkSlow(objectEvent, sprite, DIR_EAST);
+    return MovementAction_WalkOnStairs_Step1(objectEvent, sprite);
 }
 
 bool8 MovementAction_WalkNormalDiagonalUpLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
@@ -6073,6 +6137,58 @@ bool8 MovementAction_PlayerRunRight_Step1(struct ObjectEvent *objectEvent, struc
         return TRUE;
     }
     return FALSE;
+}
+
+static void InitRunOnStairs(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction)
+{
+    InitNpcForWalkSlow(objectEvent, sprite, direction);
+    SetStepAnimHandleAlternation(objectEvent, sprite, GetRunningDirectionAnimNum(objectEvent->facingDirection));
+}
+
+bool8 UpdateRunOnStairs(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (UpdateRunOnStairsAnim(sprite))
+    {
+        ShiftStillObjectEventCoords(objectEvent);
+        objectEvent->triggerGroundEffectsOnStop = TRUE;
+        sprite->animPaused = TRUE;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+bool8 MovementAction_PlayerRunOnStairsDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    InitRunOnStairs(objectEvent, sprite, DIR_SOUTH);
+    return MovementAction_PlayerRunOnStairs_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_PlayerRunOnStairs_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (UpdateRunOnStairs(objectEvent, sprite))
+    {
+        sprite->sActionFuncId = 2;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+bool8 MovementAction_PlayerRunOnStairsUp_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    InitRunOnStairs(objectEvent, sprite, DIR_NORTH);
+    return MovementAction_PlayerRunOnStairs_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_PlayerRunOnStairsLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    InitRunOnStairs(objectEvent, sprite, DIR_WEST);
+    return MovementAction_PlayerRunOnStairs_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_PlayerRunOnStairsRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    InitRunOnStairs(objectEvent, sprite, DIR_SOUTH);
+    return MovementAction_PlayerRunOnStairs_Step1(objectEvent, sprite);
 }
 
 void StartSpriteAnimInDirection(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction, u8 animNum)
@@ -8318,6 +8434,41 @@ static bool8 UpdateWalkSlowAnim(struct Sprite *sprite)
     }
 
     sprite->sTimer++;
+
+    if (sprite->sNumSteps > 15)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+static bool8 UpdateWalkOnStairsAnim(struct Sprite *sprite)
+{
+    if (++sprite->sTimer < 3)
+    {
+        Step1(sprite, sprite->sDirection);
+        sprite->sNumSteps++;
+    }
+    else
+        sprite->sTimer = 0;
+
+    if (sprite->sNumSteps > 15)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+static bool8 UpdateRunOnStairsAnim(struct Sprite *sprite)
+{
+    if ((++sprite->sTimer) & 1)
+    {
+        Step1(sprite, sprite->sDirection);
+        sprite->sNumSteps++;
+    }
+    else
+    {
+        Step2(sprite, sprite->sDirection);
+        sprite->sNumSteps += 2;
+    }
 
     if (sprite->sNumSteps > 15)
         return TRUE;

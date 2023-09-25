@@ -348,7 +348,7 @@ struct PlayerAvatar
     /*0x04*/ u8 spriteId;
     /*0x05*/ u8 objectEventId;
     /*0x06*/ bool8 preventStep;
-    /*0x07*/ u8 gender;
+    /*0x07*/ u8 lastSpinTile; // For the Rocket mazes
     /*0x08*/ u8 acroBikeState; // 00 is normal, 01 is turning, 02 is standing wheelie, 03 is hopping wheelie
     /*0x09*/ u8 newDirBackup; // during bike movement, the new direction as opposed to player's direction is backed up here.
     /*0x0A*/ u8 bikeFrameCounter; // on the mach bike, when this value is 1, the bike is moving but not accelerating yet for 1 tile. on the acro bike, this acts as a timer for acro bike.

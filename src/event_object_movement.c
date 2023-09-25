@@ -796,6 +796,17 @@ static const u8 sAcroEndWheelieDirectionAnimNums[] = {
     [DIR_NORTHWEST] = ANIM_STANDING_WHEELIE_BACK_WHEEL_NORTH,
     [DIR_NORTHEAST] = ANIM_STANDING_WHEELIE_BACK_WHEEL_NORTH,
 };
+static const u8 sSpinDirectionAnimNums[] = {
+    [DIR_NONE] = ANIM_SPIN_SOUTH,
+    [DIR_SOUTH] = ANIM_SPIN_SOUTH,
+    [DIR_NORTH] = ANIM_SPIN_NORTH,
+    [DIR_WEST] = ANIM_SPIN_WEST,
+    [DIR_EAST] = ANIM_SPIN_EAST,
+    [DIR_SOUTHWEST] = ANIM_SPIN_SOUTH,
+    [DIR_SOUTHEAST] = ANIM_SPIN_NORTH,
+    [DIR_NORTHWEST] = ANIM_SPIN_WEST,
+    [DIR_NORTHEAST] = ANIM_SPIN_EAST,
+};
 static const u8 sAcroUnusedActionDirectionAnimNums[] = {
     [DIR_NONE] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_SOUTH,
     [DIR_SOUTH] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_SOUTH,
@@ -970,6 +981,13 @@ const u8 gPlayerRunOnStairsMovementActions[] = {
     MOVEMENT_ACTION_PLAYER_RUN_ON_STAIRS_UP,
     MOVEMENT_ACTION_PLAYER_RUN_ON_STAIRS_LEFT,
     MOVEMENT_ACTION_PLAYER_RUN_ON_STAIRS_RIGHT,
+};
+const u8 gSpinMovementActions[] = {
+    MOVEMENT_ACTION_SPIN_DOWN,
+    MOVEMENT_ACTION_SPIN_DOWN,
+    MOVEMENT_ACTION_SPIN_UP,
+    MOVEMENT_ACTION_SPIN_LEFT,
+    MOVEMENT_ACTION_SPIN_RIGHT,
 };
 const u8 gJump2MovementActions[] = {
     MOVEMENT_ACTION_JUMP_2_DOWN,
@@ -4974,6 +4992,7 @@ dirn_to_anim(GetWalkFasterMovementAction, gWalkFasterMovementActions);
 dirn_to_anim(GetSlideMovementAction, gSlideMovementActions);
 dirn_to_anim(GetPlayerRunMovementAction, gPlayerRunMovementActions);
 dirn_to_anim(GetPlayerRunOnStairsMovementAction, gPlayerRunOnStairsMovementActions);
+dirn_to_anim(GetSpinMovementAction, gSpinMovementActions);
 dirn_to_anim(GetJump2MovementAction, gJump2MovementActions);
 dirn_to_anim(GetJumpInPlaceMovementAction, gJumpInPlaceMovementActions);
 dirn_to_anim(GetJumpInPlaceTurnAroundMovementAction, gJumpInPlaceTurnAroundMovementActions);
@@ -7397,6 +7416,34 @@ bool8 MovementAction_AcroEndWheelieMoveRight_Step1(struct ObjectEvent *objectEve
         return TRUE;
     }
     return FALSE;
+}
+
+static bool8 InitSpin(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction)
+{
+    InitNpcForMovement(objectEvent, sprite, direction, MOVE_SPEED_FAST_1);
+    SetStepAnimHandleAlternation(objectEvent, sprite, sSpinDirectionAnimNums[objectEvent->facingDirection]);
+    SeekSpriteAnim(sprite, 0);
+    return MovementAction_WalkNormalDiagonalUpLeft_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_SpinDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    return InitSpin(objectEvent, sprite, DIR_SOUTH);
+}
+
+bool8 MovementAction_SpinUp_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    return InitSpin(objectEvent, sprite, DIR_NORTH);
+}
+
+bool8 MovementAction_SpinLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    return InitSpin(objectEvent, sprite, DIR_WEST);
+}
+
+bool8 MovementAction_SpinRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    return InitSpin(objectEvent, sprite, DIR_EAST);
 }
 
 bool8 MovementAction_Levitate_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)

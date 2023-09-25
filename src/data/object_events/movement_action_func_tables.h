@@ -260,6 +260,10 @@ u8 MovementAction_AcroEndWheelieMoveLeft_Step0(struct ObjectEvent *, struct Spri
 u8 MovementAction_AcroEndWheelieMoveLeft_Step1(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_AcroEndWheelieMoveRight_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_AcroEndWheelieMoveRight_Step1(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_SpinDown_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_SpinUp_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_SpinLeft_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_SpinRight_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_Levitate_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_StopLevitate_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_StopLevitateAtTop_Step0(struct ObjectEvent *, struct Sprite *);
@@ -420,6 +424,10 @@ u8 (*const gMovementActionFuncs_AcroEndWheelieMoveDown[])(struct ObjectEvent *, 
 u8 (*const gMovementActionFuncs_AcroEndWheelieMoveUp[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_AcroEndWheelieMoveLeft[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_AcroEndWheelieMoveRight[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_SpinDown[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_SpinUp[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_SpinLeft[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_SpinRight[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_WalkNormalDiagonalUpLeft[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_WalkNormalDiagonalUpRight[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_WalkNormalDiagonalDownLeft[])(struct ObjectEvent *, struct Sprite *);
@@ -588,6 +596,10 @@ u8 (*const *const gMovementActionFuncs[])(struct ObjectEvent *, struct Sprite *)
     [MOVEMENT_ACTION_ACRO_END_WHEELIE_MOVE_UP] = gMovementActionFuncs_AcroEndWheelieMoveUp,
     [MOVEMENT_ACTION_ACRO_END_WHEELIE_MOVE_LEFT] = gMovementActionFuncs_AcroEndWheelieMoveLeft,
     [MOVEMENT_ACTION_ACRO_END_WHEELIE_MOVE_RIGHT] = gMovementActionFuncs_AcroEndWheelieMoveRight,
+    [MOVEMENT_ACTION_SPIN_DOWN] = gMovementActionFuncs_SpinDown,
+    [MOVEMENT_ACTION_SPIN_UP] gMovementActionFuncs_SpinUp,
+    [MOVEMENT_ACTION_SPIN_LEFT] gMovementActionFuncs_SpinLeft,
+    [MOVEMENT_ACTION_SPIN_RIGHT] gMovementActionFuncs_SpinRight,
     [MOVEMENT_ACTION_WALK_NORMAL_DIAGONAL_UP_LEFT] = gMovementActionFuncs_WalkNormalDiagonalUpLeft,
     [MOVEMENT_ACTION_WALK_NORMAL_DIAGONAL_UP_RIGHT] = gMovementActionFuncs_WalkNormalDiagonalUpRight,
     [MOVEMENT_ACTION_WALK_NORMAL_DIAGONAL_DOWN_LEFT] = gMovementActionFuncs_WalkNormalDiagonalDownLeft,
@@ -1576,6 +1588,30 @@ u8 (*const gMovementActionFuncs_AcroEndWheelieMoveLeft[])(struct ObjectEvent *, 
 u8 (*const gMovementActionFuncs_AcroEndWheelieMoveRight[])(struct ObjectEvent *, struct Sprite *) = {
     MovementAction_AcroEndWheelieMoveRight_Step0,
     MovementAction_AcroEndWheelieMoveRight_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_SpinDown[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_SpinDown_Step0,
+    MovementAction_WalkNormalDiagonalUpLeft_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_SpinUp[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_SpinUp_Step0,
+    MovementAction_WalkNormalDiagonalUpLeft_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_SpinLeft[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_SpinLeft_Step0,
+    MovementAction_WalkNormalDiagonalUpLeft_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_SpinRight[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_SpinRight_Step0,
+    MovementAction_WalkNormalDiagonalUpLeft_Step1,
     MovementAction_PauseSpriteAnim,
 };
 

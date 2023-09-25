@@ -143,5 +143,9 @@ bool8 MetatileBehavior_IsLongGrass_Duplicate(u8);
 bool8 MetatileBehavior_IsLongGrassSouthEdge(u8);
 bool8 MetatileBehavior_IsTrainerHillTimer(u8);
 bool32 TestMetatileAttributeBit(u8 attr, u8 bitmask);
+bool8 MetatileBehavior_IsSpinRight(u8);
+bool8 MetatileBehavior_IsSpinLeft(u8);
+bool8 MetatileBehavior_IsSpinUp(u8);
+bool8 MetatileBehavior_IsSpinDown(u8);
 
 #endif // GUARD_METATILE_BEHAVIOR_H

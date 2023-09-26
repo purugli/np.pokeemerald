@@ -86,13 +86,7 @@ void LoadSpecialPokePic(const struct CompressedSpriteSheet *src, void *dest, s32
 {
     if (species == SPECIES_UNOWN)
     {
-        u16 i = GET_UNOWN_LETTER(personality);
-
-        // The other Unowns are separate from Unown A.
-        if (i == 0)
-            i = SPECIES_UNOWN;
-        else
-            i += SPECIES_UNOWN_B - 1;
+        u16 i = GetUnownSpecies(personality);
 
         if (!isFrontPic)
             LZ77UnCompWram(gMonBackPicTable[i].data, dest);
@@ -308,13 +302,7 @@ void LoadSpecialPokePic_2(const struct CompressedSpriteSheet *src, void *dest, s
 {
     if (species == SPECIES_UNOWN)
     {
-        u16 i = GET_UNOWN_LETTER(personality);
-
-        // The other Unowns are separate from Unown A.
-        if (i == 0)
-            i = SPECIES_UNOWN;
-        else
-            i += SPECIES_UNOWN_B - 1;
+        u16 i = GetUnownSpecies(personality);
 
         if (!isFrontPic)
             LZ77UnCompWram(gMonBackPicTable[i].data, dest);
@@ -366,13 +354,7 @@ void LoadSpecialPokePic_DontHandleDeoxys(const struct CompressedSpriteSheet *src
 {
     if (species == SPECIES_UNOWN)
     {
-        u16 i = GET_UNOWN_LETTER(personality);
-
-        // The other Unowns are separate from Unown A.
-        if (i == 0)
-            i = SPECIES_UNOWN;
-        else
-            i += SPECIES_UNOWN_B - 1;
+        u16 i = GetUnownSpecies(personality);
 
         if (!isFrontPic)
             LZ77UnCompWram(gMonBackPicTable[i].data, dest);

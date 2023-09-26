@@ -2,6 +2,7 @@
 #define GUARD_POKEMON_H
 
 #include "sprite.h"
+#include "pokemon_forms.h"
 
 // Property labels for Get(Box)MonData / Set(Box)MonData
 enum {

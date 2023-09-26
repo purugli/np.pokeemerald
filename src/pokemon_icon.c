@@ -1076,12 +1076,7 @@ u16 GetIconSpecies(u16 species, u32 personality)
 
     if (species == SPECIES_UNOWN)
     {
-        u16 letter = GetUnownLetterByPersonality(personality);
-        if (letter == 0)
-            letter = SPECIES_UNOWN;
-        else
-            letter += (SPECIES_UNOWN_B - 1);
-        result = letter;
+        result = GetUnownSpecies(personality);
     }
     else
     {
@@ -1108,11 +1103,7 @@ u16 GetIconSpeciesNoPersonality(u16 species)
 
     if (MailSpeciesToSpecies(species, &value) == SPECIES_UNOWN)
     {
-        if (value == 0)
-            value += SPECIES_UNOWN;
-        else
-            value += (SPECIES_UNOWN_B - 1);
-        return value;
+        return gUnownFormSpecies[value];
     }
     else
     {

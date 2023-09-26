@@ -21,6 +21,7 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/weather.h"
+#include "pokemon_icon.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -375,8 +376,21 @@ static u8 PickWildMonNature(void)
 static void CreateWildMon(u16 species, u8 level)
 {
     bool32 checkCuteCharm;
+    u8 letter = 0;
 
     ZeroEnemyPartyMons();
+
+    if (FormIfExists(SPECIES_UNOWN, species, &letter))
+    {
+        u32 personality;
+        do
+        {
+            personality = (Random() << 16) | Random();
+        } while (GetUnownLetterByPersonality(personality) != letter);
+        CreateMon(&gEnemyParty[0], SPECIES_UNOWN, level, USE_RANDOM_IVS, TRUE, personality, OT_ID_PLAYER_ID, 0);
+        return;
+    }
+
     checkCuteCharm = TRUE;
 
     switch (gSpeciesInfo[species].genderRatio)

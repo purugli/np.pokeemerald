@@ -9,5 +9,6 @@ extern const u16 *const gFormSpeciesTables[NUM_SPECIES];
 extern const u16 gUnownFormSpecies[];
 
 u16 GetUnownSpecies(u32 personality);
+bool32 FormIfExists(u16 formTableSpecies, u16 formSpecies, u8 *formIndex);
 
 #endif // GUARD_POKEMON_FORM_CHANGE_H

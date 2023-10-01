@@ -972,6 +972,10 @@ EventScript_CableClub_SetVarResult0::
 	setvar VAR_RESULT, 0
 	return
 
+Common_EventScript_CancelMessageBox::
+	release
+	end
+
 Common_EventScript_UnionRoomAttendant::
 	call CableClub_EventScript_UnionRoomAttendant
 	end

@@ -25,7 +25,10 @@ Questionnaire_EventScript_PlayerInputMysteryEventPhrase::
 	waitmovement 0
 	msgbox Questionnaire_Text_YouKnowThoseWordsEvent, MSGBOX_DEFAULT
 	setflag FLAG_SYS_MYSTERY_EVENT_ENABLE
+	special DisableMsgBoxWalkaway
+	signmsg
 	msgbox Questionnaire_Text_YouCanAccessMysteryEvent, MSGBOX_DEFAULT
+	normalmsg
 	releaseall
 	end
 
@@ -41,7 +44,10 @@ Questionnaire_EventScript_PlayerInputMysteryGiftPhrase::
 	waitmovement 0
 	msgbox Questionnaire_Text_YouKnowThoseWordsGift, MSGBOX_DEFAULT
 	setflag FLAG_SYS_MYSTERY_GIFT_ENABLE
+	special DisableMsgBoxWalkaway
+	signmsg
 	msgbox Questionnaire_Text_YouCanAccessMysteryGift, MSGBOX_DEFAULT
+	normalmsg
 	releaseall
 	end
 

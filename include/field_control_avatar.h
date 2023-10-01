@@ -25,6 +25,7 @@ struct FieldInput
 void FieldClearPlayerInput(struct FieldInput *pStruct);
 void FieldGetPlayerInput(struct FieldInput *pStruct, u16 keys, u16 heldKeys);
 int ProcessPlayerFieldInput(struct FieldInput *pStruct);
+void FieldInput_HandleCancelSignpost(struct FieldInput *pStruct);
 void overworld_poison_timer_set(void);
 void RestartWildEncounterImmunitySteps(void);
 const u8 *GetObjectEventScriptPointerPlayerFacing(void);

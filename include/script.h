@@ -57,7 +57,16 @@ bool8 InitRamScript(const u8 *script, u16 scriptSize, u8 mapGroup, u8 mapNum, u8
 const u8 *GetRamScript(u8 objectId, const u8 *script);
 bool32 ValidateSavedRamScript(void);
 u8 *GetSavedRamScriptIfValid(void);
+void ClearMsgBoxCancelableState(void);
+void MsgSetSignpost(void);
+void MsgSetNotSignpost(void);
+bool8 IsMsgSignpost(void);
+bool8 CanWalkAwayToCancelMsgBox(void);
+void SetWalkingIntoSignVars(void);
+bool8 IsMsgBoxWalkawayDisabled(void);
 void InitRamScript_NoObjectEvent(u8 *script, u16 scriptSize);
+
+extern u8 gWalkAwayFromSignInhibitTimer;
 
 // srccmd.h
 void SetMovingNpcId(u16 npcId);

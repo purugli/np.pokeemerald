@@ -1559,12 +1559,12 @@
 	.byte 0xc9
 	.endm
 
-	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	@ After using this command, all standard message boxes will use the signpost frame.
 	.macro signmsg
 	.byte 0xca
 	.endm
 
-	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	@ Ends the effects of signmsg, returning message box frames to normal.
 	.macro normalmsg
 	.byte 0xcb
 	.endm

@@ -62,12 +62,15 @@ static EWRAM_DATA u16 sMovingNpcMapNum = 0;
 static EWRAM_DATA u16 sFieldEffectScriptId = 0;
 
 static u8 sBrailleWindowId;
+static struct ScriptContext *sScriptContextPtr;
 
 extern const SpecialFunc gSpecials[];
 extern const u8 *gStdScripts[];
 extern const u8 *gStdScripts_End[];
 
 static void CloseBrailleWindow(void);
+static bool8 ScriptContext_NextCommandEndsScript(struct ScriptContext *ctx);
+static u8 ScriptContext_GetInput(struct ScriptContext *ctx);
 
 // This is defined in here so the optimizer can't see its value when compiling
 // script.c.
@@ -1319,17 +1322,91 @@ bool8 ScrCmd_closemessage(struct ScriptContext *ctx)
     return FALSE;
 }
 
+#define INPUT_NONE   0
+#define INPUT_UP     1
+#define INPUT_DOWN   2
+#define INPUT_LEFT   3
+#define INPUT_RIGHT  4
+#define INPUT_L      5
+#define INPUT_R      6
+#define INPUT_START  7
+#define INPUT_SELECT 8
+#define INPUT_A      9
+#define INPUT_B      10
+
 static bool8 WaitForAorBPress(void)
 {
     if (JOY_NEW(A_BUTTON))
         return TRUE;
     if (JOY_NEW(B_BUTTON))
         return TRUE;
+
+    if (ScriptContext_NextCommandEndsScript(sScriptContextPtr) == TRUE)
+    {
+        u8 input = ScriptContext_GetInput(sScriptContextPtr);
+        if (input != INPUT_NONE)
+        {
+            ClearMsgBoxCancelableState();
+            return TRUE;
+        }
+    }
+
     return FALSE;
+}
+
+static bool8 ScriptContext_NextCommandEndsScript(struct ScriptContext *ctx)
+{
+    const u8 *script = ctx->scriptPtr;
+    u8 nextCmd = *script;
+    if (nextCmd == 3) // return
+    {
+        script = ctx->stack[ctx->stackDepth - 1];
+        nextCmd = *script;
+    }
+    if (nextCmd < 0x6B || nextCmd > 0x6C) // releaseall or release
+        return FALSE;
+    else
+        return TRUE;
+}
+
+static u8 ScriptContext_GetInput(struct ScriptContext *ctx)
+{
+    if (JOY_HELD(DPAD_UP) && gSpecialVar_Facing != DIR_NORTH)
+        return INPUT_UP;
+
+    if (JOY_HELD(DPAD_DOWN) && gSpecialVar_Facing != DIR_SOUTH)
+        return INPUT_DOWN;
+
+    if (JOY_HELD(DPAD_LEFT) && gSpecialVar_Facing != DIR_WEST)
+        return INPUT_LEFT;
+
+    if (JOY_HELD(DPAD_RIGHT) && gSpecialVar_Facing != DIR_EAST)
+        return INPUT_RIGHT;
+
+    if (JOY_NEW(L_BUTTON))
+        return INPUT_L;
+
+    if (JOY_HELD(R_BUTTON))
+        return INPUT_R;
+
+    if (JOY_HELD(START_BUTTON))
+        return INPUT_START;
+
+    if (JOY_HELD(SELECT_BUTTON))
+        return INPUT_SELECT;
+
+    if (JOY_NEW(A_BUTTON))
+        return INPUT_A;
+
+    if (JOY_NEW(B_BUTTON))
+        return INPUT_B;
+
+    return INPUT_NONE;
 }
 
 bool8 ScrCmd_waitbuttonpress(struct ScriptContext *ctx)
 {
+    sScriptContextPtr = ctx;
     SetupNativeScript(ctx, WaitForAorBPress);
     return TRUE;
 }
@@ -2152,6 +2229,18 @@ bool8 ScrCmd_removecoins(struct ScriptContext *ctx)
         gSpecialVar_Result = FALSE;
     else
         gSpecialVar_Result = TRUE;
+    return FALSE;
+}
+
+bool8 ScrCmd_signmsg(struct ScriptContext * ctx)
+{
+    MsgSetSignpost();
+    return FALSE;
+}
+
+bool8 ScrCmd_normalmsg(struct ScriptContext * ctx)
+{
+    MsgSetNotSignpost();
     return FALSE;
 }
 

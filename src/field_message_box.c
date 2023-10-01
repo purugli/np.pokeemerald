@@ -5,6 +5,8 @@
 #include "text.h"
 #include "match_call.h"
 #include "field_message_box.h"
+#include "text_window.h"
+#include "script.h"
 
 static EWRAM_DATA u8 sFieldMessageBoxMode = 0;
 
@@ -29,13 +31,16 @@ static void Task_DrawFieldMessage(u8 taskId)
     switch (task->tState)
     {
         case 0:
-           LoadMessageBoxAndBorderGfx();
-           task->tState++;
-           break;
+            if (IsMsgSignpost())
+                LoadSignpostWindowFrameGfx();
+            else
+                LoadMessageBoxAndBorderGfx();
+            task->tState++;
+            break;
         case 1:
-           DrawDialogueFrame(0, TRUE);
-           task->tState++;
-           break;
+            DrawDialogueFrame(0, TRUE);
+            task->tState++;
+            break;
         case 2:
             if (RunTextPrintersAndIsPrinter0Active() != TRUE)
             {

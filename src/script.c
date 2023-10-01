@@ -5,6 +5,7 @@
 #include "util.h"
 #include "constants/event_objects.h"
 #include "constants/map_scripts.h"
+#include "field_message_box.h"
 
 #define RAM_SCRIPT_MAGIC 51
 
@@ -20,12 +21,17 @@ enum {
     CONTEXT_SHUTDOWN,
 };
 
+EWRAM_DATA u8 gWalkAwayFromSignInhibitTimer = 0;
+
 extern const u8 *gRamScriptRetAddr;
 
 static u8 sGlobalScriptContextStatus;
 static struct ScriptContext sGlobalScriptContext;
 static struct ScriptContext sImmediateScriptContext;
 static bool8 sLockFieldControls;
+static u8 sMsgBoxWalkawayDisabled;
+static u8 sMsgBoxIsCancelable;
+static u8 sMsgIsSignpost;
 
 extern ScrCmdFunc gScriptCmdTable[];
 extern ScrCmdFunc gScriptCmdTableEnd[];
@@ -194,6 +200,47 @@ bool8 ArePlayerFieldControlsLocked(void)
     return sLockFieldControls;
 }
 
+void DisableMsgBoxWalkaway(void)
+{
+    sMsgBoxWalkawayDisabled = TRUE;
+}
+
+bool8 IsMsgBoxWalkawayDisabled(void)
+{
+    return sMsgBoxWalkawayDisabled;
+}
+
+void SetWalkingIntoSignVars(void)
+{
+    gWalkAwayFromSignInhibitTimer = 6;
+    sMsgBoxIsCancelable = TRUE;
+}
+
+void ClearMsgBoxCancelableState(void)
+{
+    sMsgBoxIsCancelable = FALSE;
+}
+
+bool8 CanWalkAwayToCancelMsgBox(void)
+{
+    return sMsgBoxIsCancelable;
+}
+
+void MsgSetSignpost(void)
+{
+    sMsgIsSignpost = TRUE;
+}
+
+void MsgSetNotSignpost(void)
+{
+    sMsgIsSignpost = FALSE;
+}
+
+bool8 IsMsgSignpost(void)
+{
+    return sMsgIsSignpost;
+}
+
 // The ScriptContext_* functions work with the primary script context,
 // which yields control back to native code should the script make a wait call.
 
@@ -240,6 +287,8 @@ bool8 ScriptContext_RunScript(void)
 // Sets up a new script in the global context and enables the context
 void ScriptContext_SetupScript(const u8 *ptr)
 {
+    ClearMsgBoxCancelableState();
+    sMsgBoxWalkawayDisabled = FALSE;
     InitScriptContext(&sGlobalScriptContext, gScriptCmdTable, gScriptCmdTableEnd);
     SetupBytecodeScript(&sGlobalScriptContext, ptr);
     LockPlayerFieldControls();

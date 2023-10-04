@@ -91,18 +91,6 @@ static const u16 sCutGrassMetatileMapping[][2] = {
         [CUT_GRASS_BOTTOM] = METATILE_General_TallGrass_TreeUp,
         [CUT_GRASS_TOP]    = METATILE_General_Grass_TreeUp
     }, {
-        [CUT_GRASS_BOTTOM] = METATILE_RG_General_Plain_Grass,
-        [CUT_GRASS_TOP]    = METATILE_RG_General_Plain_Mowed
-    }, {
-        [CUT_GRASS_BOTTOM] = METATILE_RG_General_ThinTreeTop_Grass,
-        [CUT_GRASS_TOP]    = METATILE_RG_General_ThinTreeTop_Mowed
-    }, {
-        [CUT_GRASS_BOTTOM] = METATILE_RG_General_WideTreeTopLeft_Grass,
-        [CUT_GRASS_TOP]    = METATILE_RG_General_WideTreeTopLeft_Mowed
-    }, {
-        [CUT_GRASS_BOTTOM] = METATILE_RG_General_WideTreeTopRight_Grass,
-        [CUT_GRASS_TOP]    = METATILE_RG_General_WideTreeTopRight_Mowed
-    }, {
         [CUT_GRASS_BOTTOM] = 0xffff,
         [CUT_GRASS_TOP]    = 0xffff
     }
@@ -154,8 +142,6 @@ static const struct SpriteTemplate sSpriteTemplate_CutGrass =
     .callback = CutGrassSpriteCallback1,
 };
 
-static u32 MetatileAtCoordsIsGrassTile(int x, int y)
-{
 // code
 bool8 SetUpFieldMove_Cut(void)
 {

@@ -28,17 +28,6 @@ enum {
     BG_COORD_SUB,
 };
 
-// Modes for Unused_AdjustBgMosaic
-enum {
-    BG_MOSAIC_SET_HV,
-    BG_MOSAIC_SET_H,
-    BG_MOSAIC_ADD_H,
-    BG_MOSAIC_SUB_H,
-    BG_MOSAIC_SET_V,
-    BG_MOSAIC_ADD_V,
-    BG_MOSAIC_SUB_V,
-};
-
 struct BgTemplate
 {
     u16 bg:2;                   // 0x1, 0x2 -> 0x3
@@ -53,7 +42,6 @@ struct BgTemplate
 void ResetBgs(void);
 u8 GetBgMode(void);
 void ResetBgControlStructs(void);
-void Unused_ResetBgControlStruct(u8 bg);
 u8 LoadBgVram(u8 bg, const void *src, u16 size, u16 destOffset, u8 mode);
 void SetTextModeAndHideBgs(void);
 bool8 IsInvalidBg(u8 bg);
@@ -64,7 +52,6 @@ void InitBgFromTemplate(const struct BgTemplate *template);
 void SetBgMode(u8 bgMode);
 u16 LoadBgTiles(u8 bg, const void *src, u16 size, u16 destOffset);
 u16 LoadBgTilemap(u8 bg, const void *src, u16 size, u16 destOffset);
-u16 Unused_LoadBgPalette(u8 bg, const void *src, u16 size, u16 destOffset);
 bool8 IsDma3ManagerBusyWithBgCopy(void);
 void ShowBg(u8 bg);
 void HideBg(u8 bg);
@@ -76,7 +63,6 @@ s32 ChangeBgY(u8 bg, s32 value, u8 op);
 s32 ChangeBgY_ScreenOff(u8 bg, s32 value, u8 op);
 s32 GetBgY(u8 bg);
 void SetBgAffine(u8 bg, s32 srcCenterX, s32 srcCenterY, s16 dispCenterX, s16 dispCenterY, s16 scaleX, s16 scaleY, u16 rotationAngle);
-u8 Unused_AdjustBgMosaic(u8 val, u8 mode);
 void SetBgTilemapBuffer(u8 bg, void *tilemap);
 void UnsetBgTilemapBuffer(u8 bg);
 void *GetBgTilemapBuffer(u8 bg);

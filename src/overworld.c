@@ -66,6 +66,7 @@
 #include "constants/songs.h"
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
+#include "region_map.h"
 
 struct CableClubPlayer
 {
@@ -356,6 +357,12 @@ static void (*const sMovementStatusHandler[])(struct LinkPlayerObjectEvent *, st
     MovementStatusHandler_EnterFreeMode,
     // TRUE:
     MovementStatusHandler_TryAdvanceScript,
+};
+
+const u16 gRegionalSurfMusic[NUM_REGION] =
+{
+    [REGION_HOENN] = MUS_SURF,
+    [REGION_KANTO] = MUS_RG_SURF,
 };
 
 // code
@@ -1150,7 +1157,7 @@ void Overworld_PlaySpecialMapMusic(void)
         else if (GetCurrentMapType() == MAP_TYPE_UNDERWATER)
             music = MUS_UNDERWATER;
         else if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
-            music = MUS_SURF;
+            music = gRegionalSurfMusic[GetCurrentRegion()];
     }
 
     if (music != GetCurrentMapMusic())
@@ -1175,10 +1182,11 @@ static void TransitionMapMusic(void)
         u16 currentMusic = GetCurrentMapMusic();
         if (newMusic != MUS_ABNORMAL_WEATHER && newMusic != MUS_NONE)
         {
-            if (currentMusic == MUS_UNDERWATER || currentMusic == MUS_SURF)
+            u16 surfMusic = gRegionalSurfMusic[GetCurrentRegion()];
+            if (currentMusic == MUS_UNDERWATER || currentMusic == surfMusic)
                 return;
             if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
-                newMusic = MUS_SURF;
+                newMusic = surfMusic;
         }
         if (newMusic != currentMusic)
         {
@@ -1219,7 +1227,7 @@ void TryFadeOutOldMapMusic(void)
     u16 warpMusic = GetWarpDestinationMusic();
     if (FlagGet(FLAG_DONT_TRANSITION_MUSIC) != TRUE && warpMusic != GetCurrentMapMusic())
     {
-        if (currentMusic == MUS_SURF
+        if (currentMusic == gRegionalSurfMusic[GetCurrentRegion()]
             && VarGet(VAR_SKY_PILLAR_STATE) == 2
             && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SOOTOPOLIS_CITY)
             && gSaveBlock1Ptr->location.mapNum == MAP_NUM(SOOTOPOLIS_CITY)

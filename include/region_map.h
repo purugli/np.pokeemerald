@@ -25,6 +25,12 @@ enum {
     NUM_MAPSEC_TYPES
 };
 
+enum {
+    REGION_HOENN,
+    REGION_KANTO,
+    NUM_REGION
+};
+
 struct RegionMap {
     /*0x000*/ u16 mapSecId;
     /*0x002*/ u8 mapSecType;
@@ -84,8 +90,9 @@ struct RegionMapLocation
 {
     u8 x;
     u8 y;
-    u8 width;
-    u8 height;
+    u8 width:4;
+    u8 height:4;
+    u8 region;
     const u8 *name;
 };
 

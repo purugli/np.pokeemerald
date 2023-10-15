@@ -54,6 +54,7 @@ extern u8 gFieldLinkPlayerCount;
 extern u8 gExitStairsMovementDisabled;
 
 extern const struct UCoords32 gDirectionToVectors[];
+extern const u16 gRegionalSurfMusic[];
 
 void DoWhiteOut(void);
 void Overworld_ResetStateAfterFly(void);

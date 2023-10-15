@@ -39,6 +39,8 @@
 
 #define SIGNPOST_POKECENTER 0
 #define SIGNPOST_POKEMART 1
+#define SIGNPOST_INDIGO_1 2
+#define SIGNPOST_INDIGO_2 3
 #define SIGNPOST_SCRIPTED 240
 #define SIGNPOST_NA 255
 
@@ -438,46 +440,105 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
 {
     s8 elevation;
 
-    if (MetatileBehavior_IsPlayerFacingTVScreen(metatileBehavior, direction) == TRUE)
-        return EventScript_TV;
-    if (MetatileBehavior_IsPC(metatileBehavior) == TRUE)
-        return EventScript_PC;
-    if (MetatileBehavior_IsClosedSootopolisDoor(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_CLOSED_SOOTOPOLIS_DOOR)
         return EventScript_ClosedSootopolisDoor;
-    if (MetatileBehavior_IsSkyPillarClosedDoor(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_SKY_PILLAR_CLOSED_DOOR)
         return SkyPillar_Outside_EventScript_ClosedDoor;
-    if (MetatileBehavior_IsCableBoxResults1(metatileBehavior) == TRUE)
-        return EventScript_CableBoxResults;
-    if (MetatileBehavior_IsPokeblockFeeder(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_POKEBLOCK_FEEDER)
         return EventScript_PokeBlockFeeder;
-    if (MetatileBehavior_IsTrickHousePuzzleDoor(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_TRICK_HOUSE_PUZZLE_DOOR)
         return Route110_TrickHousePuzzle_EventScript_Door;
-    if (MetatileBehavior_IsRegionMap(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_REGION_MAP)
         return EventScript_RegionMap;
-    if (MetatileBehavior_IsRunningShoesManual(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_RUNNING_SHOES_INSTRUCTION)
         return EventScript_RunningShoesManual;
-    if (MetatileBehavior_IsPictureBookShelf(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_PICTURE_BOOK_SHELF)
         return EventScript_PictureBookShelf;
-    if (MetatileBehavior_IsBookShelf(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_BOOKSHELF)
         return EventScript_BookShelf;
-    if (MetatileBehavior_IsPokeCenterBookShelf(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_POKEMON_CENTER_BOOKSHELF)
         return EventScript_PokemonCenterBookShelf;
-    if (MetatileBehavior_IsVase(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_VASE)
         return EventScript_Vase;
-    if (MetatileBehavior_IsTrashCan(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_TRASH_CAN)
         return EventScript_EmptyTrashCan;
-    if (MetatileBehavior_IsShopShelf(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_SHOP_SHELF)
         return EventScript_ShopShelf;
-    if (MetatileBehavior_IsBlueprint(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_BLUEPRINT)
         return EventScript_Blueprint;
-    if (MetatileBehavior_IsPlayerFacingWirelessBoxResults(metatileBehavior, direction) == TRUE)
-        return EventScript_WirelessBoxResults;
-    if (MetatileBehavior_IsCableBoxResults2(metatileBehavior, direction) == TRUE)
-        return EventScript_CableBoxResults;
-    if (MetatileBehavior_IsQuestionnaire(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_QUESTIONNAIRE)
         return EventScript_Questionnaire;
-    if (MetatileBehavior_IsTrainerHillTimer(metatileBehavior) == TRUE)
+    if (metatileBehavior == MB_TRAINER_HILL_TIMER)
         return EventScript_TrainerHillTimer;
+    if (metatileBehavior == MB_FOOD)
+        return EventScript_Food;
+    if (metatileBehavior == MB_IMPRESSIVE_MACHINE)
+        return EventScript_ImpressiveMachine;
+    if (metatileBehavior == MB_VIDEO_GAME)
+        return EventScript_VideoGame;
+    if (metatileBehavior == MB_BURGLARY)
+        return EventScript_Burglary;
+    if (metatileBehavior == MB_COMPUTER)
+        return EventScript_Computer;
+    if (metatileBehavior == MB_CABINET)
+        return EventScript_Cabinet;
+    if (metatileBehavior == MB_KITCHEN)
+        return EventScript_Kitchen;
+    if (metatileBehavior == MB_DRESSER)
+        return EventScript_Dresser;
+    if (metatileBehavior == MB_SNACKS)
+        return EventScript_Snacks;
+    if (metatileBehavior == MB_PAINTING)
+        return EventScript_Painting;
+    if (metatileBehavior == MB_POWER_PLANT_MACHINE)
+        return EventScript_PowerPlantMachine;
+    if (metatileBehavior == MB_TELEPHONE)
+        return EventScript_Telephone;
+    if (metatileBehavior == MB_ADVERTISING_POSTER)
+        return EventScript_AdvertisingPoster;
+    if (metatileBehavior == MB_FOOD_SMELLS_TASTY)
+        return EventScript_TastyFood;
+    if (metatileBehavior == MB_CUP)
+        return EventScript_Cup;
+    if (metatileBehavior == MB_PORTHOLE)
+        return EventScript_PolishedWindow;
+    if (metatileBehavior == MB_WINDOW)
+        return EventScript_BeautifulSkyWindow;
+    if (metatileBehavior == MB_BLINKING_LIGHTS)
+        return EventScript_BlinkingLights;
+    if (metatileBehavior == MB_NEATLY_LINED_UP_TOOLS)
+        return EventScript_NeatlyLinedUpTools;
+    if (direction == DIR_NORTH)
+    {
+        if (metatileBehavior == MB_TELEVISION)
+            return EventScript_TV;
+        if (metatileBehavior == MB_PC)
+            return EventScript_PC;
+        if (metatileBehavior == MB_CABLE_BOX_RESULTS)
+            return EventScript_CableBoxResults;
+        if (metatileBehavior == MB_WIRELESS_BOX_RESULTS)
+            return EventScript_WirelessBoxResults;
+        if (metatileBehavior == MB_INDIGO_PLATEAU_SIGN_1)
+        {
+            MsgSetSignpost();
+            return EventScript_Indigo_UltimateGoal;
+        }
+        if (metatileBehavior == MB_INDIGO_PLATEAU_SIGN_2)
+        {
+            MsgSetSignpost();
+            return EventScript_Indigo_HighestAuthority;
+        }
+        if (metatileBehavior == MB_POKEMART_SIGN)
+        {
+            MsgSetSignpost();
+            return Common_EventScript_ShowPokemartSign;
+        }
+        if (metatileBehavior == MB_POKEMON_CENTER_SIGN)
+        {
+            MsgSetSignpost();
+            return Common_EventScript_ShowPokemonCenterSign;
+        }
+    }
 
     elevation = position->elevation;
     if (elevation == MapGridGetElevationAt(position->x, position->y))
@@ -493,36 +554,19 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
         if (MetatileBehavior_IsSecretBaseDecorationBase(metatileBehavior) == TRUE)
         {
             CheckInteractedWithFriendsFurnitureBottom();
-            return NULL;
         }
         if (MetatileBehavior_HoldsLargeDecoration(metatileBehavior) == TRUE)
         {
             CheckInteractedWithFriendsFurnitureMiddle();
-            return NULL;
         }
         if (MetatileBehavior_HoldsSmallDecoration(metatileBehavior) == TRUE)
         {
             CheckInteractedWithFriendsFurnitureTop();
-            return NULL;
         }
     }
     else if (MetatileBehavior_IsSecretBasePoster(metatileBehavior) == TRUE)
     {
         CheckInteractedWithFriendsPosterDecor();
-        return NULL;
-    }
-    if (direction == DIR_NORTH)
-    {
-        if (metatileBehavior == MB_POKEMART_SIGN)
-        {
-            MsgSetSignpost();
-            return Common_EventScript_ShowPokemartSign;
-        }
-        if (metatileBehavior == MB_POKEMON_CENTER_SIGN)
-        {
-            MsgSetSignpost();
-            return Common_EventScript_ShowPokemonCenterSign;
-        }
     }
 
     return NULL;
@@ -786,6 +830,12 @@ static bool8 TrySetUpWalkIntoSignpostScript(struct MapPosition *position, u16 me
     case SIGNPOST_POKEMART:
         script = Common_EventScript_ShowPokemartSign;
         break;
+    case SIGNPOST_INDIGO_1:
+        script = EventScript_Indigo_UltimateGoal;
+        break;
+    case SIGNPOST_INDIGO_2:
+        script = EventScript_Indigo_HighestAuthority;
+        break;
     case SIGNPOST_SCRIPTED:
         script = GetSignpostScriptAtMapPosition(position);
         if (script == NULL)
@@ -810,6 +860,13 @@ static u8 GetFacingSignpostType(u16 metatileBehavior, u8 playerDirection)
 
         if (metatileBehavior == MB_POKEMART_SIGN)
             return SIGNPOST_POKEMART;
+
+        if (metatileBehavior == MB_INDIGO_PLATEAU_SIGN_1)
+            return SIGNPOST_INDIGO_1;
+
+        if (metatileBehavior == MB_INDIGO_PLATEAU_SIGN_2)
+            return SIGNPOST_INDIGO_2;
+
     }
 
     if (metatileBehavior == MB_SIGNPOST)

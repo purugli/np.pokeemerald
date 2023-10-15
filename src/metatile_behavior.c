@@ -243,14 +243,6 @@ bool8 MetatileBehavior_IsForcedMovementTile(u8 metatileBehavior)
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsIce_2(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_ICE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
 bool8 MetatileBehavior_IsTrickHouseSlipperyFloor(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_TRICK_HOUSE_PUZZLE_8_FLOOR)
@@ -371,32 +363,6 @@ bool8 MetatileBehavior_IsCounter(u8 metatileBehavior)
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsPlayerFacingTVScreen(u8 metatileBehavior, u8 playerDir)
-{
-    if (playerDir != DIR_NORTH)
-        return FALSE;
-    else if (metatileBehavior == MB_TELEVISION)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsPC(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_PC)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsCableBoxResults1(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_CABLE_BOX_RESULTS_1)
-        return TRUE;
-    else
-        return FALSE;
-}
-
 bool8 MetatileBehavior_IsOpenSecretBaseDoor(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_SECRET_BASE_SPOT_RED_CAVE_OPEN
@@ -508,14 +474,6 @@ bool8 MetatileBehavior_IsNormal(u8 metatileBehavior)
 bool8 MetatileBehavior_IsSecretBaseNorthWall(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_SECRET_BASE_NORTH_WALL)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsSecretBaseScenery2(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_SECRET_BASE_SCENERY)
         return TRUE;
     else
         return FALSE;
@@ -907,54 +865,6 @@ bool8 MetatileBehavior_IsPacifidlogLog(u8 metatileBehavior)
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsTrickHousePuzzleDoor(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_TRICK_HOUSE_PUZZLE_DOOR)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsRegionMap(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_REGION_MAP)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsClosedSootopolisDoor(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_CLOSED_SOOTOPOLIS_DOOR)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsSkyPillarClosedDoor(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_SKY_PILLAR_CLOSED_DOOR)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsRoulette(u8 metatileBehavior) // unused
-{
-    if (metatileBehavior == MB_ROULETTE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsPokeblockFeeder(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_POKEBLOCK_FEEDER)
-        return TRUE;
-    else
-        return FALSE;
-}
-
 bool8 MetatileBehavior_IsSecretBaseJumpMat(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_SECRET_BASE_JUMP_MAT)
@@ -1105,125 +1015,9 @@ bool8 MetatileBehavior_IsRunningDisallowed(u8 metatileBehavior)
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsRunningShoesManual(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_RUNNING_SHOES_INSTRUCTION)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsPictureBookShelf(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_PICTURE_BOOK_SHELF)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsBookShelf(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_BOOKSHELF)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsPokeCenterBookShelf(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_POKEMON_CENTER_BOOKSHELF)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsVase(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_VASE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsTrashCan(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_TRASH_CAN)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsShopShelf(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_SHOP_SHELF)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsBlueprint(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_BLUEPRINT)
-        return TRUE;
-    else
-        return FALSE;
-}
-
 bool8 MetatileBehavior_IsBattlePyramidWarp(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_BATTLE_PYRAMID_WARP)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsPlayerFacingWirelessBoxResults(u8 tile, u8 playerDir)
-{
-    if (playerDir != CONNECTION_NORTH) // if the player isn't facing north, forget about it.
-        return FALSE;
-    else if (tile == MB_WIRELESS_BOX_RESULTS) // is the player's north tile the monitor with results?
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsCableBoxResults2(u8 tile, u8 playerDir)
-{
-    if (playerDir != CONNECTION_NORTH) // if the player isn't facing north, forget about it.
-        return FALSE;
-    else if (tile == MB_CABLE_BOX_RESULTS_2) // is the player's north tile the monitor with results?
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsQuestionnaire(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_QUESTIONNAIRE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsLongGrass_Duplicate(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_LONG_GRASS)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsLongGrassSouthEdge(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_LONG_GRASS_SOUTH_EDGE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsTrainerHillTimer(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_TRAINER_HILL_TIMER)
         return TRUE;
     else
         return FALSE;

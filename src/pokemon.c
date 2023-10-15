@@ -47,6 +47,7 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/union_room.h"
+#include "region_map.h"
 
 static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon);
 static union PokemonSubstruct *GetSubstruct(struct BoxPokemon *boxMon, u32 personality, u8 substructType);
@@ -6389,7 +6390,7 @@ u16 GetBattleBGM(void)
 
         if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
             trainerClass = GetFrontierOpponentClass(gTrainerBattleOpponent_A);
-        else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_HILL)
+        else if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_TRAINER_HILL))
             trainerClass = TRAINER_CLASS_EXPERT;
         else
             trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;

@@ -892,9 +892,7 @@ static const struct WindowTemplate sInfoCardWindowTemplates[] =
         .paletteNum = 15,
         .baseBlock = 372,
     },
-    #ifdef UBFIX
     DUMMY_WIN_TEMPLATE,
-    #endif
 };
 
 static const struct ScanlineEffectParams sTourneyTreeScanlineEffectParams =

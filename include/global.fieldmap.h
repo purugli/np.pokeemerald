@@ -19,8 +19,6 @@ enum {
     METATILE_LAYER_TYPE_SPLIT,   // Metatile uses bottom and top bg layers
 };
 
-#define METATILE_ID(tileset, name) (METATILE_##tileset##_##name)
-
 enum
 {
     METATILE_ATTRIBUTE_BEHAVIOR,

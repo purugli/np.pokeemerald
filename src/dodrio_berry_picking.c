@@ -4260,13 +4260,7 @@ static void UnusedSetSpritePos(u8 spriteId)
     gSprites[spriteId].y = 50;
 }
 
-// Gamefreak made a mistake there and goes out of bounds for the data array as it holds 8 elements
-// in turn overwriting sprite's subpriority and subsprites fields.
-#ifdef UBFIX
-    #define sFrozen data[1]
-#else
-    #define sFrozen data[10]
-#endif // UBFIX
+#define sFrozen data[1]
 
 static void SpriteCB_Cloud(struct Sprite *sprite)
 {

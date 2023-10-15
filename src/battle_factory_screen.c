@@ -1190,11 +1190,7 @@ static void CB2_InitSelectScreen(void)
         LoadPalette(gFrontierFactoryMenu_Pal, 0, 2 * PLTT_SIZE_4BPP);
         LoadPalette(sSelectText_Pal, BG_PLTT_ID(PALNUM_TEXT), PLTT_SIZEOF(4));
         LoadPalette(sSelectText_Pal, BG_PLTT_ID(PALNUM_FADE_TEXT), PLTT_SIZEOF(5));
-#ifdef UBFIX
         if (sFactorySelectScreen && sFactorySelectScreen->fromSummaryScreen)
-#else
-        if (sFactorySelectScreen->fromSummaryScreen == TRUE)
-#endif
             gPlttBufferUnfaded[BG_PLTT_ID(PALNUM_FADE_TEXT) + 4] = sFactorySelectScreen->speciesNameColorBackup;
         LoadPalette(sMonPicBg_Pal, BG_PLTT_ID(2), PLTT_SIZEOF(2));
         gMain.state++;
@@ -1216,11 +1212,7 @@ static void CB2_InitSelectScreen(void)
         SetVBlankCallback(VBlankCB_SelectScreen);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_1D_MAP);
-#ifdef UBFIX
         if (sFactorySelectScreen && sFactorySelectScreen->fromSummaryScreen)
-#else
-        if (sFactorySelectScreen->fromSummaryScreen == TRUE)
-#endif
         {
             Select_SetWinRegs(88, 152, 32, 96);
             ShowBg(3);
@@ -1234,11 +1226,7 @@ static void CB2_InitSelectScreen(void)
         gMain.state++;
         break;
     case 5:
-#ifdef UBFIX
         if (sFactorySelectScreen && sFactorySelectScreen->fromSummaryScreen)
-#else
-        if (sFactorySelectScreen->fromSummaryScreen == TRUE)
-#endif
             sFactorySelectScreen->cursorPos = gLastViewedMonIndex;
         Select_InitMonsData();
         Select_InitAllSprites();
@@ -2118,11 +2106,7 @@ static void SpriteCB_CloseChosenMonPics(struct Sprite *sprite)
 
 // Task data for Select_Task_OpenChosenMonPics, Select_Task_CloseChosenMonPics, Task_CloseMonPic, and Task_OpenMonPic
 #define tWinLeft      data[3]
-#ifndef UBFIX
-#define tWinRight     data[24] // UB: Typo? Likely meant data[4], 24 is out of bounds
-#else
 #define tWinRight     data[4]
-#endif
 #define tWinTop       data[5]
 #define tWinBottom    data[8]
 #define tSpriteId     data[6] // TODO: Clarify, what sprite
@@ -3345,11 +3329,7 @@ static void CB2_InitSwapScreen(void)
         gMain.state++;
         break;
     case 5:
-#ifdef UBFIX
         if (sFactorySwapScreen && sFactorySwapScreen->fromSummaryScreen)
-#else
-        if (sFactorySwapScreen->fromSummaryScreen == TRUE)
-#endif
             sFactorySwapScreen->cursorPos = gLastViewedMonIndex;
         gMain.state++;
         break;

@@ -463,9 +463,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .paletteNum = 15,
         .baseBlock = 0xC5
     },
-    #ifdef UBFIX
     DUMMY_WIN_TEMPLATE,
-    #endif
 };
 
 static const struct GridSelection sGridSelections[NUM_GRID_SELECTIONS + 1] =

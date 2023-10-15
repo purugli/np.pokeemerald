@@ -10,6 +10,7 @@
 #include "constants/map_types.h"
 #include "constants/songs.h"
 #include "constants/items.h"
+#include "constants/metatile_behaviors.h"
 
 // this file's functions
 static u8 GetMachBikeTransition(u8 *);
@@ -287,28 +288,34 @@ static u8 AcroBikeHandleInputNormal(u8 *newDirection, u16 newKeys, u16 heldKeys)
 
     isAcroBike = gSaveBlock2Ptr->playerBike == ACRO_BIKE;
     if (isAcroBike)
-        gPlayerAvatar.bikeFrameCounter = 0;/*
-    else if (MetatileBehavior_IsCyclingRoadPullDownTile(playerObjEvent->currentMetatileBehavior))
     {
-        if (!JOY_HELD(B_BUTTON))
+        gPlayerAvatar.bikeFrameCounter = 0;
+    }
+    else
+    {
+        struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+        if (playerObjEvent->currentMetatileBehavior == MB_CYCLING_ROAD_PULL_DOWN || playerObjEvent->currentMetatileBehavior == MB_CYCLING_ROAD_PULL_DOWN_GRASS)
         {
-            gPlayerAvatar.acroBikeState = BIKE_STATE_SLOPE;
-            gPlayerAvatar.runningState = MOVING;
-            if (*newDirection < DIR_NORTH)
-                return BIKE_TRANS_DOWNHILL;
-            else
-                return BIKE_TRANS_UPHILL;
-        }
-        else
-        {
-            if (*newDirection != DIR_NONE)
+            if (!JOY_HELD(B_BUTTON))
             {
                 gPlayerAvatar.acroBikeState = BIKE_STATE_SLOPE;
                 gPlayerAvatar.runningState = MOVING;
-                return BIKE_TRANS_UPHILL;
+                if (*newDirection < DIR_NORTH)
+                    return BIKE_TRANS_DOWNHILL;
+                else
+                    return BIKE_TRANS_UPHILL;
+            }
+            else
+            {
+                if (*newDirection != DIR_NONE)
+                {
+                    gPlayerAvatar.acroBikeState = BIKE_STATE_SLOPE;
+                    gPlayerAvatar.runningState = MOVING;
+                    return BIKE_TRANS_UPHILL;
+                }
             }
         }
-    }*/
+    }
     direction = GetPlayerMovementDirection();
     if (*newDirection == DIR_NONE)
     {
@@ -879,9 +886,9 @@ static u8 GetFRLGBikeTransition(u8 *newDirection)
 
 static u8 FRLGBikeInputHandler_Slope(u8 *newDirection, u16 newKeys, u16 heldKeys)
 {
-    u8 direction = GetPlayerMovementDirection();/*
-    u8 playerObjEventId = gPlayerAvatar.objectEventId;
-    if (MetatileBehavior_IsCyclingRoadPullDownTile(playerObjEventId[gObjectEvents].currentMetatileBehavior))
+    u8 direction = GetPlayerMovementDirection();
+    struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    if (playerObjEvent->currentMetatileBehavior == MB_CYCLING_ROAD_PULL_DOWN || playerObjEvent->currentMetatileBehavior == MB_CYCLING_ROAD_PULL_DOWN_GRASS)
     {
         if (*newDirection != direction)
         {
@@ -899,7 +906,7 @@ static u8 FRLGBikeInputHandler_Slope(u8 *newDirection, u16 newKeys, u16 heldKeys
             else
                 return BIKE_TRANS_UPHILL;
         }
-    }*/
+    }
     gPlayerAvatar.acroBikeState = BIKE_STATE_NORMAL;
     if (*newDirection == DIR_NONE)
     {

@@ -30,6 +30,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/items.h"
+#include "m4a.h"
 
 #define MAX_JUMP_SCORE 99990
 #define MAX_JUMPS 9999
@@ -1872,7 +1873,7 @@ static void SetMonStateNormal(void)
     sPokemonJump->player->monState = MONSTATE_NORMAL;
 }
 
-static const u16 sSoundEffects[MAX_RFU_PLAYERS - 1] = {SE_SHOP, SE_SHINY, SE_M_MORNING_SUN, SE_RG_POKE_JUMP_SUCCESS};
+static const u16 sSoundEffects[MAX_RFU_PLAYERS - 1] = {SE_SHOP, SE_SHINY, SE_M_MORNING_SUN, SE_M_ABSORB_2};
 
 static void UpdateGame(void)
 {
@@ -1883,7 +1884,7 @@ static void UpdateGame(void)
         if (sPokemonJump->showBonus)
         {
             int numPlayers = DoSameJumpTimeBonus(sPokemonJump->comm.receivedBonusFlags);
-            PlaySE(sSoundEffects[numPlayers - 2]);
+            m4aSongNumStart(sSoundEffects[numPlayers - 2]);
             sPokemonJump->showBonus = FALSE;
         }
     }
@@ -1953,9 +1954,9 @@ static void HandleMonState(void)
     }
 
     if (soundFlags & F_SE_FAIL)
-        PlaySE(SE_RG_POKE_JUMP_FAILURE);
+        m4aSongNumStart(SE_FAILURE);
     else if (soundFlags & F_SE_JUMP)
-        PlaySE(SE_LEDGE);
+        m4aSongNumStart(SE_LEDGE);
 }
 
 static const s8 sJumpOffsets[][48] =
@@ -2910,7 +2911,7 @@ static void SpriteCB_MonIntroBounce(struct Sprite *sprite)
     switch (sprite->sState)
     {
     case 0:
-        PlaySE(SE_BIKE_HOP);
+        m4aSongNumStart(SE_BIKE_HOP);
         sprite->sHopPos = 0;
         sprite->sState++;
         // fall through

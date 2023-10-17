@@ -748,7 +748,6 @@ SECTIONS {
         sound/songs/midi/se_bike_hop.o(.rodata);
         sound/songs/midi/se_switch.o(.rodata);
         sound/songs/midi/se_click.o(.rodata);
-        sound/songs/midi/se_fu_zaku.o(.rodata);
         sound/songs/midi/se_contest_condition_lose.o(.rodata);
         sound/songs/midi/se_lavaridge_fall_warp.o(.rodata);
         sound/songs/midi/se_ice_stairs.o(.rodata);
@@ -890,7 +889,7 @@ SECTIONS {
         sound/songs/se_m_dizzy_punch.o(.rodata);
         sound/songs/se_m_self_destruct.o(.rodata);
         sound/songs/se_m_explosion.o(.rodata);
-        sound/songs/se_m_absorb_2.o(.rodata);
+        sound/songs/midi/se_m_absorb_2.o(.rodata);
         sound/songs/se_m_absorb.o(.rodata);
         sound/songs/se_m_screech.o(.rodata);
         sound/songs/se_m_bubble_beam.o(.rodata);
@@ -972,8 +971,6 @@ SECTIONS {
         sound/songs/midi/se_rg_help_close.o(.rodata);
         sound/songs/midi/se_rg_help_error.o(.rodata);
         sound/songs/midi/se_rg_deoxys_move.o(.rodata);
-        sound/songs/midi/se_rg_poke_jump_success.o(.rodata);
-        sound/songs/midi/se_rg_poke_jump_failure.o(.rodata);
         sound/songs/midi/se_pokenav_call.o(.rodata);
         sound/songs/midi/se_pokenav_hang_up.o(.rodata);
         sound/songs/midi/se_arena_timeup1.o(.rodata);

@@ -1,0 +1,2 @@
+RG_Route10_PokemonCenter_1F_MapScripts::
+	.byte 0

@@ -17,7 +17,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 5,
-      "y": 3,
+      "y": 2,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -31,7 +31,7 @@
   "warp_events": [
     {
       "x": 5,
-      "y": 15,
+      "y": 14,
       "elevation": 3,
       "dest_map": "MAP_METEOR_FALLS_B1F_1R",
       "dest_warp_id": "3"

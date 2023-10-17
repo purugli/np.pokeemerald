@@ -19,6 +19,15 @@
 #define MAP_OFFSET_W (MAP_OFFSET * 2 + 1)
 #define MAP_OFFSET_H (MAP_OFFSET * 2)
 
+// References
+#define NUM_TILES_IN_PRIMARY_EMERALD 512
+#define NUM_METATILES_IN_PRIMARY_EMERALD 512
+#define NUM_PALS_IN_PRIMARY_EMERALD 6
+
+#define NUM_TILES_IN_PRIMARY_FRLG 640
+#define NUM_METATILES_IN_PRIMARY_FRLG 640
+#define NUM_PALS_IN_PRIMARY_FRLG 7
+
 #include "main.h"
 
 extern struct BackupMapLayout gBackupMapLayout;

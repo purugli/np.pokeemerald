@@ -16,7 +16,7 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_AQUA_MEMBER_M",
-      "x": 13,
+      "x": 12,
       "y": 11,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -29,7 +29,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_AQUA_MEMBER_M",
-      "x": 14,
+      "x": 13,
       "y": 11,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -42,7 +42,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_AQUA_MEMBER_M",
-      "x": 20,
+      "x": 19,
       "y": 4,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_WALK_SEQUENCE_DOWN_LEFT_UP_RIGHT",
@@ -56,6 +56,13 @@
   ],
   "warp_events": [
     {
+      "x": 12,
+      "y": 27,
+      "elevation": 1,
+      "dest_map": "MAP_LILYCOVE_CITY",
+      "dest_warp_id": "6"
+    },
+    {
       "x": 13,
       "y": 27,
       "elevation": 1,
@@ -63,14 +70,7 @@
       "dest_warp_id": "6"
     },
     {
-      "x": 14,
-      "y": 27,
-      "elevation": 1,
-      "dest_map": "MAP_LILYCOVE_CITY",
-      "dest_warp_id": "6"
-    },
-    {
-      "x": 22,
+      "x": 21,
       "y": 1,
       "elevation": 3,
       "dest_map": "MAP_AQUA_HIDEOUT_B1F",

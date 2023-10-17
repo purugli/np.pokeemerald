@@ -16,14 +16,14 @@
   "object_events": [],
   "warp_events": [
     {
-      "x": 6,
+      "x": 5,
       "y": 16,
       "elevation": 3,
       "dest_map": "MAP_ROUTE131",
       "dest_warp_id": "0"
     },
     {
-      "x": 14,
+      "x": 13,
       "y": 4,
       "elevation": 3,
       "dest_map": "MAP_SKY_PILLAR_OUTSIDE",

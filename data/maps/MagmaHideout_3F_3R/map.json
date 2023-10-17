@@ -16,7 +16,7 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 9,
+      "x": 7,
       "y": 19,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
@@ -30,14 +30,14 @@
   ],
   "warp_events": [
     {
-      "x": 16,
+      "x": 14,
       "y": 1,
       "elevation": 0,
       "dest_map": "MAP_MAGMA_HIDEOUT_2F_3R",
       "dest_warp_id": "1"
     },
     {
-      "x": 16,
+      "x": 14,
       "y": 21,
       "elevation": 0,
       "dest_map": "MAP_MAGMA_HIDEOUT_4F",

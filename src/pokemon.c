@@ -6621,14 +6621,14 @@ void SetMonPreventsSwitchingString(void)
     BattleStringExpandPlaceholders(gText_PkmnsXPreventsSwitching, gStringVar4);
 }
 
-static void SetWildMonHeldItemToPartySlot(u32 partySlot, u32 chanceNoItem, u32 chanceNotRare)
+void SetWildMonHeldItemToPartySlot(u32 partySlot, u32 chanceNoItem, u32 chanceNotRare)
 {
     struct Pokemon *enemyParty = &gEnemyParty[partySlot];
     u32 species = GetMonData(enemyParty, MON_DATA_SPECIES, 0);
     u32 itemCommon = gSpeciesInfo[species].itemCommon;
     u16 itemRare = gSpeciesInfo[species].itemRare;
     u16 rnd = Random() % 100;
-    if (gMapHeader.mapLayoutId == LAYOUT_ALTERING_CAVE)
+    if (gMapHeader.mapLayoutId == LAYOUT_ALTERING_CAVE || gMapHeader.mapLayoutId == LAYOUT_RG_SIX_ISLAND_ALTERING_CAVE)
     {
         u32 alteringCaveId = VarGet(VAR_ALTERING_CAVE_WILD_SET);
         if (alteringCaveId != 0 && alteringCaveId < ARRAY_COUNT(sAlteringCaveWildMonHeldItems))
@@ -6653,20 +6653,6 @@ static void SetWildMonHeldItemToPartySlot(u32 partySlot, u32 chanceNoItem, u32 c
             SetMonData(enemyParty, MON_DATA_HELD_ITEM, &itemCommon);
         else
             SetMonData(enemyParty, MON_DATA_HELD_ITEM, &itemRare);
-    }
-}
-
-void SetWildMonHeldItem(void)
-{
-    if (!(gBattleTypeFlags & (BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_TRAINER | BATTLE_TYPE_PYRAMID | BATTLE_TYPE_PIKE)))
-    {
-        u16 chanceNoItem = 45, chanceNotRare = 95;
-        if (!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG, 0)
-            && GetMonAbility(&gPlayerParty[0]) == ABILITY_COMPOUND_EYES)
-        {
-            chanceNoItem = 20, chanceNotRare = 80;
-        }
-        SetWildMonHeldItemToPartySlot(0, chanceNoItem, chanceNotRare);
     }
 }
 

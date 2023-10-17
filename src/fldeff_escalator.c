@@ -5,6 +5,7 @@
 #include "fldeff.h"
 #include "task.h"
 #include "constants/metatile_labels.h"
+#include "tilesets.h"
 
 static EWRAM_DATA u8 sEscalatorAnim_TaskId = 0;
 
@@ -14,46 +15,157 @@ static void Task_DrawEscalator(u8 taskId);
 #define ESCALATOR_STAGES     3
 #define LAST_ESCALATOR_STAGE (ESCALATOR_STAGES - 1)
 
-static const u16 sEscalatorMetatiles_1F_0[ESCALATOR_STAGES] = {
-    METATILE_PokemonCenter_Escalator1F_Tile0_Frame2,
-    METATILE_PokemonCenter_Escalator1F_Tile0_Frame1,
-    METATILE_PokemonCenter_Escalator1F_Tile0_Frame0
+struct EscalatorMetatileMapping
+{
+    const struct Tileset *tileset;
+    s16 metatileIds[ESCALATOR_STAGES];
 };
 
-static const u16 sEscalatorMetatiles_1F_1[ESCALATOR_STAGES] = {
-    METATILE_PokemonCenter_Escalator1F_Tile1_Frame2,
-    METATILE_PokemonCenter_Escalator1F_Tile1_Frame1,
-    METATILE_PokemonCenter_Escalator1F_Tile1_Frame0
+static const struct EscalatorMetatileMapping sEscalatorMetatiles_1F_0[2] = {
+    {
+        .tileset = &gTileset_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_PokemonCenter_Escalator1F_Tile0_Frame2,
+            METATILE_PokemonCenter_Escalator1F_Tile0_Frame1,
+            METATILE_PokemonCenter_Escalator1F_Tile0_Frame0
+        },
+    },
+    {
+        .tileset = &gTileset_RG_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_RG_PokemonCenter_Escalator_BottomNextRail_Transition2, 
+            METATILE_RG_PokemonCenter_Escalator_BottomNextRail_Transition1, 
+            METATILE_RG_PokemonCenter_Escalator_BottomNextRail_Normal
+        },
+    }
 };
 
-static const u16 sEscalatorMetatiles_1F_2[ESCALATOR_STAGES] = {
-    METATILE_PokemonCenter_Escalator1F_Tile2_Frame2,
-    METATILE_PokemonCenter_Escalator1F_Tile2_Frame1,
-    METATILE_PokemonCenter_Escalator1F_Tile2_Frame0
+static const struct EscalatorMetatileMapping sEscalatorMetatiles_1F_1[2] = {
+    {
+        .tileset = &gTileset_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_PokemonCenter_Escalator1F_Tile1_Frame2,
+            METATILE_PokemonCenter_Escalator1F_Tile1_Frame1,
+            METATILE_PokemonCenter_Escalator1F_Tile1_Frame0
+        },
+    },
+    {
+        .tileset = &gTileset_RG_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_RG_PokemonCenter_Escalator_BottomRail_Transition2, 
+            METATILE_RG_PokemonCenter_Escalator_BottomRail_Transition1, 
+            METATILE_RG_PokemonCenter_Escalator_BottomRail_Normal
+        },
+    }
 };
 
-static const u16 sEscalatorMetatiles_1F_3[ESCALATOR_STAGES] = {
-    METATILE_PokemonCenter_Escalator1F_Tile3_Frame2,
-    METATILE_PokemonCenter_Escalator1F_Tile3_Frame1,
-    METATILE_PokemonCenter_Escalator1F_Tile3_Frame0
+static const struct EscalatorMetatileMapping sEscalatorMetatiles_1F_2[2] = {
+    {
+        .tileset = &gTileset_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_PokemonCenter_Escalator1F_Tile2_Frame2,
+            METATILE_PokemonCenter_Escalator1F_Tile2_Frame1,
+            METATILE_PokemonCenter_Escalator1F_Tile2_Frame0
+        },
+    },
+    {
+        .tileset = &gTileset_RG_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_RG_PokemonCenter_Escalator_BottomNext_Transition2, 
+            METATILE_RG_PokemonCenter_Escalator_BottomNext_Transition1, 
+            METATILE_RG_PokemonCenter_Escalator_BottomNext_Normal
+        },
+    }
 };
 
-static const u16 sEscalatorMetatiles_2F_0[ESCALATOR_STAGES] = {
-    METATILE_PokemonCenter_Escalator2F_Tile0_Frame0,
-    METATILE_PokemonCenter_Escalator2F_Tile0_Frame1,
-    METATILE_PokemonCenter_Escalator2F_Tile0_Frame2
+static const struct EscalatorMetatileMapping sEscalatorMetatiles_1F_3[2] = {
+    {
+        .tileset = &gTileset_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_PokemonCenter_Escalator1F_Tile3_Frame2,
+            METATILE_PokemonCenter_Escalator1F_Tile3_Frame1,
+            METATILE_PokemonCenter_Escalator1F_Tile3_Frame0
+        },
+    },
+    {
+        .tileset = &gTileset_RG_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_RG_PokemonCenter_Escalator_Bottom_Transition2, 
+            METATILE_RG_PokemonCenter_Escalator_Bottom_Transition1, 
+            METATILE_RG_PokemonCenter_Escalator_Bottom_Normal
+        },
+    }
 };
 
-static const u16 sEscalatorMetatiles_2F_1[ESCALATOR_STAGES] = {
-    METATILE_PokemonCenter_Escalator2F_Tile1_Frame0,
-    METATILE_PokemonCenter_Escalator2F_Tile1_Frame1,
-    METATILE_PokemonCenter_Escalator2F_Tile1_Frame2
+static const struct EscalatorMetatileMapping sEscalatorMetatiles_2F_0[2] = {
+    {
+        .tileset = &gTileset_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_PokemonCenter_Escalator2F_Tile0_Frame0,
+            METATILE_PokemonCenter_Escalator2F_Tile0_Frame1,
+            METATILE_PokemonCenter_Escalator2F_Tile0_Frame2
+        },
+    },
+    {
+        .tileset = &gTileset_RG_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_RG_PokemonCenter_Escalator_TopNext_Normal, 
+            METATILE_RG_PokemonCenter_Escalator_TopNext_Transition1, 
+            METATILE_RG_PokemonCenter_Escalator_TopNext_Transition2
+        },
+    }
 };
 
-static const u16 sEscalatorMetatiles_2F_2[ESCALATOR_STAGES] = {
-    METATILE_PokemonCenter_Escalator2F_Tile2_Frame0,
-    METATILE_PokemonCenter_Escalator2F_Tile2_Frame1,
-    METATILE_PokemonCenter_Escalator2F_Tile2_Frame2
+static const struct EscalatorMetatileMapping sEscalatorMetatiles_2F_1[2] = {
+    {
+        .tileset = &gTileset_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_PokemonCenter_Escalator2F_Tile1_Frame0,
+            METATILE_PokemonCenter_Escalator2F_Tile1_Frame1,
+            METATILE_PokemonCenter_Escalator2F_Tile1_Frame2
+        },
+    },
+    {
+        .tileset = &gTileset_RG_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_RG_PokemonCenter_Escalator_Top_Normal, 
+            METATILE_RG_PokemonCenter_Escalator_Top_Transition1, 
+            METATILE_RG_PokemonCenter_Escalator_Top_Transition2
+        },
+    }
+};
+
+static const struct EscalatorMetatileMapping sEscalatorMetatiles_2F_2[2] = {
+    {
+        .tileset = &gTileset_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_PokemonCenter_Escalator2F_Tile2_Frame0,
+            METATILE_PokemonCenter_Escalator2F_Tile2_Frame1,
+            METATILE_PokemonCenter_Escalator2F_Tile2_Frame2
+        },
+    },
+    {
+        .tileset = &gTileset_RG_PokemonCenter,
+        .metatileIds =
+        {
+            METATILE_RG_PokemonCenter_Escalator_TopNextRail_Normal, 
+            METATILE_RG_PokemonCenter_Escalator_TopNextRail_Transition1, 
+            METATILE_RG_PokemonCenter_Escalator_TopNextRail_Transition2
+        },
+    }
 };
 
 #define tState            data[0]
@@ -71,48 +183,51 @@ static void SetEscalatorMetatile(u8 taskId, const s16 *metatileIds, u16 metatile
     s16 i;
     s16 j;
 
-    // Check all the escalator sections and only progress the selected one to the next stage
-    if (!gTasks[taskId].tGoingUp)
+    for (i = 0; i < 3; i++)
     {
-        for (i = 0; i < 3; i++)
+        for (j = 0; j < 3; j++)
         {
-            for (j = 0; j < 3; j++)
-            {
-                s16 metatileId = MapGridGetMetatileIdAt(x + j, y + i);
+            s32 tileX = x + j, tileY = y + i;
+            s32 metatileId = MapGridGetMetatileIdAt(tileX, tileY);
+            u32 nextStage = transitionStage + 1;
+            u32 lastStage = 0;
+            u32 currentStage = transitionStage;
 
-                if (metatileIds[transitionStage] == metatileId)
-                {
-                    if (transitionStage != LAST_ESCALATOR_STAGE)
-                        MapGridSetMetatileIdAt(x + j, y + i, metatileMasks | metatileIds[transitionStage + 1]);
-                    else
-                        MapGridSetMetatileIdAt(x + j, y + i, metatileMasks | metatileIds[0]);
-                }
+            // Check all the escalator sections and only progress the selected one to the next stage
+            if (gTasks[taskId].tGoingUp)
+            {
+                nextStage = 1 - transitionStage;
+                lastStage = LAST_ESCALATOR_STAGE;
+                currentStage = LAST_ESCALATOR_STAGE - transitionStage;
             }
-        }
-    }
-    else
-    {
-        for (i = 0; i < 3; i++)
-        {
-            for (j = 0; j < 3; j++)
-            {
-                s16 metatileId = MapGridGetMetatileIdAt(x + j, y + i);
 
-                if (metatileIds[LAST_ESCALATOR_STAGE - transitionStage] == metatileId)
-                {
-                    if (transitionStage != LAST_ESCALATOR_STAGE)
-                        MapGridSetMetatileIdAt(x + j, y + i, metatileMasks | metatileIds[1 - transitionStage]);
-                    else
-                        MapGridSetMetatileIdAt(x + j, y + i, metatileMasks | metatileIds[LAST_ESCALATOR_STAGE]);
-                }
+            if (metatileIds[currentStage] == metatileId)
+            {
+                if (transitionStage != LAST_ESCALATOR_STAGE)
+                    MapGridSetMetatileIdAt(tileX, tileY, metatileMasks | metatileIds[nextStage]);
+                else
+                    MapGridSetMetatileIdAt(tileX, tileY, metatileMasks | metatileIds[lastStage]);
             }
         }
     }
 }
 
+static const s16 *GetEscalatorMetatile(const struct EscalatorMetatileMapping *arr)
+{
+    u32 i;
+
+    for (i = 0; i < ESCALATOR_STAGES; i++)
+    {
+        if (gMapHeader.mapLayout->secondaryTileset == arr[i].tileset)
+            return arr[i].metatileIds;
+    }
+    return NULL;
+}
+
 static void Task_DrawEscalator(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
+    const s16 *metatileIds;
 
     tDrawingEscalator = TRUE;
 
@@ -120,25 +235,32 @@ static void Task_DrawEscalator(u8 taskId)
     switch (tState)
     {
         case 0:
-            SetEscalatorMetatile(taskId, sEscalatorMetatiles_1F_0, 0);
+            metatileIds = GetEscalatorMetatile(sEscalatorMetatiles_1F_0);
+            SetEscalatorMetatile(taskId, metatileIds, 0);
             break;
         case 1:
-            SetEscalatorMetatile(taskId, sEscalatorMetatiles_1F_1, 0);
+            metatileIds = GetEscalatorMetatile(sEscalatorMetatiles_1F_1);
+            SetEscalatorMetatile(taskId, metatileIds, 0);
             break;
         case 2:
-            SetEscalatorMetatile(taskId, sEscalatorMetatiles_1F_2, MAPGRID_COLLISION_MASK);
+            metatileIds = GetEscalatorMetatile(sEscalatorMetatiles_1F_2);
+            SetEscalatorMetatile(taskId, metatileIds, MAPGRID_COLLISION_MASK);
             break;
         case 3:
-            SetEscalatorMetatile(taskId, sEscalatorMetatiles_1F_3, 0);
+            metatileIds = GetEscalatorMetatile(sEscalatorMetatiles_1F_3);
+            SetEscalatorMetatile(taskId, metatileIds, 0);
             break;
         case 4:
-            SetEscalatorMetatile(taskId, sEscalatorMetatiles_2F_0, MAPGRID_COLLISION_MASK);
+            metatileIds = GetEscalatorMetatile(sEscalatorMetatiles_2F_0);
+            SetEscalatorMetatile(taskId, metatileIds, MAPGRID_COLLISION_MASK);
             break;
         case 5:
-            SetEscalatorMetatile(taskId, sEscalatorMetatiles_2F_1, 0);
+            metatileIds = GetEscalatorMetatile(sEscalatorMetatiles_2F_1);
+            SetEscalatorMetatile(taskId, metatileIds, 0);
             break;
         case 6:
-            SetEscalatorMetatile(taskId, sEscalatorMetatiles_2F_2, 0);
+            metatileIds = GetEscalatorMetatile(sEscalatorMetatiles_2F_2);
+            SetEscalatorMetatile(taskId, metatileIds, 0);
             break;
     }
 

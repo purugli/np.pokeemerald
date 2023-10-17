@@ -1,0 +1,62 @@
+{
+  "id": "MAP_RG_ROUTE13",
+  "name": "RG_Route13",
+  "layout": "LAYOUT_RG_ROUTE13",
+  "music": "MUS_RG_ROUTE11",
+  "region_map_section": "MAPSEC_ROUTE_13",
+  "requires_flash": false,
+  "weather": "WEATHER_SUNNY",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": [
+    {
+      "map": "MAP_RG_ROUTE12",
+      "offset": 48,
+      "direction": "up"
+    },
+    {
+      "map": "MAP_RG_ROUTE14",
+      "offset": 0,
+      "direction": "left"
+    }
+  ],
+  "object_events": [
+
+  ],
+  "warp_events": [
+
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 41,
+      "y": 12,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_Route13_EventScript_RouteSign"
+    },
+    {
+      "type": "sign",
+      "x": 37,
+      "y": 6,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_Route13_EventScript_TrainerTips2"
+    },
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 14,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_Route13_EventScript_TrainerTips1"
+    }
+  ]
+}

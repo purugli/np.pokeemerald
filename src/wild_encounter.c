@@ -312,8 +312,10 @@ static u16 GetCurrentMapWildMonHeaderId(void)
         if (gWildMonHeaders[i].mapGroup == gSaveBlock1Ptr->location.mapGroup &&
             gWildMonHeaders[i].mapNum == gSaveBlock1Ptr->location.mapNum)
         {
-            if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ALTERING_CAVE) &&
-                gSaveBlock1Ptr->location.mapNum == MAP_NUM(ALTERING_CAVE))
+            if ((gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ALTERING_CAVE) &&
+                gSaveBlock1Ptr->location.mapNum == MAP_NUM(ALTERING_CAVE)) ||
+               (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(RG_SIX_ISLAND_ALTERING_CAVE) &&
+                gSaveBlock1Ptr->location.mapNum == MAP_NUM(RG_SIX_ISLAND_ALTERING_CAVE)))
             {
                 u16 alteringCaveId = VarGet(VAR_ALTERING_CAVE_WILD_SET);
                 if (alteringCaveId >= NUM_ALTERING_CAVE_TABLES)

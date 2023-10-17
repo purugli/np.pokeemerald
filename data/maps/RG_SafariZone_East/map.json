@@ -1,0 +1,62 @@
+{
+  "id": "MAP_RG_SAFARI_ZONE_EAST",
+  "name": "RG_SafariZone_East",
+  "layout": "LAYOUT_RG_SAFARI_ZONE_EAST",
+  "music": "MUS_EVOLUTION",
+  "region_map_section": "MAPSEC_KANTO_SAFARI_ZONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": 0,
+  "object_events": [
+
+  ],
+  "warp_events": [
+    {
+      "x": 7,
+      "y": 8,
+      "elevation": 3,
+      "dest_map": "MAP_RG_SAFARI_ZONE_NORTH",
+      "dest_warp_id": "4"
+    },
+    {
+      "x": 7,
+      "y": 9,
+      "elevation": 3,
+      "dest_map": "MAP_RG_SAFARI_ZONE_NORTH",
+      "dest_warp_id": "5"
+    },
+    {
+      "x": 7,
+      "y": 25,
+      "elevation": 3,
+      "dest_map": "MAP_RG_SAFARI_ZONE_CENTER",
+      "dest_warp_id": "6"
+    },
+    {
+      "x": 7,
+      "y": 26,
+      "elevation": 3,
+      "dest_map": "MAP_RG_SAFARI_ZONE_CENTER",
+      "dest_warp_id": "7"
+    },
+    {
+      "x": 39,
+      "y": 13,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFARI_ZONE_EAST_REST_HOUSE",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+
+  ]
+}

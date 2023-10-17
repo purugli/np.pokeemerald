@@ -15,7 +15,7 @@
   "connections": [
     {
       "map": "MAP_SAFARI_ZONE_NORTH",
-      "offset": 0,
+      "offset": -1,
       "direction": "left"
     },
     {
@@ -28,7 +28,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_BOY_3",
       "x": 8,
-      "y": 20,
+      "y": 19,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -41,7 +41,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_GIRL_3",
       "x": 30,
-      "y": 22,
+      "y": 21,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -54,7 +54,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
       "x": 11,
-      "y": 11,
+      "y": 10,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -67,7 +67,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_WOMAN_1",
       "x": 13,
-      "y": 35,
+      "y": 34,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -80,7 +80,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
       "x": 8,
-      "y": 13,
+      "y": 12,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -93,7 +93,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
       "x": 9,
-      "y": 7,
+      "y": 6,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -106,7 +106,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
       "x": 8,
-      "y": 10,
+      "y": 9,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -119,7 +119,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_BREAKABLE_ROCK",
       "x": 12,
-      "y": 8,
+      "y": 7,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -132,7 +132,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
       "x": 8,
-      "y": 17,
+      "y": 16,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -149,7 +149,7 @@
     {
       "type": "hidden_item",
       "x": 31,
-      "y": 35,
+      "y": 34,
       "elevation": 3,
       "item": "ITEM_RARE_CANDY",
       "flag": "FLAG_HIDDEN_ITEM_SAFARI_ZONE_NORTH_EAST_RARE_CANDY"
@@ -157,7 +157,7 @@
     {
       "type": "hidden_item",
       "x": 21,
-      "y": 5,
+      "y": 4,
       "elevation": 3,
       "item": "ITEM_ZINC",
       "flag": "FLAG_HIDDEN_ITEM_SAFARI_ZONE_NORTH_EAST_ZINC"

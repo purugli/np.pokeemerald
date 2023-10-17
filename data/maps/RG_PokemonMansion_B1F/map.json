@@ -1,0 +1,57 @@
+{
+  "id": "MAP_RG_POKEMON_MANSION_B1F",
+  "name": "RG_PokemonMansion_B1F",
+  "layout": "LAYOUT_RG_POKEMON_MANSION_B1F",
+  "music": "MUS_RG_POKE_MANSION",
+  "region_map_section": "MAPSEC_POKEMON_MANSION",
+  "requires_flash": false,
+  "weather": "WEATHER_SHADE",
+  "map_type": "MAP_TYPE_INDOOR",
+  "allow_cycling": false,
+  "allow_escaping": true,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_AQUA",
+  "connections": 0,
+  "object_events": [
+
+  ],
+  "warp_events": [
+    {
+      "x": 34,
+      "y": 29,
+      "elevation": 3,
+      "dest_map": "MAP_RG_POKEMON_MANSION_1F",
+      "dest_warp_id": "2"
+    }
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 27,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_PokemonMansion_B1F_EventScript_DiarySep1st"
+    },
+    {
+      "type": "sign",
+      "x": 24,
+      "y": 29,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "RG_PokemonMansion_B1F_EventScript_Statue"
+    },
+    {
+      "type": "sign",
+      "x": 27,
+      "y": 5,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "RG_PokemonMansion_B1F_EventScript_Statue"
+    }
+  ]
+}

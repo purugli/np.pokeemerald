@@ -16,14 +16,14 @@
   "object_events": [],
   "warp_events": [
     {
-      "x": 16,
+      "x": 14,
       "y": 1,
       "elevation": 0,
       "dest_map": "MAP_MAGMA_HIDEOUT_1F",
       "dest_warp_id": "3"
     },
     {
-      "x": 16,
+      "x": 14,
       "y": 13,
       "elevation": 0,
       "dest_map": "MAP_MAGMA_HIDEOUT_3F_3R",

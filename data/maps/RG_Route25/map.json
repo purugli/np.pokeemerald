@@ -1,0 +1,47 @@
+{
+  "id": "MAP_RG_ROUTE25",
+  "name": "RG_Route25",
+  "layout": "LAYOUT_RG_ROUTE25",
+  "music": "MUS_RG_ROUTE24",
+  "region_map_section": "MAPSEC_ROUTE_25",
+  "requires_flash": false,
+  "weather": "WEATHER_SUNNY",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": [
+    {
+      "map": "MAP_RG_ROUTE24",
+      "offset": 0,
+      "direction": "left"
+    }
+  ],
+  "object_events": [
+
+  ],
+  "warp_events": [
+    {
+      "x": 51,
+      "y": 4,
+      "elevation": 0,
+      "dest_map": "MAP_RG_ROUTE25_SEA_COTTAGE",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 48,
+      "y": 4,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_Route25_EventScript_SeaCottageSign"
+    }
+  ]
+}

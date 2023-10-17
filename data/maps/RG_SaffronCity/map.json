@@ -1,0 +1,224 @@
+{
+  "id": "MAP_RG_SAFFRON_CITY",
+  "name": "RG_SaffronCity",
+  "layout": "LAYOUT_RG_SAFFRON_CITY",
+  "music": "MUS_RG_PEWTER",
+  "region_map_section": "MAPSEC_SAFFRON_CITY",
+  "requires_flash": false,
+  "weather": "WEATHER_SUNNY",
+  "map_type": "MAP_TYPE_TOWN",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": [
+    {
+      "map": "MAP_RG_ROUTE5",
+      "offset": 10,
+      "direction": "up"
+    },
+    {
+      "map": "MAP_RG_ROUTE6",
+      "offset": 14,
+      "direction": "down"
+    },
+    {
+      "map": "MAP_RG_ROUTE7",
+      "offset": 12,
+      "direction": "left"
+    },
+    {
+      "map": "MAP_RG_ROUTE8",
+      "offset": 12,
+      "direction": "right"
+    }
+  ],
+  "object_events": [
+
+  ],
+  "warp_events": [
+    {
+      "x": 25,
+      "y": 25,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SILPH_CO_1F",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 14,
+      "y": 9,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFFRON_CITY_COPYCATS_HOUSE_1F",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 32,
+      "y": 7,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFFRON_CITY_DOJO",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 38,
+      "y": 7,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFFRON_CITY_GYM",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 19,
+      "y": 16,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFFRON_CITY_HOUSE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 32,
+      "y": 16,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFFRON_CITY_MART",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 16,
+      "y": 33,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFFRON_CITY_POKEMON_CENTER_1F",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 35,
+      "y": 33,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFFRON_CITY_MR_PSYCHICS_HOUSE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 0,
+      "y": 22,
+      "elevation": 3,
+      "dest_map": "MAP_RG_ROUTE7_EAST_ENTRANCE",
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 26,
+      "y": 0,
+      "elevation": 3,
+      "dest_map": "MAP_RG_ROUTE5_SOUTH_ENTRANCE",
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 50,
+      "y": 22,
+      "elevation": 3,
+      "dest_map": "MAP_RG_ROUTE8_WEST_ENTRANCE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 26,
+      "y": 41,
+      "elevation": 3,
+      "dest_map": "MAP_RG_ROUTE6_NORTH_ENTRANCE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 27,
+      "y": 41,
+      "elevation": 3,
+      "dest_map": "MAP_RG_ROUTE6_NORTH_ENTRANCE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 27,
+      "y": 0,
+      "elevation": 3,
+      "dest_map": "MAP_RG_ROUTE5_SOUTH_ENTRANCE",
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 39,
+      "y": 16,
+      "elevation": 0,
+      "dest_map": "MAP_RG_SAFFRON_CITY_POKEMON_TRAINER_FAN_CLUB",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 9,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_CitySign"
+    },
+    {
+      "type": "sign",
+      "x": 34,
+      "y": 9,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_DojoSign"
+    },
+    {
+      "type": "sign",
+      "x": 5,
+      "y": 20,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_SilphProductSign"
+    },
+    {
+      "type": "sign",
+      "x": 10,
+      "y": 25,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_TrainerTips2"
+    },
+    {
+      "type": "sign",
+      "x": 21,
+      "y": 26,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_SilphCoSign"
+    },
+    {
+      "type": "sign",
+      "x": 46,
+      "y": 20,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_TrainerTips1"
+    },
+    {
+      "type": "sign",
+      "x": 42,
+      "y": 9,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_GymSign"
+    },
+    {
+      "type": "sign",
+      "x": 32,
+      "y": 33,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_MrPsychicsHouseSign"
+    },
+    {
+      "type": "sign",
+      "x": 41,
+      "y": 17,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_SaffronCity_EventScript_TrainerFanClubSign"
+    }
+  ]
+}

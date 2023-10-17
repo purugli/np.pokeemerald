@@ -16,7 +16,7 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_WALLACE",
-      "x": 13,
+      "x": 12,
       "y": 7,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -30,14 +30,14 @@
   ],
   "warp_events": [
     {
-      "x": 17,
+      "x": 16,
       "y": 13,
       "elevation": 3,
       "dest_map": "MAP_SKY_PILLAR_ENTRANCE",
       "dest_warp_id": "1"
     },
     {
-      "x": 14,
+      "x": 13,
       "y": 5,
       "elevation": 0,
       "dest_map": "MAP_SKY_PILLAR_1F",

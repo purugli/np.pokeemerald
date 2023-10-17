@@ -1220,7 +1220,7 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
         for (i = 0; i < decWidth; i++)
         {
             x = mapX + i;
-            attributes = NUM_TILES_IN_PRIMARY + gDecorations[decoration].tiles[j * decWidth + i];
+            attributes = NUM_TILES_IN_PRIMARY_EMERALD + gDecorations[decoration].tiles[j * decWidth + i];
             if (MetatileBehavior_IsSecretBaseImpassable(GetMetatileAttributesById(attributes, METATILE_ATTRIBUTE_BEHAVIOR)) == TRUE
              || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && GetMetatileAttributesById(attributes, METATILE_ATTRIBUTE_LAYER_TYPE) != METATILE_LAYER_TYPE_NORMAL))
                 impassableFlag = MAPGRID_COLLISION_MASK;
@@ -1235,9 +1235,9 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
 
             elevation = GetDecorationElevation(gDecorations[decoration].id, j * decWidth + i);
             if (elevation != 0xFFFF)
-                MapGridSetMetatileEntryAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY | overlapsWall)) | impassableFlag | elevation);
+                MapGridSetMetatileEntryAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY_EMERALD | overlapsWall)) | impassableFlag | elevation);
             else
-                MapGridSetMetatileIdAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY | overlapsWall)) | impassableFlag);
+                MapGridSetMetatileIdAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY_EMERALD | overlapsWall)) | impassableFlag);
         }
     }
 }
@@ -1537,7 +1537,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             {
                 curX = gTasks[taskId].tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY + decoration->tiles[(mapY - 1 - i) * mapX + j], METATILE_ATTRIBUTE_LAYER_TYPE);
+                layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY_EMERALD + decoration->tiles[(mapY - 1 - i) * mapX + j], METATILE_ATTRIBUTE_LAYER_TYPE);
                 if (!IsFloorOrBoardAndHole(behaviorAt, decoration))
                     return FALSE;
 
@@ -1558,7 +1558,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             {
                 curX = gTasks[taskId].tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY + decoration->tiles[(mapY - 1 - i) * mapX + j], METATILE_ATTRIBUTE_LAYER_TYPE);
+                layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY_EMERALD + decoration->tiles[(mapY - 1 - i) * mapX + j], METATILE_ATTRIBUTE_LAYER_TYPE);
                 if (!MetatileBehavior_IsNormal(behaviorAt) && !IsSecretBaseTrainerSpot(behaviorAt, layerType))
                     return FALSE;
 
@@ -1575,7 +1575,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
         {
             curX = gTasks[taskId].tCursorX + j;
             behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-            layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY + decoration->tiles[j], METATILE_ATTRIBUTE_LAYER_TYPE);
+            layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY_EMERALD + decoration->tiles[j], METATILE_ATTRIBUTE_LAYER_TYPE);
             if (!MetatileBehavior_IsNormal(behaviorAt) && !MetatileBehavior_IsSecretBaseNorthWall(behaviorAt))
                 return FALSE;
 
@@ -1920,7 +1920,7 @@ static void ClearPlaceDecorationGraphicsDataBuffer(struct PlaceDecorationGraphic
 
 static void CopyPalette(u16 *dest, u16 pal)
 {
-    CpuFastCopy(&((u16 *)gTilesetPointer_SecretBase->palettes)[pal * 16], dest, sizeof(u16) * 16);
+    CpuFastCopy(&((u16 *)gTileset_SecretBase.palettes)[pal * 16], dest, sizeof(u16) * 16);
 }
 
 static void CopyTile(u8 *dest, u16 tile)
@@ -1933,7 +1933,7 @@ static void CopyTile(u8 *dest, u16 tile)
     if (tile != 0)
         tile &= 0x03FF;
 
-    CpuFastCopy(&((u8 *)gTilesetPointer_SecretBase->tiles)[tile * TILE_SIZE_4BPP], buffer, TILE_SIZE_4BPP);
+    CpuFastCopy(&((u8 *)gTileset_SecretBase.tiles)[tile * TILE_SIZE_4BPP], buffer, TILE_SIZE_4BPP);
     switch (mode)
     {
     case 0:
@@ -1975,7 +1975,7 @@ static void SetDecorSelectionBoxTiles(struct PlaceDecorationGraphicsDataBuffer *
 
 static u16 GetMetatile(u16 tile)
 {
-    return ((u16 *)gTilesetPointer_SecretBaseRedCave->metatiles)[tile] & 0xFFF;
+    return ((u16 *)gTileset_SecretBaseRedCave.metatiles)[tile] & 0xFFF;
 }
 
 static void SetDecorSelectionMetatiles(struct PlaceDecorationGraphicsDataBuffer *data)
@@ -2046,7 +2046,7 @@ static u8 gpu_pal_decompress_alloc_tag_and_upload(struct PlaceDecorationGraphics
     SetDecorSelectionMetatiles(data);
     SetDecorSelectionBoxOamAttributes(data->decoration->shape);
     SetDecorSelectionBoxTiles(data);
-    CopyPalette(data->palette, ((u16 *)gTilesetPointer_SecretBaseRedCave->metatiles)[(data->decoration->tiles[0] * NUM_TILES_PER_METATILE) + 7] >> 12);
+    CopyPalette(data->palette, ((u16 *)gTileset_SecretBaseRedCave.metatiles)[(data->decoration->tiles[0] * NUM_TILES_PER_METATILE) + 7] >> 12);
     LoadSpritePalette(&sSpritePal_PlaceDecoration);
     return CreateSprite(&sDecorationSelectorSpriteTemplate, 0, 0, 0);
 }
@@ -2102,7 +2102,7 @@ static u8 AddDecorationIconObjectFromObjectEvent(u16 tilesTag, u16 paletteTag, u
         SetDecorSelectionMetatiles(&sPlaceDecorationGraphicsDataBuffer);
         SetDecorSelectionBoxOamAttributes(sPlaceDecorationGraphicsDataBuffer.decoration->shape);
         SetDecorSelectionBoxTiles(&sPlaceDecorationGraphicsDataBuffer);
-        CopyPalette(sPlaceDecorationGraphicsDataBuffer.palette, ((u16 *)gTilesetPointer_SecretBaseRedCave->metatiles)[(sPlaceDecorationGraphicsDataBuffer.decoration->tiles[0] * NUM_TILES_PER_METATILE) + 7] >> 12);
+        CopyPalette(sPlaceDecorationGraphicsDataBuffer.palette, ((u16 *)gTileset_SecretBaseRedCave.metatiles)[(sPlaceDecorationGraphicsDataBuffer.decoration->tiles[0] * NUM_TILES_PER_METATILE) + 7] >> 12);
         sheet.data = sPlaceDecorationGraphicsDataBuffer.image;
         sheet.size = sDecorShapeSizes[sPlaceDecorationGraphicsDataBuffer.decoration->shape] * TILE_SIZE_4BPP;
         sheet.tag = tilesTag;

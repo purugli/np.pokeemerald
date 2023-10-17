@@ -686,7 +686,16 @@ static void CB2_InitBattleInternal(void)
         CreateNPCTrainerParty(&gEnemyParty[0], gTrainerBattleOpponent_A, TRUE);
         if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
             CreateNPCTrainerParty(&gEnemyParty[PARTY_SIZE / 2], gTrainerBattleOpponent_B, FALSE);
-        SetWildMonHeldItem();
+        if (!(gBattleTypeFlags & (BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_TRAINER | BATTLE_TYPE_PYRAMID | BATTLE_TYPE_PIKE)))
+        {
+            u16 chanceNoItem = 45, chanceNotRare = 95;
+            if (!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG, 0)
+                && GetMonAbility(&gPlayerParty[0]) == ABILITY_COMPOUND_EYES)
+            {
+                chanceNoItem = 20, chanceNotRare = 80;
+            }
+            SetWildMonHeldItemToPartySlot(0, chanceNoItem, chanceNotRare);
+        }
     }
 
     gMain.inBattle = TRUE;

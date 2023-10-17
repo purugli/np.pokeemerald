@@ -16,7 +16,7 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_MEW",
-      "x": 13,
+      "x": 12,
       "y": 17,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_COPY_PLAYER_OPPOSITE_IN_GRASS",
@@ -30,14 +30,14 @@
   ],
   "warp_events": [
     {
-      "x": 12,
+      "x": 11,
       "y": 19,
       "elevation": 0,
       "dest_map": "MAP_FARAWAY_ISLAND_ENTRANCE",
       "dest_warp_id": "0"
     },
     {
-      "x": 13,
+      "x": 12,
       "y": 19,
       "elevation": 0,
       "dest_map": "MAP_FARAWAY_ISLAND_ENTRANCE",

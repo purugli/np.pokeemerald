@@ -1,0 +1,79 @@
+{
+  "id": "MAP_RG_ROUTE12",
+  "name": "RG_Route12",
+  "layout": "LAYOUT_RG_ROUTE12",
+  "music": "MUS_RG_ROUTE11",
+  "region_map_section": "MAPSEC_ROUTE_12",
+  "requires_flash": false,
+  "weather": "WEATHER_SUNNY",
+  "map_type": "MAP_TYPE_ROUTE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": [
+    {
+      "map": "MAP_RG_LAVENDER_TOWN",
+      "offset": 0,
+      "direction": "up"
+    },
+    {
+      "map": "MAP_RG_ROUTE13",
+      "offset": -48,
+      "direction": "down"
+    },
+    {
+      "map": "MAP_RG_ROUTE11",
+      "offset": 60,
+      "direction": "left"
+    }
+  ],
+  "object_events": [
+
+  ],
+  "warp_events": [
+    {
+      "x": 12,
+      "y": 86,
+      "elevation": 0,
+      "dest_map": "MAP_RG_ROUTE12_FISHING_HOUSE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 14,
+      "y": 15,
+      "elevation": 3,
+      "dest_map": "MAP_RG_ROUTE12_NORTH_ENTRANCE_1F",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 14,
+      "y": 21,
+      "elevation": 3,
+      "dest_map": "MAP_RG_ROUTE12_NORTH_ENTRANCE_1F",
+      "dest_warp_id": "1"
+    }
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 17,
+      "y": 13,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_Route12_EventScript_RouteSign"
+    },
+    {
+      "type": "sign",
+      "x": 15,
+      "y": 69,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "RG_Route12_EventScript_FishingSign"
+    }
+  ]
+}

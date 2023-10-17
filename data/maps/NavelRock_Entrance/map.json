@@ -16,15 +16,15 @@
   "object_events": [],
   "warp_events": [
     {
-      "x": 10,
-      "y": 5,
+      "x": 6,
+      "y": 4,
       "elevation": 3,
       "dest_map": "MAP_NAVEL_ROCK_B1F",
       "dest_warp_id": "0"
     },
     {
-      "x": 10,
-      "y": 26,
+      "x": 6,
+      "y": 23,
       "elevation": 3,
       "dest_map": "MAP_NAVEL_ROCK_EXTERIOR",
       "dest_warp_id": "1"

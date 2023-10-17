@@ -16,7 +16,7 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_MAN_3",
-      "x": 33,
+      "x": 32,
       "y": 22,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -29,7 +29,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_WOMAN_5",
-      "x": 6,
+      "x": 5,
       "y": 15,
       "elevation": 4,
       "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
@@ -42,7 +42,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MAN_3",
-      "x": 27,
+      "x": 26,
       "y": 34,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN_AND_RIGHT",
@@ -55,7 +55,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_WALLY",
-      "x": 12,
+      "x": 11,
       "y": 25,
       "elevation": 4,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
@@ -68,7 +68,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 40,
+      "x": 39,
       "y": 26,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
@@ -81,7 +81,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 37,
+      "x": 36,
       "y": 39,
       "elevation": 4,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
@@ -94,7 +94,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_WALLY",
-      "x": 31,
+      "x": 30,
       "y": 9,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
@@ -107,7 +107,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_WOMAN_5",
-      "x": 29,
+      "x": 28,
       "y": 17,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
@@ -120,7 +120,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MAN_3",
-      "x": 32,
+      "x": 31,
       "y": 17,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
@@ -134,28 +134,28 @@
   ],
   "warp_events": [
     {
-      "x": 15,
+      "x": 14,
       "y": 40,
       "elevation": 3,
       "dest_map": "MAP_EVER_GRANDE_CITY",
       "dest_warp_id": "2"
     },
     {
-      "x": 39,
+      "x": 38,
       "y": 5,
       "elevation": 3,
       "dest_map": "MAP_EVER_GRANDE_CITY",
       "dest_warp_id": "3"
     },
     {
-      "x": 21,
+      "x": 20,
       "y": 32,
       "elevation": 3,
       "dest_map": "MAP_VICTORY_ROAD_B1F",
       "dest_warp_id": "5"
     },
     {
-      "x": 42,
+      "x": 41,
       "y": 38,
       "elevation": 4,
       "dest_map": "MAP_VICTORY_ROAD_B1F",
@@ -172,7 +172,7 @@
   "coord_events": [
     {
       "type": "trigger",
-      "x": 2,
+      "x": 1,
       "y": 23,
       "elevation": 4,
       "var": "VAR_VICTORY_ROAD_1F_STATE",
@@ -181,7 +181,7 @@
     },
     {
       "type": "trigger",
-      "x": 3,
+      "x": 2,
       "y": 23,
       "elevation": 4,
       "var": "VAR_VICTORY_ROAD_1F_STATE",
@@ -192,7 +192,7 @@
   "bg_events": [
     {
       "type": "hidden_item",
-      "x": 30,
+      "x": 29,
       "y": 39,
       "elevation": 4,
       "item": "ITEM_ULTRA_BALL",

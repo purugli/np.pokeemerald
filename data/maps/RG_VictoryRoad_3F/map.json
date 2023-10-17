@@ -1,0 +1,62 @@
+{
+  "id": "MAP_RG_VICTORY_ROAD_3F",
+  "name": "RG_VictoryRoad_3F",
+  "layout": "LAYOUT_RG_VICTORY_ROAD_3F",
+  "music": "MUS_RG_MT_MOON",
+  "region_map_section": "MAPSEC_KANTO_VICTORY_ROAD",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNDERGROUND",
+  "allow_cycling": true,
+  "allow_escaping": true,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": 0,
+  "object_events": [
+
+  ],
+  "warp_events": [
+    {
+      "x": 5,
+      "y": 2,
+      "elevation": 3,
+      "dest_map": "MAP_RG_VICTORY_ROAD_2F",
+      "dest_warp_id": "1"
+    },
+    {
+      "x": 34,
+      "y": 9,
+      "elevation": 3,
+      "dest_map": "MAP_RG_VICTORY_ROAD_2F",
+      "dest_warp_id": "2"
+    },
+    {
+      "x": 37,
+      "y": 10,
+      "elevation": 3,
+      "dest_map": "MAP_RG_VICTORY_ROAD_2F",
+      "dest_warp_id": "3"
+    },
+    {
+      "x": 39,
+      "y": 17,
+      "elevation": 3,
+      "dest_map": "MAP_RG_VICTORY_ROAD_2F",
+      "dest_warp_id": "4"
+    },
+    {
+      "x": 34,
+      "y": 18,
+      "elevation": 3,
+      "dest_map": "MAP_RG_VICTORY_ROAD_2F",
+      "dest_warp_id": "6"
+    }
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+
+  ]
+}

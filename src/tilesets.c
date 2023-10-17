@@ -1,6 +1,7 @@
 #include "global.h"
 #include "tilesets.h"
 #include "tileset_anims.h"
+#include "fieldmap.h"
 
 #include "data/tilesets/graphics.h"
 #include "data/tilesets/metatiles.h"

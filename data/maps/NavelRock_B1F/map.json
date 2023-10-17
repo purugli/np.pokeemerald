@@ -16,15 +16,15 @@
   "object_events": [],
   "warp_events": [
     {
-      "x": 4,
-      "y": 3,
+      "x": 3,
+      "y": 2,
       "elevation": 3,
       "dest_map": "MAP_NAVEL_ROCK_ENTRANCE",
       "dest_warp_id": "0"
     },
     {
-      "x": 18,
-      "y": 9,
+      "x": 10,
+      "y": 5,
       "elevation": 3,
       "dest_map": "MAP_NAVEL_ROCK_FORK",
       "dest_warp_id": "1"

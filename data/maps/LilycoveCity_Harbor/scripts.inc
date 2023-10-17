@@ -57,7 +57,7 @@ LilycoveCity_Harbor_EventScript_FerryRegularLocationSelect::
 
 LilycoveCity_Harbor_EventScript_GoToSouthernIsland::
 	call LilycoveCity_Harbor_EventScript_BoardFerry
-	warp MAP_SOUTHERN_ISLAND_EXTERIOR, 13, 22
+	warp MAP_SOUTHERN_ISLAND_EXTERIOR, 10, 22
 	waitstate
 	release
 	end
@@ -78,7 +78,7 @@ LilycoveCity_Harbor_EventScript_GoToBirthIsland::
 
 LilycoveCity_Harbor_EventScript_GoToFarawayIsland::
 	call LilycoveCity_Harbor_EventScript_BoardFerry
-	warp MAP_FARAWAY_ISLAND_ENTRANCE, 13, 38
+	warp MAP_FARAWAY_ISLAND_ENTRANCE, 13, 36
 	waitstate
 	release
 	end

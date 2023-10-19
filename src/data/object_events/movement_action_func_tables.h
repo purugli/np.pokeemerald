@@ -1393,30 +1393,6 @@ u8 (*const gMovementActionFuncs_AcroEndWheelieFaceRight[])(struct ObjectEvent *,
     MovementAction_PauseSpriteAnim,
 };
 
-u8 (*const gMovementActionFuncs_AcroUnusedAcroActionDown[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_UnusedAcroActionDown_Step0,
-    MovementAction_WaitSpriteAnim,
-    MovementAction_PauseSpriteAnim,
-};
-
-u8 (*const gMovementActionFuncs_AcroUnusedAcroActionUp[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_UnusedAcroActionUp_Step0,
-    MovementAction_WaitSpriteAnim,
-    MovementAction_PauseSpriteAnim,
-};
-
-u8 (*const gMovementActionFuncs_AcroUnusedAcroActionLeft[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_UnusedAcroActionLeft_Step0,
-    MovementAction_WaitSpriteAnim,
-    MovementAction_PauseSpriteAnim,
-};
-
-u8 (*const gMovementActionFuncs_AcroUnusedAcroActionRight[])(struct ObjectEvent *, struct Sprite *) = {
-    MovementAction_UnusedAcroActionRight_Step0,
-    MovementAction_WaitSpriteAnim,
-    MovementAction_PauseSpriteAnim,
-};
-
 u8 (*const gMovementActionFuncs_Figure8[])(struct ObjectEvent *, struct Sprite *) = {
     MovementAction_Figure8_Step0,
     MovementAction_Figure8_Step1,

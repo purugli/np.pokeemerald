@@ -2,7 +2,7 @@
 #define GUARD_CONSTANTS_EVENT_OBJECTS_H
 
 #define OBJ_EVENT_GFX_BRENDAN_NORMAL               0
-#define OBJ_EVENT_GFX_BRENDAN_MACH_BIKE            1
+#define OBJ_EVENT_GFX_BRENDAN_BIKE                 1
 #define OBJ_EVENT_GFX_BRENDAN_SURFING              2
 #define OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE           3
 #define OBJ_EVENT_GFX_QUINTY_PLUMP                 4
@@ -91,7 +91,7 @@
 #define OBJ_EVENT_GFX_PUSHABLE_BOULDER            87
 #define OBJ_EVENT_GFX_MR_BRINEYS_BOAT             88
 #define OBJ_EVENT_GFX_MAY_NORMAL                  89
-#define OBJ_EVENT_GFX_MAY_MACH_BIKE               90
+#define OBJ_EVENT_GFX_MAY_BIKE                    90
 #define OBJ_EVENT_GFX_MAY_ACRO_BIKE               91
 #define OBJ_EVENT_GFX_MAY_SURFING                 92
 #define OBJ_EVENT_GFX_MAY_FIELD_MOVE              93
@@ -102,12 +102,12 @@
 #define OBJ_EVENT_GFX_ZIGZAGOON_1                 98
 #define OBJ_EVENT_GFX_ARTIST                      99
 #define OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL       100
-#define OBJ_EVENT_GFX_RIVAL_BRENDAN_MACH_BIKE    101
+#define OBJ_EVENT_GFX_RIVAL_BRENDAN_BIKE         101
 #define OBJ_EVENT_GFX_RIVAL_BRENDAN_ACRO_BIKE    102
 #define OBJ_EVENT_GFX_RIVAL_BRENDAN_SURFING      103
 #define OBJ_EVENT_GFX_RIVAL_BRENDAN_FIELD_MOVE   104
 #define OBJ_EVENT_GFX_RIVAL_MAY_NORMAL           105
-#define OBJ_EVENT_GFX_RIVAL_MAY_MACH_BIKE        106
+#define OBJ_EVENT_GFX_RIVAL_MAY_BIKE             106
 #define OBJ_EVENT_GFX_RIVAL_MAY_ACRO_BIKE        107
 #define OBJ_EVENT_GFX_RIVAL_MAY_SURFING          108
 #define OBJ_EVENT_GFX_RIVAL_MAY_FIELD_MOVE       109

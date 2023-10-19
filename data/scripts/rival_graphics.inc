@@ -19,11 +19,11 @@ Common_EventScript_SetupRivalOnBikeGfxId::
 	end
 
 EventScript_SetupRivalOnBikeGfxIdFemale::
-	setvar VAR_OBJ_GFX_ID_3, OBJ_EVENT_GFX_RIVAL_MAY_MACH_BIKE
+	setvar VAR_OBJ_GFX_ID_3, OBJ_EVENT_GFX_RIVAL_MAY_BIKE
 	return
 
 EventScript_SetupRivalOnBikeGfxIdMale::
-	setvar VAR_OBJ_GFX_ID_3, OBJ_EVENT_GFX_RIVAL_BRENDAN_MACH_BIKE
+	setvar VAR_OBJ_GFX_ID_3, OBJ_EVENT_GFX_RIVAL_BRENDAN_BIKE
 	return
 
 @ Unused

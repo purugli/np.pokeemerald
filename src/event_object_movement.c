@@ -774,17 +774,6 @@ static const u8 sAcroWheelieDirectionAnimNums[] = {
     [DIR_NORTHWEST] = ANIM_BUNNY_HOP_BACK_WHEEL_NORTH,
     [DIR_NORTHEAST] = ANIM_BUNNY_HOP_BACK_WHEEL_NORTH,
 };
-static const u8 sAcroUnusedDirectionAnimNums[] = {
-    [DIR_NONE] = ANIM_BUNNY_HOP_FRONT_WHEEL_SOUTH,
-    [DIR_SOUTH] = ANIM_BUNNY_HOP_FRONT_WHEEL_SOUTH,
-    [DIR_NORTH] = ANIM_BUNNY_HOP_FRONT_WHEEL_NORTH,
-    [DIR_WEST] = ANIM_BUNNY_HOP_FRONT_WHEEL_WEST,
-    [DIR_EAST] = ANIM_BUNNY_HOP_FRONT_WHEEL_EAST,
-    [DIR_SOUTHWEST] = ANIM_BUNNY_HOP_FRONT_WHEEL_SOUTH,
-    [DIR_SOUTHEAST] = ANIM_BUNNY_HOP_FRONT_WHEEL_SOUTH,
-    [DIR_NORTHWEST] = ANIM_BUNNY_HOP_FRONT_WHEEL_NORTH,
-    [DIR_NORTHEAST] = ANIM_BUNNY_HOP_FRONT_WHEEL_NORTH,
-};
 static const u8 sAcroEndWheelieDirectionAnimNums[] = {
     [DIR_NONE] = ANIM_STANDING_WHEELIE_BACK_WHEEL_SOUTH,
     [DIR_SOUTH] = ANIM_STANDING_WHEELIE_BACK_WHEEL_SOUTH,
@@ -806,17 +795,6 @@ static const u8 sSpinDirectionAnimNums[] = {
     [DIR_SOUTHEAST] = ANIM_SPIN_NORTH,
     [DIR_NORTHWEST] = ANIM_SPIN_WEST,
     [DIR_NORTHEAST] = ANIM_SPIN_EAST,
-};
-static const u8 sAcroUnusedActionDirectionAnimNums[] = {
-    [DIR_NONE] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_SOUTH,
-    [DIR_SOUTH] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_SOUTH,
-    [DIR_NORTH] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_NORTH,
-    [DIR_WEST] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_WEST,
-    [DIR_EAST] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_EAST,
-    [DIR_SOUTHWEST] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_SOUTH,
-    [DIR_SOUTHEAST] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_SOUTH,
-    [DIR_NORTHWEST] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_NORTH,
-    [DIR_NORTHEAST] = ANIM_STANDING_WHEELIE_FRONT_WHEEL_NORTH,
 };
 static const u8 sAcroWheeliePedalDirectionAnimNums[] = {
     [DIR_NONE] = ANIM_MOVING_WHEELIE_SOUTH,
@@ -4541,19 +4519,9 @@ u8 GetAcroWheelieDirectionAnimNum(u8 direction)
     return sAcroWheelieDirectionAnimNums[direction];
 }
 
-u8 GetAcroUnusedDirectionAnimNum(u8 direction)
-{
-    return sAcroUnusedDirectionAnimNums[direction];
-}
-
 u8 GetAcroEndWheelieDirectionAnimNum(u8 direction)
 {
     return sAcroEndWheelieDirectionAnimNums[direction];
-}
-
-u8 GetAcroUnusedActionDirectionAnimNum(u8 direction)
-{
-    return sAcroUnusedActionDirectionAnimNums[direction];
 }
 
 u8 GetAcroWheeliePedalDirectionAnimNum(u8 direction)
@@ -6895,30 +6863,6 @@ bool8 MovementAction_AcroEndWheelieFaceLeft_Step0(struct ObjectEvent *objectEven
 bool8 MovementAction_AcroEndWheelieFaceRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     StartSpriteAnimInDirection(objectEvent, sprite, DIR_EAST, GetAcroEndWheelieDirectionAnimNum(DIR_EAST));
-    return FALSE;
-}
-
-bool8 MovementAction_UnusedAcroActionDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    StartSpriteAnimInDirection(objectEvent, sprite, DIR_SOUTH, GetAcroUnusedActionDirectionAnimNum(DIR_SOUTH));
-    return FALSE;
-}
-
-bool8 MovementAction_UnusedAcroActionUp_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    StartSpriteAnimInDirection(objectEvent, sprite, DIR_NORTH, GetAcroUnusedActionDirectionAnimNum(DIR_NORTH));
-    return FALSE;
-}
-
-bool8 MovementAction_UnusedAcroActionLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    StartSpriteAnimInDirection(objectEvent, sprite, DIR_WEST, GetAcroUnusedActionDirectionAnimNum(DIR_WEST));
-    return FALSE;
-}
-
-bool8 MovementAction_UnusedAcroActionRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    StartSpriteAnimInDirection(objectEvent, sprite, DIR_EAST, GetAcroUnusedActionDirectionAnimNum(DIR_EAST));
     return FALSE;
 }
 

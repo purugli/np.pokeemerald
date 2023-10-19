@@ -429,50 +429,22 @@ static const union AnimCmd sAnim_BunnyHopBackWheelSouth[] =
 
 static const union AnimCmd sAnim_BunnyHopBackWheelNorth[] =
 {
-    ANIMCMD_FRAME(13, 4),
-    ANIMCMD_FRAME(14, 4),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_BunnyHopBackWheelWest[] =
-{
-    ANIMCMD_FRAME(17, 4),
-    ANIMCMD_FRAME(18, 4),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_BunnyHopBackWheelEast[] =
-{
-    ANIMCMD_FRAME(17, 4, .hFlip = TRUE),
-    ANIMCMD_FRAME(18, 4, .hFlip = TRUE),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_BunnyHopFrontWheelSouth[] =
-{
     ANIMCMD_FRAME(11, 4),
     ANIMCMD_FRAME(12, 4),
     ANIMCMD_END,
 };
 
-static const union AnimCmd sAnim_BunnyHopFrontWheelNorth[] =
+static const union AnimCmd sAnim_BunnyHopBackWheelWest[] =
 {
-    ANIMCMD_FRAME(15, 4),
-    ANIMCMD_FRAME(16, 4),
+    ANIMCMD_FRAME(13, 4),
+    ANIMCMD_FRAME(14, 4),
     ANIMCMD_END,
 };
 
-static const union AnimCmd sAnim_BunnyHopFrontWheelWest[] =
+static const union AnimCmd sAnim_BunnyHopBackWheelEast[] =
 {
-    ANIMCMD_FRAME(19, 4),
-    ANIMCMD_FRAME(20, 4),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_BunnyHopFrontWheelEast[] =
-{
-    ANIMCMD_FRAME(19, 4, .hFlip = TRUE),
-    ANIMCMD_FRAME(20, 4, .hFlip = TRUE),
+    ANIMCMD_FRAME(13, 4, .hFlip = TRUE),
+    ANIMCMD_FRAME(14, 4, .hFlip = TRUE),
     ANIMCMD_END,
 };
 
@@ -485,86 +457,58 @@ static const union AnimCmd sAnim_StandingWheelieBackWheelSouth[] =
 
 static const union AnimCmd sAnim_StandingWheelieBackWheelNorth[] =
 {
-    ANIMCMD_FRAME(13, 4),
+    ANIMCMD_FRAME(11, 4),
     ANIMCMD_FRAME(1, 4),
     ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_StandingWheelieBackWheelWest[] =
 {
-    ANIMCMD_FRAME(17, 4),
+    ANIMCMD_FRAME(13, 4),
     ANIMCMD_FRAME(2, 4),
     ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_StandingWheelieBackWheelEast[] =
 {
-    ANIMCMD_FRAME(17, 4, .hFlip = TRUE),
-    ANIMCMD_FRAME(2, 4, .hFlip = TRUE),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_StandingWheelieFrontWheelSouth[] =
-{
-    ANIMCMD_FRAME(11, 4),
-    ANIMCMD_FRAME(0, 4),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_StandingWheelieFrontWheelNorth[] =
-{
-    ANIMCMD_FRAME(15, 4),
-    ANIMCMD_FRAME(1, 4),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_StandingWheelieFrontWheelWest[] =
-{
-    ANIMCMD_FRAME(19, 4),
-    ANIMCMD_FRAME(2, 4),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_StandingWheelieFrontWheelEast[] =
-{
-    ANIMCMD_FRAME(19, 4, .hFlip = TRUE),
+    ANIMCMD_FRAME(13, 4, .hFlip = TRUE),
     ANIMCMD_FRAME(2, 4, .hFlip = TRUE),
     ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_MovingWheelieSouth[] =
 {
-    ANIMCMD_FRAME(21, 4),
+    ANIMCMD_FRAME(15, 4),
     ANIMCMD_FRAME(10, 4),
-    ANIMCMD_FRAME(22, 4),
+    ANIMCMD_FRAME(16, 4),
     ANIMCMD_FRAME(10, 4),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_MovingWheelieNorth[] =
 {
-    ANIMCMD_FRAME(23, 4),
-    ANIMCMD_FRAME(14, 4),
-    ANIMCMD_FRAME(24, 4),
-    ANIMCMD_FRAME(14, 4),
+    ANIMCMD_FRAME(17, 4),
+    ANIMCMD_FRAME(12, 4),
+    ANIMCMD_FRAME(18, 4),
+    ANIMCMD_FRAME(12, 4),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_MovingWheelieWest[] =
 {
-    ANIMCMD_FRAME(25, 4),
-    ANIMCMD_FRAME(18, 4),
-    ANIMCMD_FRAME(26, 4),
-    ANIMCMD_FRAME(18, 4),
+    ANIMCMD_FRAME(19, 4),
+    ANIMCMD_FRAME(14, 4),
+    ANIMCMD_FRAME(20, 4),
+    ANIMCMD_FRAME(14, 4),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_MovingWheelieEast[] =
 {
-    ANIMCMD_FRAME(25, 4, .hFlip = TRUE),
-    ANIMCMD_FRAME(18, 4, .hFlip = TRUE),
-    ANIMCMD_FRAME(26, 4, .hFlip = TRUE),
-    ANIMCMD_FRAME(18, 4, .hFlip = TRUE),
+    ANIMCMD_FRAME(19, 4, .hFlip = TRUE),
+    ANIMCMD_FRAME(14, 4, .hFlip = TRUE),
+    ANIMCMD_FRAME(20, 4, .hFlip = TRUE),
+    ANIMCMD_FRAME(14, 4, .hFlip = TRUE),
     ANIMCMD_JUMP(0),
 };
 
@@ -914,7 +858,7 @@ static const union AnimCmd *const sAnimTable_BrendanMayNormal[] = {
     [ANIM_SPIN_EAST] = sAnim_SpinEast,
 };
 
-static const union AnimCmd *const sAnimTable_AcroBike[] = {
+static const union AnimCmd *const sAnimTable_Bike[] = {
     [ANIM_STD_FACE_SOUTH] = sAnim_StayStill,
     [ANIM_STD_FACE_NORTH] = sAnim_QuintyPlumpFaceNorth,
     [ANIM_STD_FACE_WEST] = sAnim_QuintyPlumpFaceWest,
@@ -939,18 +883,10 @@ static const union AnimCmd *const sAnimTable_AcroBike[] = {
     [ANIM_BUNNY_HOP_BACK_WHEEL_NORTH] = sAnim_BunnyHopBackWheelNorth,
     [ANIM_BUNNY_HOP_BACK_WHEEL_WEST] = sAnim_BunnyHopBackWheelWest,
     [ANIM_BUNNY_HOP_BACK_WHEEL_EAST] = sAnim_BunnyHopBackWheelEast,
-    [ANIM_BUNNY_HOP_FRONT_WHEEL_SOUTH] = sAnim_BunnyHopFrontWheelSouth,
-    [ANIM_BUNNY_HOP_FRONT_WHEEL_NORTH] = sAnim_BunnyHopFrontWheelNorth,
-    [ANIM_BUNNY_HOP_FRONT_WHEEL_WEST] = sAnim_BunnyHopFrontWheelWest,
-    [ANIM_BUNNY_HOP_FRONT_WHEEL_EAST] = sAnim_BunnyHopFrontWheelEast,
     [ANIM_STANDING_WHEELIE_BACK_WHEEL_SOUTH] = sAnim_StandingWheelieBackWheelSouth,
     [ANIM_STANDING_WHEELIE_BACK_WHEEL_NORTH] = sAnim_StandingWheelieBackWheelNorth,
     [ANIM_STANDING_WHEELIE_BACK_WHEEL_WEST] = sAnim_StandingWheelieBackWheelWest,
     [ANIM_STANDING_WHEELIE_BACK_WHEEL_EAST] = sAnim_StandingWheelieBackWheelEast,
-    [ANIM_STANDING_WHEELIE_FRONT_WHEEL_SOUTH] = sAnim_StandingWheelieFrontWheelSouth,
-    [ANIM_STANDING_WHEELIE_FRONT_WHEEL_NORTH] = sAnim_StandingWheelieFrontWheelNorth,
-    [ANIM_STANDING_WHEELIE_FRONT_WHEEL_WEST] = sAnim_StandingWheelieFrontWheelWest,
-    [ANIM_STANDING_WHEELIE_FRONT_WHEEL_EAST] = sAnim_StandingWheelieFrontWheelEast,
     [ANIM_MOVING_WHEELIE_SOUTH] = sAnim_MovingWheelieSouth,
     [ANIM_MOVING_WHEELIE_NORTH] = sAnim_MovingWheelieNorth,
     [ANIM_MOVING_WHEELIE_WEST] = sAnim_MovingWheelieWest,
@@ -1077,8 +1013,8 @@ static const struct StepAnimTable sStepAnimTables[] = {
         .anims = sAnimTable_BrendanMayNormal,
         .animPos = {1, 3, 0, 2},
     },
-    [OBJ_EVENT_ANIM_ACRO_BIKE] = {
-        .anims = sAnimTable_AcroBike,
+    [OBJ_EVENT_ANIM_BIKE] = {
+        .anims = sAnimTable_Bike,
         .animPos = {1, 3, 0, 2},
     },
     [OBJ_EVENT_ANIM_SURFING] = {

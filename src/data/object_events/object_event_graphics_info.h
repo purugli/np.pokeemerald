@@ -17,7 +17,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanNormal = {
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanMachBike = {
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanBike = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_BRENDAN,
     .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION,
@@ -31,8 +31,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanMachBike = 
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_STANDARD,
-    .images = sPicTable_BrendanMachBike,
+    .anims = OBJ_EVENT_ANIM_BIKE,
+    .images = sPicTable_BrendanBike,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -50,8 +50,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanAcroBike = 
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_ACRO_BIKE,
-    .images = sPicTable_BrendanAcroBike,
+    .anims = OBJ_EVENT_ANIM_BIKE,
+    .images = sPicTable_BrendanBike,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -1095,7 +1095,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CyclingTriathleteM
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_ACRO_BIKE,
+    .anims = OBJ_EVENT_ANIM_BIKE,
     .images = sPicTable_CyclingTriathleteM,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1114,7 +1114,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CyclingTriathleteF
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_ACRO_BIKE,
+    .anims = OBJ_EVENT_ANIM_BIKE,
     .images = sPicTable_CyclingTriathleteF,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1708,7 +1708,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayNormal = {
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayMachBike = {
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayBike = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_MAY,
     .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION,
@@ -1722,8 +1722,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayMachBike = {
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_STANDARD,
-    .images = sPicTable_MayMachBike,
+    .anims = OBJ_EVENT_ANIM_BIKE,
+    .images = sPicTable_MayBike,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -1741,8 +1741,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayAcroBike = {
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_ACRO_BIKE,
-    .images = sPicTable_MayAcroBike,
+    .anims = OBJ_EVENT_ANIM_BIKE,
+    .images = sPicTable_MayBike,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -1936,7 +1936,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanNormal
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanMachBike = {
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanBike = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_BRENDAN,
     .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION,
@@ -1950,8 +1950,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanMachBi
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_STANDARD,
-    .images = sPicTable_BrendanMachBike,
+    .anims = OBJ_EVENT_ANIM_BIKE,
+    .images = sPicTable_BrendanBike,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -1969,8 +1969,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanAcroBi
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_ACRO_BIKE,
-    .images = sPicTable_BrendanAcroBike,
+    .anims = OBJ_EVENT_ANIM_BIKE,
+    .images = sPicTable_BrendanBike,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -2031,7 +2031,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayNormal = {
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayMachBike = {
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayBike = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_MAY,
     .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION,
@@ -2045,8 +2045,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayMachBike =
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_STANDARD,
-    .images = sPicTable_MayMachBike,
+    .anims = OBJ_EVENT_ANIM_BIKE,
+    .images = sPicTable_MayBike,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -2064,8 +2064,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayAcroBike =
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_ACRO_BIKE,
-    .images = sPicTable_MayAcroBike,
+    .anims = OBJ_EVENT_ANIM_BIKE,
+    .images = sPicTable_MayBike,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 

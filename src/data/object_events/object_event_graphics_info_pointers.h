@@ -1,5 +1,5 @@
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanNormal;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanMachBike;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanBike;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanSurfing;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanFieldMove;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_QuintyPlump;
@@ -88,7 +88,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BreakableRo
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PushableBoulder;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MrBrineysBoat;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayNormal;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayMachBike;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayBike;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayAcroBike;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MaySurfing;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayFieldMove;
@@ -99,12 +99,12 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BirchsBag;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_EnemyZigzagoon;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Artist;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanNormal;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanMachBike;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanBike;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanAcroBike;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanSurfing;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalBrendanFieldMove;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayNormal;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayMachBike;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayBike;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayAcroBike;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMaySurfing;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayFieldMove;
@@ -248,7 +248,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnusedMauvi
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_BRENDAN_NORMAL] =           &gObjectEventGraphicsInfo_BrendanNormal,
-    [OBJ_EVENT_GFX_BRENDAN_MACH_BIKE] =        &gObjectEventGraphicsInfo_BrendanMachBike,
+    [OBJ_EVENT_GFX_BRENDAN_BIKE] =             &gObjectEventGraphicsInfo_BrendanBike,
     [OBJ_EVENT_GFX_BRENDAN_SURFING] =          &gObjectEventGraphicsInfo_BrendanSurfing,
     [OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE] =       &gObjectEventGraphicsInfo_BrendanFieldMove,
     [OBJ_EVENT_GFX_QUINTY_PLUMP] =             &gObjectEventGraphicsInfo_QuintyPlump,
@@ -337,7 +337,7 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_PUSHABLE_BOULDER] =         &gObjectEventGraphicsInfo_PushableBoulder,
     [OBJ_EVENT_GFX_MR_BRINEYS_BOAT] =          &gObjectEventGraphicsInfo_MrBrineysBoat,
     [OBJ_EVENT_GFX_MAY_NORMAL] =               &gObjectEventGraphicsInfo_MayNormal,
-    [OBJ_EVENT_GFX_MAY_MACH_BIKE] =            &gObjectEventGraphicsInfo_MayMachBike,
+    [OBJ_EVENT_GFX_MAY_BIKE] =                 &gObjectEventGraphicsInfo_MayBike,
     [OBJ_EVENT_GFX_MAY_ACRO_BIKE] =            &gObjectEventGraphicsInfo_MayAcroBike,
     [OBJ_EVENT_GFX_MAY_SURFING] =              &gObjectEventGraphicsInfo_MaySurfing,
     [OBJ_EVENT_GFX_MAY_FIELD_MOVE] =           &gObjectEventGraphicsInfo_MayFieldMove,
@@ -348,12 +348,12 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_ZIGZAGOON_1] =              &gObjectEventGraphicsInfo_EnemyZigzagoon,
     [OBJ_EVENT_GFX_ARTIST] =                   &gObjectEventGraphicsInfo_Artist,
     [OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL] =     &gObjectEventGraphicsInfo_RivalBrendanNormal,
-    [OBJ_EVENT_GFX_RIVAL_BRENDAN_MACH_BIKE] =  &gObjectEventGraphicsInfo_RivalBrendanMachBike,
+    [OBJ_EVENT_GFX_RIVAL_BRENDAN_BIKE] =       &gObjectEventGraphicsInfo_RivalBrendanBike,
     [OBJ_EVENT_GFX_RIVAL_BRENDAN_ACRO_BIKE] =  &gObjectEventGraphicsInfo_RivalBrendanAcroBike,
     [OBJ_EVENT_GFX_RIVAL_BRENDAN_SURFING] =    &gObjectEventGraphicsInfo_RivalBrendanSurfing,
     [OBJ_EVENT_GFX_RIVAL_BRENDAN_FIELD_MOVE] = &gObjectEventGraphicsInfo_RivalBrendanFieldMove,
     [OBJ_EVENT_GFX_RIVAL_MAY_NORMAL] =         &gObjectEventGraphicsInfo_RivalMayNormal,
-    [OBJ_EVENT_GFX_RIVAL_MAY_MACH_BIKE] =      &gObjectEventGraphicsInfo_RivalMayMachBike,
+    [OBJ_EVENT_GFX_RIVAL_MAY_BIKE] =           &gObjectEventGraphicsInfo_RivalMayBike,
     [OBJ_EVENT_GFX_RIVAL_MAY_ACRO_BIKE] =      &gObjectEventGraphicsInfo_RivalMayAcroBike,
     [OBJ_EVENT_GFX_RIVAL_MAY_SURFING] =        &gObjectEventGraphicsInfo_RivalMaySurfing,
     [OBJ_EVENT_GFX_RIVAL_MAY_FIELD_MOVE] =     &gObjectEventGraphicsInfo_RivalMayFieldMove,

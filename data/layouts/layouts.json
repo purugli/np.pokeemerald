@@ -5427,7 +5427,7 @@
     },
     {
       "id": "LAYOUT_RG_INDIGO_PLATEAU_EXTERIOR",
-      "name": "IndigoPlateau_Exterior_Layout",
+      "name": "RG_IndigoPlateau_Exterior_Layout",
       "width": 24,
       "height": 20,
       "border_width": 2,

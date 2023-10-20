@@ -414,8 +414,6 @@ static const struct SpriteFrameImage sPicTable_Youngster[] = {
     overworld_frame(gObjectEventPic_Youngster, 2, 4, 4),
     overworld_frame(gObjectEventPic_Youngster, 2, 4, 5),
     overworld_frame(gObjectEventPic_Youngster, 2, 4, 6),
-    overworld_frame(gObjectEventPic_Youngster, 2, 4, 7),
-    overworld_frame(gObjectEventPic_Youngster, 2, 4, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_BugCatcher[] = {
@@ -1798,8 +1796,6 @@ static const struct SpriteFrameImage sPicTable_Noland[] = {
     overworld_frame(gObjectEventPic_Noland, 2, 4, 4),
     overworld_frame(gObjectEventPic_Noland, 2, 4, 5),
     overworld_frame(gObjectEventPic_Noland, 2, 4, 6),
-    overworld_frame(gObjectEventPic_Noland, 2, 4, 7),
-    overworld_frame(gObjectEventPic_Noland, 2, 4, 8),
 };
 
 static const struct SpriteFrameImage sPicTable_Lucy[] = {

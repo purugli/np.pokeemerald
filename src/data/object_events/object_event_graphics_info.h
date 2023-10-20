@@ -4295,7 +4295,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Noland = {
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_16x32,
     .subspriteTables = sOamTables_16x32,
-    .anims = OBJ_EVENT_ANIM_STANDARD,
+    .anims = OBJ_EVENT_ANIM_QUINTY_PLUMP,
     .images = sPicTable_Noland,
     .affineAnims = gDummySpriteAffineAnimTable,
 };

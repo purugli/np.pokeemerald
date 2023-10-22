@@ -92,7 +92,7 @@ static const struct SpriteTemplate sCloudSpriteTemplate =
     .callback = UpdateCloudSprite,
 };
 
-static const struct SpritePalette sCloudsSpritePalette = {gCloudsWeatherPalette, PALTAG_WEATHER};
+static const struct SpritePalette sCloudsSpritePalette = {gCloudsWeatherPalette, PALTAG_WEATHER_2};
 
 void Clouds_InitVars(void)
 {

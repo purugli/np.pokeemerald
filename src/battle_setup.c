@@ -863,43 +863,27 @@ static u8 GetTrainerBattleTransition(void)
 u8 GetSpecialBattleTransition(s32 id)
 {
     u16 var;
-    u8 enemyLevel = GetMonData(&gEnemyParty[0], MON_DATA_LEVEL);
-    u8 playerLevel = GetSumOfPlayerPartyLevel(1);
+    u8 enemyLevel, playerLevel;
 
-    if (enemyLevel < playerLevel)
+    switch (id)
     {
-        switch (id)
-        {
-        case B_TRANSITION_GROUP_TRAINER_HILL:
-        case B_TRANSITION_GROUP_SECRET_BASE:
-        case B_TRANSITION_GROUP_E_READER:
+    case B_TRANSITION_GROUP_TRAINER_HILL:
+    case B_TRANSITION_GROUP_SECRET_BASE:
+    case B_TRANSITION_GROUP_E_READER:
+        enemyLevel = GetMonData(&gEnemyParty[0], MON_DATA_LEVEL);
+        playerLevel = GetSumOfPlayerPartyLevel(1);
+        if (enemyLevel < playerLevel)
             return B_TRANSITION_POKEBALLS_TRAIL;
-        case B_TRANSITION_GROUP_B_PYRAMID:
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattlePyramid);
-        case B_TRANSITION_GROUP_B_DOME:
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattleDome);
-        }
-
-        if (VarGet(VAR_FRONTIER_BATTLE_MODE) != FRONTIER_MODE_LINK_MULTIS)
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattleFrontier);
-    }
-    else
-    {
-        switch (id)
-        {
-        case B_TRANSITION_GROUP_TRAINER_HILL:
-        case B_TRANSITION_GROUP_SECRET_BASE:
-        case B_TRANSITION_GROUP_E_READER:
+        else
             return B_TRANSITION_BIG_POKEBALL;
-        case B_TRANSITION_GROUP_B_PYRAMID:
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattlePyramid);
-        case B_TRANSITION_GROUP_B_DOME:
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattleDome);
-        }
-
-        if (VarGet(VAR_FRONTIER_BATTLE_MODE) != FRONTIER_MODE_LINK_MULTIS)
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattleFrontier);
+    case B_TRANSITION_GROUP_B_PYRAMID:
+        return RANDOM_TRANSITION(sBattleTransitionTable_BattlePyramid);
+    case B_TRANSITION_GROUP_B_DOME:
+        return RANDOM_TRANSITION(sBattleTransitionTable_BattleDome);
     }
+
+    if (VarGet(VAR_FRONTIER_BATTLE_MODE) != FRONTIER_MODE_LINK_MULTIS)
+        return RANDOM_TRANSITION(sBattleTransitionTable_BattleFrontier);
 
     var = gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum * 2 + 0]
         + gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum * 2 + 1];

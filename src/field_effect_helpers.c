@@ -110,7 +110,7 @@ void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite 
             u16 color = pal[i];
             u32 R = GET_R(color) + 8;
             u32 G = GET_G(color) + 8;
-            u32 B = GET_B(color) + 16;
+            u32 B = GET_B(color) + 10;
 
             if (R > 31)
                 R = 31;

@@ -8413,7 +8413,7 @@ void SetVirtualObjectGraphics(u8 virtualObjId, u8 graphicsId)
 
         sprite->oam = *graphicsInfo->oam;
         sprite->oam.tileNum = tileNum;
-        sprite->oam.paletteNum = graphicsInfo->paletteSlot;
+        sprite->oam.paletteNum = IndexOfSpritePaletteTag(graphicsInfo->paletteTag);
         sprite->images = graphicsInfo->images;
 
         if (graphicsInfo->subspriteTables == NULL)

@@ -105,7 +105,7 @@ void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite 
 
         CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(reflectionSprite->oam.paletteNum)], sReflectionPaletteBuffer, PLTT_SIZE_4BPP);
         pal = sReflectionPaletteBuffer;
-        for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
+        for (i = 0; i < 16; i++)
         {
             u16 color = pal[i];
             u32 R = GET_R(color) + 8;
@@ -218,13 +218,6 @@ void ShowWarpArrowSprite(u8 spriteId, u8 direction, s16 x, s16 y)
 #undef sPrevX
 #undef sPrevY
 
-static const u8 sShadowEffectTemplateIds[] = {
-    FLDEFFOBJ_SHADOW_S,
-    FLDEFFOBJ_SHADOW_M,
-    FLDEFFOBJ_SHADOW_L,
-    FLDEFFOBJ_SHADOW_XL
-};
-
 const u16 gShadowVerticalOffsets[] = {
     4,
     4,
@@ -242,10 +235,11 @@ u32 FldEff_Shadow(void)
 {
     u8 objectEventId = GetObjectEventIdByLocalIdAndMap(gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
     const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(gObjectEvents[objectEventId].graphicsId);
-    u8 spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[sShadowEffectTemplateIds[graphicsInfo->shadowSize]], 0, 0, 148);
+    u8 spriteId;
+    LoadFieldEffectPalette(graphicsInfo->shadowSize, COLOR_MAP_NONE);
+    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[graphicsInfo->shadowSize], 0, 0, 148);
     if (spriteId != MAX_SPRITES)
     {
-        LoadFieldEffectPalette(graphicsInfo->shadowSize, COLOR_MAP_NONE);
         gSprites[spriteId].coordOffsetEnabled = TRUE;
         gSprites[spriteId].sLocalId = gFieldEffectArguments[0];
         gSprites[spriteId].sMapNum = gFieldEffectArguments[1];
@@ -1015,7 +1009,6 @@ u32 FldEff_SurfBlob(void)
     {
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
-        sprite->oam.paletteNum = 0;
         sprite->sPlayerObjId = gFieldEffectArguments[2];
         sprite->sVelocity = -1;
         sprite->sPrevX = -1;

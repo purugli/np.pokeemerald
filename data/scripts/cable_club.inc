@@ -207,6 +207,7 @@ CableClub_EventScript_PlayerExitUnionRoom::
 	return
 
 CableClub_EventScript_TrainerCardDataOverwritten::
+	textcolor NPC_TEXT_COLOR_FEMALE
 	message CableClub_Text_TrainerCardDataOverwritten
 	waitmessage
 	playse SE_PIN
@@ -326,8 +327,10 @@ CableClub_EventScript_TryEnterColosseum::
 	goto_if_eq VAR_RESULT, 0, CableClub_EventScript_AbortLink
 	message gText_PleaseWaitForLink
 	waitmessage
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	special TryBattleLinkup
 	waitstate
+	textcolor NPC_TEXT_COLOR_PREVIOUS
 	goto_if_eq VAR_RESULT, LINKUP_SUCCESS, CableClub_EventScript_EnterColosseum
 	goto_if_eq VAR_RESULT, LINKUP_SOMEONE_NOT_READY, CableClub_EventScript_AbortLinkSomeoneNotReady
 	goto_if_eq VAR_RESULT, LINKUP_DIFF_SELECTIONS, CableClub_EventScript_AbortLinkDifferentSelections
@@ -420,8 +423,10 @@ CableClub_EventScript_TradeCenter::
 	goto_if_eq VAR_RESULT, 0, CableClub_EventScript_AbortLink
 	message gText_PleaseWaitForLink
 	waitmessage
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	special TryTradeLinkup
 	waitstate
+	textcolor NPC_TEXT_COLOR_PREVIOUS
 	goto_if_eq VAR_RESULT, LINKUP_SUCCESS, CableClub_EventScript_EnterTradeCenter
 	goto_if_eq VAR_RESULT, LINKUP_SOMEONE_NOT_READY, CableClub_EventScript_AbortLinkSomeoneNotReady
 	goto_if_eq VAR_RESULT, LINKUP_DIFF_SELECTIONS, CableClub_EventScript_AbortLinkDifferentSelections
@@ -780,6 +785,7 @@ RecordCorner_EventScript_ReceivedGiftItem::
 	end
 
 CableClub_EventScript_ReadTrainerCard::
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox CableClub_Text_GotToLookAtTrainerCard, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
 	special Script_ShowLinkTrainerCard
@@ -787,6 +793,7 @@ CableClub_EventScript_ReadTrainerCard::
 	end
 
 CableClub_EventScript_ReadTrainerCardColored::
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox CableClub_Text_GotToLookAtColoredTrainerCard, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
 	special Script_ShowLinkTrainerCard
@@ -794,12 +801,14 @@ CableClub_EventScript_ReadTrainerCardColored::
 	end
 
 CableClub_EventScript_TooBusyToNotice::
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox CableClub_Text_TooBusyToNotice, MSGBOX_DEFAULT
 	closemessage
 	end
 
 BattleColosseum_2P_EventScript_Attendant::
 	special Script_FacePlayer
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox BattleColosseum_2P_Text_TakePlaceStartBattle, MSGBOX_DEFAULT
 	special Script_ClearHeldMovement
 	closemessage
@@ -807,12 +816,14 @@ BattleColosseum_2P_EventScript_Attendant::
 
 TradeCenter_EventScript_Attendant::
 	special Script_FacePlayer
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox TradeCenter_Text_TakeSeatStartTrade, MSGBOX_DEFAULT
 	special Script_ClearHeldMovement
 	closemessage
 	end
 
 RecordCorner_EventScript_Attendant::
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	goto_if_ne VAR_TEMP_MIXED_RECORDS, 0, RecordCorner_EventScript_AlreadyMixed
 	special Script_FacePlayer
 	message RecordCorner_Text_TakeSeatAndWait

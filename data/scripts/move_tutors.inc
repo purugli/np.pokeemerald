@@ -268,6 +268,8 @@ MoveTutor_EventScript_OpenPartyMenu::
 MoveTutor_EventScript_CanOnlyBeLearnedOnce::
 	special DisableMsgBoxWalkaway
 	signmsg
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 	msgbox MoveTutor_Text_ThisMoveCanOnlyBeLearnedOnce, MSGBOX_YESNO
 	normalmsg
+	textcolor NPC_TEXT_COLOR_PREVIOUS
 	return

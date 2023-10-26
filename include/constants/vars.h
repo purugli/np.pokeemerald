@@ -300,10 +300,21 @@
 #define VAR_CONTEST_CATEGORY          0x8011
 #define VAR_MON_BOX_ID                0x8012
 #define VAR_MON_BOX_POS               0x8013
-#define VAR_UNUSED_0x8014             0x8014
-#define VAR_TRAINER_BATTLE_OPPONENT_A 0x8015 // Alias of gTrainerBattleOpponent_A
+#define VAR_TEXT_COLOR                0x8014
+#define VAR_PREV_TEXT_COLOR           0x8015
+#define VAR_TRAINER_BATTLE_OPPONENT_A 0x8016 // Alias of gTrainerBattleOpponent_A
 
-#define SPECIAL_VARS_END              0x8015
+#define SPECIAL_VARS_END              0x8016
+
+// Text color ids for VAR_TEXT_COLOR / VAR_PREV_TEXT_COLOR
+#define NPC_TEXT_COLOR_MALE       8 // Blue, for male NPCs
+#define NPC_TEXT_COLOR_FEMALE     4 // Red, for female NPCs
+#define NPC_TEXT_COLOR_MON        2 // Black, for Pokémon
+#define NPC_TEXT_COLOR_NEUTRAL    2 // Black, for inanimate objects and messages from the game
+#define NPC_TEXT_COLOR_DEFAULT  255 // If an NPC is selected, use the color specified by GetObjectEventGraphicsInfo, otherwise use Neutral.
+
+#define NPC_TEXT_COLOR_RIVAL    254 // Blue if player is female, red if player is male
+#define NPC_TEXT_COLOR_PREVIOUS 255 // Value written to VAR_PREV_TEXT_COLOR
 
 // If an overworld trigger uses this pseudo-variable as the trigger check,
 // then the script will be run using RunScriptImmediately instead of in the

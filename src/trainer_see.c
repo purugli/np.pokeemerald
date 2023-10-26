@@ -464,6 +464,7 @@ static bool8 TrainerExclamationMark(u8 taskId, struct Task *task, struct ObjectE
     FieldEffectStart(FLDEFF_EXCLAMATION_MARK_ICON);
     direction = GetFaceDirectionMovementAction(trainerObj->facingDirection);
     ObjectEventSetHeldMovement(trainerObj, direction);
+    gSpecialVar_TextColor = GetObjectEventGraphicsInfo(trainerObj->graphicsId)->textColor;
     task->tFuncId++; // TRSEE_EXCLAMATION_WAIT
     return TRUE;
 }

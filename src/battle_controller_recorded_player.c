@@ -311,7 +311,7 @@ static void Intro_TryShinyAnimShowHealthbox(void)
             if ((gBattleTypeFlags & BATTLE_TYPE_LINK) && (gBattleTypeFlags & BATTLE_TYPE_MULTI))
             {
                 if (GetBattlerPosition(gActiveBattler) == B_POSITION_PLAYER_LEFT)
-                    m4aMPlayContinue(&gMPlayInfo_BGM);
+                    MPlayContinue(&gMPlayInfo_BGM);
             }
             else
             {

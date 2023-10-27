@@ -1027,7 +1027,7 @@ static u16 RenderText(struct TextPrinter *textPrinter)
                 m4aMPlayStop(&gMPlayInfo_BGM);
                 return RENDER_REPEAT;
             case EXT_CTRL_CODE_RESUME_MUSIC:
-                m4aMPlayContinue(&gMPlayInfo_BGM);
+                MPlayContinue(&gMPlayInfo_BGM);
                 return RENDER_REPEAT;
             case EXT_CTRL_CODE_CLEAR:
                 width = *textPrinter->printerTemplate.currentChar;

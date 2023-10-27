@@ -125,9 +125,7 @@ void PlayNewMapMusic(u16 songNum)
 
 void StopMapMusic(void)
 {
-    sCurrentMapMusic = 0;
-    sNextMapMusic = 0;
-    sMapMusicState = 1;
+    PlayNewMapMusic(0);
 }
 
 void FadeOutMapMusic(u8 speed)
@@ -156,22 +154,9 @@ void FadeOutAndFadeInNewMapMusic(u16 songNum, u8 fadeOutSpeed, u8 fadeInSpeed)
     sMapMusicFadeInSpeed = fadeInSpeed;
 }
 
-static void UNUSED FadeInNewMapMusic(u16 songNum, u8 speed)
-{
-    FadeInNewBGM(songNum, speed);
-    sCurrentMapMusic = songNum;
-    sNextMapMusic = 0;
-    sMapMusicState = 2;
-    sMapMusicFadeInSpeed = 0;
-}
-
 bool8 IsNotWaitingForBGMStop(void)
 {
-    if (sMapMusicState == 6)
-        return FALSE;
-    if (sMapMusicState == 5)
-        return FALSE;
-    if (sMapMusicState == 7)
+    if (sMapMusicState == 5 || sMapMusicState == 6 || sMapMusicState == 7)
         return FALSE;
     return TRUE;
 }
@@ -195,18 +180,12 @@ bool8 WaitFanfare(bool8 stop)
     else
     {
         if (!stop)
-            m4aMPlayContinue(&gMPlayInfo_BGM);
+            MPlayContinue(&gMPlayInfo_BGM);
         else
             m4aSongNumStart(MUS_DUMMY);
 
         return TRUE;
     }
-}
-
-// Unused
-void StopFanfareByFanfareNum(u8 fanfareNum)
-{
-    m4aSongNumStop(sFanfares[fanfareNum].songNum);
 }
 
 void PlayFanfare(u16 songNum)
@@ -243,7 +222,7 @@ static void Task_Fanfare(u8 taskId)
     }
     else
     {
-        m4aMPlayContinue(&gMPlayInfo_BGM);
+        MPlayContinue(&gMPlayInfo_BGM);
         DestroyTask(taskId);
     }
 }
@@ -288,7 +267,7 @@ void FadeInBGM(u8 speed)
 
 void FadeOutBGM(u8 speed)
 {
-    m4aMPlayFadeOut(&gMPlayInfo_BGM, speed);
+    MPlayFadeOut(&gMPlayInfo_BGM, speed);
 }
 
 bool8 IsBGMStopped(void)
@@ -372,8 +351,7 @@ void PlayCryInternal(u16 species, s8 pan, s8 volume, u8 priority, u8 mode)
     u32 length;
     u32 pitch;
     u32 chorus;
-    u32 index;
-    u8 table;
+    struct ToneData *cryTable;
 
     species--;
 
@@ -463,34 +441,11 @@ void PlayCryInternal(u16 species, s8 pan, s8 volume, u8 priority, u8 mode)
     SetPokemonCryChorus(chorus);
     SetPokemonCryPriority(priority);
 
-    // This is a fancy way to get a cry of a pokemon.
-    // It creates 4 sets of 128 mini cry tables.
-    // If you wish to expand pokemon, you need to
-    // append new cases to the switch.
-    species = SpeciesToCryId(species);
-    index = species % 128;
-    table = species / 128;
-
-    #define GET_CRY(speciesIndex, tableId, reversed) \
-        ((reversed) ? &gCryTable_Reverse[(128 * (tableId)) + (speciesIndex)] : &gCryTable[(128 * (tableId)) + (speciesIndex)])
-
-    switch (table)
-    {
-    case 0:
-        gMPlay_PokemonCry = SetPokemonCryTone(GET_CRY(index, 0, reverse));
-        break;
-    case 1:
-        gMPlay_PokemonCry = SetPokemonCryTone(GET_CRY(index, 1, reverse));
-        break;
-    case 2:
-        gMPlay_PokemonCry = SetPokemonCryTone(GET_CRY(index, 2, reverse));
-        break;
-    case 3:
-        gMPlay_PokemonCry = SetPokemonCryTone(GET_CRY(index, 3, reverse));
-        break;
-    }
-
-    #undef GET_CRY
+    if (reverse)
+        cryTable = gCryTable_Reverse;
+    else
+        cryTable = gCryTable;
+    gMPlay_PokemonCry = SetPokemonCryTone(&cryTable[SpeciesToCryId(species)]);
 }
 
 bool8 IsCryFinished(void)
@@ -508,7 +463,7 @@ bool8 IsCryFinished(void)
 
 void StopCryAndClearCrySongs(void)
 {
-    m4aMPlayStop(gMPlay_PokemonCry);
+    StopCry();
     ClearPokemonCrySongs();
 }
 
@@ -519,7 +474,7 @@ void StopCry(void)
 
 bool8 IsCryPlayingOrClearCrySongs(void)
 {
-    if (IsPokemonCryPlaying(gMPlay_PokemonCry))
+    if (IsCryPlaying())
     {
         return TRUE;
     }
@@ -532,10 +487,7 @@ bool8 IsCryPlayingOrClearCrySongs(void)
 
 bool8 IsCryPlaying(void)
 {
-    if (IsPokemonCryPlaying(gMPlay_PokemonCry))
-        return TRUE;
-    else
-        return FALSE;
+    return IsPokemonCryPlaying(gMPlay_PokemonCry);
 }
 
 static void Task_DuckBGMForPokemonCry(u8 taskId)
@@ -546,7 +498,7 @@ static void Task_DuckBGMForPokemonCry(u8 taskId)
         return;
     }
 
-    if (!IsPokemonCryPlaying(gMPlay_PokemonCry))
+    if (!IsCryPlaying())
     {
         m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 256);
         DestroyTask(taskId);
@@ -578,8 +530,7 @@ void PlaySE12WithPanning(u16 songNum, s8 pan)
     m4aSongNumStart(songNum);
     m4aMPlayImmInit(&gMPlayInfo_SE1);
     m4aMPlayImmInit(&gMPlayInfo_SE2);
-    m4aMPlayPanpotControl(&gMPlayInfo_SE1, TRACKS_ALL, pan);
-    m4aMPlayPanpotControl(&gMPlayInfo_SE2, TRACKS_ALL, pan);
+    SE12PanpotControl(pan);
 }
 
 void PlaySE1WithPanning(u16 songNum, s8 pan)

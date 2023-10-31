@@ -7,7 +7,7 @@ extern const struct CompressedSpritePalette gBagPaletteTable;
 extern const struct CompressedSpriteSheet gBerryCheckCircleSpriteSheet;
 extern const struct CompressedSpritePalette gBerryCheckCirclePaletteTable;
 
-void RemoveBagSprite(u8 id);
+void RemoveBagSprite(u32 id);
 void AddBagVisualSprite(u8 bagPocketId);
 void SetBagVisualPocketId(u8 bagPocketId, bool8 isSwitchingPockets);
 void ShakeBagSprite(void);

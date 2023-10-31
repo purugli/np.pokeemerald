@@ -25,14 +25,14 @@ EventScript_UseCut::
 	end
 
 EventScript_CutTreeDown::
-	applymovement VAR_LAST_TALKED, Movement_CutTreeDown
+	applymovement VAR_LAST_TALKED, Movement_RemoveObstacle
 	waitmovement 0
 	removeobject VAR_LAST_TALKED
 	releaseall
 	end
 
-Movement_CutTreeDown:
-	cut_tree
+Movement_RemoveObstacle:
+	remove_obstacle
 	step_end
 
 EventScript_CheckTreeCantCut::
@@ -84,7 +84,7 @@ EventScript_UseRockSmash::
 	end
 
 EventScript_SmashRock::
-	applymovement VAR_LAST_TALKED, Movement_SmashRock
+	applymovement VAR_LAST_TALKED, Movement_RemoveObstacle
 	waitmovement 0
 	removeobject VAR_LAST_TALKED
 	specialvar VAR_RESULT, TryUpdateRusturfTunnelState
@@ -98,10 +98,6 @@ EventScript_SmashRock::
 EventScript_EndSmash::
 	releaseall
 	end
-
-Movement_SmashRock:
-	rock_smash_break
-	step_end
 
 EventScript_CantSmashRock::
 	msgbox Text_CantSmash, MSGBOX_DEFAULT

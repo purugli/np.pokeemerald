@@ -33,7 +33,6 @@
 #include "constants/metatile_behaviors.h"
 #include "m4a.h"
 
-#define NUM_FORCED_MOVEMENTS 22
 #define NUM_ACRO_BIKE_COLLISIONS 5
 
 static EWRAM_DATA u8 sSpinStartFacingDir = 0;
@@ -49,7 +48,6 @@ static void npc_clear_strange_bits(struct ObjectEvent *);
 static void MovePlayerAvatarUsingKeypadInput(u8, u16, u16);
 static void PlayerAllowForcedMovementIfMovingSameDirection();
 static bool8 TryDoMetatileBehaviorForcedMovement();
-static u8 GetForcedMovementByMetatileBehavior();
 
 static bool8 ForcedMovement_None(void);
 static bool8 ForcedMovement_Slip(void);
@@ -151,58 +149,32 @@ static void AlignFishingAnimationFrames(void);
 
 static u8 TrySpinPlayerForWarp(struct ObjectEvent *, s16 *);
 
-static bool8 (*const sForcedMovementTestFuncs[NUM_FORCED_MOVEMENTS])(u8) =
-{
-    MetatileBehavior_IsTrickHouseSlipperyFloor,
-    MetatileBehavior_IsIce,
-    MetatileBehavior_IsWalkSouth,
-    MetatileBehavior_IsWalkNorth,
-    MetatileBehavior_IsWalkWest,
-    MetatileBehavior_IsWalkEast,
-    MetatileBehavior_IsSouthwardCurrent,
-    MetatileBehavior_IsNorthwardCurrent,
-    MetatileBehavior_IsWestwardCurrent,
-    MetatileBehavior_IsEastwardCurrent,
-    MetatileBehavior_IsSpinRight,
-    MetatileBehavior_IsSpinLeft,
-    MetatileBehavior_IsSpinUp,
-    MetatileBehavior_IsSpinDown,
-    MetatileBehavior_IsSlideSouth,
-    MetatileBehavior_IsSlideNorth,
-    MetatileBehavior_IsSlideWest,
-    MetatileBehavior_IsSlideEast,
-    MetatileBehavior_IsWaterfall,
-    MetatileBehavior_IsSecretBaseJumpMat,
-    MetatileBehavior_IsSecretBaseSpinMat,
-    MetatileBehavior_IsMuddySlope,
-};
-
-// + 1 for ForcedMovement_None, which is excluded above
-static bool8 (*const sForcedMovementFuncs[NUM_FORCED_MOVEMENTS + 1])(void) =
-{
-    ForcedMovement_None,
-    ForcedMovement_Slip,
-    ForcedMovement_Slip,
-    ForcedMovement_WalkSouth,
-    ForcedMovement_WalkNorth,
-    ForcedMovement_WalkWest,
-    ForcedMovement_WalkEast,
-    ForcedMovement_PushedSouthByCurrent,
-    ForcedMovement_PushedNorthByCurrent,
-    ForcedMovement_PushedWestByCurrent,
-    ForcedMovement_PushedEastByCurrent,
-    ForcedMovement_SpinRight,
-    ForcedMovement_SpinLeft,
-    ForcedMovement_SpinUp,
-    ForcedMovement_SpinDown,
-    ForcedMovement_SlideSouth,
-    ForcedMovement_SlideNorth,
-    ForcedMovement_SlideWest,
-    ForcedMovement_SlideEast,
-    ForcedMovement_PushedSouthByCurrent,
-    ForcedMovement_MatJump,
-    ForcedMovement_MatSpin,
-    ForcedMovement_MuddySlope,
+static const struct {
+    bool8 (*check)(u8 metatileBehavior);
+    bool8 (*apply)(void);
+} sForcedMovementFuncs[] = {
+    {MetatileBehavior_IsTrickHouseSlipperyFloor, ForcedMovement_Slip},
+    {MetatileBehavior_IsIce,                     ForcedMovement_Slip},
+    {MetatileBehavior_IsWalkSouth,               ForcedMovement_WalkSouth},
+    {MetatileBehavior_IsWalkNorth,               ForcedMovement_WalkNorth},
+    {MetatileBehavior_IsWalkWest,                ForcedMovement_WalkWest},
+    {MetatileBehavior_IsWalkEast,                ForcedMovement_WalkEast},
+    {MetatileBehavior_IsSouthwardCurrent,        ForcedMovement_PushedSouthByCurrent},
+    {MetatileBehavior_IsNorthwardCurrent,        ForcedMovement_PushedNorthByCurrent},
+    {MetatileBehavior_IsWestwardCurrent,         ForcedMovement_PushedWestByCurrent},
+    {MetatileBehavior_IsEastwardCurrent,         ForcedMovement_PushedEastByCurrent},
+    {MetatileBehavior_IsSpinRight,               ForcedMovement_SpinRight},
+    {MetatileBehavior_IsSpinLeft,                ForcedMovement_SpinLeft},
+    {MetatileBehavior_IsSpinUp,                  ForcedMovement_SpinUp},
+    {MetatileBehavior_IsSpinDown,                ForcedMovement_SpinDown},
+    {MetatileBehavior_IsSlideSouth,              ForcedMovement_SlideSouth},
+    {MetatileBehavior_IsSlideNorth,              ForcedMovement_SlideNorth},
+    {MetatileBehavior_IsSlideWest,               ForcedMovement_SlideWest},
+    {MetatileBehavior_IsSlideEast,               ForcedMovement_SlideEast},
+    {MetatileBehavior_IsWaterfall,               ForcedMovement_PushedSouthByCurrent},
+    {MetatileBehavior_IsSecretBaseJumpMat,       ForcedMovement_MatJump},
+    {MetatileBehavior_IsSecretBaseSpinMat,       ForcedMovement_MatSpin},
+    {MetatileBehavior_IsMuddySlope,              ForcedMovement_MuddySlope},
 };
 
 static void (*const sPlayerNotOnBikeFuncs[])(u8, u16) =
@@ -418,27 +390,22 @@ static bool8 TryUpdatePlayerSpinDirection(void)
 
 static bool8 TryDoMetatileBehaviorForcedMovement(void)
 {
-    return sForcedMovementFuncs[GetForcedMovementByMetatileBehavior()]();
-}
-
-static u8 GetForcedMovementByMetatileBehavior(void)
-{
     u8 i;
 
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_CONTROLLABLE))
     {
         u8 metatileBehavior = gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior;
 
-        for (i = 0; i < NUM_FORCED_MOVEMENTS; i++)
+        for (i = 0; i < ARRAY_COUNT(sForcedMovementFuncs); i++)
         {
-            if (sForcedMovementTestFuncs[i](metatileBehavior))
+            if (sForcedMovementFuncs[i].check(metatileBehavior))
             {
                 gPlayerAvatar.lastSpinTile = metatileBehavior;
-                return i + 1;
+                return sForcedMovementFuncs[i].apply();
             }
         }
     }
-    return 0;
+    return ForcedMovement_None();
 }
 
 static bool8 ForcedMovement_None(void)
@@ -1101,10 +1068,10 @@ static void PlayerApplyTileForcedMovement(u8 metatileBehavior)
 {
     u32 i;
 
-    for (i = 0; i < NUM_FORCED_MOVEMENTS; i++)
+    for (i = 0; i < ARRAY_COUNT(sForcedMovementFuncs); i++)
     {
-        if (sForcedMovementTestFuncs[i](metatileBehavior))
-            sForcedMovementFuncs[i + 1]();
+        if (sForcedMovementFuncs[i].check(metatileBehavior))
+            sForcedMovementFuncs[i].apply();
     }
 }
 

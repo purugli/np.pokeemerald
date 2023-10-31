@@ -485,7 +485,8 @@ u8 CreateSpriteAt(u8 index, const struct SpriteTemplate *template, s16 x, s16 y,
 
     CalcCenterToCornerVec(sprite, sprite->oam.shape, sprite->oam.size, sprite->oam.affineMode);
 
-    if (template->tileTag == TAG_NONE)
+    sprite->tileTag = template->tileTag;
+    if (sprite->tileTag == TAG_NONE)
     {
         s16 tileNum;
         sprite->images = template->images;
@@ -501,15 +502,16 @@ u8 CreateSpriteAt(u8 index, const struct SpriteTemplate *template, s16 x, s16 y,
     }
     else
     {
-        sprite->sheetTileStart = GetSpriteTileStartByTag(template->tileTag);
+        sprite->sheetTileStart = GetSpriteTileStartByTag(sprite->tileTag);
         SetSpriteSheetFrameTileNum(sprite);
     }
 
     if (sprite->oam.affineMode & ST_OAM_AFFINE_ON_MASK)
         InitSpriteAffineAnim(sprite);
 
-    if (template->paletteTag != TAG_NONE)
-        sprite->oam.paletteNum = IndexOfSpritePaletteTag(template->paletteTag);
+    sprite->paletteTag = template->paletteTag;
+    if (sprite->paletteTag != TAG_NONE)
+        sprite->oam.paletteNum = IndexOfSpritePaletteTag(sprite->paletteTag);
 
     return index;
 }
@@ -736,19 +738,19 @@ void ResetAllSprites(void)
 
 void FreeSpriteTiles(struct Sprite *sprite)
 {
-    if (!sprite || !sprite->template)
+    if (!sprite)
         return;
 
-    if (sprite->template->tileTag != TAG_NONE)
-        FreeSpriteTilesByTag(sprite->template->tileTag);
+    if (sprite->tileTag != TAG_NONE)
+        FreeSpriteTilesByTag(sprite->tileTag);
 }
 
 void FreeSpritePalette(struct Sprite *sprite)
 {
-    if (!sprite || !sprite->template)
+    if (!sprite)
         return;
 
-    FreeSpritePaletteByTag(sprite->template->paletteTag);
+    FreeSpritePaletteByTag(sprite->paletteTag);
 }
 
 void FreeSpriteOamMatrix(struct Sprite *sprite)

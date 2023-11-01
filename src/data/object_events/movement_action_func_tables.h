@@ -177,6 +177,10 @@ u8 MovementAction_AcroEndWheelieMoveDown_Step0(struct ObjectEvent *, struct Spri
 u8 MovementAction_AcroEndWheelieMoveUp_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_AcroEndWheelieMoveLeft_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_AcroEndWheelieMoveRight_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_AcroWheelieMoveOnStairsDown_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_AcroWheelieMoveOnStairsUp_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_AcroWheelieMoveOnStairsLeft_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_AcroWheelieMoveOnStairsRight_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_SpinDown_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_SpinUp_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_SpinLeft_Step0(struct ObjectEvent *, struct Sprite *);
@@ -312,6 +316,10 @@ u8 (*const gMovementActionFuncs_AcroEndWheelieFaceDown[])(struct ObjectEvent *, 
 u8 (*const gMovementActionFuncs_AcroEndWheelieFaceUp[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_AcroEndWheelieFaceLeft[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_AcroEndWheelieFaceRight[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_AcroWheelieMoveOnStairsDown[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_AcroWheelieMoveOnStairsUp[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_AcroWheelieMoveOnStairsLeft[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_AcroWheelieMoveOnStairsRight[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_AcroWheelieHopFaceDown[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_AcroWheelieHopFaceUp[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_AcroWheelieHopFaceLeft[])(struct ObjectEvent *, struct Sprite *);
@@ -533,6 +541,10 @@ u8 (*const *const gMovementActionFuncs[])(struct ObjectEvent *, struct Sprite *)
     [MOVEMENT_ACTION_FIGURE_8] = gMovementActionFuncs_Figure8,
     [MOVEMENT_ACTION_FLY_UP] = gMovementActionFuncs_FlyUp,
     [MOVEMENT_ACTION_FLY_DOWN] = gMovementActionFuncs_FlyDown,
+    [MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_DOWN] = gMovementActionFuncs_AcroWheelieMoveOnStairsDown,
+    [MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_UP] = gMovementActionFuncs_AcroWheelieMoveOnStairsUp,
+    [MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_LEFT] = gMovementActionFuncs_AcroWheelieMoveOnStairsLeft,
+    [MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_RIGHT] = gMovementActionFuncs_AcroWheelieMoveOnStairsRight,
 };
 
 u8 (*const gMovementActionFuncs_FaceDown[])(struct ObjectEvent *, struct Sprite *) = {
@@ -1298,6 +1310,30 @@ u8 (*const gMovementActionFuncs_AcroEndWheelieFaceLeft[])(struct ObjectEvent *, 
 u8 (*const gMovementActionFuncs_AcroEndWheelieFaceRight[])(struct ObjectEvent *, struct Sprite *) = {
     MovementAction_AcroEndWheelieFaceRight_Step0,
     MovementAction_WaitSpriteAnim,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_AcroWheelieMoveOnStairsDown[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_AcroWheelieMoveOnStairsDown_Step0,
+    MovementAction_WalkNormal_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_AcroWheelieMoveOnStairsUp[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_AcroWheelieMoveOnStairsUp_Step0,
+    MovementAction_WalkNormal_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_AcroWheelieMoveOnStairsLeft[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_AcroWheelieMoveOnStairsLeft_Step0,
+    MovementAction_WalkNormal_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_AcroWheelieMoveOnStairsRight[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_AcroWheelieMoveOnStairsRight_Step0,
+    MovementAction_WalkNormal_Step1,
     MovementAction_PauseSpriteAnim,
 };
 

@@ -868,6 +868,13 @@ const u8 gAcroEndWheelieMoveDirectionMovementActions[] = {
     MOVEMENT_ACTION_ACRO_END_WHEELIE_MOVE_LEFT,
     MOVEMENT_ACTION_ACRO_END_WHEELIE_MOVE_RIGHT,
 };
+const u8 gAcroWheelieMoveDirectionOnStairsMovementActions[] = {
+    MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_DOWN,
+    MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_DOWN,
+    MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_UP,
+    MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_LEFT,
+    MOVEMENT_ACTION_ACRO_WHEELIE_MOVE_ON_STAIRS_RIGHT,
+};
 
 static const u8 sOppositeDirections[] = {
     DIR_NORTH,
@@ -5977,6 +5984,33 @@ bool8 MovementAction_AcroEndWheelieFaceRight_Step0(struct ObjectEvent *objectEve
 {
     StartSpriteAnimInDirection(objectEvent, sprite, DIR_EAST, GetAcroEndWheelieDirectionAnimNum(DIR_EAST));
     return FALSE;
+}
+
+static bool8 InitAcroWheelieMoveOnStairs(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction)
+{
+    InitMovementNormal(objectEvent, sprite, direction, 0);
+    SetStepAnimHandleAlternation(objectEvent, sprite, GetAcroWheeliePedalDirectionAnimNum(objectEvent->facingDirection));
+    return MovementAction_WalkNormal_Step1(objectEvent, sprite);
+}
+
+bool8 MovementAction_AcroWheelieMoveOnStairsDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    return InitAcroWheelieMoveOnStairs(objectEvent, sprite, DIR_SOUTH);
+}
+
+bool8 MovementAction_AcroWheelieMoveOnStairsUp_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    return InitAcroWheelieMoveOnStairs(objectEvent, sprite, DIR_NORTH);
+}
+
+bool8 MovementAction_AcroWheelieMoveOnStairsLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    return InitAcroWheelieMoveOnStairs(objectEvent, sprite, DIR_WEST);
+}
+
+bool8 MovementAction_AcroWheelieMoveOnStairsRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    return InitAcroWheelieMoveOnStairs(objectEvent, sprite, DIR_EAST);
 }
 
 void InitFigure8Anim(struct ObjectEvent *objectEvent, struct Sprite *sprite)

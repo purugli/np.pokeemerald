@@ -237,6 +237,8 @@ static void MachBikeTransition_TrySpeedUp(u8 direction)
         }
         else
         {
+            if (PlayerIsMovingOnStairs(direction) && gPlayerAvatar.bikeFrameCounter > 1)
+                gPlayerAvatar.bikeFrameCounter--;
             // we did not hit anything that can slow us down, so perform the advancement callback depending on the bikeFrameCounter and try to increase the mach bike's speed.
             sMachBikeSpeedCallbacks[gPlayerAvatar.bikeFrameCounter](direction);
             gPlayerAvatar.bikeSpeed = gPlayerAvatar.bikeFrameCounter + (gPlayerAvatar.bikeFrameCounter >> 1); // same as dividing by 2, but compiler is insistent on >> 1
@@ -726,7 +728,10 @@ static void AcroBikeTransition_WheelieMoving(u8 direction)
         }
         return;
     }
-    PlayerWheelieMove(direction);
+    if (PlayerIsMovingOnStairs(direction))
+        PlayerSetAnimId(GetAcroWheelieMoveDirectionOnStairsMovementAction(direction), COPY_MOVE_WALK);
+    else
+        PlayerWheelieMove(direction);
     gPlayerAvatar.runningState = MOVING;
 }
 

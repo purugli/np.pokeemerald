@@ -171,6 +171,7 @@ u8 GetJumpInPlaceTurnAroundMovementAction(u32);
 u8 GetAcroWheelieInPlaceDirectionMovementAction(u32);
 u8 GetAcroPopWheelieMoveDirectionMovementAction(u32);
 u8 GetAcroWheelieMoveDirectionMovementAction(u32);
+u8 GetAcroWheelieMoveDirectionOnStairsMovementAction(u32);
 u8 GetAcroEndWheelieMoveDirectionMovementAction(u32);
 u8 GetFishingDirectionAnimNum(u8 direction);
 u8 GetAcroWheelieDirectionAnimNum(u8 direction);

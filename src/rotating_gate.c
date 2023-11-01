@@ -1000,38 +1000,3 @@ bool8 CheckForRotatingGatePuzzleCollision(u8 direction, s16 x, s16 y)
     }
     return FALSE;
 }
-
-bool8 CheckForRotatingGatePuzzleCollisionWithoutAnimation(u8 direction, s16 x, s16 y)
-{
-    s32 i;
-
-    if (!GetCurrentMapRotatingGatePuzzleType())
-        return FALSE;
-    for (i = 0; i < sRotatingGate_PuzzleCount; i++)
-    {
-        s16 gateX = sRotatingGate_PuzzleConfig[i].x + MAP_OFFSET;
-        s16 gateY = sRotatingGate_PuzzleConfig[i].y + MAP_OFFSET;
-
-        if (gateX - 2 <= x && x <= gateX + 1 && gateY - 2 <= y && y <= gateY + 1)
-        {
-            s16 centerX = x - gateX + 2;
-            s16 centerY = y - gateY + 2;
-            u8 rotationInfo = RotatingGate_GetRotationInfo(direction, centerX, centerY);
-
-            if (rotationInfo != GATE_ROT_NONE)
-            {
-                u8 rotationDirection = ((rotationInfo & 0xF0) >> 4);
-                u8 armInfo = rotationInfo & 0xF;
-
-                if (RotatingGate_HasArm(i, armInfo))
-                {
-                    if (!RotatingGate_CanRotate(i, rotationDirection))
-                    {
-                        return TRUE;
-                    }
-                }
-            }
-        }
-    }
-    return FALSE;
-}

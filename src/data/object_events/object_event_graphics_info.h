@@ -4187,7 +4187,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Deoxys = {
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = OBJ_EVENT_ANIM_HO_OH,
+    .anims = OBJ_EVENT_ANIM_STANDARD,
     .images = sPicTable_Deoxys,
     .affineAnims = gDummySpriteAffineAnimTable,
 };

@@ -1719,7 +1719,14 @@ static const struct SpriteFrameImage sPicTable_Leaf[] = {
 
 static const struct SpriteFrameImage sPicTable_Deoxys[] = {
     overworld_frame(gObjectEventPic_Deoxys, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Deoxys, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Deoxys, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Deoxys, 4, 4, 0),
     overworld_frame(gObjectEventPic_Deoxys, 4, 4, 1),
+    overworld_frame(gObjectEventPic_Deoxys, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Deoxys, 4, 4, 1),
+    overworld_frame(gObjectEventPic_Deoxys, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Deoxys, 4, 4, 0),
 };
 
 static const struct SpriteFrameImage sPicTable_BirthIslandStone[] = {

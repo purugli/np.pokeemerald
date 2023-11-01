@@ -3960,9 +3960,7 @@ static void FreeDodrioSprites(u8 numPlayers)
         struct Sprite *sprite = &gSprites[*sDodrioSpriteIds[i]];
         if (sprite)
             DestroySpriteAndFreeResources(sprite);
-#ifdef BUGFIX
-        FREE_AND_SET_NULL(sDodrioSpriteIds[i]); // Memory should be freed here but is not.
-#endif
+        FREE_AND_SET_NULL(sDodrioSpriteIds[i]);
     }
 }
 

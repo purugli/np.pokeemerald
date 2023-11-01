@@ -100,12 +100,7 @@ u8 SiiRtcProbe(void)
 
     errorCode = 0;
 
-#ifdef BUGFIX
     if (!(rtc.status & SIIRTCINFO_24HOUR) || (rtc.status & SIIRTCINFO_POWER))
-#else
-    if ((rtc.status & (SIIRTCINFO_POWER | SIIRTCINFO_24HOUR)) == SIIRTCINFO_POWER
-     || (rtc.status & (SIIRTCINFO_POWER | SIIRTCINFO_24HOUR)) == 0)
-#endif
     {
         // The RTC is in 12-hour mode. Reset it and switch to 24-hour mode.
 

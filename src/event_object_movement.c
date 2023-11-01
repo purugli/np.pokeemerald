@@ -448,12 +448,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_BerryTreeSprout,       OBJ_EVENT_PAL_TAG_BERRY_TREE_SPROUT},
     {gObjectEventPal_AguavBerryTree,        OBJ_EVENT_PAL_TAG_AGUAV_BERRY_TREE},
     {gObjectEventPal_SalacBerryTree,        OBJ_EVENT_PAL_TAG_SALAC_BERRY_TREE},
-#ifdef BUGFIX
     {NULL,                                  OBJ_EVENT_PAL_TAG_NONE}, 
-#else
-    {}, // BUG: FindObjectEventPaletteIndexByTag looks for OBJ_EVENT_PAL_TAG_NONE and not 0x0.
-        // If it's looking for a tag that isn't in this table, the game locks in an infinite loop.
-#endif
 };
 
 #include "data/object_events/berry_tree_graphics_tables.h"
@@ -1762,12 +1757,7 @@ void LoadObjectEventPalette(u16 paletteTag)
 {
     u16 i = FindObjectEventPaletteIndexByTag(paletteTag);
 
-// FindObjectEventPaletteIndexByTag returns 0xFF on failure, not OBJ_EVENT_PAL_TAG_NONE.
-#ifdef BUGFIX
     if (i != 0xFF)
-#else
-    if (i != OBJ_EVENT_PAL_TAG_NONE)
-#endif
         LoadSpritePaletteIfTagExists(&sObjectEventSpritePalettes[i]);
 }
 

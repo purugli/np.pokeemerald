@@ -9446,9 +9446,7 @@ u32 GetBoxMonLevelAt(u8 boxId, u8 boxPosition)
 
     if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT && GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES))
         lvl = GetLevelFromBoxMonExp(&gPokemonStoragePtr->boxes[boxId][boxPosition]);
-#ifdef BUGFIX
     else
-#endif
         lvl = 0;
 
     return lvl;

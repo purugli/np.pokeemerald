@@ -2892,11 +2892,7 @@ static const union AnimCmd sAnim_CreditDigit[] =
     ANIMCMD_FRAME(14, 0), // 7
     ANIMCMD_FRAME(16, 0), // 8
     ANIMCMD_FRAME(18, 0), // 9
-    // BUG: Animation not terminated properly
-    // Doesn't matter in practice, the frames are set directly and not looped
-#ifdef BUGFIX
     ANIMCMD_END
-#endif
 };
 
 static const union AnimCmd *const sAnims_CreditDigit[] =

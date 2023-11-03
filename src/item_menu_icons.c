@@ -609,7 +609,7 @@ static void LoadBerryGfx(u8 berryId)
     pal.data = sBerryPicTable[berryId].pal;
     pal.tag = TAG_BERRY_PIC_PAL;
     LoadCompressedSpritePalette(&pal);
-    LZDecompressWram(sBerryPicTable[berryId].tiles, &gDecompressionBuffer[0x1000]);
+    LZ77UnCompWram(sBerryPicTable[berryId].tiles, &gDecompressionBuffer[0x1000]);
     ArrangeBerryGfx(&gDecompressionBuffer[0x1000], &gDecompressionBuffer[0]);
 }
 

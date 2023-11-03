@@ -983,7 +983,7 @@ void ClearBattleAnimBg(u32 bgId)
 void AnimLoadCompressedBgGfx(u32 bgId, const u32 *src, u32 tilesOffset)
 {
     CpuFill32(0, gBattleAnimBgTileBuffer, 0x2000);
-    LZDecompressWram(src, gBattleAnimBgTileBuffer);
+    LZ77UnCompWram(src, gBattleAnimBgTileBuffer);
     LoadBgTiles(bgId, gBattleAnimBgTileBuffer, 0x2000, tilesOffset);
 }
 
@@ -2090,7 +2090,7 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16
                                                 personality,
                                                 TRUE);
         else
-            LoadSpecialPokePic_2(&gMonFrontPicTable[species],
+            LoadSpecialPokePic(&gMonFrontPicTable[species],
                                  gMonSpritesGfxPtr->buffer,
                                  species,
                                  personality,
@@ -2106,7 +2106,7 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16
                                                 personality,
                                                 FALSE);
         else
-            LoadSpecialPokePic_2(&gMonBackPicTable[species],
+            LoadSpecialPokePic(&gMonBackPicTable[species],
                                  gMonSpritesGfxPtr->buffer,
                                  species,
                                  personality,

@@ -364,7 +364,7 @@ static void VBlankCB_ContestPainting(void)
 static void InitContestMonPixels(u16 species, bool8 backPic)
 {
     const void *pal = GetMonSpritePalFromSpeciesAndPersonality(species, gContestPaintingWinner->trainerId, gContestPaintingWinner->personality);
-    LZDecompressVram(pal, gContestPaintingMonPalette);
+    LZ77UnCompVram(pal, gContestPaintingMonPalette);
     if (!backPic)
     {
         HandleLoadSpecialPokePic_DontHandleDeoxys(

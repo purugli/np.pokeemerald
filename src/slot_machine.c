@@ -5012,9 +5012,9 @@ static void LoadSlotMachineGfx(void)
 
     LoadReelBackground();
     sDigitalDisplayGfxPtr = Alloc(0x3200);
-    LZDecompressWram(gSlotMachineDigitalDisplay_Gfx, sDigitalDisplayGfxPtr);
+    LZ77UnCompWram(gSlotMachineDigitalDisplay_Gfx, sDigitalDisplayGfxPtr);
     sReelTimeGfxPtr = Alloc(0x3600);
-    LZDecompressWram(sReelTimeGfx, sReelTimeGfxPtr);
+    LZ77UnCompWram(sReelTimeGfx, sReelTimeGfxPtr);
     sSlotMachineSpritesheetsPtr = AllocZeroed(sizeof(struct SpriteSheet) * ARRAY_COUNT(sSlotMachineSpriteSheets));
     for (i = 0; i < ARRAY_COUNT(sSlotMachineSpriteSheets); i++)
     {
@@ -5052,7 +5052,7 @@ static void LoadReelBackground(void)
 static void LoadMenuGfx(void)
 {
     sMenuGfx = Alloc(0x2200);
-    LZDecompressWram(gSlotMachineMenu_Gfx, sMenuGfx);
+    LZ77UnCompWram(gSlotMachineMenu_Gfx, sMenuGfx);
     LoadBgTiles(2, sMenuGfx, 0x2200, 0);
     LoadPalette(gSlotMachineMenu_Pal, BG_PLTT_ID(0), 5 * PLTT_SIZE_4BPP);
     LoadPalette(sUnkPalette, BG_PLTT_ID(13), PLTT_SIZE_4BPP);

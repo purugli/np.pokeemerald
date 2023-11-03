@@ -1999,7 +1999,7 @@ static void Select_CreateMonSprite(void)
     u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
     u32 otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
 
-    sFactorySelectScreen->monPics[1].monSpriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, TRUE, 88, 32, 15, TAG_NONE);
+    sFactorySelectScreen->monPics[1].monSpriteId = CreateMonPicSprite(species, otId, personality, FALSE, 88, 32, 15, TAG_NONE);
     gSprites[sFactorySelectScreen->monPics[1].monSpriteId].centerToCornerVecX = 0;
     gSprites[sFactorySelectScreen->monPics[1].monSpriteId].centerToCornerVecY = 0;
 
@@ -2025,7 +2025,7 @@ static void Select_ReshowMonSprite(void)
     personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
     otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
 
-    sFactorySelectScreen->monPics[1].monSpriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, TRUE, 88, 32, 15, TAG_NONE);
+    sFactorySelectScreen->monPics[1].monSpriteId = CreateMonPicSprite(species, otId, personality, FALSE, 88, 32, 15, TAG_NONE);
     gSprites[sFactorySelectScreen->monPics[1].monSpriteId].centerToCornerVecX = 0;
     gSprites[sFactorySelectScreen->monPics[1].monSpriteId].centerToCornerVecY = 0;
 
@@ -2047,7 +2047,7 @@ static void Select_CreateChosenMonsSprites(void)
                 u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
                 u32 otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
 
-                sFactorySelectScreen->monPics[i].monSpriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, TRUE, (i * 72) + 16, 32, i + 13, TAG_NONE);
+                sFactorySelectScreen->monPics[i].monSpriteId = CreateMonPicSprite(species, otId, personality, FALSE, (i * 72) + 16, 32, i + 13, TAG_NONE);
                 gSprites[sFactorySelectScreen->monPics[i].monSpriteId].centerToCornerVecX = 0;
                 gSprites[sFactorySelectScreen->monPics[i].monSpriteId].centerToCornerVecY = 0;
                 break;
@@ -2209,9 +2209,9 @@ static void Select_HideChosenMons(void)
 {
     u8 taskId;
 
-    FreeAndDestroyMonPicSprite(sFactorySelectScreen->monPics[0].monSpriteId);
-    FreeAndDestroyMonPicSprite(sFactorySelectScreen->monPics[1].monSpriteId);
-    FreeAndDestroyMonPicSprite(sFactorySelectScreen->monPics[2].monSpriteId);
+    FreeAndDestroyPicSprite(sFactorySelectScreen->monPics[0].monSpriteId);
+    FreeAndDestroyPicSprite(sFactorySelectScreen->monPics[1].monSpriteId);
+    FreeAndDestroyPicSprite(sFactorySelectScreen->monPics[2].monSpriteId);
 
     taskId = CreateTask(Select_Task_CloseChosenMonPics, 1);
     gTasks[taskId].func(taskId);
@@ -4054,7 +4054,7 @@ static void Swap_ShowSummaryMonSprite(void)
     personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
     otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
 
-    sFactorySwapScreen->monPic.monSpriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, TRUE, 88, 32, 15, TAG_NONE);
+    sFactorySwapScreen->monPic.monSpriteId = CreateMonPicSprite(species, otId, personality, FALSE, 88, 32, 15, TAG_NONE);
     gSprites[sFactorySwapScreen->monPic.monSpriteId].centerToCornerVecX = 0;
     gSprites[sFactorySwapScreen->monPic.monSpriteId].centerToCornerVecY = 0;
 
@@ -4065,7 +4065,7 @@ static void CloseMonPic(struct FactoryMonPic pic, bool8 *animating, bool8 swapSc
 {
     u8 taskId;
 
-    FreeAndDestroyMonPicSprite(pic.monSpriteId);
+    FreeAndDestroyPicSprite(pic.monSpriteId);
     taskId = CreateTask(Task_CloseMonPic, 1);
     gTasks[taskId].tIsSwapScreen = swapScreen;
     gTasks[taskId].tSpriteId = pic.bgSpriteId;
@@ -4075,7 +4075,7 @@ static void CloseMonPic(struct FactoryMonPic pic, bool8 *animating, bool8 swapSc
 
 static void HideMonPic(struct FactoryMonPic pic, bool8 *animating)
 {
-    FreeAndDestroyMonPicSprite(pic.monSpriteId);
+    FreeAndDestroyPicSprite(pic.monSpriteId);
     FreeOamMatrix(gSprites[pic.bgSpriteId].oam.matrixNum);
     DestroySprite(&gSprites[pic.bgSpriteId]);
     *animating = FALSE;
@@ -4270,7 +4270,7 @@ static void Swap_CreateMonSprite(void)
     personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
     otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
 
-    sFactorySwapScreen->monPic.monSpriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, TRUE, 88, 32, 15, TAG_NONE);
+    sFactorySwapScreen->monPic.monSpriteId = CreateMonPicSprite(species, otId, personality, FALSE, 88, 32, 15, TAG_NONE);
     gSprites[sFactorySwapScreen->monPic.monSpriteId].centerToCornerVecX = 0;
     gSprites[sFactorySwapScreen->monPic.monSpriteId].centerToCornerVecY = 0;
 

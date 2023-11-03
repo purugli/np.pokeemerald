@@ -80,7 +80,6 @@ static void UpdateAndZoomInSelectedRibbon(struct Pokenav_RibbonsSummaryMenu *);
 static void PrintRibbonNameAndDescription(struct Pokenav_RibbonsSummaryMenu *);
 static void ResetSpritesAndDrawMonFrontPic(struct Pokenav_RibbonsSummaryMenu *);
 static void AddRibbonListIndexWindow(struct Pokenav_RibbonsSummaryMenu *);
-static void DestroyRibbonsMonFrontPic(struct Pokenav_RibbonsSummaryMenu *);
 static void SlideMonSpriteOff(struct Pokenav_RibbonsSummaryMenu *);
 static void SlideMonSpriteOn(struct Pokenav_RibbonsSummaryMenu *);
 static void AddRibbonCountWindow(struct Pokenav_RibbonsSummaryMenu *);
@@ -542,7 +541,7 @@ void FreeRibbonsSummaryScreen2(void)
     RemoveWindow(menu->ribbonCountWindowId);
     RemoveWindow(menu->nameWindowId);
     RemoveWindow(menu->listIdxWindowId);
-    DestroyRibbonsMonFrontPic(menu);
+    FreeAndDestroyPicSprite(menu->monSpriteId);
     FreeSpriteTilesByTag(GFXTAG_RIBBON_ICONS_BIG);
     FreeSpritePaletteByTag(PALTAG_RIBBON_ICONS_1);
     FreeSpritePaletteByTag(PALTAG_RIBBON_ICONS_2);
@@ -946,11 +945,6 @@ static void ResetSpritesAndDrawMonFrontPic(struct Pokenav_RibbonsSummaryMenu *me
     PokenavFillPalette(15, 0);
 }
 
-static void DestroyRibbonsMonFrontPic(struct Pokenav_RibbonsSummaryMenu *menu)
-{
-    FreeAndDestroyMonPicSprite(menu->monSpriteId);
-}
-
 // x and y arguments are ignored
 // y is always given as MON_SPRITE_Y
 // x is given as either MON_SPRITE_X_ON or MON_SPRITE_X_OFF (but ignored and MON_SPRITE_X_ON is used)
@@ -960,7 +954,7 @@ static u16 DrawRibbonsMonFrontPic(s32 x, s32 y)
     u32 personality, otId;
 
     GetMonSpeciesPersonalityOtId(&species, &personality, &otId);
-    spriteId = CreateMonPicSprite_HandleDeoxys(species, otId, personality, TRUE, MON_SPRITE_X_ON, MON_SPRITE_Y, 15, TAG_NONE);
+    spriteId = CreateMonPicSprite(species, otId, personality, FALSE, MON_SPRITE_X_ON, MON_SPRITE_Y, 15, TAG_NONE);
     gSprites[spriteId].oam.priority = 0;
     return spriteId;
 }
@@ -973,7 +967,7 @@ static void SlideMonSpriteOff(struct Pokenav_RibbonsSummaryMenu *menu)
 static void SlideMonSpriteOn(struct Pokenav_RibbonsSummaryMenu *menu)
 {
     // Switch to new mon sprite
-    FreeAndDestroyMonPicSprite(menu->monSpriteId);
+    FreeAndDestroyPicSprite(menu->monSpriteId);
     menu->monSpriteId = DrawRibbonsMonFrontPic(MON_SPRITE_X_OFF, MON_SPRITE_Y);
 
     // Slide on

@@ -552,7 +552,7 @@ static void Task_HandleConfirmStarterInput(u8 taskId)
         PlaySE(SE_SELECT);
         spriteId = gTasks[taskId].tPkmnSpriteId;
         FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
-        FreeAndDestroyMonPicSprite(spriteId);
+        FreeAndDestroyPicSprite(spriteId);
 
         spriteId = gTasks[taskId].tCircleSpriteId;
         FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
@@ -630,7 +630,7 @@ static u8 CreatePokemonFrontSprite(u16 species, u8 x, u8 y)
 {
     u8 spriteId;
 
-    spriteId = CreateMonPicSprite_Affine(species, SHINY_ODDS, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
+    spriteId = CreateMonPicSprite(species, SHINY_ODDS, 0, TRUE, x, y, 14, TAG_NONE);
     gSprites[spriteId].oam.priority = 0;
     return spriteId;
 }

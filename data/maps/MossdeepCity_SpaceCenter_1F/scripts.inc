@@ -230,8 +230,6 @@ MossdeepCity_SpaceCenter_1F_EventScript_Grunt2::
 	switch VAR_FACING
 	case DIR_WEST, MossdeepCity_SpaceCenter_1F_EventScript_MoveGruntFromStairsWest
 	case DIR_EAST, MossdeepCity_SpaceCenter_1F_EventScript_MoveGruntFromStairsEast
-	case DIR_WEST, MossdeepCity_SpaceCenter_1F_EventScript_MoveGruntFromStairsEast
-	#endif
 	applymovement LOCALID_STAIR_GRUNT, MossdeepCity_SpaceCenter_1F_Movement_MoveGruntFromStairs
 	waitmovement 0
 	setvar VAR_MOSSDEEP_SPACE_CENTER_STAIR_GUARD_STATE, 2

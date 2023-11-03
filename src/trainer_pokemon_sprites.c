@@ -94,7 +94,7 @@ u16 CreateMonPicSprite(u16 species, u32 otId, u32 personality, bool8 useAffine, 
         Free(framePics);
         return 0xFFFF;
     }
-    LoadSpecialPokePic(&gMonFrontPicTable[species], framePics, species, personality, TRUE);
+    LoadSpecialPokePic(framePics, species, personality, TRUE, TRUE);
     for (j = 0; j < MAX_MON_PIC_FRAMES; j ++)
     {
         images[j].data = framePics + MON_PIC_SIZE * j;

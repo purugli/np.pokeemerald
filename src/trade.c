@@ -2806,10 +2806,7 @@ static void LoadTradeMonPic(u8 whichParty, u8 state)
         species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
         personality = GetMonData(mon, MON_DATA_PERSONALITY);
 
-        if (whichParty == TRADE_PLAYER)
-            HandleLoadSpecialPokePic(&gMonFrontPicTable[species], gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT], species, personality);
-        else
-            HandleLoadSpecialPokePic_DontHandleDeoxys(&gMonFrontPicTable[species], gMonSpritesGfxPtr->sprites.ptr[whichParty * 2 + B_POSITION_OPPONENT_LEFT], species, personality);
+        LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[pos], species, personality, TRUE, whichParty == TRADE_PLAYER);
 
         LoadCompressedSpritePalette(GetMonSpritePalStruct(mon));
         sTradeAnim->monSpecies[whichParty] = species;
@@ -3804,10 +3801,11 @@ static bool8 DoTradeAnim_Cable(void)
     case STATE_POKEBALL_ARRIVE_WAIT:
         if (gSprites[sTradeAnim->bouncingPokeballSpriteId].callback == SpriteCallbackDummy)
         {
-            HandleLoadSpecialPokePic(&gMonFrontPicTable[sTradeAnim->monSpecies[TRADE_PARTNER]],
-                                        gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_RIGHT],
-                                        sTradeAnim->monSpecies[TRADE_PARTNER],
-                                        sTradeAnim->monPersonalities[TRADE_PARTNER]);
+            LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_RIGHT],
+                                  sTradeAnim->monSpecies[TRADE_PARTNER],
+                                  sTradeAnim->monPersonalities[TRADE_PARTNER],
+                                  TRUE,
+                                  FALSE);
             sTradeAnim->state++;
         }
         break;
@@ -4301,10 +4299,11 @@ static bool8 DoTradeAnim_Wireless(void)
     case STATE_POKEBALL_ARRIVE_WAIT:
         if (gSprites[sTradeAnim->bouncingPokeballSpriteId].callback == SpriteCallbackDummy)
         {
-            HandleLoadSpecialPokePic(&gMonFrontPicTable[sTradeAnim->monSpecies[TRADE_PARTNER]],
-                                        gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_RIGHT],
-                                        sTradeAnim->monSpecies[TRADE_PARTNER],
-                                        sTradeAnim->monPersonalities[TRADE_PARTNER]);
+            LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_RIGHT],
+                                  sTradeAnim->monSpecies[TRADE_PARTNER],
+                                  sTradeAnim->monPersonalities[TRADE_PARTNER],
+                                  TRUE,
+                                  FALSE);
             sTradeAnim->state++;
         }
         break;

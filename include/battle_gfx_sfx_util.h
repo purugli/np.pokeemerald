@@ -11,8 +11,7 @@ bool8 TryHandleLaunchBattleTableAnimation(u8 activeBattlerId, u8 attacker, u8 ta
 void InitAndLaunchSpecialAnimation(u8 activeBattlerId, u8 attacker, u8 target, u8 tableId);
 bool8 IsMoveWithoutAnimation(u16 moveId, u8 animationTurn);
 bool8 IsBattleSEPlaying(u8 battlerId);
-void BattleLoadOpponentMonSpriteGfx(struct Pokemon *mon, u8 battlerId);
-void BattleLoadPlayerMonSpriteGfx(struct Pokemon *mon, u8 battlerId);
+void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId);
 void BattleGfxSfxDummy2(u16 species);
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battlerId);
 void DecompressTrainerBackPic(u16 backPicId, u8 battlerId);

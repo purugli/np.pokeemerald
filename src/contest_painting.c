@@ -361,28 +361,15 @@ static void VBlankCB_ContestPainting(void)
     TransferPlttBuffer();
 }
 
-static void InitContestMonPixels(u16 species, bool8 backPic)
+static void InitContestMonPixels(u16 species)
 {
     const void *pal = GetMonSpritePalFromSpeciesAndPersonality(species, gContestPaintingWinner->trainerId, gContestPaintingWinner->personality);
     LZ77UnCompVram(pal, gContestPaintingMonPalette);
-    if (!backPic)
-    {
-        HandleLoadSpecialPokePic_DontHandleDeoxys(
-            &gMonFrontPicTable[species],
-            gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT],
-            species,
-            gContestPaintingWinner->personality);
-        _InitContestMonPixels(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT], gContestPaintingMonPalette, (void *)gContestMonPixels);
-    }
-    else
-    {
-        HandleLoadSpecialPokePic_DontHandleDeoxys(
-            &gMonBackPicTable[species],
-            gMonSpritesGfxPtr->sprites.ptr[B_POSITION_PLAYER_LEFT],
-            species,
-            gContestPaintingWinner->personality);
-        _InitContestMonPixels(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_PLAYER_LEFT], gContestPaintingMonPalette, (void *)gContestMonPixels);
-    }
+    LoadSpecialPokePic(
+        gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT],
+        species,
+        gContestPaintingWinner->personality, TRUE, FALSE);
+    _InitContestMonPixels(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT], gContestPaintingMonPalette, (void *)gContestMonPixels);
 }
 
 static void _InitContestMonPixels(u8 *spriteGfx, u16 *palette, u16 (*destPixels)[64][64])
@@ -592,7 +579,7 @@ static void DoContestPaintingImageProcessing(u8 imageEffect)
 static void CreateContestPaintingPicture(u8 contestWinnerId, bool8 isForArtist)
 {
     AllocPaintingResources();
-    InitContestMonPixels(gContestPaintingWinner->species, FALSE);
+    InitContestMonPixels(gContestPaintingWinner->species);
     DoContestPaintingImageProcessing(GetImageEffectForContestWinner(contestWinnerId));
     InitPaintingMonOamData(contestWinnerId);
     LoadContestPaintingFrame(contestWinnerId, isForArtist);

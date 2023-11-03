@@ -2077,49 +2077,30 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16
     u8 spriteId;
     u16 sheet = LoadSpriteSheet(&sSpriteSheets_MoveEffectMons[id]);
     u16 palette = AllocSpritePalette(sSpriteTemplates_MoveEffectMons[id].paletteTag);
+    bool8 handleDeoxys;
+    const struct MonCoords *monCoords;
 
     if (gMonSpritesGfxPtr != NULL && gMonSpritesGfxPtr->buffer == NULL)
         gMonSpritesGfxPtr->buffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
-    if (!isBackpic)
-    {
-        LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, trainerId, personality), OBJ_PLTT_ID(palette), PLTT_SIZE_4BPP);
-        if (ignoreDeoxysForm == TRUE || ShouldIgnoreDeoxysForm(5, battlerId) == TRUE || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != 0)
-            LoadSpecialPokePic_DontHandleDeoxys(&gMonFrontPicTable[species],
-                                                gMonSpritesGfxPtr->buffer,
-                                                species,
-                                                personality,
-                                                TRUE);
-        else
-            LoadSpecialPokePic(&gMonFrontPicTable[species],
-                                 gMonSpritesGfxPtr->buffer,
-                                 species,
-                                 personality,
-                                 TRUE);
-    }
+
+    if (ignoreDeoxysForm || ShouldIgnoreDeoxysForm(5, battlerId) || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != 0)
+        handleDeoxys = FALSE;
     else
-    {
-        LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, trainerId, personality), OBJ_PLTT_ID(palette), PLTT_SIZE_4BPP);
-        if (ignoreDeoxysForm == TRUE || ShouldIgnoreDeoxysForm(5, battlerId) == TRUE || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != 0)
-            LoadSpecialPokePic_DontHandleDeoxys(&gMonBackPicTable[species],
-                                                gMonSpritesGfxPtr->buffer,
-                                                species,
-                                                personality,
-                                                FALSE);
-        else
-            LoadSpecialPokePic(&gMonBackPicTable[species],
-                                 gMonSpritesGfxPtr->buffer,
-                                 species,
-                                 personality,
-                                 FALSE);
-    }
+        handleDeoxys = TRUE;
+
+    LoadSpecialPokePic(gMonSpritesGfxPtr->buffer,
+                        species,
+                        personality,
+                        !isBackpic, handleDeoxys);
 
     RequestDma3Copy(gMonSpritesGfxPtr->buffer, (void *)(OBJ_VRAM0 + (sheet * 0x20)), MON_PIC_SIZE, 1);
     FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
 
     if (!isBackpic)
-        spriteId = CreateSprite(&sSpriteTemplates_MoveEffectMons[id], x, y + gMonFrontPicCoords[species].y_offset, subpriority);
+        monCoords = gMonFrontPicCoords;
     else
-        spriteId = CreateSprite(&sSpriteTemplates_MoveEffectMons[id], x, y + gMonBackPicCoords[species].y_offset, subpriority);
+        monCoords = gMonBackPicCoords;
+    spriteId = CreateSprite(&sSpriteTemplates_MoveEffectMons[id], x, y + monCoords[species].y_offset, subpriority);
 
     if (IsContest())
     {

@@ -215,10 +215,12 @@ void LaunchBattleAnimation(const u8 *const animsTable[], u16 tableId, bool8 isMo
         UpdateOamPriorityInAllHealthboxes(0);
         for (i = 0; i < MAX_BATTLERS_COUNT; i++)
         {
+            struct Pokemon *party;
             if (GetBattlerSide(i) != B_SIDE_PLAYER)
-                gAnimBattlerSpecies[i] = GetMonData(&gEnemyParty[gBattlerPartyIndexes[i]], MON_DATA_SPECIES);
+                party = gEnemyParty;
             else
-                gAnimBattlerSpecies[i] = GetMonData(&gPlayerParty[gBattlerPartyIndexes[i]], MON_DATA_SPECIES);
+                party = gPlayerParty;
+            gAnimBattlerSpecies[i] = GetMonData(&party[gBattlerPartyIndexes[i]], MON_DATA_SPECIES);
         }
     }
     else

@@ -24,7 +24,7 @@ bool32 FormIfExists(u16 formTableSpecies, u16 formSpecies, u8 *formIndex)
     if (formTable != NULL)
     {
         u32 targetForm;
-        for (targetForm = 0; formTable[targetForm] != FORM_SPECIES_END; targetForm++) 
+        for (targetForm = 0; formTable[targetForm] != FORM_SPECIES_END; targetForm++)
         {
             if (formSpecies == formTable[targetForm])
             {

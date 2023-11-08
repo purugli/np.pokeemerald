@@ -1966,12 +1966,13 @@ static void TormentAttacker_Step(u8 taskId)
     case 4:
         for (i = 0, j = 0; i < MAX_SPRITES; i++)
         {
-            if (gSprites[i].template == &gThoughtBubbleSpriteTemplate)
+            struct Sprite *sprite = &gSprites[i];
+            if (sprite->tileTag == ANIM_TAG_THOUGHT_BUBBLE)
             {
-                gSprites[i].data[0] = taskId;
-                gSprites[i].data[1] = 6;
-                StartSpriteAnim(&gSprites[i], 2);
-                gSprites[i].callback = TormentAttacker_Callback;
+                sprite->data[0] = taskId;
+                sprite->data[1] = 6;
+                StartSpriteAnim(sprite, 2);
+                sprite->callback = TormentAttacker_Callback;
 
                 if (++j == 6)
                     break;

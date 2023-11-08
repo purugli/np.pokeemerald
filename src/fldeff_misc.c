@@ -1310,17 +1310,3 @@ u8 CreateRecordMixingLights(void)
     }
     return spriteId;
 }
-
-void DestroyRecordMixingLights(void)
-{
-    int i;
-
-    for (i = 0; i < MAX_SPRITES; i++)
-    {
-        if (gSprites[i].template == &sSpriteTemplate_RecordMixLights)
-        {
-            FreeSpritePalette(&gSprites[i]);
-            DestroySprite(&gSprites[i]);
-        }
-    }
-}

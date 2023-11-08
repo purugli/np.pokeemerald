@@ -2291,7 +2291,7 @@ static const struct SpriteSheet sWeatherBubbleSpriteSheet =
     .tag = GFXTAG_BUBBLE,
 };
 
-static const s16 sBubbleStartCoords[][2] =
+static const struct Coords16 sBubbleStartCoords[] =
 {
     {120, 160},
     {376, 160},
@@ -2383,16 +2383,18 @@ static const struct SpriteTemplate sBubbleSpriteTemplate =
 
 static void CreateBubbleSprite(u16 coordsIndex)
 {
-    s16 x = sBubbleStartCoords[coordsIndex][0];
-    s16 y = sBubbleStartCoords[coordsIndex][1] - gSpriteCoordOffsetY;
+    const struct Coords16 *bubbleCoords = sBubbleStartCoords;
+    s16 x = bubbleCoords[coordsIndex].x;
+    s16 y = bubbleCoords[coordsIndex].y - gSpriteCoordOffsetY;
     u8 spriteId = CreateSpriteAtEnd(&sBubbleSpriteTemplate, x, y, 0);
     if (spriteId != MAX_SPRITES)
     {
-        gSprites[spriteId].oam.priority = 1;
-        gSprites[spriteId].coordOffsetEnabled = TRUE;
-        gSprites[spriteId].tScrollXCounter = 0;
-        gSprites[spriteId].tScrollXDir = 0;
-        gSprites[spriteId].tCounter = 0;
+        struct Sprite *sprite = &gSprites[spriteId];
+        sprite->oam.priority = 1;
+        sprite->coordOffsetEnabled = TRUE;
+        sprite->tScrollXCounter = 0;
+        sprite->tScrollXDir = 0;
+        sprite->tCounter = 0;
         gWeatherPtr->bubblesSpriteCount++;
     }
 }
@@ -2405,8 +2407,9 @@ static void DestroyBubbleSprites(void)
     {
         for (i = 0; i < MAX_SPRITES; i++)
         {
-            if (gSprites[i].template == &sBubbleSpriteTemplate)
-                DestroySprite(&gSprites[i]);
+            struct Sprite *sprite = &gSprites[i];
+            if (sprite->tileTag == GFXTAG_BUBBLE)
+                DestroySprite(sprite);
         }
 
         FreeSpriteTilesByTag(GFXTAG_BUBBLE);

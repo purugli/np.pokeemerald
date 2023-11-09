@@ -30,6 +30,7 @@
 #include "constants/trainer_types.h"
 #include "constants/union_room.h"
 #include "field_weather.h"
+#include "constants/metatile_behaviors.h"
 
 // this file was known as evobjmv.c in Game Freak's original source
 
@@ -6770,6 +6771,8 @@ static void GroundEffect_Grass(struct ObjectEvent *objEvent, struct Sprite *spri
     gFieldEffectArguments[5] = objEvent->mapGroup;
     gFieldEffectArguments[6] = (u8)gSaveBlock1Ptr->location.mapNum << 8 | (u8)gSaveBlock1Ptr->location.mapGroup;
     gFieldEffectArguments[7] = skipToEnd; // skip to end of anim
+    if (objEvent->currentMetatileBehavior == MB_LONG_GRASS_COVERED)
+        gFieldEffectArguments[7] |= 2;
     FieldEffectStart(fldEff);
 }
 

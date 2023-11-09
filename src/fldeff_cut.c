@@ -61,6 +61,9 @@ static const u16 sCutGrassMetatileMapping[][2] = {
         [CUT_GRASS_BOTTOM] = METATILE_General_LongGrass,
         [CUT_GRASS_TOP]    = METATILE_General_Grass
     }, {
+        [CUT_GRASS_BOTTOM] = METATILE_General_LongGrassCovered,
+        [CUT_GRASS_TOP]    = METATILE_General_Grass
+    }, {
         [CUT_GRASS_BOTTOM] = METATILE_General_TallGrass,
         [CUT_GRASS_TOP]    = METATILE_General_Grass
     }, {
@@ -400,6 +403,8 @@ void FixLongGrassMetatilesWindowBottom(s32 x, s32 y)
         u32 metatileBehavior = MapGridGetMetatileBehaviorAt(x, y + 1);
         if (metatileBehavior == MB_LONG_GRASS_SOUTH_EDGE)
             SetCutGrassMetatile(x, y + 1);
+        else if (metatileBehavior == MB_LONG_GRASS_COVERED)
+            MapGridSetMetatileIdAt(x, y + 1, METATILE_General_LongGrass);
     }
 }
 

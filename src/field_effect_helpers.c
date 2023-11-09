@@ -175,10 +175,6 @@ static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
 #undef sIsStillReflection
 
 extern const struct SpriteTemplate *const gFieldEffectObjectTemplatePointers[];
-extern const struct SpritePalette gSpritePalette_ArrowEmotionsFieldEffect;
-
-#define sPrevX data[0]
-#define sPrevY data[1]
 
 u8 CreateWarpArrowSprite(void)
 {
@@ -192,32 +188,6 @@ u8 CreateWarpArrowSprite(void)
     }
     return spriteId;
 }
-
-void SetSpriteInvisible(u8 spriteId)
-{
-    gSprites[spriteId].invisible = TRUE;
-}
-
-void ShowWarpArrowSprite(u8 spriteId, u8 direction, s16 x, s16 y)
-{
-    struct Sprite *sprite = &gSprites[spriteId];
-    if (sprite->invisible || sprite->sPrevX != x || sprite->sPrevY != y)
-    {
-        s16 x2, y2;
-        SetSpritePosToMapCoords(x, y, &x2, &y2);
-        sprite = &gSprites[spriteId];
-        sprite->x = x2 + 8;
-        sprite->y = y2 + 8;
-        sprite->invisible = FALSE;
-        sprite->sPrevX = x;
-        sprite->sPrevY = y;
-        sprite->oam.paletteNum = LoadSpritePalette(&gSpritePalette_ArrowEmotionsFieldEffect);
-        StartSpriteAnim(sprite, direction - 1);
-    }
-}
-
-#undef sPrevX
-#undef sPrevY
 
 const u16 gShadowVerticalOffsets[] = {
     4,
@@ -466,25 +436,6 @@ void UpdateLongGrassFieldEffect(struct Sprite *sprite)
 #undef sMapGroup
 #undef sCurrentMap
 #undef sObjectMoved
-
-// Effectively unused as it's not possible in vanilla to jump onto long grass (no adjacent ledges, and can't ride the Acro Bike in it).
-// The graphics for this effect do not visually correspond to long grass either. Perhaps these graphics were its original design?
-u32 FldEff_JumpLongGrass(void)
-{
-    u8 spriteId;
-
-    SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_JUMP_LONG_GRASS], gFieldEffectArguments[0], gFieldEffectArguments[1], 0);
-    if (spriteId != MAX_SPRITES)
-    {
-        struct Sprite *sprite = &gSprites[spriteId];
-        sprite->coordOffsetEnabled = TRUE;
-        sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->sJumpElevation = gFieldEffectArguments[2];
-        sprite->sJumpFldEff = FLDEFF_JUMP_LONG_GRASS;
-    }
-    return 0;
-}
 
 // Sprite data for FLDEFF_SHORT_GRASS
 #define sLocalId  data[0]
@@ -845,54 +796,6 @@ void UpdateHotSpringsWaterFieldEffect(struct Sprite *sprite)
 #undef sPrevX
 #undef sPrevY
 
-u32 FldEff_UnusedGrass(void)
-{
-    u8 spriteId;
-
-    SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_UNUSED_GRASS], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
-    if (spriteId != MAX_SPRITES)
-    {
-        struct Sprite *sprite = &gSprites[spriteId];
-        sprite->coordOffsetEnabled = TRUE;
-        sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->sWaitFldEff = FLDEFF_UNUSED_GRASS;
-    }
-    return 0;
-}
-
-u32 FldEff_UnusedGrass2(void)
-{
-    u8 spriteId;
-
-    SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_UNUSED_GRASS_2], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
-    if (spriteId != MAX_SPRITES)
-    {
-        struct Sprite *sprite = &gSprites[spriteId];
-        sprite->coordOffsetEnabled = TRUE;
-        sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->sWaitFldEff = FLDEFF_UNUSED_GRASS_2;
-    }
-    return 0;
-}
-
-u32 FldEff_UnusedSand(void)
-{
-    u8 spriteId;
-
-    SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_UNUSED_SAND], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
-    if (spriteId != MAX_SPRITES)
-    {
-        struct Sprite *sprite = &gSprites[spriteId];
-        sprite->coordOffsetEnabled = TRUE;
-        sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->sWaitFldEff = FLDEFF_UNUSED_SAND;
-    }
-    return 0;
-}
-
 u32 FldEff_WaterSurfacing(void)
 {
     u8 spriteId;
@@ -1005,6 +908,7 @@ u32 FldEff_SurfBlob(void)
     u8 spriteId;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
+    LoadFieldEffectPalette(FLDEFFOBJ_SURF_BLOB, COLOR_MAP_CONTRAST);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SURF_BLOB], gFieldEffectArguments[0], gFieldEffectArguments[1], 150);
     if (spriteId != MAX_SPRITES)
     {
@@ -1305,7 +1209,7 @@ u32 FldEff_BerryTreeGrowthSparkle(void)
     return 0;
 }
 
-// Sprite data for FLDEFF_TREE_DISGUISE / FLDEFF_MOUNTAIN_DISGUISE / FLDEFF_SAND_DISGUISE
+// Sprite data for FLDEFF_TREE_DISGUISE / FLDEFF_MOUNTAIN_DISGUISE
 #define sState      data[0]
 #define sFldEff     data[1]
 #define sLocalId    data[2]
@@ -1323,11 +1227,6 @@ u32 ShowMountainDisguiseFieldEffect(void)
     return ShowDisguiseFieldEffect(FLDEFF_MOUNTAIN_DISGUISE, FLDEFFOBJ_MOUNTAIN_DISGUISE);
 }
 
-u32 ShowSandDisguiseFieldEffect(void)
-{
-    return ShowDisguiseFieldEffect(FLDEFF_SAND_DISGUISE, FLDEFFOBJ_SAND_DISGUISE);
-}
-
 static u32 ShowDisguiseFieldEffect(u8 fldEff, u8 fldEffObj)
 {
     u8 spriteId;
@@ -1337,7 +1236,7 @@ static u32 ShowDisguiseFieldEffect(u8 fldEff, u8 fldEffObj)
         FieldEffectActiveListRemove(fldEff);
         return MAX_SPRITES;
     }
-    LoadFieldEffectPalette(fldEffObj, COLOR_MAP_DARK_CONTRAST);
+    LoadFieldEffectPalette(fldEffObj, COLOR_MAP_CONTRAST);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[fldEffObj], 0, 0, 0);
     if (spriteId != MAX_SPRITES)
     {

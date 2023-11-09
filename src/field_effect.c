@@ -763,6 +763,11 @@ bool8 FieldEffectCmd_loadfadedpal_callnative(u8 **script, u32 *val)
     return TRUE;
 }
 
+u8 FieldEffectScript_ReadByte(u8 **script)
+{
+    return (*script)[0];
+}
+
 u32 FieldEffectScript_ReadWord(u8 **script)
 {
     return (*script)[0]
@@ -782,15 +787,14 @@ void FieldEffectScript_LoadTiles(u8 **script)
 void FieldEffectScript_LoadFadedPalette(u8 **script)
 {
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
-    u32 colorMap;
-    u8 paletteSlot;
+    u8 colorMap, paletteSlot;
     LoadSpritePalette(palette);
-    paletteSlot = IndexOfSpritePaletteTag(palette->tag);
     (*script) += 4;
-    colorMap = FieldEffectScript_ReadWord(script);
+    paletteSlot = IndexOfSpritePaletteTag(palette->tag);
+    colorMap = FieldEffectScript_ReadByte(script);
+    (*script) += 1;
     UpdatePaletteColorMap(paletteSlot, colorMap);
     UpdateSpritePaletteWithWeather(paletteSlot);
-    (*script) += 4;
 }
 
 void FieldEffectScript_LoadPalette(u8 **script)
@@ -3816,20 +3820,20 @@ static void SpriteCB_DeoxysRockFragment(struct Sprite *sprite)
     switch (sprite->data[0])
     {
     case 0:
-        sprite->x -= 16;
-        sprite->y -= 12;
+        sprite->x -= 15;
+        sprite->y -= 11;
         break;
     case 1:
-        sprite->x += 16;
-        sprite->y -= 12;
+        sprite->x += 15;
+        sprite->y -= 11;
         break;
     case 2:
-        sprite->x -= 16;
-        sprite->y += 12;
+        sprite->x -= 15;
+        sprite->y += 11;
         break;
     case 3:
-        sprite->x += 16;
-        sprite->y += 12;
+        sprite->x += 15;
+        sprite->y += 11;
         break;
     }
     if (sprite->x < -4 || sprite->x > DISPLAY_WIDTH + 4 || sprite->y < -4 || sprite->y > DISPLAY_HEIGHT + 4)

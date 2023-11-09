@@ -24,10 +24,6 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_Splash                    @ FLDEFF_SPLASH
 	.4byte gFieldEffectScript_JumpSmallSplash           @ FLDEFF_JUMP_SMALL_SPLASH
 	.4byte gFieldEffectScript_LongGrass                 @ FLDEFF_LONG_GRASS
-	.4byte gFieldEffectScript_JumpLongGrass             @ FLDEFF_JUMP_LONG_GRASS
-	.4byte gFieldEffectScript_UnusedGrass               @ FLDEFF_UNUSED_GRASS
-	.4byte gFieldEffectScript_UnusedGrass2              @ FLDEFF_UNUSED_GRASS_2
-	.4byte gFieldEffectScript_UnusedSand                @ FLDEFF_UNUSED_SAND
 	.4byte gFieldEffectScript_WaterSurfacing            @ FLDEFF_WATER_SURFACING
 	.4byte gFieldEffectScript_BerryTreeGrowthSparkle    @ FLDEFF_BERRY_TREE_GROWTH_SPARKLE
 	.4byte gFieldEffectScript_DeepSandFootprints        @ FLDEFF_DEEP_SAND_FOOTPRINTS
@@ -42,7 +38,6 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_QuestionMarkIcon          @ FLDEFF_QUESTION_MARK_ICON
 	.4byte gFieldEffectScript_FeetInFlowingWater        @ FLDEFF_FEET_IN_FLOWING_WATER
 	.4byte gFieldEffectScript_BikeTireTracks            @ FLDEFF_BIKE_TIRE_TRACKS
-	.4byte gFieldEffectScript_SandDisguisePlaceholder   @ FLDEFF_SAND_DISGUISE
 	.4byte gFieldEffectScript_UseRockSmash              @ FLDEFF_USE_ROCK_SMASH
 	.4byte gFieldEffectScript_UseDig                    @ FLDEFF_USE_DIG
 	.4byte gFieldEffectScript_SandPile                  @ FLDEFF_SAND_PILE
@@ -53,8 +48,6 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_UseDive                   @ FLDEFF_USE_DIVE
 	.4byte gFieldEffectScript_PokeballTrail             @ FLDEFF_POKEBALL_TRAIL
 	.4byte gFieldEffectScript_HeartIcon                 @ FLDEFF_HEART_ICON
-	.4byte gFieldEffectScript_Nop47                     @ FLDEFF_NOP_47
-	.4byte gFieldEffectScript_Nop48                     @ FLDEFF_NOP_48
 	.4byte gFieldEffectScript_AshPuff                   @ FLDEFF_ASH_PUFF
 	.4byte gFieldEffectScript_AshLaunch                 @ FLDEFF_ASH_LAUNCH
 	.4byte gFieldEffectScript_SweetScent                @ FLDEFF_SWEET_SCENT
@@ -95,7 +88,7 @@ gFieldEffectScript_TallGrass::
 	field_eff_end
 
 gFieldEffectScript_Ripple::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_Ripple
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, COLOR_MAP_DARK_CONTRAST, FldEff_Ripple
 	field_eff_end
 
 gFieldEffectScript_FieldMoveShowMon::
@@ -103,11 +96,11 @@ gFieldEffectScript_FieldMoveShowMon::
 	field_eff_end
 
 gFieldEffectScript_Ash::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_Ash
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, COLOR_MAP_DARK_CONTRAST, FldEff_Ash
 	field_eff_end
 
 gFieldEffectScript_SurfBlob::
-	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, COLOR_MAP_DARK_CONTRAST, FldEff_SurfBlob
+	field_eff_callnative FldEff_SurfBlob
 	field_eff_end
 
 gFieldEffectScript_UseSurf::
@@ -144,22 +137,6 @@ gFieldEffectScript_JumpSmallSplash::
 
 gFieldEffectScript_LongGrass::
 	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_LongGrass
-	field_eff_end
-
-gFieldEffectScript_JumpLongGrass::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_JumpLongGrass
-	field_eff_end
-
-gFieldEffectScript_UnusedGrass::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_UnusedGrass
-	field_eff_end
-
-gFieldEffectScript_UnusedGrass2::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_UnusedGrass2
-	field_eff_end
-
-gFieldEffectScript_UnusedSand::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_UnusedSand
 	field_eff_end
 
 gFieldEffectScript_WaterSurfacing::
@@ -219,10 +196,6 @@ gFieldEffectScript_BikeTireTracks::
 	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_BikeTireTracks
 	field_eff_end
 
-gFieldEffectScript_SandDisguisePlaceholder::
-	field_eff_callnative ShowSandDisguiseFieldEffect
-	field_eff_end
-
 gFieldEffectScript_UseRockSmash::
 	field_eff_callnative FldEff_UseRockSmash
 	field_eff_end
@@ -244,7 +217,7 @@ gFieldEffectScript_ShortGrass::
 	field_eff_end
 
 gFieldEffectScript_HotSpringsWater::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_HotSpringsWater
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, COLOR_MAP_DARK_CONTRAST, FldEff_HotSpringsWater
 	field_eff_end
 
 gFieldEffectScript_UseWaterfall::
@@ -264,20 +237,12 @@ gFieldEffectScript_HeartIcon::
 	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_NONE, FldEff_HeartIcon
 	field_eff_end
 
-gFieldEffectScript_Nop47::
-	field_eff_callnative FldEff_Nop47
-	field_eff_end
-
-gFieldEffectScript_Nop48::
-	field_eff_callnative FldEff_Nop48
-	field_eff_end
-
 gFieldEffectScript_AshPuff::
-	field_eff_loadfadedpal_callnative gSpritePalette_Ash, COLOR_MAP_DARK_CONTRAST, FldEff_AshPuff
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, COLOR_MAP_DARK_CONTRAST, FldEff_AshPuff
 	field_eff_end
 
 gFieldEffectScript_AshLaunch::
-	field_eff_loadfadedpal_callnative gSpritePalette_Ash, COLOR_MAP_DARK_CONTRAST, FldEff_AshLaunch
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, COLOR_MAP_DARK_CONTRAST, FldEff_AshLaunch
 	field_eff_end
 
 gFieldEffectScript_SweetScent::
@@ -293,23 +258,23 @@ gFieldEffectScript_Bubbles::
 	field_eff_end
 
 gFieldEffectScript_Sparkle::
-	field_eff_loadfadedpal_callnative gSpritePalette_SmallSparkle, COLOR_MAP_DARK_CONTRAST, FldEff_Sparkle
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, COLOR_MAP_DARK_CONTRAST, FldEff_Sparkle
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerCave::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Cave, COLOR_MAP_DARK_CONTRAST, FldEff_SecretPowerCave
+	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Cave, COLOR_MAP_CONTRAST, FldEff_SecretPowerCave
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerTree::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, COLOR_MAP_DARK_CONTRAST, FldEff_SecretPowerTree
+	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, COLOR_MAP_CONTRAST, FldEff_SecretPowerTree
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerShrub::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, COLOR_MAP_DARK_CONTRAST, FldEff_SecretPowerShrub
+	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, COLOR_MAP_CONTRAST, FldEff_SecretPowerShrub
 	field_eff_end
 
 gFieldEffectScript_ShowCutGrass::
-	field_eff_loadfadedpal_callnative gSpritePalette_CutGrass, COLOR_MAP_DARK_CONTRAST, FldEff_CutGrass
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, COLOR_MAP_DARK_CONTRAST, FldEff_CutGrass
 	field_eff_end
 
 gFieldEffectScript_FieldMoveShowMonInit::

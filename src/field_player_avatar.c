@@ -1401,12 +1401,18 @@ void SetPlayerAvatarWatering(u8 direction)
     SetPlayerAvatarAnimation(PLAYER_AVATAR_GFX_WATERING, GetFaceDirectionAnimNum(direction));
 }
 
+extern const struct SpritePalette gSpritePalette_ArrowEmotionsFieldEffect;
+
+#define sPrevX data[0]
+#define sPrevY data[1]
+
 static void HideShowWarpArrow(struct ObjectEvent *objectEvent)
 {
     s16 x;
     s16 y;
     u8 direction;
     u8 metatileBehavior = objectEvent->currentMetatileBehavior;
+    struct Sprite *sprite = &gSprites[objectEvent->warpArrowSpriteId];
 
     for (x = 0, direction = DIR_SOUTH; x < 4; x++, direction++)
     {
@@ -1416,12 +1422,26 @@ static void HideShowWarpArrow(struct ObjectEvent *objectEvent)
             x = objectEvent->currentCoords.x;
             y = objectEvent->currentCoords.y;
             MoveCoords(direction, &x, &y);
-            ShowWarpArrowSprite(objectEvent->warpArrowSpriteId, direction, x, y);
+            if (sprite->invisible || sprite->sPrevX != x || sprite->sPrevY != y)
+            {
+                s16 x2, y2;
+                SetSpritePosToMapCoords(x, y, &x2, &y2);
+                sprite->x = x2 + 8;
+                sprite->y = y2 + 8;
+                sprite->invisible = FALSE;
+                sprite->sPrevX = x;
+                sprite->sPrevY = y;
+                sprite->oam.paletteNum = LoadSpritePalette(&gSpritePalette_ArrowEmotionsFieldEffect);
+                StartSpriteAnim(sprite, direction - 1);
+            }
             return;
         }
     }
-    SetSpriteInvisible(objectEvent->warpArrowSpriteId);
+    sprite->invisible = TRUE;
 }
+
+#undef sPrevX
+#undef sPrevY
 
 /* Strength */
 

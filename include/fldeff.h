@@ -9,7 +9,7 @@ bool8 FldEff_CutGrass(void);
 void FixLongGrassMetatilesWindowTop(s32 x, s32 y);
 void FixLongGrassMetatilesWindowBottom(s32 x, s32 y);
 
-extern const struct SpritePalette gSpritePalette_CutGrass;
+extern const struct SpritePalette gSpritePalette_GeneralFieldEffect3;
 extern struct MapPosition gPlayerFacingPosition;
 
 // escalator

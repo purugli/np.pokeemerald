@@ -140,8 +140,6 @@ static void RemoveObjectEventIfOutsideView(struct ObjectEvent *);
 static void SpawnObjectEventOnReturnToField(u8, s16, s16);
 static void SetPlayerAvatarObjectEventIdAndObjectId(u8, u8);
 static void ResetObjectEventFldEffData(struct ObjectEvent *);
-static u8 LoadSpritePaletteIfTagExists(const struct SpritePalette *);
-static u8 FindObjectEventPaletteIndexByTag(u16);
 static bool8 ObjectEventDoesElevationMatch(struct ObjectEvent *, u8);
 static void SpriteCB_CameraObject(struct Sprite *);
 static void CameraObject_0(struct Sprite *);
@@ -1188,18 +1186,16 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
     struct Sprite *sprite;
     struct ObjectEvent *objectEvent;
     const struct ObjectEventGraphicsInfo *graphicsInfo;
-    u16 paletteTag;
 
     objectEventId = InitObjectEventStateFromTemplate(objectEventTemplate, mapNum, mapGroup);
     if (objectEventId == OBJECT_EVENTS_COUNT)
         return OBJECT_EVENTS_COUNT;
 
     objectEvent = &gObjectEvents[objectEventId];
-    paletteTag = spriteTemplate->paletteTag;
-    if (paletteTag != TAG_NONE)
+    if (spriteTemplate->paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(paletteTag);
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(paletteTag), COLOR_MAP_CONTRAST);
+        LoadObjectEventPalette(spriteTemplate->paletteTag);
+        UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), COLOR_MAP_CONTRAST);
     }
 
     if (objectEvent->movementType == MOVEMENT_TYPE_INVISIBLE)
@@ -1327,13 +1323,11 @@ u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *),
     const struct SubspriteTable *subspriteTables;
     struct Sprite *sprite;
     u8 spriteId;
-    u16 paletteTag;
 
     spriteTemplate = Alloc(sizeof(struct SpriteTemplate));
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, callback, spriteTemplate, &subspriteTables);
-    paletteTag = spriteTemplate->paletteTag;
-    if (paletteTag != TAG_NONE)
-        LoadObjectEventPalette(paletteTag);
+    if (spriteTemplate->paletteTag != TAG_NONE)
+        LoadObjectEventPalette(spriteTemplate->paletteTag);
 
     spriteId = CreateSprite(spriteTemplate, x, y, subpriority);
     Free(spriteTemplate);
@@ -1357,7 +1351,7 @@ u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *),
 // or any of the other data normally associated with object events.
 u8 CreateVirtualObject(u8 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevation, u8 direction)
 {
-    u8 spriteId, paletteSlot;
+    u8 spriteId;
     struct Sprite *sprite;
     struct SpriteTemplate spriteTemplate;
     const struct SubspriteTable *subspriteTables;
@@ -1365,11 +1359,10 @@ u8 CreateVirtualObject(u8 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevatio
 
     graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, SpriteCB_VirtualObject, &spriteTemplate, &subspriteTables);
-    paletteSlot = IndexOfSpritePaletteTag(spriteTemplate.paletteTag);
     if (spriteTemplate.paletteTag != TAG_NONE)
     {
         LoadObjectEventPalette(spriteTemplate.paletteTag);
-        UpdatePaletteColorMap(paletteSlot, COLOR_MAP_CONTRAST);
+        UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate.paletteTag), COLOR_MAP_CONTRAST);
     }
     x += MAP_OFFSET;
     y += MAP_OFFSET;
@@ -1381,7 +1374,7 @@ u8 CreateVirtualObject(u8 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevatio
         sprite->centerToCornerVecX = -(graphicsInfo->width >> 1);
         sprite->centerToCornerVecY = -(graphicsInfo->height >> 1);
         sprite->y += sprite->centerToCornerVecY;
-        sprite->oam.paletteNum = paletteSlot;
+        sprite->oam.paletteNum = IndexOfSpritePaletteTag(spriteTemplate.paletteTag);
 
         sprite->coordOffsetEnabled = TRUE;
         sprite->sVirtualObjId = virtualObjId;
@@ -1491,7 +1484,6 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
     struct SpriteFrameImage spriteFrameImage;
     const struct SubspriteTable *subspriteTables;
     const struct ObjectEventGraphicsInfo *graphicsInfo;
-    u16 paletteTag;
 
     for (i = 0; i < ARRAY_COUNT(gLinkPlayerObjectEvents); i++)
     {
@@ -1506,11 +1498,10 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
     CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(objectEvent->graphicsId, objectEvent->movementType, &spriteTemplate, &subspriteTables);
     spriteTemplate.images = &spriteFrameImage;
 
-    paletteTag = spriteTemplate.paletteTag;
-    if (paletteTag != TAG_NONE)
+    if (spriteTemplate.paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(paletteTag);
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(paletteTag), COLOR_MAP_CONTRAST);
+        LoadObjectEventPalette(spriteTemplate.paletteTag);
+        UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate.paletteTag), COLOR_MAP_CONTRAST);
     }
 
     i = CreateSprite(&spriteTemplate, 0, 0, 0);
@@ -1566,16 +1557,12 @@ void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u8 graphicsId)
 {
     const struct ObjectEventGraphicsInfo *graphicsInfo;
     struct Sprite *sprite;
-    u8 paletteSlot;
-    u16 paletteTag;
 
     graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
-    paletteTag = graphicsInfo->paletteTag;
-    paletteSlot = IndexOfSpritePaletteTag(paletteTag);
-    if (paletteTag != TAG_NONE)
+    if (graphicsInfo->paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(paletteTag);
-        UpdatePaletteColorMap(paletteSlot, COLOR_MAP_CONTRAST);
+        LoadObjectEventPalette(graphicsInfo->paletteTag);
+        UpdatePaletteColorMap(IndexOfSpritePaletteTag(graphicsInfo->paletteTag), COLOR_MAP_CONTRAST);
     }
     sprite = &gSprites[objectEvent->spriteId];
     sprite->oam.shape = graphicsInfo->oam->shape;
@@ -1583,7 +1570,7 @@ void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u8 graphicsId)
     sprite->images = graphicsInfo->images;
     sprite->anims = sStepAnimTables[graphicsInfo->anims].anims;
     sprite->subspriteTables = graphicsInfo->subspriteTables;
-    sprite->oam.paletteNum = paletteSlot;
+    sprite->oam.paletteNum = IndexOfSpritePaletteTag(graphicsInfo->paletteTag);
     objectEvent->inanimate = graphicsInfo->inanimate;
     objectEvent->graphicsId = graphicsId;
     SetSpritePosToMapCoords(objectEvent->currentCoords.x, objectEvent->currentCoords.y, &sprite->x, &sprite->y);
@@ -1636,7 +1623,6 @@ static void SetBerryTreeGraphics(struct ObjectEvent *objectEvent, struct Sprite 
     berryStage = GetStageByBerryTreeId(objectEvent->trainerRange_berryTreeId);
     if (berryStage != BERRY_STAGE_NO_BERRY)
     {
-        u16 paletteTag;
         objectEvent->invisible = FALSE;
         sprite->invisible = FALSE;
         berryId = GetBerryTypeByBerryTreeId(objectEvent->trainerRange_berryTreeId) - 1;
@@ -1644,13 +1630,12 @@ static void SetBerryTreeGraphics(struct ObjectEvent *objectEvent, struct Sprite 
         if (berryId > ITEM_TO_BERRY(LAST_BERRY_INDEX))
             berryId = 0;
 
-        paletteTag = gBerryTreePaletteTagTablePointers[berryId][berryStage];
-        LoadObjectEventPalette(paletteTag);
         ObjectEventSetGraphicsId(objectEvent, gBerryTreeObjectEventGraphicsIdTable[berryStage]);
         sprite->images = gBerryTreePicTablePointers[berryId];
-        sprite->oam.paletteNum = IndexOfSpritePaletteTag(paletteTag);
-        UpdatePaletteColorMap(sprite->oam.paletteNum, COLOR_MAP_CONTRAST);
         StartSpriteAnim(sprite, berryStage);
+        LoadObjectEventPalette(gBerryTreePaletteTagTablePointers[berryId][berryStage]);
+        sprite->oam.paletteNum = IndexOfSpritePaletteTag(gBerryTreePaletteTagTablePointers[berryId][berryStage]);
+        UpdatePaletteColorMap(sprite->oam.paletteNum, COLOR_MAP_CONTRAST);
     }
 }
 
@@ -1756,46 +1741,17 @@ void FreeAndReserveObjectSpritePalettes(void)
 
 void LoadObjectEventPalette(u16 paletteTag)
 {
-    u16 i = FindObjectEventPaletteIndexByTag(paletteTag);
-
-    if (i != 0xFF)
-        LoadSpritePaletteIfTagExists(&sObjectEventSpritePalettes[i]);
-}
-
-static void UNUSED LoadObjectEventPaletteSet(u16 *paletteTags)
-{
-    u8 i;
-
-    for (i = 0; paletteTags[i] != OBJ_EVENT_PAL_TAG_NONE; i++)
-        LoadObjectEventPalette(paletteTags[i]);
-}
-
-static u8 LoadSpritePaletteIfTagExists(const struct SpritePalette *spritePalette)
-{
-    if (IndexOfSpritePaletteTag(spritePalette->tag) != 0xFF)
-        return 0xFF;
-
-    return LoadSpritePalette(spritePalette);
-}
-
-static u8 FindObjectEventPaletteIndexByTag(u16 tag)
-{
     u8 i;
 
     for (i = 0; sObjectEventSpritePalettes[i].tag != OBJ_EVENT_PAL_TAG_NONE; i++)
     {
-        if (sObjectEventSpritePalettes[i].tag == tag)
-            return i;
+        const struct SpritePalette *spritePalette = &sObjectEventSpritePalettes[i];
+        if (spritePalette->tag == paletteTag)
+        {
+            if (IndexOfSpritePaletteTag(spritePalette->tag) == 0xFF)
+                LoadSpritePalette(spritePalette);
+        }
     }
-    return 0xFF;
-}
-
-static void UNUSED IncrementObjectEventCoords(struct ObjectEvent *objectEvent, s16 x, s16 y)
-{
-    objectEvent->previousCoords.x = objectEvent->currentCoords.x;
-    objectEvent->previousCoords.y = objectEvent->currentCoords.y;
-    objectEvent->currentCoords.x += x;
-    objectEvent->currentCoords.y += y;
 }
 
 void ShiftObjectEventCoords(struct ObjectEvent *objectEvent, s16 x, s16 y)
@@ -1989,17 +1945,6 @@ void CameraObjectSetFollowedSpriteId(u8 spriteId)
     }
 }
 
-static u8 UNUSED CameraObjectGetFollowedSpriteId(void)
-{
-    struct Sprite *camera;
-
-    camera = FindCameraSprite();
-    if (camera == NULL)
-        return MAX_SPRITES;
-
-    return camera->sLinkedSpriteId;
-}
-
 void CameraObjectReset2(void)
 {
     struct Sprite *camera = FindCameraSprite();
@@ -2076,32 +2021,6 @@ static u16 GetObjectEventFlagIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGrou
 static u16 GetObjectEventFlagIdByObjectEventId(u8 objectEventId)
 {
     return GetObjectEventFlagIdByLocalIdAndMap(gObjectEvents[objectEventId].localId, gObjectEvents[objectEventId].mapNum, gObjectEvents[objectEventId].mapGroup);
-}
-
-static u8 UNUSED GetObjectTrainerTypeByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
-{
-    u8 objectEventId;
-
-    if (TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
-        return 0xFF;
-
-    return gObjectEvents[objectEventId].trainerType;
-}
-
-static u8 UNUSED GetObjectTrainerTypeByObjectEventId(u8 objectEventId)
-{
-    return gObjectEvents[objectEventId].trainerType;
-}
-
-// Unused
-u8 GetObjectEventBerryTreeIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
-{
-    u8 objectEventId;
-
-    if (TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
-        return 0xFF;
-
-    return gObjectEvents[objectEventId].trainerRange_berryTreeId;
 }
 
 u8 GetObjectEventBerryTreeId(u8 objectEventId)
@@ -4410,12 +4329,6 @@ void MoveCoords(u8 direction, s16 *x, s16 *y)
     *y += sDirectionToVectors[direction].y;
 }
 
-static void UNUSED MoveCoordsInMapCoordIncrement(u8 direction, s16 *x, s16 *y)
-{
-    *x += sDirectionToVectors[direction].x << 4;
-    *y += sDirectionToVectors[direction].y << 4;
-}
-
 static void MoveCoordsInDirection(u32 dir, s16 *x, s16 *y, s16 deltaX, s16 deltaY)
 {
     u8 direction = dir;
@@ -5488,47 +5401,14 @@ bool8 MovementAction_JumpSpecialUp_Step0(struct ObjectEvent *objectEvent, struct
     return InitJumpSpecial(objectEvent, sprite, DIR_NORTH);
 }
 
-bool8 MovementAction_JumpSpecialUp_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    if (DoJumpSpecialAnim(objectEvent, sprite))
-    {
-        sprite->sActionFuncId = 2;
-        objectEvent->landingJump = FALSE;
-        return TRUE;
-    }
-    return FALSE;
-}
-
 bool8 MovementAction_JumpSpecialLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     return InitJumpSpecial(objectEvent, sprite, DIR_WEST);
 }
 
-bool8 MovementAction_JumpSpecialLeft_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    if (DoJumpSpecialAnim(objectEvent, sprite))
-    {
-        sprite->sActionFuncId = 2;
-        objectEvent->landingJump = FALSE;
-        return TRUE;
-    }
-    return FALSE;
-}
-
 bool8 MovementAction_JumpSpecialRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     return InitJumpSpecial(objectEvent, sprite, DIR_EAST);
-}
-
-bool8 MovementAction_JumpSpecialRight_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    if (DoJumpSpecialAnim(objectEvent, sprite))
-    {
-        sprite->sActionFuncId = 2;
-        objectEvent->landingJump = FALSE;
-        return TRUE;
-    }
-    return FALSE;
 }
 
 bool8 MovementAction_FacePlayer_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
@@ -5888,17 +5768,6 @@ bool8 MovementAction_WalkRightAffine_Step0(struct ObjectEvent *objectEvent, stru
     return InitWalkLeftRightAffine(objectEvent, sprite, DIR_EAST, 3);
 }
 
-bool8 MovementAction_WalkRightAffine_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    if (UpdateMovementNormal(objectEvent, sprite))
-    {
-        sprite->affineAnimPaused = TRUE;
-        sprite->sActionFuncId = 2;
-        return TRUE;
-    }
-    return FALSE;
-}
-
 static bool8 AcroWheelieFaceDirection(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction)
 {
     SetObjectEventDirection(objectEvent, direction);
@@ -6100,17 +5969,6 @@ bool8 MovementAction_AcroWheelieJumpUp_Step0(struct ObjectEvent *objectEvent, st
 bool8 MovementAction_AcroWheelieJumpLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     return InitAcroWheelieJump(objectEvent, sprite, DIR_WEST, JUMP_DISTANCE_FAR, JUMP_TYPE_HIGH);
-}
-
-bool8 MovementAction_AcroWheelieJumpLeft_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    if (DoJumpAnim(objectEvent, sprite))
-    {
-        objectEvent->hasShadow = FALSE;
-        sprite->sActionFuncId = 2;
-        return TRUE;
-    }
-    return FALSE;
 }
 
 bool8 MovementAction_AcroWheelieJumpRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
@@ -7549,18 +7407,6 @@ static void SpriteCB_VirtualObject(struct Sprite *sprite)
     VirtualObject_UpdateAnim(sprite);
     SetObjectSubpriorityByElevation(sprite->sVirtualObjElev, sprite, 1);
     UpdateObjectEventSpriteInvisibility(sprite, sprite->sInvisible);
-}
-
-static void UNUSED DestroyVirtualObjects(void)
-{
-    int i;
-
-    for (i = 0; i < MAX_SPRITES; i++)
-    {
-        struct Sprite *sprite = &gSprites[i];
-        if(sprite->inUse && sprite->callback == SpriteCB_VirtualObject)
-            DestroySprite(sprite);
-    }
 }
 
 static int GetVirtualObjectSpriteId(u8 virtualObjId)

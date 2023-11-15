@@ -13,8 +13,6 @@ void LoadCompressedSpritePalette(const struct CompressedSpritePalette *src);
 void LoadCompressedSpritePaletteOverrideBuffer(const struct CompressedSpritePalette *src, void *buffer);
 bool8 LoadCompressedSpritePaletteUsingHeap(const struct CompressedSpritePalette *src);
 
-void DecompressPicFromTable(const struct CompressedSpriteSheet *src, void *buffer, s32 species);
-
 void LoadSpecialPokePic(void *dest, s32 species, u32 personality, bool8 isFrontPic, bool8 handleDeoxys);
 
 u32 GetDecompressedDataSize(const u32 *ptr);

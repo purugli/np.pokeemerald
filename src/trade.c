@@ -2808,7 +2808,7 @@ static void LoadTradeMonPic(u8 whichParty, u8 state)
 
         LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[pos], species, personality, TRUE, whichParty == TRADE_PLAYER);
 
-        LoadCompressedSpritePalette(GetMonSpritePalStruct(mon));
+        LoadSpritePalette(GetMonSpritePalStruct(mon));
         sTradeAnim->monSpecies[whichParty] = species;
         sTradeAnim->monPersonalities[whichParty] = personality;
         break;

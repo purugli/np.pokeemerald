@@ -5,6 +5,7 @@
 #include "battle_main.h"
 #include "item.h"
 #include "pokeball.h"
+#include "rom_header_graphics.h"
 
 // The purpose of this struct is for outside applications to be
 // able to access parts of the ROM or its save file, like a public API.
@@ -100,12 +101,12 @@ static const struct GFRomHeader sGFRomHeader = {
     .version = GAME_VERSION,
     .language = GAME_LANGUAGE,
     .gameName = "pokemon emerald version",
-    .monFrontPics = gMonFrontPicTable,
-    .monBackPics = gMonBackPicTable,
-    .monNormalPalettes = gMonPaletteTable,
-    .monShinyPalettes = gMonShinyPaletteTable,
-    .monIcons = gMonIconTable,
-    .monIconPaletteIds = gMonIconPaletteIndices,
+    .monFrontPics = gRomHeaderMonFrontPics,
+    .monBackPics = gRomHeaderMonBackPics,
+    .monNormalPalettes = gRomHeaderMonNormalPalettes,
+    .monShinyPalettes = gRomHeaderMonShinyPalettes,
+    .monIcons = gRomHeaderMonIcons,
+    .monIconPaletteIds = gRomHeaderMonIconPaletteIds,
     .monIconPalettes = gMonIconPaletteTable,
     .monSpeciesNames = gSpeciesNames,
     .moveNames = gMoveNames,

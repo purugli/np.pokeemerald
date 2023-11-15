@@ -565,7 +565,7 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId)
     u16 species;
     u8 side;
     u16 paletteOffset;
-    const void *lzPaletteData;
+    const void *paletteData;
     bool8 handleDeoxys;
 
     monsPersonality = GetMonData(mon, MON_DATA_PERSONALITY);
@@ -596,18 +596,17 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId)
     paletteOffset = OBJ_PLTT_ID(battlerId);
 
     if (gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies == SPECIES_NONE)
-        lzPaletteData = GetMonFrontSpritePal(mon);
+        paletteData = GetMonFrontSpritePal(mon);
     else
-        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, otId, monsPersonality);
+        paletteData = GetMonSpritePalFromSpeciesAndPersonality(species, otId, monsPersonality);
 
-    LZ77UnCompWram(lzPaletteData, gDecompressionBuffer);
-    LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
-    LoadPalette(gDecompressionBuffer, BG_PLTT_ID(8) + BG_PLTT_ID(battlerId), PLTT_SIZE_4BPP);
+    LoadPalette(paletteData, paletteOffset, PLTT_SIZE_4BPP);
+    LoadPalette(paletteData, BG_PLTT_ID(8) + BG_PLTT_ID(battlerId), PLTT_SIZE_4BPP);
 
     if (species == SPECIES_CASTFORM)
     {
         paletteOffset = OBJ_PLTT_ID(battlerId);
-        LZ77UnCompWram(lzPaletteData, gBattleStruct->castformPalette);
+        CpuCopy16(paletteData, gBattleStruct->castformPalette, PLTT_SIZEOF(16) * NUM_CASTFORM_FORMS);
         LoadPalette(gBattleStruct->castformPalette[gBattleMonForms[battlerId]], paletteOffset, PLTT_SIZE_4BPP);
     }
 
@@ -630,17 +629,15 @@ void BattleGfxSfxDummy2(u16 species)
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battlerId)
 {
     u8 position = GetBattlerPosition(battlerId);
-    DecompressPicFromTable(&gTrainerFrontPicTable[frontPicId],
-                             gMonSpritesGfxPtr->sprites.ptr[position],
-                             SPECIES_NONE);
-    LoadCompressedSpritePalette(&gTrainerFrontPicPaletteTable[frontPicId]);
+    LZ77UnCompWram(gTrainerFrontPicTable[frontPicId].data,
+                   gMonSpritesGfxPtr->sprites.ptr[position]);
+    LoadSpritePalette(&gTrainerFrontPicPaletteTable[frontPicId]);
 }
 
 void DecompressTrainerBackPic(u16 backPicId, u8 battlerId)
 {
-    u8 position = GetBattlerPosition(battlerId);
-    LoadCompressedPalette(gTrainerBackPicPaletteTable[backPicId],
-                          OBJ_PLTT_ID(battlerId), PLTT_SIZE_4BPP);
+    LoadPalette(gTrainerBackPicPaletteTable[backPicId],
+                OBJ_PLTT_ID(battlerId), PLTT_SIZE_4BPP);
 }
 
 void BattleGfxSfxDummy3(u8 gender)
@@ -848,7 +845,7 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool8 castform)
     u32 personalityValue;
     u32 otId;
     u8 position, side;
-    const u32 *lzPaletteData;
+    const u16 *paletteData;
 
     if (castform)
     {
@@ -905,21 +902,20 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool8 castform)
             LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[position],
                            targetSpecies,
                            gTransformedPersonalities[battlerAtk],
-                           side, !side);
+                           side, FALSE);
         }
 
         src = gMonSpritesGfxPtr->sprites.ptr[position];
         dst = (void *)(OBJ_VRAM0 + gSprites[gBattlerSpriteIds[battlerAtk]].oam.tileNum * 32);
         DmaCopy32(3, src, dst, MON_PIC_SIZE);
         paletteOffset = OBJ_PLTT_ID(battlerAtk);
-        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, otId, personalityValue);
-        LZ77UnCompWram(lzPaletteData, gDecompressionBuffer);
-        LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
+        paletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, otId, personalityValue);
+        LoadPalette(paletteData, paletteOffset, PLTT_SIZE_4BPP);
 
         if (targetSpecies == SPECIES_CASTFORM)
         {
             gSprites[gBattlerSpriteIds[battlerAtk]].anims = gMonFrontAnimsPtrTable[targetSpecies];
-            LZ77UnCompWram(lzPaletteData, gBattleStruct->castformPalette);
+            CpuCopy16(paletteData, gBattleStruct->castformPalette, PLTT_SIZEOF(16) * NUM_CASTFORM_FORMS);
             LoadPalette(gBattleStruct->castformPalette[gBattleMonForms[battlerDef]], paletteOffset, PLTT_SIZE_4BPP);
         }
 

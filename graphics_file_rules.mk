@@ -23,6 +23,7 @@ STARTERGFXDIR := graphics/starter_choose
 NAMINGGFXDIR := graphics/naming_screen
 SPINDAGFXDIR := graphics/spinda_spots
 RGTILESETGFXDIR := data/tilesets/frlg
+CASTFORMROMHEADERGFXDIR := graphics/pokemon/castform/rom_header
 
 types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark
 contest_types := cool beauty cute smart tough
@@ -43,12 +44,6 @@ $(CASTFORMGFXDIR)/back.4bpp: $(CASTFORMGFXDIR)/normal/back.4bpp \
                              $(CASTFORMGFXDIR)/snowy/back.4bpp
 	@cat $^ >$@
 
-$(CASTFORMGFXDIR)/anim_front.4bpp: $(CASTFORMGFXDIR)/normal/anim_front.4bpp \
-                                   $(CASTFORMGFXDIR)/sunny/anim_front.4bpp \
-                                   $(CASTFORMGFXDIR)/rainy/anim_front.4bpp \
-                                   $(CASTFORMGFXDIR)/snowy/anim_front.4bpp
-	@cat $^ >$@
-
 $(CASTFORMGFXDIR)/normal.gbapal: $(CASTFORMGFXDIR)/normal/normal.gbapal \
                                  $(CASTFORMGFXDIR)/sunny/normal.gbapal \
                                  $(CASTFORMGFXDIR)/rainy/normal.gbapal \
@@ -61,6 +56,29 @@ $(CASTFORMGFXDIR)/shiny.gbapal: $(CASTFORMGFXDIR)/normal/shiny.gbapal \
                                 $(CASTFORMGFXDIR)/snowy/shiny.gbapal
 	@cat $^ >$@
 
+$(CASTFORMROMHEADERGFXDIR)/front.4bpp: $(CASTFORMROMHEADERGFXDIR)/normal/front.4bpp \
+                                       $(CASTFORMROMHEADERGFXDIR)/sunny/front.4bpp \
+                                       $(CASTFORMROMHEADERGFXDIR)/rainy/front.4bpp \
+                                       $(CASTFORMROMHEADERGFXDIR)/snowy/front.4bpp
+	@cat $^ >$@
+
+$(CASTFORMROMHEADERGFXDIR)/back.4bpp: $(CASTFORMROMHEADERGFXDIR)/normal/back.4bpp \
+                                      $(CASTFORMROMHEADERGFXDIR)/sunny/back.4bpp \
+                                      $(CASTFORMROMHEADERGFXDIR)/rainy/back.4bpp \
+                                      $(CASTFORMROMHEADERGFXDIR)/snowy/back.4bpp
+	@cat $^ >$@
+
+$(CASTFORMROMHEADERGFXDIR)/normal.gbapal: $(CASTFORMROMHEADERGFXDIR)/normal/normal.gbapal \
+                                          $(CASTFORMROMHEADERGFXDIR)/sunny/normal.gbapal \
+                                          $(CASTFORMROMHEADERGFXDIR)/rainy/normal.gbapal \
+                                          $(CASTFORMROMHEADERGFXDIR)/snowy/normal.gbapal
+	@cat $^ >$@
+
+$(CASTFORMROMHEADERGFXDIR)/shiny.gbapal: $(CASTFORMROMHEADERGFXDIR)/normal/shiny.gbapal \
+                                         $(CASTFORMROMHEADERGFXDIR)/sunny/shiny.gbapal \
+                                         $(CASTFORMROMHEADERGFXDIR)/rainy/shiny.gbapal \
+                                         $(CASTFORMROMHEADERGFXDIR)/snowy/shiny.gbapal
+	@cat $^ >$@
 
 
 ### Tilesets ###

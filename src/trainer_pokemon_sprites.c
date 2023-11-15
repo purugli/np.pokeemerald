@@ -57,14 +57,14 @@ bool16 ResetAllPicSprites(void)
     return FALSE;
 }
 
-static void LoadPicPaletteByTagOrSlot(const struct CompressedSpritePalette *palette, u8 paletteSlot, u16 paletteTag)
+static void LoadPicPaletteByTagOrSlot(const struct SpritePalette *palette, u8 paletteSlot, u16 paletteTag)
 {
     sCreatingSpriteTemplate.paletteTag = paletteTag;
 
     if (paletteTag == TAG_NONE)
-        LoadCompressedPalette(palette->data, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
+        LoadPalette(palette->data, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
     else
-        LoadCompressedSpritePalette(palette);
+        LoadSpritePalette(palette);
 }
 
 u16 CreateMonPicSprite(u16 species, u32 otId, u32 personality, bool8 useAffine, s16 x, s16 y, u8 paletteSlot, u16 paletteTag)
@@ -74,7 +74,6 @@ u16 CreateMonPicSprite(u16 species, u32 otId, u32 personality, bool8 useAffine, 
     int j;
     u32 i;
     u8 spriteId;
-    u8 type;
 
     for (i = 0; i < PICS_COUNT; i ++)
     {
@@ -160,7 +159,7 @@ u16 CreateTrainerPicSprite(u16 trainerPicId, s16 x, s16 y, u8 paletteSlot, u16 p
     }
     sCreatingSpriteTemplate.tileTag = TAG_NONE;
     sCreatingSpriteTemplate.oam = &sOamData_Normal;
-    sCreatingSpriteTemplate.anims = gTrainerFrontAnimsPtrTable[0];
+    sCreatingSpriteTemplate.anims = gAnims_None;
     sCreatingSpriteTemplate.images = images;
     sCreatingSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
     sCreatingSpriteTemplate.callback = DummyPicSpriteCallback;
@@ -210,7 +209,7 @@ u16 CreateTrainerCardTrainerPicSprite(u16 trainerPicId, u16 destX, u16 destY)
     {
         LZ77UnCompWram(gTrainerFrontPicTable[trainerPicId].data, framePics);
         BlitBitmapRectToWindow(2, framePics, 0, 0, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT, destX, destY, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT);
-        LoadCompressedPalette(gTrainerFrontPicPaletteTable[trainerPicId].data, PLTT_ID(8), PLTT_SIZE_4BPP);
+        LoadPalette(gTrainerFrontPicPaletteTable[trainerPicId].data, PLTT_ID(8), PLTT_SIZE_4BPP);
         Free(framePics);
         return 0;
     }

@@ -2830,7 +2830,7 @@ void SpriteCB_OpponentMonFromBall(struct Sprite *sprite)
     {
         if (!(gHitMarker & HITMARKER_NO_ANIMATIONS) || gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
         {
-            if (HasTwoFramesAnimation(sprite->sSpeciesId))
+            if (sprite->sSpeciesId != SPECIES_CASTFORM)
                 StartSpriteAnim(sprite, 1);
         }
         BattleAnimateFrontSprite(sprite, sprite->sSpeciesId, TRUE, 1);

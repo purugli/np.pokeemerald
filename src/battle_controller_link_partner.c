@@ -1558,7 +1558,7 @@ static void LinkPartnerHandleIntroTrainerBallThrow(void)
         trainerPicId = gLinkPlayers[GetBattlerMultiplayerId(gActiveBattler)].gender;
     }
 
-    LoadCompressedPalette(gTrainerBackPicPaletteTable[trainerPicId], OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+    DecompressTrainerBackPic(trainerPicId, paletteNum);
 
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.paletteNum = paletteNum;
 

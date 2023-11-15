@@ -364,7 +364,7 @@ static void VBlankCB_ContestPainting(void)
 static void InitContestMonPixels(u16 species)
 {
     const void *pal = GetMonSpritePalFromSpeciesAndPersonality(species, gContestPaintingWinner->trainerId, gContestPaintingWinner->personality);
-    LZ77UnCompVram(pal, gContestPaintingMonPalette);
+    CpuCopy16(pal, gContestPaintingMonPalette, PLTT_SIZEOF(16));
     LoadSpecialPokePic(
         gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT],
         species,

@@ -584,7 +584,7 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId)
     otId = GetMonData(mon, MON_DATA_OT_ID);
     side = GetBattlerSide(battlerId);
 
-    if (ShouldIgnoreDeoxysForm(1, battlerId) || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != SPECIES_NONE || side != B_SIDE_PLAYER)
+    if (ShouldIgnoreDeoxysForm(DEOXYS_CHECK_BATTLE_SPRITE, battlerId) || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != SPECIES_NONE || side != B_SIDE_PLAYER)
         handleDeoxys = FALSE;
     else
         handleDeoxys = TRUE;

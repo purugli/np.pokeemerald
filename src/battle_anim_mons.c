@@ -1934,7 +1934,7 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16
     if (gMonSpritesGfxPtr != NULL && gMonSpritesGfxPtr->buffer == NULL)
         gMonSpritesGfxPtr->buffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
 
-    if (ignoreDeoxysForm || ShouldIgnoreDeoxysForm(5, battlerId) || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != 0)
+    if (ignoreDeoxysForm || ShouldIgnoreDeoxysForm(DEOXYS_CHECK_BATTLE_ANIM, battlerId) || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != 0)
         handleDeoxys = FALSE;
     else
         handleDeoxys = TRUE;

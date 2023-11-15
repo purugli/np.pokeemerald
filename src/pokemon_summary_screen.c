@@ -3884,7 +3884,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
             LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT],
                                summary->species2,
                                summary->pid,
-                               TRUE, !ShouldIgnoreDeoxysForm(3, sMonSummaryScreen->curMonIndex));
+                               TRUE, !ShouldIgnoreDeoxysForm(DEOXYS_CHECK_TRADE_MAIN, sMonSummaryScreen->curMonIndex));
         }
         else
         {

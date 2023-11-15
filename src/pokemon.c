@@ -2642,7 +2642,7 @@ bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)
     case 0:
     default:
         return FALSE;
-    case 1: // Player's side in battle
+    case DEOXYS_CHECK_BATTLE_SPRITE:
         if (!(gBattleTypeFlags & BATTLE_TYPE_MULTI))
             return FALSE;
         if (!gMain.inBattle)
@@ -2652,7 +2652,7 @@ bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)
         break;
     case 2:
         break;
-    case 3: // Summary Screen
+    case DEOXYS_CHECK_TRADE_MAIN:
         if (!(gBattleTypeFlags & BATTLE_TYPE_MULTI))
             return FALSE;
         if (!gMain.inBattle)
@@ -2662,7 +2662,7 @@ bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)
         return FALSE;
     case 4:
         break;
-    case 5: // In move animation, e.g. in Role Play or Snatch
+    case DEOXYS_CHECK_BATTLE_ANIM:
         if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         {
             if (!gMain.inBattle)

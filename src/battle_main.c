@@ -60,6 +60,7 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "cable_club.h"
+#include "pokemon_icon.h"
 
 extern const struct BgTemplate gBattleBgTemplates[];
 extern const struct WindowTemplate *const gBattleWindowTemplates[];
@@ -2741,36 +2742,24 @@ void SpriteCB_FaintOpponentMon(struct Sprite *sprite)
 {
     u8 battler = sprite->sBattler;
     u16 species;
-    u8 yOffset;
+    const struct MonCoords *monCoords;
 
-    if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies != 0)
-        species = gBattleSpritesDataPtr->battlerData[battler].transformSpecies;
-    else
+    species = gBattleSpritesDataPtr->battlerData[battler].transformSpecies;
+    if (species == 0)
         species = sprite->sSpeciesId;
 
-    GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_PERSONALITY);  // Unused return value.
-
-    if (species == SPECIES_UNOWN)
+    if (species == SPECIES_CASTFORM)
     {
-        u32 personalityValue = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_PERSONALITY);
-        u16 unownSpecies = GetUnownSpecies(personalityValue);
-
-        yOffset = gMonFrontPicCoords[unownSpecies].y_offset;
-    }
-    else if (species == SPECIES_CASTFORM)
-    {
-        yOffset = gCastformFrontSpriteCoords[gBattleMonForms[battler]].y_offset;
-    }
-    else if (species > NUM_SPECIES)
-    {
-        yOffset = gMonFrontPicCoords[SPECIES_NONE].y_offset;
+        monCoords = &gCastformFrontSpriteCoords[gBattleMonForms[battler]];
     }
     else
     {
-        yOffset = gMonFrontPicCoords[species].y_offset;
+        u32 personalityValue = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_PERSONALITY);
+        species = GetIconSpecies(species, personalityValue);
+        monCoords = &gMonFrontPicCoords[species];
     }
 
-    sprite->data[3] = 8 - yOffset / 8;
+    sprite->data[3] = 8 - monCoords->y_offset / 8;
     sprite->data[4] = 1;
     sprite->callback = SpriteCB_AnimFaintOpponent;
 }

@@ -168,14 +168,11 @@ u8 GetBattlerYDelta(u8 battlerId, u16 species)
     u32 personality;
     struct BattleSpriteInfo *spriteInfo;
     u8 ret;
-    u16 coordSpecies;
-    bool8 isBack = FALSE;
-
-    if (GetBattlerSide(battlerId) == B_SIDE_PLAYER || IsContest())
-        isBack = TRUE;
+    bool8 isBack;
 
     if (IsContest())
     {
+        isBack = TRUE;
         if (gContestResources->moveAnim->hasTargetAnim)
             personality = gContestResources->moveAnim->targetPersonality;
         else
@@ -183,6 +180,7 @@ u8 GetBattlerYDelta(u8 battlerId, u16 species)
     }
     else
     {
+        isBack = GetBattlerSide(battlerId) == B_SIDE_PLAYER;
         spriteInfo = gBattleSpritesDataPtr->battlerData;
         if (!spriteInfo[battlerId].transformSpecies)
         {
@@ -210,12 +208,12 @@ u8 GetBattlerYDelta(u8 battlerId, u16 species)
     else
     {
         const struct MonCoords *monCoords;
-        coordSpecies = GetIconSpecies(species, personality);
+        species = GetIconSpecies(species, personality);
         if (isBack)
             monCoords = gMonBackPicCoords;
         else
             monCoords = gMonFrontPicCoords;
-        ret = monCoords[coordSpecies].y_offset;
+        ret = monCoords[species].y_offset;
     }
     return ret;
 }
@@ -227,11 +225,13 @@ u8 GetBattlerElevation(u8 battlerId, u16 species)
     {
         if (!IsContest())
         {
-            u16 coordSpecies = GetIconSpecies(species, 0);
             if (species == SPECIES_CASTFORM)
                 ret = sCastformElevations[gBattleMonForms[battlerId]];
             else
-                ret = gEnemyMonElevation[coordSpecies];
+            {
+                species = GetIconSpecies(species, 0);
+                ret = gEnemyMonElevation[species];
+            }
         }
     }
     return ret;

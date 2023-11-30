@@ -264,13 +264,6 @@ const union AffineAnimCmd *const gAffineAnims_BattleSpriteContest[] =
     sAffineAnim_Battler_Spin,
 };
 
-
-static const union AnimCmd sAnim_MonPic_0[] =
-{
-    ANIMCMD_FRAME(0, 0),
-    ANIMCMD_END,
-};
-
 static const union AnimCmd sAnim_MonPic_1[] =
 {
     ANIMCMD_FRAME(1, 0),
@@ -283,18 +276,12 @@ static const union AnimCmd sAnim_MonPic_2[] =
     ANIMCMD_END,
 };
 
-static const union AnimCmd sAnim_MonPic_3[] =
-{
-    ANIMCMD_FRAME(3, 0),
-    ANIMCMD_END,
-};
-
 const union AnimCmd *const gAnims_MonPic[MAX_MON_PIC_FRAMES] =
 {
-    sAnim_MonPic_0,
+    sAnim_GeneralFrame0,
     sAnim_MonPic_1,
     sAnim_MonPic_2,
-    sAnim_MonPic_3,
+    sAnim_GeneralFrame3,
 };
 
 #define SPECIES_PAL(species, pal) [SPECIES_##species] = {pal, SPECIES_##species}

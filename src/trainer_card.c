@@ -169,7 +169,6 @@ static void UpdateCardFlipRegs(u16);
 static void LoadMonIconGfx(void);
 
 static const u32 sTrainerCardStickers_Gfx[]      = INCBIN_U32("graphics/trainer_card/frlg/stickers.4bpp.lz");
-static const u16 sUnused_Pal[]                   = INCBIN_U16("graphics/trainer_card/unused.gbapal");
 static const u16 sHoennTrainerCardBronze_Pal[]   = INCBIN_U16("graphics/trainer_card/bronze.gbapal");
 static const u16 sKantoTrainerCardGreen_Pal[]    = INCBIN_U16("graphics/trainer_card/frlg/green.gbapal");
 static const u16 sHoennTrainerCardCopper_Pal[]   = INCBIN_U16("graphics/trainer_card/copper.gbapal");

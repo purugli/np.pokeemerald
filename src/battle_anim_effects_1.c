@@ -1111,108 +1111,6 @@ const struct SpriteTemplate gVineWhipSpriteTemplate =
     .callback = AnimWhipHit,
 };
 
-static const union AnimCmd sAnim_SlidingHit[] =
-{
-    ANIMCMD_FRAME(0, 4),
-    ANIMCMD_FRAME(16, 4),
-    ANIMCMD_FRAME(32, 4),
-    ANIMCMD_FRAME(48, 4),
-    ANIMCMD_FRAME(64, 5),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd *const sAnims_SlidingHit[] =
-{
-    sAnim_SlidingHit,
-};
-
-// Unused
-static const struct SpriteTemplate sSlidingHit1SpriteTemplate =
-{
-    .tileTag = ANIM_TAG_HIT,
-    .paletteTag = ANIM_TAG_HIT,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = sAnims_SlidingHit,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSlidingHit,
-};
-
-// Unused
-static const struct SpriteTemplate sSlidingHit2SpriteTemplate =
-{
-    .tileTag = ANIM_TAG_HIT_2,
-    .paletteTag = ANIM_TAG_HIT_2,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = sAnims_SlidingHit,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSlidingHit,
-};
-
-static const union AffineAnimCmd sAffineAnim_FlickeringPunch_Normal[] = {
-    AFFINEANIMCMD_FRAME(256, 256, 0, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sAffineAnim_FlickeringPunch_TurnedTopLeft[] = {
-    AFFINEANIMCMD_FRAME(256, 256, 32, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sAffineAnim_FlickeringPunch_TurnedLeft[] = {
-    AFFINEANIMCMD_FRAME(256, 256, 64, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sAffineAnim_FlickeringPunch_TurnedBottomLeft[] = {
-    AFFINEANIMCMD_FRAME(256, 256, 96, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sAffineAnim_FlickeringPunch_UpsideDown[] = {
-    AFFINEANIMCMD_FRAME(256, 256, -128, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sAffineAnim_FlickeringPunch_TurnedBottomRight[] = {
-    AFFINEANIMCMD_FRAME(256, 256, -96, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sAffineAnim_FlickeringPunch_TurnedRight[] = {
-    AFFINEANIMCMD_FRAME(256, 256, -64, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sAffineAnim_FlickeringPunch_TurnedTopRight[] = {
-    AFFINEANIMCMD_FRAME(256, 256, -32, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd *const sAffineAnims_FlickeringPunch[] = {
-    sAffineAnim_FlickeringPunch_Normal,
-    sAffineAnim_FlickeringPunch_TurnedTopLeft,
-    sAffineAnim_FlickeringPunch_TurnedLeft,
-    sAffineAnim_FlickeringPunch_TurnedBottomLeft,
-    sAffineAnim_FlickeringPunch_UpsideDown,
-    sAffineAnim_FlickeringPunch_TurnedBottomRight,
-    sAffineAnim_FlickeringPunch_TurnedRight,
-    sAffineAnim_FlickeringPunch_TurnedTopRight,
-};
-
-// Unused
-static const struct SpriteTemplate sFlickeringPunchSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_HANDS_AND_FEET,
-    .paletteTag = ANIM_TAG_HANDS_AND_FEET,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = sAffineAnims_FlickeringPunch,
-    .callback = AnimFlickeringPunch,
-};
-
 const union AnimCmd gCuttingSliceAnimCmds[] =
 {
     ANIMCMD_FRAME(0, 5),
@@ -1323,18 +1221,6 @@ static const union AnimCmd *const sAnims_CirclingMusicNote[] =
     sAnim_CirclingMusicNote_Quarter_Flipped,
 };
 
-// Unused
-static const struct SpriteTemplate sCirclingMusicNoteSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MUSIC_NOTES,
-    .paletteTag = ANIM_TAG_MUSIC_NOTES,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = sAnims_CirclingMusicNote,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimCirclingMusicNote,
-};
-
 const struct SpriteTemplate gProtectSpriteTemplate =
 {
     .tileTag = ANIM_TAG_PROTECT,
@@ -1417,50 +1303,6 @@ const struct SpriteTemplate gSparklingStarsSpriteTemplate =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimSparklingStars,
-};
-
-static const union AnimCmd sAnim_BubbleBurst[] =
-{
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(4, 10),
-    ANIMCMD_FRAME(8, 10),
-    ANIMCMD_FRAME(12, 10),
-    ANIMCMD_FRAME(16, 26),
-    ANIMCMD_FRAME(16, 5),
-    ANIMCMD_FRAME(20, 5),
-    ANIMCMD_FRAME(24, 15),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_BubbleBurst_Flipped[] =
-{
-    ANIMCMD_FRAME(0, 10, .hFlip = TRUE),
-    ANIMCMD_FRAME(4, 10, .hFlip = TRUE),
-    ANIMCMD_FRAME(8, 10, .hFlip = TRUE),
-    ANIMCMD_FRAME(12, 10, .hFlip = TRUE),
-    ANIMCMD_FRAME(16, 26, .hFlip = TRUE),
-    ANIMCMD_FRAME(16, 5, .hFlip = TRUE),
-    ANIMCMD_FRAME(20, 5, .hFlip = TRUE),
-    ANIMCMD_FRAME(24, 15, .hFlip = TRUE),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd *const sAnims_BubbleBurst[] =
-{
-    sAnim_BubbleBurst,
-    sAnim_BubbleBurst_Flipped,
-};
-
-// Unused
-static const struct SpriteTemplate sBubbleBurstSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_BUBBLE_BURST,
-    .paletteTag = ANIM_TAG_BUBBLE_BURST,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = sAnims_BubbleBurst,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimBubbleBurst,
 };
 
 const union AnimCmd gSleepLetterZAnimCmds[] =

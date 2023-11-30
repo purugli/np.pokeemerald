@@ -258,11 +258,11 @@ struct ObjectEventGraphicsInfo
     /*0x04*/ u16 size;
     /*0x06*/ s16 width;
     /*0x08*/ s16 height;
-    /*0x09*/ u8 textColor:4;
+    /*0x0A*/ u8 textColor:4;
              u8 shadowSize:2;
              u8 inanimate:1;
              u8 disableReflectionPaletteLoad:1;
-    /*0x0A*/ u8 tracks:4;
+    /*0x0B*/ u8 tracks:4;
              u8 anims:4;
     /*0x0C*/ const struct OamData *oam;
     /*0x10*/ const struct SubspriteTable *subspriteTables;

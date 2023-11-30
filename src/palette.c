@@ -595,7 +595,7 @@ static bool8 IsSoftwarePaletteFadeFinishing(void)
 
 void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color)
 {
-    u16 paletteOffset;
+    u32 paletteOffset;
 
     for (paletteOffset = 0; selectedPalettes; paletteOffset += 16)
     {

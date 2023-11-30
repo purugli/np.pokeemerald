@@ -594,7 +594,7 @@ static const struct UCoords8 sMauvilleGymSwitchCoords[] =
 // Presses the stepped-on switch and raises the rest
 void MauvilleGymPressSwitch(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sMauvilleGymSwitchCoords); i++)
     {
         if (i == gSpecialVar_0x8004)
@@ -796,7 +796,7 @@ static void PetalburgGymSetDoorMetatiles(u8 roomNumber, u16 metatileId)
 {
     u16 doorCoordsX[4];
     u16 doorCoordsY[4];
-    u8 i;
+    u32 i;
     u8 nDoors = 0;
     switch (roomNumber)
     {
@@ -1217,7 +1217,7 @@ bool8 CheckLeadMonTough(void)
 
 void IsGrassTypeInParty(void)
 {
-    u8 i;
+    u32 i;
     u16 species;
     struct Pokemon *pokemon;
     for (i = 0; i < PARTY_SIZE; i++)
@@ -1424,7 +1424,7 @@ void LoadWallyZigzagoon(void)
 
 bool8 IsStarterInParty(void)
 {
-    u8 i;
+    u32 i;
     u16 starter = GetStarterPokemon(VarGet(VAR_STARTER_MON));
     u8 partyCount = CalculatePlayerPartyCount();
     for (i = 0; i < partyCount; i++)
@@ -1518,7 +1518,7 @@ void SetRoute123Weather(void)
 
 u8 GetLeadMonIndex(void)
 {
-    u8 i;
+    u32 i;
     u8 partyCount = CalculatePlayerPartyCount();
     for (i = 0; i < partyCount; i++)
     {
@@ -1637,7 +1637,7 @@ bool8 BufferTMHMMoveName(void)
 bool8 IsBadEggInParty(void)
 {
     u8 partyCount = CalculatePlayerPartyCount();
-    u8 i;
+    u32 i;
 
     for (i = 0; i < partyCount; i++)
     {
@@ -1916,7 +1916,7 @@ static void MoveElevatorWindowLights(u16 floorDelta, bool8 descending)
 
 static void Task_MoveElevatorWindowLights(u8 taskId)
 {
-    u8 x, y;
+    u32 x, y;
     s16 *data = gTasks[taskId].data;
 
     if (tTimer == 6)
@@ -1956,7 +1956,7 @@ static void Task_MoveElevatorWindowLights(u8 taskId)
 
 void BufferVarsForIVRater(void)
 {
-    u8 i;
+    u32 i;
     u32 ivStorage[NUM_STATS];
 
     ivStorage[STAT_HP] = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_HP_IV);
@@ -2533,8 +2533,8 @@ static const u8 *const sScrollableMultichoiceOptions[][MAX_SCROLL_MULTI_LENGTH] 
 
 static void Task_ShowScrollableMultichoice(u8 taskId)
 {
-    u32 width;
-    u8 i, windowId;
+    u32 width, i;
+    u8 windowId;
     struct WindowTemplate template;
     struct Task *task = &gTasks[taskId];
 
@@ -2753,7 +2753,7 @@ void ShowGlassWorkshopMenu(void)
 
 void SetBattleTowerLinkPlayerGfx(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < 2; i++)
     {
         VarSet(VAR_OBJ_GFX_ID_F - i, GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, gLinkPlayers[i].gender));
@@ -3172,7 +3172,7 @@ void ScrollableMultichoice_RedrawPersistentMenu(void)
 
 void GetBattleFrontierTutorMoveIndex(void)
 {
-    u8 i;
+    u32 i;
     u16 moveTutor = 0;
     u16 moveIndex = 0;
     gSpecialVar_0x8005 = 0;
@@ -3589,7 +3589,7 @@ u32 GetMartEmployeeObjectEventId(void)
         { MAP_GROUP(BATTLE_FRONTIER_MART), MAP_NUM(BATTLE_FRONTIER_MART), LOCALID_BATTLE_FRONTIER_MART_CLERK }
     };
 
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sPokeMarts); i++)
     {
         if (gSaveBlock1Ptr->location.mapGroup == sPokeMarts[i][0])
@@ -4101,8 +4101,8 @@ static u16 PlayerLoseRandomTrainerFan(void)
 
 u16 GetNumFansOfPlayerInTrainerFanClub(void)
 {
-    u8 i;
-    u8 numFans = 0;
+    u32 i;
+    u32 numFans = 0;
 
     for (i = 0; i < NUM_TRAINER_FAN_CLUB_MEMBERS; i++)
     {

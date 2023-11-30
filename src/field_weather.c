@@ -262,12 +262,12 @@ static u8 None_Finish(void)
 // this function always builds the same two tables.
 static void BuildColorMaps(void)
 {
-    u16 i;
+    u32 i;
     u8 (*colorMaps)[32];
-    u16 colorVal;
+    u32 colorVal;
     u16 curBrightness;
     u16 brightnessDelta;
-    u16 colorMapIndex;
+    u32 colorMapIndex;
     u16 baseBrightness;
     u32 remainingBrightness;
     s16 diff;
@@ -458,10 +458,10 @@ static void DoNothing(void)
 
 static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
 {
-    u16 curPalIndex;
-    u16 palOffset;
+    u32 curPalIndex;
+    u32 palOffset;
     u8 *colorMap;
-    u16 i;
+    u32 i;
 
     if (colorMapIndex > 0)
     {
@@ -540,8 +540,8 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
 static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex, u8 blendCoeff, u16 blendColor)
 {
     u16 palOffset;
-    u16 curPalIndex;
-    u16 i;
+    u32 curPalIndex;
+    u32 i;
     struct RGBColor color = *(struct RGBColor *)&blendColor;
     u8 rBlend = color.r;
     u8 gBlend = color.g;
@@ -594,9 +594,9 @@ static void ApplyDroughtColorMapWithBlend(s8 colorMapIndex, u8 blendCoeff, u16 b
     u8 rBlend;
     u8 gBlend;
     u8 bBlend;
-    u16 curPalIndex;
+    u32 curPalIndex;
     u16 palOffset;
-    u16 i;
+    u32 i;
 
     colorMapIndex = -colorMapIndex - 1;
     color = *(struct RGBColor *)&blendColor;
@@ -649,7 +649,7 @@ static void ApplyFogBlend(u8 blendCoeff, u16 blendColor)
     u8 rBlend;
     u8 gBlend;
     u8 bBlend;
-    u16 curPalIndex;
+    u32 curPalIndex;
 
     BlendPalette(BG_PLTT_ID(0), 16 * 16, blendCoeff, blendColor);
     color = *(struct RGBColor *)&blendColor;
@@ -661,8 +661,8 @@ static void ApplyFogBlend(u8 blendCoeff, u16 blendColor)
     {
         if (LightenSpritePaletteInFog(curPalIndex))
         {
-            u16 palEnd = PLTT_ID(curPalIndex + 1);
-            u16 palOffset = PLTT_ID(curPalIndex);
+            u32 palEnd = PLTT_ID(curPalIndex + 1);
+            u32 palOffset = PLTT_ID(curPalIndex);
 
             while (palOffset < palEnd)
             {

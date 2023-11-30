@@ -469,7 +469,7 @@ void SetGameStat(u8 index, u32 value)
 
 void ApplyNewEncryptionKeyToGameStats(u32 newKey)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < NUM_GAME_STATS; i++)
         ApplyNewEncryptionKeyToWord(&gSaveBlock1Ptr->gameStats[i], newKey);

@@ -569,7 +569,7 @@ void UpdateItemMenuSwapLinePos(u8 y)
 
 static void ArrangeBerryGfx(void *src, void *dest)
 {
-    u8 i, j;
+    u32 i, j;
 
     memset(dest, 0, 0x800);
 

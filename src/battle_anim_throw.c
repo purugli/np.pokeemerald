@@ -1647,7 +1647,7 @@ static void PokeBallOpenParticleAnimation_Step2(struct Sprite *sprite)
 
 static void TimerBallOpenParticleAnimation(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 x, y, priority, subpriority, ballId;
     u8 spriteId;
 
@@ -1681,7 +1681,7 @@ static void TimerBallOpenParticleAnimation(u8 taskId)
 
 static void DiveBallOpenParticleAnimation(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 x, y, priority, subpriority, ballId;
     u8 spriteId;
 
@@ -1716,7 +1716,7 @@ static void DiveBallOpenParticleAnimation(u8 taskId)
 // Also used for Net Ball
 static void SafariBallOpenParticleAnimation(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 x, y, priority, subpriority, ballId;
     u8 spriteId;
 
@@ -1751,7 +1751,7 @@ static void SafariBallOpenParticleAnimation(u8 taskId)
 // Also used for Nest Ball
 static void UltraBallOpenParticleAnimation(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 x, y, priority, subpriority, ballId;
     u8 spriteId;
 
@@ -1786,7 +1786,7 @@ static void UltraBallOpenParticleAnimation(u8 taskId)
 // Also used for Luxury Ball
 static void GreatBallOpenParticleAnimation(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 x, y, priority, subpriority, ballId;
     u8 spriteId;
 
@@ -1842,7 +1842,7 @@ static void FanOutBallOpenParticles_Step1(struct Sprite *sprite)
 
 static void RepeatBallOpenParticleAnimation(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 x, y, priority, subpriority, ballId;
     u8 spriteId;
 
@@ -1884,7 +1884,7 @@ static void RepeatBallOpenParticleAnimation_Step1(struct Sprite *sprite)
 
 static void MasterBallOpenParticleAnimation(u8 taskId)
 {
-    u8 i, j;
+    u32 i, j;
     u8 x, y, priority, subpriority, ballId;
     u8 spriteId;
 
@@ -1930,7 +1930,7 @@ static void MasterBallOpenParticleAnimation(u8 taskId)
 
 static void PremierBallOpenParticleAnimation(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 x, y, priority, subpriority, ballId;
     u8 spriteId;
 

@@ -1351,7 +1351,7 @@ static void PrintPokemonIconsOnCard(void)
         {
             if (sData->trainerCard.monSpecies[i])
             {
-                u8 monSpecies = GetMonIconPaletteIndexFromSpecies(sData->trainerCard.monSpecies[i]);
+                u8 monSpecies = GetValidMonIconPalIndex(sData->trainerCard.monSpecies[i]);
                 WriteSequenceToBgTilemapBuffer(3, 16 * i + 224, xOffsets[i] + 3, 15, 4, 4, paletteSlots[monSpecies], 1);
             }
         }

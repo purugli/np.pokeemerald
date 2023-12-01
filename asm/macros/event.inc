@@ -928,22 +928,14 @@
 	.byte 0x72
 	.endm
 
-	@ Nopped in Emerald, but still consumes parameters.
-	.macro erasebox left:req, top:req, right:req, bottom:req
+	@ Nopped in Emerald.
+	.macro erasebox
 	.byte 0x73
-	.byte \left
-	.byte \top
-	.byte \right
-	.byte \bottom
 	.endm
 
-	@ Nopped in Emerald, but still consumes parameters.
-	.macro drawboxtext left:req, top:req, multichoiceId:req, ignoreBPress:req
+	@ Nopped in Emerald.
+	.macro drawboxtext
 	.byte 0x74
-	.byte \left
-	.byte \top
-	.byte \multichoiceId
-	.byte \ignoreBPress
 	.endm
 
 	@ Displays a box containing the front sprite for the specified Pokemon species.

@@ -269,11 +269,6 @@ void MPlayExtender(struct CgbChannel *cgbChans)
     soundInfo->ident = ident;
 }
 
-void MusicPlayerJumpTableCopy(void)
-{
-    asm("swi 0x2A");
-}
-
 void ClearChain(void *x)
 {
     void (*func)(void *) = *(&gMPlayJumpTable[34]);

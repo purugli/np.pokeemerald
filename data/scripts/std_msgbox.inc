@@ -40,9 +40,6 @@ Std_MsgboxPokenav:
 	waitmessage
 	return
 
-EventScript_UnusedReturn:
-	return
-
 Common_EventScript_SaveGame::
 	special SaveGame
 	waitstate

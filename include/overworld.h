@@ -57,9 +57,8 @@ extern const struct UCoords32 gDirectionToVectors[];
 extern const u16 gRegionalSurfMusic[];
 
 void DoWhiteOut(void);
-void Overworld_ResetStateAfterFly(void);
+void Overworld_ResetState(void);
 void Overworld_ResetStateAfterTeleport(void);
-void Overworld_ResetStateAfterDigEscRope(void);
 void ResetGameStats(void);
 void IncrementGameStat(u8 index);
 u32 GetGameStat(u8 index);
@@ -105,7 +104,6 @@ void SetObjectEventLoadFlag(u8 var);
 u16 GetLocationMusic(struct WarpData *warp);
 u16 GetCurrLocationDefaultMusic(void);
 u16 GetWarpDestinationMusic(void);
-void Overworld_ResetMapMusic(void);
 void Overworld_PlaySpecialMapMusic(void);
 void Overworld_SetSavedMusic(u16 songNum);
 void Overworld_ClearSavedMusic(void);

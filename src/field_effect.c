@@ -1372,7 +1372,7 @@ static void Task_UseFly(u8 taskId)
     }
     if (!FieldEffectActiveListContains(FLDEFF_USE_FLY))
     {
-        Overworld_ResetStateAfterFly();
+        Overworld_ResetState();
         WarpIntoMap();
         SetMainCallback2(CB2_LoadMap);
         gFieldCallback = FieldCallback_FlyIntoMap;

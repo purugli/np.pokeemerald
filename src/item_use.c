@@ -219,8 +219,6 @@ void ItemUseOutOfBattle_Bike(u8 taskId)
 
 static void ItemUseOnFieldCB_Bike(u8 taskId)
 {
-    gUnusedBikeCameraAheadPanback = FALSE;
-
     gSaveBlock2Ptr->playerBike = MACH_BIKE;
     if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BIKE)
     {
@@ -929,7 +927,7 @@ void Task_UseDigEscapeRopeOnField(u8 taskId)
 
 static void ItemUseOnFieldCB_EscapeRope(u8 taskId)
 {
-    Overworld_ResetStateAfterDigEscRope();
+    Overworld_ResetState();
     RemoveUsedItem();
     gTasks[taskId].data[0] = 0;
     DisplayItemMessageOnField(taskId, gStringVar4, Task_UseDigEscapeRopeOnField);

@@ -841,8 +841,7 @@ static const u8 sApprenticeChallengeThreshold[MAX_APPRENTICE_QUESTIONS] =
     1, 2, 3, 4, 5, 8, 9, 10, 11, 12
 };
 
-// Unclear why this was duplicated
-static const u8 sBattleTowerPartySizes2[] =
+static const u8 sBattleTowerPartySizes[FRONTIER_MODE_COUNT] =
 {
     [FRONTIER_MODE_SINGLES]     = FRONTIER_PARTY_SIZE,
     [FRONTIER_MODE_DOUBLES]     = FRONTIER_DOUBLES_PARTY_SIZE,
@@ -874,17 +873,6 @@ static const u16 sFrontierTrainerIdRangesHard[][2] =
     {FRONTIER_TRAINER_JAXON,   FRONTIER_TRAINER_TESS},   // 200 - 219
     {FRONTIER_TRAINER_LEON,    FRONTIER_TRAINER_RAUL},   // 220 - 239
     {FRONTIER_TRAINER_JAXON,   FRONTIER_TRAINER_GRETEL}, // 200 - 299
-};
-
-// Unknown, unused data
-static const u16 sUnused[] = { 179, 141, 200, 183 };
-
-static const u8 sBattleTowerPartySizes[FRONTIER_MODE_COUNT] =
-{
-    [FRONTIER_MODE_SINGLES]     = FRONTIER_PARTY_SIZE,
-    [FRONTIER_MODE_DOUBLES]     = FRONTIER_DOUBLES_PARTY_SIZE,
-    [FRONTIER_MODE_MULTIS]      = FRONTIER_MULTI_PARTY_SIZE,
-    [FRONTIER_MODE_LINK_MULTIS] = FRONTIER_MULTI_PARTY_SIZE,
 };
 
 static const u16 sRecordTrainerSpeechWon[] =
@@ -1011,7 +999,7 @@ static bool8 ChooseSpecialBattleTowerTrainer(void)
                 validMons++;
         }
 
-        if (validMons >= sBattleTowerPartySizes2[battleMode]
+        if (validMons >= sBattleTowerPartySizes[battleMode]
             && gSaveBlock2Ptr->frontier.towerRecords[i].winStreak == winStreak
             && gSaveBlock2Ptr->frontier.towerRecords[i].lvlMode == lvlMode
             && recordHasData

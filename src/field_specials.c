@@ -125,7 +125,6 @@ static void HideFrontierExchangeCornerItemIcon(u16, u16);
 static void ShowBattleFrontierTutorMoveDescription(u8, u16);
 static void CloseScrollableMultichoice(u8);
 static void ScrollableMultichoice_RemoveScrollArrows(u8);
-static void Task_ScrollableMultichoice_WaitReturnToList(u8);
 static void Task_ScrollableMultichoice_ReturnToList(u8);
 static void ShowFrontierExchangeCornerItemIcon(u16);
 static void Task_DeoxysRockInteraction(u8);
@@ -1923,22 +1922,18 @@ static void Task_MoveElevatorWindowLights(u8 taskId)
     {
         tMoveCounter++;
 
-        if (!tDescending)
+        for (y = 0; y < ELEVATOR_WINDOW_HEIGHT; y++)
         {
-            // Ascending
-            for (y = 0; y < ELEVATOR_WINDOW_HEIGHT; y++)
+            for (x = 0; x < ELEVATOR_WINDOW_WIDTH; x++)
             {
-                for (x = 0; x < ELEVATOR_WINDOW_WIDTH; x++)
-                    MapGridSetMetatileIdAt(x + MAP_OFFSET + 1, y + MAP_OFFSET, sElevatorWindowTiles_Ascending[y][tMoveCounter % ELEVATOR_LIGHT_STAGES] | MAPGRID_COLLISION_MASK);
-            }
-        }
-        else
-        {
-            // Descending
-            for (y = 0; y < ELEVATOR_WINDOW_HEIGHT; y++)
-            {
-                for (x = 0; x < ELEVATOR_WINDOW_WIDTH; x++)
-                    MapGridSetMetatileIdAt(x + MAP_OFFSET + 1, y + MAP_OFFSET, sElevatorWindowTiles_Descending[y][tMoveCounter % ELEVATOR_LIGHT_STAGES] | MAPGRID_COLLISION_MASK);
+                u16 elevatorWindowTiles;
+                // Ascending
+                if (!tDescending)
+                    elevatorWindowTiles = sElevatorWindowTiles_Ascending[y][tMoveCounter % ELEVATOR_LIGHT_STAGES];
+                // Descending
+                else
+                    elevatorWindowTiles = sElevatorWindowTiles_Descending[y][tMoveCounter % ELEVATOR_LIGHT_STAGES];
+                MapGridSetMetatileIdAt(x + MAP_OFFSET + 1, y + MAP_OFFSET, elevatorWindowTiles | MAPGRID_COLLISION_MASK);
             }
         }
         DrawWholeMapView();
@@ -2652,7 +2647,6 @@ static void ScrollableMultichoice_ProcessInput(u8 taskId)
         {
             // Handle selection while keeping the menu open
             ScrollableMultichoice_RemoveScrollArrows(taskId);
-            task->func = Task_ScrollableMultichoice_WaitReturnToList;
             ScriptContext_Enable();
         }
         break;
@@ -2674,31 +2668,6 @@ static void CloseScrollableMultichoice(u8 taskId)
     RemoveWindow(task->tWindowId);
     DestroyTask(taskId);
     ScriptContext_Enable();
-}
-
-// Never run, tKeepOpenAfterSelect is FALSE for all scrollable multichoices.
-static void Task_ScrollableMultichoice_WaitReturnToList(u8 taskId)
-{
-    switch (gTasks[taskId].tKeepOpenAfterSelect)
-    {
-    case 1:
-    default:
-        break;
-    case 2:
-        gTasks[taskId].tKeepOpenAfterSelect = 1;
-        gTasks[taskId].func = Task_ScrollableMultichoice_ReturnToList;
-        break;
-    }
-}
-
-// Never called
-void ScrollableMultichoice_TryReturnToList(void)
-{
-    u8 taskId = FindTaskIdByFunc(Task_ScrollableMultichoice_WaitReturnToList);
-    if (taskId == TASK_NONE)
-        ScriptContext_Enable();
-    else
-        gTasks[taskId].tKeepOpenAfterSelect++; // Return to list
 }
 
 static void Task_ScrollableMultichoice_ReturnToList(u8 taskId)
@@ -2743,12 +2712,6 @@ static void ScrollableMultichoice_RemoveScrollArrows(u8 taskId)
     struct Task *task = &gTasks[taskId];
     if (task->tMaxItemsOnScreen != task->tNumItems)
         RemoveScrollIndicatorArrowPair(task->tScrollArrowId);
-}
-
-// Removed for Emerald (replaced by ShowScrollableMultichoice)
-void ShowGlassWorkshopMenu(void)
-{
-
 }
 
 void SetBattleTowerLinkPlayerGfx(void)
@@ -3149,27 +3112,6 @@ void CloseBattleFrontierTutorWindow(void)
     RemoveWindow(sTutorMoveAndElevatorWindowId);
 }
 
-// Never called
-void ScrollableMultichoice_RedrawPersistentMenu(void)
-{
-    u16 scrollOffset, selectedRow;
-    u8 i;
-    u8 taskId = FindTaskIdByFunc(Task_ScrollableMultichoice_WaitReturnToList);
-    if (taskId != TASK_NONE)
-    {
-        struct Task *task = &gTasks[taskId];
-        ListMenuGetScrollAndRow(task->tListTaskId, &scrollOffset, &selectedRow);
-        SetStandardWindowBorderStyle(task->tWindowId, FALSE);
-
-        for (i = 0; i < MAX_SCROLL_MULTI_ON_SCREEN; i++)
-            AddTextPrinterParameterized5(task->tWindowId, FONT_NORMAL, sScrollableMultichoiceOptions[gSpecialVar_0x8004][scrollOffset + i], 10, i * 16, TEXT_SKIP_DRAW, NULL, 0, 0);
-
-        AddTextPrinterParameterized(task->tWindowId, FONT_NORMAL, gText_SelectorArrow, 0, selectedRow * 16, TEXT_SKIP_DRAW, NULL);
-        PutWindowTilemap(task->tWindowId);
-        CopyWindowToVram(task->tWindowId, COPYWIN_FULL);
-    }
-}
-
 void GetBattleFrontierTutorMoveIndex(void)
 {
     u32 i;
@@ -3205,25 +3147,6 @@ void GetBattleFrontierTutorMoveIndex(void)
             }
             i++;
         } while (i < TUTOR_MOVE_COUNT);
-    }
-}
-
-// Never called
-// Close a scrollable multichoice that stays open after selection
-void ScrollableMultichoice_ClosePersistentMenu(void)
-{
-    u8 taskId = FindTaskIdByFunc(Task_ScrollableMultichoice_WaitReturnToList);
-    if (taskId != TASK_NONE)
-    {
-        struct Task *task = &gTasks[taskId];
-        DestroyListMenuTask(task->tListTaskId, NULL, NULL);
-        Free(sScrollableMultichoice_ListMenuItem);
-        ClearStdWindowAndFrameToTransparent(task->tWindowId, TRUE);
-        FillWindowPixelBuffer(task->tWindowId, PIXEL_FILL(0));
-        ClearWindowTilemap(task->tWindowId);
-        CopyWindowToVram(task->tWindowId, COPYWIN_GFX);
-        RemoveWindow(task->tWindowId);
-        DestroyTask(taskId);
     }
 }
 
@@ -3451,29 +3374,29 @@ void CreateAbnormalWeatherEvent(void)
     }
 }
 
+static const u8 sAbnormalWeatherMapNumbers[] = {
+    MAP_NUM(ROUTE114),
+    MAP_NUM(ROUTE114),
+    MAP_NUM(ROUTE115),
+    MAP_NUM(ROUTE115),
+    MAP_NUM(ROUTE116),
+    MAP_NUM(ROUTE116),
+    MAP_NUM(ROUTE118),
+    MAP_NUM(ROUTE118),
+    MAP_NUM(ROUTE105),
+    MAP_NUM(ROUTE105),
+    MAP_NUM(ROUTE125),
+    MAP_NUM(ROUTE125),
+    MAP_NUM(ROUTE127),
+    MAP_NUM(ROUTE127),
+    MAP_NUM(ROUTE129),
+    MAP_NUM(ROUTE129)
+};
+
 // Saves the map name for the current abnormal weather location in gStringVar1, then
 // returns TRUE if the weather is for Kyogre, and FALSE if it's for Groudon.
 bool32 GetAbnormalWeatherMapNameAndType(void)
 {
-    static const u8 sAbnormalWeatherMapNumbers[] = {
-        MAP_NUM(ROUTE114),
-        MAP_NUM(ROUTE114),
-        MAP_NUM(ROUTE115),
-        MAP_NUM(ROUTE115),
-        MAP_NUM(ROUTE116),
-        MAP_NUM(ROUTE116),
-        MAP_NUM(ROUTE118),
-        MAP_NUM(ROUTE118),
-        MAP_NUM(ROUTE105),
-        MAP_NUM(ROUTE105),
-        MAP_NUM(ROUTE125),
-        MAP_NUM(ROUTE125),
-        MAP_NUM(ROUTE127),
-        MAP_NUM(ROUTE127),
-        MAP_NUM(ROUTE129),
-        MAP_NUM(ROUTE129)
-    };
-
     u16 abnormalWeather = VarGet(VAR_ABNORMAL_WEATHER_LOCATION);
 
     GetMapName(gStringVar1, sAbnormalWeatherMapNumbers[abnormalWeather - 1], 0);
@@ -3486,27 +3409,6 @@ bool32 GetAbnormalWeatherMapNameAndType(void)
 
 bool8 AbnormalWeatherHasExpired(void)
 {
-    // Duplicate array.
-    static const u8 sAbnormalWeatherMapNumbers[] =
-    {
-        MAP_NUM(ROUTE114),
-        MAP_NUM(ROUTE114),
-        MAP_NUM(ROUTE115),
-        MAP_NUM(ROUTE115),
-        MAP_NUM(ROUTE116),
-        MAP_NUM(ROUTE116),
-        MAP_NUM(ROUTE118),
-        MAP_NUM(ROUTE118),
-        MAP_NUM(ROUTE105),
-        MAP_NUM(ROUTE105),
-        MAP_NUM(ROUTE125),
-        MAP_NUM(ROUTE125),
-        MAP_NUM(ROUTE127),
-        MAP_NUM(ROUTE127),
-        MAP_NUM(ROUTE129),
-        MAP_NUM(ROUTE129)
-    };
-
     u16 steps = VarGet(VAR_ABNORMAL_WEATHER_STEP_COUNTER);
     u16 abnormalWeather = VarGet(VAR_ABNORMAL_WEATHER_LOCATION);
 

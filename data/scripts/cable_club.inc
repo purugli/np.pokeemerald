@@ -42,12 +42,6 @@ CableClub_EventScript_DistributeEonTicket::
 	release
 	end
 
-@ Unused?
-CableClub_EventScript_MysteryGiftThankYou2::
-	msgbox gText_ThankYouForAccessingMysteryGift, MSGBOX_DEFAULT
-	release
-	end
-
 CableClub_OnWarp:
 	map_script_2 VAR_CABLE_CLUB_STATE, USING_SINGLE_BATTLE, CableClub_EventScript_CheckTurnAttendant
 	map_script_2 VAR_CABLE_CLUB_STATE, USING_DOUBLE_BATTLE, CableClub_EventScript_CheckTurnAttendant
@@ -118,7 +112,6 @@ CableClub_EventScript_ExitLinkRoom::
 	call CableClub_EventScript_CloseDirectCornerBarrier
 	special DrawWholeMapView
 	playse SE_CLICK
-	erasebox 0, 0, 29, 19
 	releaseall
 	end
 
@@ -128,7 +121,6 @@ CableClub_EventScript_ExitMinigameRoom::
 	call EventScript_CloseMossdeepGameCornerBarrier
 	special DrawWholeMapView
 	playse SE_CLICK
-	erasebox 0, 0, 29, 19
 	releaseall
 	end
 
@@ -150,7 +142,6 @@ CableClub_EventScript_ExitTradeCenter::
 	call CableClub_EventScript_CloseDirectCornerBarrier
 	special DrawWholeMapView
 	playse SE_CLICK
-	erasebox 0, 0, 29, 19
 	releaseall
 	end
 
@@ -171,7 +162,6 @@ CableClub_EventScript_ExitRecordCorner::
 	call CableClub_EventScript_CloseDirectCornerBarrier
 	special DrawWholeMapView
 	playse SE_CLICK
-	erasebox 0, 0, 29, 19
 	releaseall
 	end
 
@@ -192,7 +182,6 @@ CableClub_EventScript_ExitUnionRoom::
 	call CableClub_EventScript_CloseUnionRoomBarrier
 	special DrawWholeMapView
 	playse SE_CLICK
-	erasebox 0, 0, 29, 19
 	releaseall
 	end
 
@@ -248,11 +237,6 @@ CableClub_EventScript_WelcomeToCableClub::
 	message CableClub_Text_WelcomeWhichCableClubService
 	waitmessage
 	delay 28
-	goto CableClub_EventScript_SelectCableClubRoom
-	end
-
-CableClub_EventScript_UnusedWelcomeToCableClub::
-	msgbox CableClub_Text_WhichService, MSGBOX_DEFAULT
 	goto CableClub_EventScript_SelectCableClubRoom
 	end
 
@@ -369,12 +353,6 @@ CableClub_EventScript_EnterColosseum::
 	special DoCableClubWarp
 	waitstate
 	end
-
-@ Unused
-CableClub_EventScript_PlayerApproachLinkRoomRight::
-	applymovement OBJ_EVENT_ID_PLAYER, Movement_PlayerApproachLinkRoomRight
-	waitmovement 0
-	return
 
 CableClub_EventScript_WarpTo4PColosseum::
 	special SetCableClubWarp
@@ -572,13 +550,6 @@ MossdeepCity_GameCorner_1F_EventScript_AbortMinigame::
 	release
 	end
 
-@ Unused
-CableClub_EventScript_CableClubWarp::
-	special SetCableClubWarp
-	special DoCableClubWarp
-	waitstate
-	end
-
 CableClub_EventScript_AbortLinkIncorrectNumberOfParticipants::
 	special CloseLink
 	msgbox CableClub_Text_IncorrectNumberOfParticipants, MSGBOX_DEFAULT
@@ -611,11 +582,6 @@ Movement_AttendantFaceDown:
 	face_down
 	step_end
 
-@ Unused
-Movement_AttendantFaceRight:
-	face_right
-	step_end
-
 Movement_AttendantFaceLeft:
 	face_left
 	step_end
@@ -623,13 +589,6 @@ Movement_AttendantFaceLeft:
 Movement_PlayerExitLinkRoom:
 	walk_down
 	walk_down
-	step_end
-
-@ Functionally unused
-Movement_PlayerApproachLinkRoomRight:
-	walk_right
-	walk_up
-	walk_up
 	step_end
 
 Movement_PlayerApproachLinkRoomLeft:
@@ -640,11 +599,6 @@ Movement_PlayerApproachLinkRoomLeft:
 
 Movement_PlayerEnterLinkRoom:
 	walk_up
-	step_end
-
-@ Unused
-Movement_PlayerFaceAttendantLeft:
-	face_left
 	step_end
 
 Movement_PlayerFaceAttendantRight:
@@ -730,20 +684,6 @@ EventScript_TradeCenter_Chair0::
 
 EventScript_TradeCenter_Chair1::
 	setvar VAR_0x8005, 1
-	special PlayerEnteredTradeSeat
-	waitstate
-	end
-
-/* Never used */
-EventScript_TradeCenter_Chair2::
-	setvar VAR_0x8005, 2
-	special PlayerEnteredTradeSeat
-	waitstate
-	end
-
-/* Never used */
-EventScript_TradeCenter_Chair3::
-	setvar VAR_0x8005, 3
 	special PlayerEnteredTradeSeat
 	waitstate
 	end
@@ -845,7 +785,6 @@ RecordCorner_EventScript_AlreadyMixed::
 EventScript_ConfirmLeaveCableClubRoom::
 	msgbox Text_TerminateLinkConfirmation, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, EventScript_TerminateLink
-	erasebox 0, 0, 29, 19
 	releaseall
 	end
 

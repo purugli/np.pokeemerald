@@ -115,7 +115,6 @@ static void Task_ShowTourneyInfoCard(u8);
 static void Task_HandleInfoCardInput(u8);
 static u8 Task_GetInfoCardInput(u8);
 static void SetFacilityTrainerAndMonPtrs(void);
-static int TrainerIdToTournamentId(u16);
 static u16 TrainerIdOfPlayerOpponent(void);
 static void Task_ShowTourneyTree(u8);
 static void Task_HandleStaticTourneyTreeInput(u8);
@@ -124,8 +123,6 @@ static void VblankCb_TourneyInfoCard(void);
 static void DisplayMatchInfoOnCard(u8, u8);
 static void DisplayTrainerInfoOnCard(u8, u8);
 static int BufferDomeWinString(u8, u8 *);
-static u8 GetDomeBrainTrainerPicId(void);
-static u8 GetDomeBrainTrainerClass(void);
 static void CopyDomeBrainTrainerName(u8 *);
 static void CopyDomeTrainerName(u8 *, u16);
 static void HblankCb_TourneyTree(void);
@@ -2576,7 +2573,7 @@ static void InitDomeOpponentParty(void)
     sPlayerPartyMaxHP =  GetMonData(&gPlayerParty[0], MON_DATA_MAX_HP, NULL);
     sPlayerPartyMaxHP += GetMonData(&gPlayerParty[1], MON_DATA_MAX_HP, NULL);
     CalculatePlayerPartyCount();
-    CreateDomeOpponentMons(TrainerIdToTournamentId(gTrainerBattleOpponent_A));
+    CreateDomeOpponentMons(TrainerIdToDomeTournamentId(gTrainerBattleOpponent_A));
 }
 
 static void CreateDomeOpponentMon(u8 monPartyId, u16 tournamentTrainerId, u8 tournamentMonId, u32 otId)
@@ -3032,7 +3029,7 @@ static void ShowDomeOpponentInfo(void)
 {
     u8 taskId = CreateTask(Task_ShowTourneyInfoCard, 0);
     gTasks[taskId].tState = 0;
-    gTasks[taskId].tTournamentId = TrainerIdToTournamentId(TrainerIdOfPlayerOpponent());
+    gTasks[taskId].tTournamentId = TrainerIdToDomeTournamentId(TrainerIdOfPlayerOpponent());
     gTasks[taskId].tMode = INFOCARD_NEXT_OPPONENT;
     gTasks[taskId].tPrevTaskId = 0;
 
@@ -4329,7 +4326,7 @@ static void DisplayTrainerInfoOnCard(u8 flags, u8 trainerTourneyId)
     if (trainerId == TRAINER_PLAYER)
         sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender), x + 48, y + 64, palSlot + 12, TAG_NONE);
     else if (trainerId == TRAINER_FRONTIER_BRAIN)
-        sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(GetDomeBrainTrainerPicId(), x + 48, y + 64, palSlot + 12, TAG_NONE);
+        sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(TRAINER_PIC_DOME_ACE_TUCKER, x + 48, y + 64, palSlot + 12, TAG_NONE);
     else
         sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(GetFrontierTrainerFrontSpriteId(trainerId), x + 48, y + 64, palSlot + 12, TAG_NONE);
 
@@ -4389,7 +4386,7 @@ static void DisplayTrainerInfoOnCard(u8 flags, u8 trainerTourneyId)
     if (trainerId == TRAINER_PLAYER)
         j = gFacilityClassToTrainerClass[FACILITY_CLASS_BRENDAN];
     else if (trainerId == TRAINER_FRONTIER_BRAIN)
-        j = GetDomeBrainTrainerClass();
+        j = TRAINER_CLASS_DOME_ACE;
     else
         j = GetFrontierOpponentClass(trainerId);
 
@@ -4803,7 +4800,7 @@ static void DisplayMatchInfoOnCard(u8 flags, u8 matchNo)
     if (trainerIds[0] == TRAINER_PLAYER)
         sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender), x + 48, y + 88, palSlot + 12, TAG_NONE);
     else if (trainerIds[0] == TRAINER_FRONTIER_BRAIN)
-        sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(GetDomeBrainTrainerPicId(), x + 48, y + 88, palSlot + 12, TAG_NONE);
+        sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(TRAINER_PIC_DOME_ACE_TUCKER, x + 48, y + 88, palSlot + 12, TAG_NONE);
     else
         sInfoCard->spriteIds[arrId] = CreateTrainerPicSprite(GetFrontierTrainerFrontSpriteId(trainerIds[0]), x + 48, y + 88, palSlot + 12, TAG_NONE);
 
@@ -4816,7 +4813,7 @@ static void DisplayMatchInfoOnCard(u8 flags, u8 matchNo)
     if (trainerIds[1] == TRAINER_PLAYER)
         sInfoCard->spriteIds[1 + arrId] = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender), x + 192, y + 88, palSlot + 13, TAG_NONE);
     else if (trainerIds[1] == TRAINER_FRONTIER_BRAIN)
-        sInfoCard->spriteIds[1 + arrId] = CreateTrainerPicSprite(GetDomeBrainTrainerPicId(), x + 192, y + 88, palSlot + 13, TAG_NONE);
+        sInfoCard->spriteIds[1 + arrId] = CreateTrainerPicSprite(TRAINER_PIC_DOME_ACE_TUCKER, x + 192, y + 88, palSlot + 13, TAG_NONE);
     else
         sInfoCard->spriteIds[1 + arrId] = CreateTrainerPicSprite(GetFrontierTrainerFrontSpriteId(trainerIds[1]), x + 192, y + 88, palSlot + 13, TAG_NONE);
 
@@ -5182,9 +5179,9 @@ static void ResolveDomeRoundWinners(void)
 
     if (gSpecialVar_0x8005 == DOME_PLAYER_WON_MATCH)
     {
-        DOME_TRAINERS[TrainerIdToTournamentId(gTrainerBattleOpponent_A)].isEliminated = TRUE;
-        DOME_TRAINERS[TrainerIdToTournamentId(gTrainerBattleOpponent_A)].eliminatedAt = gSaveBlock2Ptr->frontier.curChallengeBattleNum;
-        gSaveBlock2Ptr->frontier.domeWinningMoves[TrainerIdToTournamentId(gTrainerBattleOpponent_A)] = gBattleResults.lastUsedMovePlayer;
+        DOME_TRAINERS[TrainerIdToDomeTournamentId(gTrainerBattleOpponent_A)].isEliminated = TRUE;
+        DOME_TRAINERS[TrainerIdToDomeTournamentId(gTrainerBattleOpponent_A)].eliminatedAt = gSaveBlock2Ptr->frontier.curChallengeBattleNum;
+        gSaveBlock2Ptr->frontier.domeWinningMoves[TrainerIdToDomeTournamentId(gTrainerBattleOpponent_A)] = gBattleResults.lastUsedMovePlayer;
 
         // If the player's match was the final one, no NPC vs NPC matches to decide
         if (gSaveBlock2Ptr->frontier.curChallengeBattleNum < DOME_FINAL)
@@ -5192,12 +5189,12 @@ static void ResolveDomeRoundWinners(void)
     }
     else // DOME_PLAYER_LOST_MATCH or DOME_PLAYER_RETIRED
     {
-        DOME_TRAINERS[TrainerIdToTournamentId(TRAINER_PLAYER)].isEliminated = TRUE;
-        DOME_TRAINERS[TrainerIdToTournamentId(TRAINER_PLAYER)].eliminatedAt = gSaveBlock2Ptr->frontier.curChallengeBattleNum;
-        gSaveBlock2Ptr->frontier.domeWinningMoves[TrainerIdToTournamentId(TRAINER_PLAYER)] = gBattleResults.lastUsedMoveOpponent;
+        DOME_TRAINERS[TrainerIdToDomeTournamentId(TRAINER_PLAYER)].isEliminated = TRUE;
+        DOME_TRAINERS[TrainerIdToDomeTournamentId(TRAINER_PLAYER)].eliminatedAt = gSaveBlock2Ptr->frontier.curChallengeBattleNum;
+        gSaveBlock2Ptr->frontier.domeWinningMoves[TrainerIdToDomeTournamentId(TRAINER_PLAYER)] = gBattleResults.lastUsedMoveOpponent;
 
         if (gBattleOutcome == B_OUTCOME_FORFEITED || gSpecialVar_0x8005 == DOME_PLAYER_RETIRED)
-            DOME_TRAINERS[TrainerIdToTournamentId(TRAINER_PLAYER)].forfeited = TRUE;
+            DOME_TRAINERS[TrainerIdToDomeTournamentId(TRAINER_PLAYER)].forfeited = TRUE;
 
         // Player lost, decide remaining outcome of tournament
         for (i = gSaveBlock2Ptr->frontier.curChallengeBattleNum; i < DOME_ROUNDS_COUNT; i++)
@@ -5813,7 +5810,7 @@ static void ReduceDomePlayerPartyToSelectedMons(void)
 static void GetPlayerSeededBeforeOpponent(void)
 {
     // A higher tournament ID is a worse seed
-    if (TrainerIdToTournamentId(gTrainerBattleOpponent_A) > TrainerIdToTournamentId(TRAINER_PLAYER))
+    if (TrainerIdToDomeTournamentId(gTrainerBattleOpponent_A) > TrainerIdToDomeTournamentId(TRAINER_PLAYER))
         gSpecialVar_Result = 1;
     else
         gSpecialVar_Result = 2;
@@ -5967,20 +5964,6 @@ static void InitRandomTourneyTreeResults(void)
     gSaveBlock2Ptr->frontier.lvlMode = lvlMode;
 }
 
-static int TrainerIdToTournamentId(u16 trainerId)
-{
-    int i;
-
-    for (i = 0; i < DOME_TOURNAMENT_TRAINERS_COUNT; i++)
-    {
-        if (DOME_TRAINERS[i].trainerId == trainerId)
-            break;
-    }
-
-    return i;
-}
-
-// The same as the above one, but has global scope.
 int TrainerIdToDomeTournamentId(u16 trainerId)
 {
     int i;
@@ -6139,16 +6122,6 @@ static void CopyDomeTrainerName(u8 *str, u16 trainerId)
         }
         str[i] = EOS;
     }
-}
-
-static u8 GetDomeBrainTrainerPicId(void)
-{
-    return gTrainers[TRAINER_TUCKER].trainerPic;
-}
-
-static u8 GetDomeBrainTrainerClass(void)
-{
-    return gTrainers[TRAINER_TUCKER].trainerClass;
 }
 
 static void CopyDomeBrainTrainerName(u8 *str)

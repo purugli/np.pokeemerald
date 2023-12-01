@@ -80,44 +80,6 @@ enum
      * |
      */
     GATE_SHAPE_T4,
-
-    /*
-     * An unused T-shape gate
-     * |
-     * |
-     * +----
-     * |
-     */
-    GATE_SHAPE_UNUSED_T1,
-
-    /*
-     * An unused T-shape gate
-     * |
-     * |
-     * +--
-     * |
-     * |
-     */
-    GATE_SHAPE_UNUSED_T2,
-
-    /*
-     * An unused T-shape gate
-     * |
-     * +----
-     * |
-     * |
-     */
-    GATE_SHAPE_UNUSED_T3,
-
-    /*
-     * An unused T-shape gate
-     * |
-     * |
-     * +----
-     * |
-     * |
-     */
-    GATE_SHAPE_UNUSED_T4,
 };
 
 enum
@@ -281,25 +243,15 @@ static const struct SpriteSheet sRotatingGatesGraphicsTable[] =
     {NULL},
 };
 
-static const union AnimCmd sSpriteAnim_RotatingGateLarge[] =
+static const union AnimCmd sSpriteAnim_RotatingGate[] =
 {
     ANIMCMD_FRAME(0, 0),
     ANIMCMD_END,
 };
 
-static const union AnimCmd sSpriteAnim_RotatingGateRegular[] =
+static const union AnimCmd *const sSpriteAnimTable_RotatingGate[] =
 {
-    ANIMCMD_FRAME(0, 0), ANIMCMD_END,
-};
-
-static const union AnimCmd *const sSpriteAnimTable_RotatingGateLarge[] =
-{
-    sSpriteAnim_RotatingGateLarge,
-};
-
-static const union AnimCmd *const sSpriteAnimTable_RotatingGateRegular[] =
-{
-    sSpriteAnim_RotatingGateRegular,
+    sSpriteAnim_RotatingGate,
 };
 
 static const union AffineAnimCmd sSpriteAffineAnim_Rotated0[] =
@@ -468,7 +420,7 @@ static const struct SpriteTemplate sSpriteTemplate_RotatingGateLarge =
     .tileTag = ROTATING_GATE_TILE_TAG,
     .paletteTag = OBJ_EVENT_PAL_TAG_NPC_1,
     .oam = &sOamData_RotatingGateLarge,
-    .anims = sSpriteAnimTable_RotatingGateLarge,
+    .anims = sSpriteAnimTable_RotatingGate,
     .images = NULL,
     .affineAnims = sSpriteAffineAnimTable_RotatingGate,
     .callback = SpriteCallback_RotatingGate,
@@ -479,7 +431,7 @@ static const struct SpriteTemplate sSpriteTemplate_RotatingGateRegular =
     .tileTag = ROTATING_GATE_TILE_TAG,
     .paletteTag = OBJ_EVENT_PAL_TAG_NPC_1,
     .oam = &sOamData_RotatingGateRegular,
-    .anims = sSpriteAnimTable_RotatingGateRegular,
+    .anims = sSpriteAnimTable_RotatingGate,
     .images = NULL,
     .affineAnims = sSpriteAffineAnimTable_RotatingGate,
     .callback = SpriteCallback_RotatingGate,
@@ -585,34 +537,6 @@ static const u8 sRotatingGate_ArmLayout[][4 * 2] =
     {
         1, 0,
         1, 0,
-        1, 1,
-        0, 0,
-    },
-
-    // Unused T-shape gates
-    // These have 2-3 long arms and cannot actually be used anywhere
-    // since configuration for them is missing from the other tables.
-    {
-        1, 1,
-        1, 1,
-        1, 0,
-        0, 0,
-    },
-    {
-        1, 1,
-        1, 0,
-        1, 1,
-        0, 0,
-    },
-    {
-        1, 0,
-        1, 1,
-        1, 1,
-        0, 0,
-    },
-    {
-        1, 1,
-        1, 1,
         1, 1,
         0, 0,
     },

@@ -46,7 +46,6 @@ static bool8 FadeInScreen_RainShowShade(void);
 static bool8 FadeInScreen_Drought(void);
 static bool8 FadeInScreen_FogHorizontal(void);
 static void FadeInScreenWithWeather(void);
-static void DoNothing(void);
 static void Task_WeatherInit(u8 taskId);
 static void Task_WeatherMain(u8 taskId);
 static void None_Init(void);
@@ -98,8 +97,8 @@ void (*const gWeatherPalStateFuncs[])(void) =
 {
     [WEATHER_PAL_STATE_CHANGING_WEATHER]  = UpdateWeatherColorMap,
     [WEATHER_PAL_STATE_SCREEN_FADING_IN]  = FadeInScreenWithWeather,
-    [WEATHER_PAL_STATE_SCREEN_FADING_OUT] = DoNothing,
-    [WEATHER_PAL_STATE_IDLE]              = DoNothing,
+    [WEATHER_PAL_STATE_SCREEN_FADING_OUT] = None_Init,
+    [WEATHER_PAL_STATE_IDLE]              = None_Init,
 };
 
 // This table specifies which of the color maps should be
@@ -452,9 +451,6 @@ static bool8 FadeInScreen_FogHorizontal(void)
     ApplyFogBlend(16 - gWeatherPtr->fadeScreenCounter, gWeatherPtr->fadeDestColor);
     return TRUE;
 }
-
-static void DoNothing(void)
-{ }
 
 static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
 {

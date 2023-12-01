@@ -99,11 +99,6 @@ bool8 ScrCmd_nop(struct ScriptContext *ctx)
     return FALSE;
 }
 
-bool8 ScrCmd_nop1(struct ScriptContext *ctx)
-{
-    return FALSE;
-}
-
 bool8 ScrCmd_end(struct ScriptContext *ctx)
 {
     StopScript(ctx);
@@ -1517,32 +1512,6 @@ bool8 ScrCmd_multichoicegrid(struct ScriptContext *ctx)
     {
         return FALSE;
     }
-}
-
-bool8 ScrCmd_erasebox(struct ScriptContext *ctx)
-{
-    u8 left = ScriptReadByte(ctx);
-    u8 top = ScriptReadByte(ctx);
-    u8 right = ScriptReadByte(ctx);
-    u8 bottom = ScriptReadByte(ctx);
-
-    // Menu_EraseWindowRect(left, top, right, bottom);
-    return FALSE;
-}
-
-bool8 ScrCmd_drawboxtext(struct ScriptContext *ctx)
-{
-    u8 left = ScriptReadByte(ctx);
-    u8 top = ScriptReadByte(ctx);
-    u8 multichoiceId = ScriptReadByte(ctx);
-    bool8 ignoreBPress = ScriptReadByte(ctx);
-
-    /*if (Multichoice(left, top, multichoiceId, ignoreBPress) == TRUE)
-    {
-        ScriptContext_Stop();
-        return TRUE;
-    }*/
-    return FALSE;
 }
 
 bool8 ScrCmd_showmonpic(struct ScriptContext *ctx)

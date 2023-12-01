@@ -124,7 +124,6 @@ static void ResumeMap(bool32);
 static void SetCameraToTrackPlayer(void);
 static void InitObjectEventsReturnToField(void);
 static void InitViewGraphics(void);
-static void SetCameraToTrackGuestPlayer_2(void);
 static void CreateLinkPlayerSprites(void);
 static void ClearAllPlayerKeys(void);
 static void ResetAllPlayerLinkStates(void);
@@ -151,10 +150,8 @@ static void InitLinkPlayerQueueScript(void);
 static void InitLinkRoomStartMenuScript(void);
 static void RunInteractLocalPlayerScript(const u8 *);
 static void RunConfirmLeaveCableClubScript(void);
-static void InitMenuBasedScript(const u8 *);
 static void LoadCableClubPlayer(s32, s32, struct CableClubPlayer *);
 static bool32 IsCableClubPlayerUnfrozen(struct CableClubPlayer *);
-static bool32 CanCableClubPlayerPressStart(struct CableClubPlayer *);
 static const u8 *TryGetTileEventScript(struct CableClubPlayer *);
 static bool32 PlayerIsAtSouthExit(struct CableClubPlayer *);
 static const u8 *TryInteractWithPlayer(struct CableClubPlayer *);
@@ -173,7 +170,6 @@ static u8 GetAdjustedInitialTransitionFlags(struct InitialPlayerAvatarState *, u
 static u8 GetAdjustedInitialDirection(struct InitialPlayerAvatarState *, u8, u16, u8);
 static u16 GetCenterScreenMetatileBehavior(void);
 
-static void *sUnusedOverworldCallback;
 static u8 sPlayerLinkStates[MAX_LINK_PLAYERS];
 // This callback is called with a player's key code. It then returns an
 // adjusted key code, effectively intercepting the input before anything
@@ -210,11 +206,6 @@ static const struct WarpData sDummyWarpData =
     .warpId = WARP_ID_NONE,
     .x = -1,
     .y = -1,
-};
-
-static const u32 sUnusedData[] =
-{
-    1200, 3600, 1200, 2400, 50, 80, -44, 44
 };
 
 const struct UCoords32 gDirectionToVectors[] =
@@ -374,7 +365,7 @@ void DoWhiteOut(void)
     WarpIntoMap();
 }
 
-void Overworld_ResetStateAfterFly(void)
+void Overworld_ResetState(void)
 {
     ResetInitialPlayerAvatarState();
     FlagClear(FLAG_SYS_CYCLING_ROAD);
@@ -386,33 +377,13 @@ void Overworld_ResetStateAfterFly(void)
 
 void Overworld_ResetStateAfterTeleport(void)
 {
-    ResetInitialPlayerAvatarState();
-    FlagClear(FLAG_SYS_CYCLING_ROAD);
-    FlagClear(FLAG_SYS_CRUISE_MODE);
-    FlagClear(FLAG_SYS_SAFARI_MODE);
-    FlagClear(FLAG_SYS_USE_STRENGTH);
-    FlagClear(FLAG_SYS_USE_FLASH);
+    Overworld_ResetState();
     RunScriptImmediately(EventScript_ResetMrBriney);
-}
-
-void Overworld_ResetStateAfterDigEscRope(void)
-{
-    ResetInitialPlayerAvatarState();
-    FlagClear(FLAG_SYS_CYCLING_ROAD);
-    FlagClear(FLAG_SYS_CRUISE_MODE);
-    FlagClear(FLAG_SYS_SAFARI_MODE);
-    FlagClear(FLAG_SYS_USE_STRENGTH);
-    FlagClear(FLAG_SYS_USE_FLASH);
 }
 
 static void Overworld_ResetStateAfterWhiteOut(void)
 {
-    ResetInitialPlayerAvatarState();
-    FlagClear(FLAG_SYS_CYCLING_ROAD);
-    FlagClear(FLAG_SYS_CRUISE_MODE);
-    FlagClear(FLAG_SYS_SAFARI_MODE);
-    FlagClear(FLAG_SYS_USE_STRENGTH);
-    FlagClear(FLAG_SYS_USE_FLASH);
+    Overworld_ResetState();
     // If you were defeated by Kyogre/Groudon and the step counter has
     // maxed out, end the abnormal weather.
     if (VarGet(VAR_SHOULD_END_ABNORMAL_WEATHER) == 1)
@@ -1008,12 +979,6 @@ void SetObjectEventLoadFlag(u8 flag)
     sObjectEventLoadFlag = flag;
 }
 
-// sObjectEventLoadFlag is read directly
-static u8 UNUSED GetObjectEventLoadFlag(void)
-{
-    return sObjectEventLoadFlag;
-}
-
 static bool16 ShouldLegendaryMusicPlayAtLocation(struct WarpData *warp)
 {
     if (!FlagGet(FLAG_SYS_WEATHER_CTRL))
@@ -1139,11 +1104,6 @@ u16 GetWarpDestinationMusic(void)
         else
             return MUS_ROUTE119;
     }
-}
-
-void Overworld_ResetMapMusic(void)
-{
-    ResetMapMusic();
 }
 
 void Overworld_PlaySpecialMapMusic(void)
@@ -1430,11 +1390,6 @@ void CleanupOverworldWindowsAndTilemaps(void)
     TRY_FREE_AND_SET_NULL(gOverworldTilemapBuffer_Bg1);
 }
 
-static void ResetSafariZoneFlag_(void)
-{
-    ResetSafariZoneFlag();
-}
-
 bool32 IsOverworldLinkActive(void)
 {
     if (gMain.callback1 == CB1_OverworldLink)
@@ -1471,7 +1426,8 @@ void CB1_Overworld(void)
         DoCB1_Overworld(gMain.newKeys, gMain.heldKeys);
 }
 
-static void OverworldBasic(void)
+// This CB2 is used when starting
+void CB2_OverworldBasic(void)
 {
     ScriptContext_RunScript();
     RunTasks();
@@ -1484,18 +1440,12 @@ static void OverworldBasic(void)
     DoScheduledBgTilemapCopiesToVram();
 }
 
-// This CB2 is used when starting
-void CB2_OverworldBasic(void)
-{
-    OverworldBasic();
-}
-
 void CB2_Overworld(void)
 {
     bool32 fading = (gPaletteFade.active != 0);
     if (fading)
         SetVBlankCallback(NULL);
-    OverworldBasic();
+    CB2_OverworldBasic();
     if (fading)
         SetFieldVBlankCallback();
 }
@@ -1503,12 +1453,6 @@ void CB2_Overworld(void)
 void SetMainCallback1(MainCallback cb)
 {
     gMain.callback1 = cb;
-}
-
-// This function is never called.
-void SetUnusedCallback(void *func)
-{
-    sUnusedOverworldCallback = func;
 }
 
 static bool8 RunFieldCallback(void)
@@ -1542,7 +1486,7 @@ void CB2_NewGame(void)
 {
     FieldClearVBlankHBlankCallbacks();
     StopMapMusic();
-    ResetSafariZoneFlag_();
+    ResetSafariZoneFlag();
     NewGameInitData();
     ResetInitialPlayerAvatarState();
     PlayTimeCounter_Start();
@@ -1564,7 +1508,7 @@ void CB2_WhiteOut(void)
     {
         FieldClearVBlankHBlankCallbacks();
         StopMapMusic();
-        ResetSafariZoneFlag_();
+        ResetSafariZoneFlag();
         DoWhiteOut();
         ResetInitialPlayerAvatarState();
         ScriptContext_Init();
@@ -1717,7 +1661,7 @@ void CB2_ContinueSavedGame(void)
 
     FieldClearVBlankHBlankCallbacks();
     StopMapMusic();
-    ResetSafariZoneFlag_();
+    ResetSafariZoneFlag();
     if (gSaveFileStatus == SAVE_STATUS_ERROR)
         ResetWinStreaks();
 
@@ -2202,12 +2146,6 @@ static void SetCameraToTrackGuestPlayer(void)
     InitCameraUpdateCallback(GetSpriteForLinkedPlayer(gLocalLinkPlayerId));
 }
 
-// Duplicate function.
-static void SetCameraToTrackGuestPlayer_2(void)
-{
-    InitCameraUpdateCallback(GetSpriteForLinkedPlayer(gLocalLinkPlayerId));
-}
-
 static void OffsetCameraFocusByLinkPlayerId(void)
 {
     u16 x, y;
@@ -2355,7 +2293,7 @@ static void HandleLinkPlayerKeyInput(u32 playerId, u16 key, struct CableClubPlay
         switch (key)
         {
         case LINK_KEY_CODE_START_BUTTON:
-            if (CanCableClubPlayerPressStart(trainer))
+            if (IsCableClubPlayerUnfrozen(trainer))
             {
                 sPlayerLinkStates[playerId] = PLAYER_LINK_STATE_BUSY;
                 if (trainer->isLocalPlayer)
@@ -2384,7 +2322,7 @@ static void HandleLinkPlayerKeyInput(u32 playerId, u16 key, struct CableClubPlay
                 if (trainer->isLocalPlayer)
                 {
                     SetKeyInterceptCallback(KeyInterCB_DeferToEventScript);
-                    InitMenuBasedScript(script);
+                    RunInteractLocalPlayerScript(script);
                 }
             }
             break;
@@ -2395,7 +2333,7 @@ static void HandleLinkPlayerKeyInput(u32 playerId, u16 key, struct CableClubPlay
                 if (trainer->isLocalPlayer)
                 {
                     SetKeyInterceptCallback(KeyInterCB_DeferToRecvQueue);
-                    InitLinkPlayerQueueScript();
+                    LockPlayerFieldControls();
                 }
             }
             break;
@@ -2406,7 +2344,7 @@ static void HandleLinkPlayerKeyInput(u32 playerId, u16 key, struct CableClubPlay
                 if (trainer->isLocalPlayer)
                 {
                     SetKeyInterceptCallback(KeyInterCB_DeferToSendQueue);
-                    InitLinkPlayerQueueScript();
+                    LockPlayerFieldControls();
                 }
             }
             break;
@@ -2646,12 +2584,6 @@ static u16 KeyInterCB_SendExitRoomKey(u32 key)
     return LINK_KEY_CODE_EXIT_ROOM;
 }
 
-// Identical to KeyInterCB_SendNothing
-static u16 KeyInterCB_InLinkActivity(u32 key)
-{
-    return LINK_KEY_CODE_EMPTY;
-}
-
 u32 GetCableClubPartnersReady(void)
 {
     if (IsAnyPlayerInLinkState(PLAYER_LINK_STATE_EXITING_ROOM) == TRUE)
@@ -2663,11 +2595,6 @@ u32 GetCableClubPartnersReady(void)
     if (AreAllPlayersInLinkState(PLAYER_LINK_STATE_READY))
         return CABLE_SEAT_SUCCESS;
     return CABLE_SEAT_WAITING;
-}
-
-static bool32 UNUSED IsAnyPlayerExitingCableClub(void)
-{
-    return IsAnyPlayerInLinkState(PLAYER_LINK_STATE_EXITING_ROOM);
 }
 
 u16 SetInCableClubSeat(void)
@@ -2692,7 +2619,7 @@ u16 QueueExitLinkRoomKey(void)
 
 u16 SetStartedCableClubActivity(void)
 {
-    SetKeyInterceptCallback(KeyInterCB_InLinkActivity);
+    SetKeyInterceptCallback(KeyInterCB_SendNothing);
     return 0;
 }
 
@@ -2712,16 +2639,6 @@ static void LoadCableClubPlayer(s32 linkPlayerId, s32 myPlayerId, struct CableCl
 }
 
 static bool32 IsCableClubPlayerUnfrozen(struct CableClubPlayer *player)
-{
-    u8 mode = player->movementMode;
-    if (mode == MOVEMENT_MODE_SCRIPTED || mode == MOVEMENT_MODE_FREE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-// Identical to IsCableClubPlayerUnfrozen
-static bool32 CanCableClubPlayerPressStart(struct CableClubPlayer *player)
 {
     u8 mode = player->movementMode;
     if (mode == MOVEMENT_MODE_SCRIPTED || mode == MOVEMENT_MODE_FREE)
@@ -2810,11 +2727,6 @@ static u16 GetDirectionForEventScript(const u8 *script)
         return FACING_NONE;
 }
 
-static void InitLinkPlayerQueueScript(void)
-{
-    LockPlayerFieldControls();
-}
-
 static void InitLinkRoomStartMenuScript(void)
 {
     PlaySE(SE_WIN_OPEN);
@@ -2833,13 +2745,6 @@ static void RunConfirmLeaveCableClubScript(void)
 {
     PlaySE(SE_WIN_OPEN);
     ScriptContext_SetupScript(EventScript_ConfirmLeaveCableClubRoom);
-    LockPlayerFieldControls();
-}
-
-static void InitMenuBasedScript(const u8 *script)
-{
-    PlaySE(SE_SELECT);
-    ScriptContext_SetupScript(script);
     LockPlayerFieldControls();
 }
 
@@ -2973,27 +2878,6 @@ static void InitLinkPlayerObjectEventPos(struct ObjectEvent *objEvent, s16 x, s1
     ObjectEventUpdateElevation(objEvent);
 }
 
-static void UNUSED SetLinkPlayerObjectRange(u8 linkPlayerId, u8 dir)
-{
-    if (gLinkPlayerObjectEvents[linkPlayerId].active)
-    {
-        u8 objEventId = gLinkPlayerObjectEvents[linkPlayerId].objEventId;
-        struct ObjectEvent *objEvent = &gObjectEvents[objEventId];
-        linkDirection(objEvent) = dir;
-    }
-}
-
-static void UNUSED DestroyLinkPlayerObject(u8 linkPlayerId)
-{
-    struct LinkPlayerObjectEvent *linkPlayerObjEvent = &gLinkPlayerObjectEvents[linkPlayerId];
-    u8 objEventId = linkPlayerObjEvent->objEventId;
-    struct ObjectEvent *objEvent = &gObjectEvents[objEventId];
-    if (objEvent->spriteId != MAX_SPRITES)
-        DestroySprite(&gSprites[objEvent->spriteId]);
-    linkPlayerObjEvent->active = 0;
-    objEvent->active = 0;
-}
-
 // Returns the spriteId corresponding to this player.
 static u8 GetSpriteForLinkedPlayer(u8 linkPlayerId)
 {
@@ -3022,13 +2906,6 @@ static u8 GetLinkPlayerElevation(u8 linkPlayerId)
     u8 objEventId = gLinkPlayerObjectEvents[linkPlayerId].objEventId;
     struct ObjectEvent *objEvent = &gObjectEvents[objEventId];
     return objEvent->currentElevation;
-}
-
-static s32 UNUSED GetLinkPlayerObjectStepTimer(u8 linkPlayerId)
-{
-    u8 objEventId = gLinkPlayerObjectEvents[linkPlayerId].objEventId;
-    struct ObjectEvent *objEvent = &gObjectEvents[objEventId];
-    return 16 - (s8)objEvent->directionSequenceIndex;
 }
 
 static u8 GetLinkPlayerIdAt(s16 x, s16 y)

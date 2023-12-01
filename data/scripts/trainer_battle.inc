@@ -44,8 +44,7 @@ EventScript_NoDoubleTrainerBattle::
 	gotopostbattlescript
 
 EventScript_DoNoIntroTrainerBattle::
-	applymovement VAR_LAST_TALKED, Movement_RevealTrainer
-	waitmovement 0
+	call EventScript_RevealTrainer
 	special PlayTrainerEncounterMusic
 	dotrainerbattle
 	gotopostbattlescript
@@ -69,9 +68,9 @@ EventScript_NoRematchTrainerBattle::
 
 EventScript_TryDoDoubleRematchBattle::
 	specialvar VAR_RESULT, IsTrainerReadyForRematch
-	goto_if_eq VAR_RESULT, FALSE, EventScript_NoDoubleRematchTrainerBattle
+	goto_if_eq VAR_RESULT, FALSE, EventScript_NoNormalTrainerBattle
 	special HasEnoughMonsForDoubleBattle
-	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleRematchBattle
+	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleBattle
 	special PlayTrainerEncounterMusic
 	special SetTrainerFacingDirection
 	special ShowTrainerIntroSpeech
@@ -80,16 +79,6 @@ EventScript_TryDoDoubleRematchBattle::
 	special BattleSetup_StartRematchBattle
 	waitstate
 	releaseall
-	end
-
-EventScript_NoDoubleRematchTrainerBattle::
-	gotopostbattlescript
-
-EventScript_NotEnoughMonsForDoubleRematchBattle::
-	special ShowTrainerCantBattleSpeech
-	waitmessage
-	waitbuttonpress
-	release
 	end
 
 EventScript_RevealTrainer::
@@ -107,18 +96,7 @@ EventScript_ShowTrainerIntroMsg::
 	waitbuttonpress
 	special TryPrepareSecondApproachingTrainer
 	goto_if_eq VAR_RESULT, TRUE, EventScript_TrainerApproach
-	goto EventScript_DoTrainerBattle
-
-EventScript_DoTrainerBattle::
 	dotrainerbattle
-	@ Below battle mode check only needed in FRLG
-	specialvar VAR_RESULT, GetTrainerBattleMode
-	goto_if_eq VAR_RESULT, TRAINER_BATTLE_SINGLE, EventScript_EndTrainerBattle
-	goto_if_eq VAR_RESULT, TRAINER_BATTLE_CONTINUE_SCRIPT, EventScript_EndTrainerBattle
-	goto_if_eq VAR_RESULT, TRAINER_BATTLE_CONTINUE_SCRIPT_NO_MUSIC, EventScript_EndTrainerBattle
-	goto_if_eq VAR_RESULT, TRAINER_BATTLE_CONTINUE_SCRIPT_DOUBLE, EventScript_EndTrainerBattle
-	goto_if_eq VAR_RESULT, TRAINER_BATTLE_CONTINUE_SCRIPT_DOUBLE_NO_MUSIC, EventScript_EndTrainerBattle
-EventScript_EndTrainerBattle::
 	gotobeatenscript
 	releaseall
 	end

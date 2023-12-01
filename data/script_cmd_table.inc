@@ -1,7 +1,7 @@
 	.align 2
 gScriptCmdTable::
 	.4byte ScrCmd_nop      	                        @ 0x00
-	.4byte ScrCmd_nop1                              @ 0x01
+	.4byte ScrCmd_nop                               @ 0x01
 	.4byte ScrCmd_end      	                        @ 0x02
 	.4byte ScrCmd_return                            @ 0x03
 	.4byte ScrCmd_call                              @ 0x04
@@ -115,8 +115,8 @@ gScriptCmdTable::
 	.4byte ScrCmd_multichoicedefault                @ 0x70
 	.4byte ScrCmd_multichoicegrid                   @ 0x71
 	.4byte ScrCmd_drawbox                           @ 0x72
-	.4byte ScrCmd_erasebox                          @ 0x73
-	.4byte ScrCmd_drawboxtext                       @ 0x74
+	.4byte ScrCmd_nop                               @ 0x73
+	.4byte ScrCmd_nop                               @ 0x74
 	.4byte ScrCmd_showmonpic                        @ 0x75
 	.4byte ScrCmd_hidemonpic                        @ 0x76
 	.4byte ScrCmd_showcontestpainting               @ 0x77
@@ -200,15 +200,15 @@ gScriptCmdTable::
 	.4byte ScrCmd_waitmoncry                        @ 0xc5
 	.4byte ScrCmd_bufferboxname                     @ 0xc6
 	.4byte ScrCmd_textcolor                         @ 0xc7
-	.4byte ScrCmd_nop1                              @ 0xc8
-	.4byte ScrCmd_nop1                              @ 0xc9
+	.4byte ScrCmd_nop                               @ 0xc8
+	.4byte ScrCmd_nop                               @ 0xc9
 	.4byte ScrCmd_signmsg                           @ 0xca
 	.4byte ScrCmd_normalmsg                         @ 0xcb
-	.4byte ScrCmd_nop1                              @ 0xcc
+	.4byte ScrCmd_nop                               @ 0xcc
 	.4byte ScrCmd_setmonmodernfatefulencounter      @ 0xcd
 	.4byte ScrCmd_checkmonmodernfatefulencounter    @ 0xce
 	.4byte ScrCmd_trywondercardscript               @ 0xcf
-	.4byte ScrCmd_nop1                              @ 0xd0
+	.4byte ScrCmd_nop                               @ 0xd0
 	.4byte ScrCmd_warpspinenter                     @ 0xd1
 	.4byte ScrCmd_setmonmetlocation                 @ 0xd2
 	.4byte ScrCmd_moverotatingtileobjects           @ 0xd3

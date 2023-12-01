@@ -72,7 +72,7 @@ static void CB2_HandleStartMultiPartnerBattle(void);
 static void CB2_HandleStartMultiBattle(void);
 static void CB2_HandleStartBattle(void);
 static void TryCorrectShedinjaLanguage(struct Pokemon *mon);
-static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer);
+static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer);
 static void BattleMainCB1(void);
 static void CB2_EndLinkBattle(void);
 static void EndLinkBattleInSteps(void);
@@ -722,15 +722,9 @@ static void CB2_InitBattleInternal(void)
         if (species != SPECIES_EGG && hp != 0 && status == 0)               \
             (flags) |= 1 << (i) * 2;                                        \
                                                                             \
-        if (species == SPECIES_NONE) /* Redundant */                        \
-            continue;                                                       \
-                                                                            \
         /* Is Egg or statused? */                                           \
         if (hp != 0 && (species == SPECIES_EGG || status != 0))             \
             (flags) |= 2 << (i) * 2;                                        \
-                                                                            \
-        if (species == SPECIES_NONE) /* Redundant */                        \
-            continue;                                                       \
                                                                             \
         /* Is fainted? */                                                   \
         if (species != SPECIES_EGG && hp == 0)                              \
@@ -1954,16 +1948,16 @@ static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite)
     }
 }
 
-static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
+static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
 {
     u32 nameHash = 0;
     u32 personalityValue;
     u8 fixedIV;
     s32 i, j;
-    u8 monsCount;
+    u32 monsCount;
 
     if (trainerNum == TRAINER_SECRET_BASE)
-        return 0;
+        return;
 
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !(gBattleTypeFlags & (BATTLE_TYPE_FRONTIER
                                                                         | BATTLE_TYPE_EREADER_TRAINER
@@ -2068,8 +2062,6 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
     }
-
-    return gTrainers[trainerNum].partySize;
 }
 
 static void UNUSED HBlankCB_Battle(void)
@@ -4236,12 +4228,11 @@ static void HandleTurnActionSelectionState(void)
                     break;
                 case B_ACTION_RUN:
                     gHitMarker |= HITMARKER_RUN;
-                    gBattleCommunication[gActiveBattler]++;
-                    break;
                 case B_ACTION_SAFARI_WATCH_CAREFULLY:
-                    gBattleCommunication[gActiveBattler]++;
-                    break;
                 case B_ACTION_SAFARI_BALL:
+                case B_ACTION_SAFARI_GO_NEAR:
+                case B_ACTION_SAFARI_RUN:
+                case B_ACTION_WALLY_THROW:
                     gBattleCommunication[gActiveBattler]++;
                     break;
                 case B_ACTION_SAFARI_POKEBLOCK:
@@ -4249,16 +4240,6 @@ static void HandleTurnActionSelectionState(void)
                         gBattleCommunication[gActiveBattler]++;
                     else
                         gBattleCommunication[gActiveBattler] = STATE_BEFORE_ACTION_CHOSEN;
-                    break;
-                case B_ACTION_SAFARI_GO_NEAR:
-                    gBattleCommunication[gActiveBattler]++;
-                    break;
-                case B_ACTION_SAFARI_RUN:
-                    gHitMarker |= HITMARKER_RUN;
-                    gBattleCommunication[gActiveBattler]++;
-                    break;
-                case B_ACTION_WALLY_THROW:
-                    gBattleCommunication[gActiveBattler]++;
                     break;
                 }
             }

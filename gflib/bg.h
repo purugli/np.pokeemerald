@@ -28,6 +28,13 @@ enum {
     BG_COORD_SUB,
 };
 
+enum BgTileAllocMode
+{
+    BG_TILE_FIND_FREE_SPACE,
+    BG_TILE_ALLOC,
+    BG_TILE_FREE,
+};
+
 struct BgTemplate
 {
     u16 bg:2;                   // 0x1, 0x2 -> 0x3

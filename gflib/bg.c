@@ -41,6 +41,7 @@ struct BgConfig2
 static struct BgControl sGpuBgConfigs;
 static struct BgConfig2 sGpuBgConfigs2[NUM_BACKGROUNDS];
 static u32 sDmaBusyBitfield[NUM_BACKGROUNDS];
+static u8 gpu_tile_allocation_map_bg[0x100];
 
 u32 gWindowTileAutoAllocEnabled;
 
@@ -206,9 +207,59 @@ bool8 IsInvalidBg(u8 bg)
         return FALSE;
 }
 
-// From FRLG. Dummied out.
+// From FRLG.
 int BgTileAllocOp(int bg, int offset, int count, int mode)
 {
+    int start, end;
+    int blockSize;
+    int blockStart;
+    int i;
+
+    switch (mode)
+    {
+    case BG_TILE_FIND_FREE_SPACE:
+        start = GetBgControlAttribute(bg, BG_CTRL_ATTR_CHARBASEINDEX) * (BG_CHAR_SIZE / TILE_SIZE_4BPP);
+        end = start + 0x400;
+        if (end > 0x800)
+            end = 0x800;
+        blockSize = 0;
+        blockStart = 0;
+        for (i = start, offset = 0; i < end; i++, offset++)
+        {
+            if (!((gpu_tile_allocation_map_bg[i / 8] >> (i % 8)) & 1))
+            {
+                if (blockSize)
+                {
+                    blockSize++;
+                    if (blockSize == count)
+                        return blockStart;
+                }
+                else
+                {
+                    blockStart = offset;
+                    blockSize = 1;
+                }
+            }
+            else
+            {
+                blockSize = 0;
+            }
+        }
+        return -1;
+    case BG_TILE_ALLOC:
+        start = GetBgControlAttribute(bg, BG_CTRL_ATTR_CHARBASEINDEX) * (BG_CHAR_SIZE / TILE_SIZE_4BPP) + offset;
+        end = start + count;
+        for (i = start; i < end; i++)
+            gpu_tile_allocation_map_bg[i / 8] |= 1 << (i % 8);
+        break;
+    case BG_TILE_FREE:
+        start = GetBgControlAttribute(bg, BG_CTRL_ATTR_CHARBASEINDEX) * (BG_CHAR_SIZE / TILE_SIZE_4BPP) + offset;
+        end = start + count;
+        for (i = start; i < end; i++)
+            gpu_tile_allocation_map_bg[i / 8] &= ~(1 << (i % 8));
+        break;
+    }
+
     return 0;
 }
 
@@ -223,6 +274,12 @@ void ResetBgsAndClearDma3BusyFlags(u32 leftoverFireRedLeafGreenVariable)
     }
 
     gWindowTileAutoAllocEnabled = leftoverFireRedLeafGreenVariable;
+
+    if (gWindowTileAutoAllocEnabled == TRUE)
+    {
+        for (i = 0; i < ARRAY_COUNT(gpu_tile_allocation_map_bg); i++)
+            gpu_tile_allocation_map_bg[i] = 0;
+    }
 }
 
 void InitBgsFromTemplates(u8 bgMode, const struct BgTemplate *templates, u8 numTemplates)
@@ -234,28 +291,7 @@ void InitBgsFromTemplates(u8 bgMode, const struct BgTemplate *templates, u8 numT
     ResetBgControlStructs();
 
     for (i = 0; i < numTemplates; i++)
-    {
-        bg = templates[i].bg;
-        if (bg < NUM_BACKGROUNDS)
-        {
-            SetBgControlAttributes(bg,
-                                   templates[i].charBaseIndex,
-                                   templates[i].mapBaseIndex,
-                                   templates[i].screenSize,
-                                   templates[i].paletteMode,
-                                   templates[i].priority,
-                                   0,
-                                   0);
-
-            sGpuBgConfigs2[bg].baseTile = templates[i].baseTile;
-            sGpuBgConfigs2[bg].basePalette = 0;
-            sGpuBgConfigs2[bg].unk_3 = 0;
-
-            sGpuBgConfigs2[bg].tilemap = NULL;
-            sGpuBgConfigs2[bg].bg_x = 0;
-            sGpuBgConfigs2[bg].bg_y = 0;
-        }
-    }
+        InitBgFromTemplate(&templates[i]);
 }
 
 void InitBgFromTemplate(const struct BgTemplate *template)
@@ -280,6 +316,9 @@ void InitBgFromTemplate(const struct BgTemplate *template)
         sGpuBgConfigs2[bg].tilemap = NULL;
         sGpuBgConfigs2[bg].bg_x = 0;
         sGpuBgConfigs2[bg].bg_y = 0;
+
+        if (gWindowTileAutoAllocEnabled == TRUE)
+            gpu_tile_allocation_map_bg[(template->charBaseIndex * (BG_CHAR_SIZE / TILE_SIZE_4BPP)) / 8] = 1;
     }
 }
 
@@ -313,7 +352,7 @@ u16 LoadBgTiles(u8 bg, const void *src, u16 size, u16 destOffset)
     sDmaBusyBitfield[cursor / 0x20] |= (1 << (cursor % 0x20));
 
     if (gWindowTileAutoAllocEnabled == TRUE)
-        BgTileAllocOp(bg, tileOffset / 0x20, size / 0x20, 1);
+        BgTileAllocOp(bg, tileOffset / 0x20, size / 0x20, BG_TILE_ALLOC);
 
     return cursor;
 }
@@ -734,10 +773,7 @@ void SetBgTilemapBuffer(u8 bg, void *tilemap)
 
 void UnsetBgTilemapBuffer(u8 bg)
 {
-    if (!IsInvalidBg32(bg) && GetBgControlAttribute(bg, BG_CTRL_ATTR_VISIBLE))
-    {
-        sGpuBgConfigs2[bg].tilemap = NULL;
-    }
+    SetBgTilemapBuffer(bg, NULL);
 }
 
 void *GetBgTilemapBuffer(u8 bg)

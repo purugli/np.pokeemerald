@@ -112,7 +112,7 @@
 	struct_field o_SoundChannel_release, 1
 	struct_field o_SoundChannel_key, 1
 	struct_field o_SoundChannel_envelopeVolume, 1
-	struct_field o_SoundChannel_envelopeVolumeRight, 1
+	struct_field o_SoundChannel_xpc, 1
 	struct_field o_SoundChannel_envelopeVolumeLeft, 1
 	struct_field o_SoundChannel_pseudoEchoVolume, 1
 	struct_field o_SoundChannel_pseudoEchoLength, 1
@@ -132,9 +132,7 @@
 	struct_field o_SoundChannel_track, 4
 	struct_field o_SoundChannel_prevChannelPointer, 4
 	struct_field o_SoundChannel_nextChannelPointer, 4
-	struct_field o_SoundChannel_dummy4, 4
-	struct_field o_SoundChannel_xpi, 2
-	struct_field o_SoundChannel_xpc, 2
+	struct_field o_SoundChannel_dummy4, 8
 	struct_field SoundChannel_size, 0
 
 	struct_begin

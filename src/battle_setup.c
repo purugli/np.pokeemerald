@@ -71,9 +71,6 @@ struct TrainerBattleParameter
 };
 
 // this file's functions
-static void DoBattlePikeWildBattle(void);
-static void DoSafariBattle(void);
-static void DoStandardWildBattle(void);
 static void CB2_EndWildBattle(void);
 static void CB2_EndScriptedWildBattle(void);
 static u8 GetWildBattleTransition(void);
@@ -385,74 +382,32 @@ static void CreateBattleStartTask(u8 transition, u16 song)
 #undef tState
 #undef tTransition
 
-void BattleSetup_StartWildBattle(void)
+void BattleSetup_StartWildBattle(u32 flags)
 {
+    LockPlayerFieldControls();
+    FreezeObjectEvents();
+    StopPlayerAvatar();
     if (GetSafariZoneFlag())
-        DoSafariBattle();
-    else
-        DoStandardWildBattle();
-}
-
-void BattleSetup_StartBattlePikeWildBattle(void)
-{
-    DoBattlePikeWildBattle();
-}
-
-static void DoStandardWildBattle(void)
-{
-    LockPlayerFieldControls();
-    FreezeObjectEvents();
-    StopPlayerAvatar();
-    gMain.savedCallback = CB2_EndWildBattle;
-    gBattleTypeFlags = 0;
-    if (InBattlePyramid())
     {
-        VarSet(VAR_TEMP_PLAYING_PYRAMID_MUSIC, 0);
-        gBattleTypeFlags |= BATTLE_TYPE_PYRAMID;
+        gMain.savedCallback = CB2_EndSafariBattle;
+        gBattleTypeFlags = BATTLE_TYPE_SAFARI;
+        CreateBattleStartTask(GetWildBattleTransition(), 0);
     }
-    CreateBattleStartTask(GetWildBattleTransition(), 0);
-    IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
-    IncrementGameStat(GAME_STAT_WILD_BATTLES);
-    IncrementDailyWildBattles();
-    TryUpdateGymLeaderRematchFromWild();
-}
-
-void BattleSetup_StartRoamerBattle(void)
-{
-    LockPlayerFieldControls();
-    FreezeObjectEvents();
-    StopPlayerAvatar();
-    gMain.savedCallback = CB2_EndWildBattle;
-    gBattleTypeFlags = BATTLE_TYPE_ROAMER;
-    CreateBattleStartTask(GetWildBattleTransition(), 0);
-    IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
-    IncrementGameStat(GAME_STAT_WILD_BATTLES);
-    IncrementDailyWildBattles();
-    TryUpdateGymLeaderRematchFromWild();
-}
-
-static void DoSafariBattle(void)
-{
-    LockPlayerFieldControls();
-    FreezeObjectEvents();
-    StopPlayerAvatar();
-    gMain.savedCallback = CB2_EndSafariBattle;
-    gBattleTypeFlags = BATTLE_TYPE_SAFARI;
-    CreateBattleStartTask(GetWildBattleTransition(), 0);
-}
-
-static void DoBattlePikeWildBattle(void)
-{
-    LockPlayerFieldControls();
-    FreezeObjectEvents();
-    StopPlayerAvatar();
-    gMain.savedCallback = CB2_EndWildBattle;
-    gBattleTypeFlags = BATTLE_TYPE_PIKE;
-    CreateBattleStartTask(GetWildBattleTransition(), 0);
-    IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
-    IncrementGameStat(GAME_STAT_WILD_BATTLES);
-    IncrementDailyWildBattles();
-    TryUpdateGymLeaderRematchFromWild();
+    else
+    {
+        gMain.savedCallback = CB2_EndWildBattle;
+        gBattleTypeFlags = flags;
+        if (InBattlePyramid())
+        {
+            VarSet(VAR_TEMP_PLAYING_PYRAMID_MUSIC, 0);
+            gBattleTypeFlags |= BATTLE_TYPE_PYRAMID;
+        }
+        CreateBattleStartTask(GetWildBattleTransition(), 0);
+        IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
+        IncrementGameStat(GAME_STAT_WILD_BATTLES);
+        IncrementDailyWildBattles();
+        TryUpdateGymLeaderRematchFromWild();
+    }
 }
 
 static void DoTrainerBattle(void)

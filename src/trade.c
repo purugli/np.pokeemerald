@@ -157,7 +157,7 @@ struct InGameTrade {
     u32 personality;
     u16 heldItem;
     u8 mailNum;
-    u8 otName[11];
+    u8 otName[TRAINER_NAME_LENGTH + 1];
     u8 otGender;
     u8 sheen;
     u16 requestedSpecies;
@@ -1285,7 +1285,7 @@ static void Leader_HandleCommunication(void)
         if (sTradeMenu->playerSelectStatus == STATUS_READY
          && sTradeMenu->partnerSelectStatus == STATUS_READY)
         {
-            // Both players have selected a pokemon to trade 
+            // Both players have selected a pokemon to trade
             sTradeMenu->callbackId = CB_SET_SELECTED_MONS;
             sTradeMenu->linkData[0] = LINKCMD_SET_MONS_TO_TRADE;
             sTradeMenu->linkData[1] = sTradeMenu->cursorPosition;

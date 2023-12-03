@@ -210,7 +210,7 @@ static struct PokemonAnimData sAnims[MAX_BATTLERS_COUNT];
 static u8 sAnimIdx;
 static bool32 sIsSummaryAnim;
 
-static const u8 sSpeciesToBackAnimSet[] =
+static const u8 sSpeciesToBackAnimSet[NUM_SPECIES] =
 {
     [SPECIES_BULBASAUR]  = BACK_ANIM_DIP_RIGHT_SIDE,
     [SPECIES_IVYSAUR]    = BACK_ANIM_H_SLIDE,
@@ -629,6 +629,7 @@ static const u8 sVerticalShakeData[][2] =
 
 static void (* const sMonAnimFunctions[])(struct Sprite *sprite) =
 {
+    [ANIM_NONE]                              = SpriteCallbackDummy,
     [ANIM_V_SQUISH_AND_BOUNCE]               = Anim_VerticalSquishBounce,
     [ANIM_CIRCULAR_STRETCH_TWICE]            = Anim_CircularStretchTwice,
     [ANIM_H_VIBRATE]                         = Anim_HorizontalVibrate,
@@ -787,31 +788,32 @@ static void (* const sMonAnimFunctions[])(struct Sprite *sprite) =
 // BACK_ANIM_NONE is skipped below. GetSpeciesBackAnimSet subtracts 1 from the back anim id
 static const u8 sBackAnimationIds[] =
 {
-    [(BACK_ANIM_H_VIBRATE - 1) * 3]               = ANIM_H_VIBRATE_FASTEST, ANIM_H_VIBRATE_FAST, ANIM_H_VIBRATE,
-    [(BACK_ANIM_H_SLIDE - 1) * 3]                 = ANIM_H_SLIDE_FAST, ANIM_H_SLIDE, ANIM_H_SLIDE_SLOW,
-    [(BACK_ANIM_H_SPRING - 1) * 3]                = ANIM_H_SPRING_FAST, ANIM_H_SPRING, ANIM_H_SPRING_SLOW,
-    [(BACK_ANIM_H_SPRING_REPEATED - 1) * 3]       = ANIM_H_REPEATED_SPRING_FAST, ANIM_H_REPEATED_SPRING, ANIM_H_REPEATED_SPRING_SLOW,
-    [(BACK_ANIM_SHRINK_GROW - 1) * 3]             = ANIM_SHRINK_GROW_FAST, ANIM_SHRINK_GROW, ANIM_SHRINK_GROW_SLOW,
-    [(BACK_ANIM_GROW - 1) * 3]                    = ANIM_GROW_TWICE, ANIM_GROW, ANIM_GROW_IN_STAGES,
-    [(BACK_ANIM_CIRCLE_COUNTERCLOCKWISE - 1) * 3] = ANIM_CIRCLE_C_CLOCKWISE_LONG, ANIM_CIRCLE_C_CLOCKWISE, ANIM_CIRCLE_C_CLOCKWISE_SLOW,
-    [(BACK_ANIM_H_SHAKE - 1) * 3]                 = ANIM_H_SHAKE_FAST, ANIM_H_SHAKE, ANIM_H_SHAKE_SLOW,
-    [(BACK_ANIM_V_SHAKE - 1) * 3]                 = ANIM_V_SHAKE_BACK_FAST, ANIM_V_SHAKE_BACK, ANIM_V_SHAKE_BACK_SLOW,
-    [(BACK_ANIM_V_SHAKE_H_SLIDE - 1) * 3]         = ANIM_V_SHAKE_H_SLIDE_FAST, ANIM_V_SHAKE_H_SLIDE, ANIM_V_SHAKE_H_SLIDE_SLOW,
-    [(BACK_ANIM_V_STRETCH - 1) * 3]               = ANIM_V_STRETCH_BOTH_ENDS_TWICE, ANIM_V_STRETCH_BOTH_ENDS, ANIM_V_STRETCH_BOTH_ENDS_SLOW,
-    [(BACK_ANIM_H_STRETCH - 1) * 3]               = ANIM_H_STRETCH_FAR_TWICE, ANIM_H_STRETCH_FAR, ANIM_H_STRETCH_FAR_SLOW,
-    [(BACK_ANIM_GROW_STUTTER - 1) * 3]            = ANIM_GROW_STUTTER_TWICE, ANIM_GROW_STUTTER, ANIM_GROW_STUTTER_SLOW,
-    [(BACK_ANIM_V_SHAKE_LOW - 1) * 3]             = ANIM_V_SHAKE_LOW_TWICE_FAST, ANIM_V_SHAKE_LOW_TWICE, ANIM_V_SHAKE_LOW_TWICE_SLOW,
-    [(BACK_ANIM_TRIANGLE_DOWN - 1) * 3]           = ANIM_TRIANGLE_DOWN_TWICE, ANIM_TRIANGLE_DOWN, ANIM_TRIANGLE_DOWN_SLOW,
-    [(BACK_ANIM_CONCAVE_ARC_LARGE - 1) * 3]       = ANIM_CONCAVE_ARC_LARGE_TWICE, ANIM_CONCAVE_ARC_LARGE, ANIM_CONCAVE_ARC_LARGE_SLOW,
-    [(BACK_ANIM_CONVEX_DOUBLE_ARC - 1) * 3]       = ANIM_CONVEX_DOUBLE_ARC_TWICE, ANIM_CONVEX_DOUBLE_ARC, ANIM_CONVEX_DOUBLE_ARC_SLOW,
-    [(BACK_ANIM_CONCAVE_ARC_SMALL - 1) * 3]       = ANIM_CONCAVE_ARC_SMALL_TWICE, ANIM_CONCAVE_ARC_SMALL, ANIM_CONCAVE_ARC_SMALL_SLOW,
-    [(BACK_ANIM_DIP_RIGHT_SIDE - 1) * 3]          = ANIM_H_DIP_TWICE, ANIM_H_DIP, ANIM_H_DIP_FAST,
-    [(BACK_ANIM_SHRINK_GROW_VIBRATE - 1) * 3]     = ANIM_SHRINK_GROW_VIBRATE_FAST, ANIM_SHRINK_GROW_VIBRATE, ANIM_SHRINK_GROW_VIBRATE_SLOW,
-    [(BACK_ANIM_JOLT_RIGHT - 1) * 3]              = ANIM_JOLT_RIGHT_FAST, ANIM_JOLT_RIGHT, ANIM_JOLT_RIGHT_SLOW,
-    [(BACK_ANIM_SHAKE_FLASH_YELLOW - 1) * 3]      = ANIM_SHAKE_FLASH_YELLOW_FAST, ANIM_SHAKE_FLASH_YELLOW, ANIM_SHAKE_FLASH_YELLOW_SLOW,
-    [(BACK_ANIM_SHAKE_GLOW_RED - 1) * 3]          = ANIM_SHAKE_GLOW_RED_FAST, ANIM_SHAKE_GLOW_RED, ANIM_SHAKE_GLOW_RED_SLOW,
-    [(BACK_ANIM_SHAKE_GLOW_GREEN - 1) * 3]        = ANIM_SHAKE_GLOW_GREEN_FAST, ANIM_SHAKE_GLOW_GREEN, ANIM_SHAKE_GLOW_GREEN_SLOW,
-    [(BACK_ANIM_SHAKE_GLOW_BLUE - 1) * 3]         = ANIM_SHAKE_GLOW_BLUE_FAST,  ANIM_SHAKE_GLOW_BLUE, ANIM_SHAKE_GLOW_BLUE_SLOW,
+    [(BACK_ANIM_NONE) * 3]                    = ANIM_NONE, ANIM_NONE, ANIM_NONE,
+    [(BACK_ANIM_H_VIBRATE) * 3]               = ANIM_H_VIBRATE_FASTEST, ANIM_H_VIBRATE_FAST, ANIM_H_VIBRATE,
+    [(BACK_ANIM_H_SLIDE) * 3]                 = ANIM_H_SLIDE_FAST, ANIM_H_SLIDE, ANIM_H_SLIDE_SLOW,
+    [(BACK_ANIM_H_SPRING) * 3]                = ANIM_H_SPRING_FAST, ANIM_H_SPRING, ANIM_H_SPRING_SLOW,
+    [(BACK_ANIM_H_SPRING_REPEATED) * 3]       = ANIM_H_REPEATED_SPRING_FAST, ANIM_H_REPEATED_SPRING, ANIM_H_REPEATED_SPRING_SLOW,
+    [(BACK_ANIM_SHRINK_GROW) * 3]             = ANIM_SHRINK_GROW_FAST, ANIM_SHRINK_GROW, ANIM_SHRINK_GROW_SLOW,
+    [(BACK_ANIM_GROW) * 3]                    = ANIM_GROW_TWICE, ANIM_GROW, ANIM_GROW_IN_STAGES,
+    [(BACK_ANIM_CIRCLE_COUNTERCLOCKWISE) * 3] = ANIM_CIRCLE_C_CLOCKWISE_LONG, ANIM_CIRCLE_C_CLOCKWISE, ANIM_CIRCLE_C_CLOCKWISE_SLOW,
+    [(BACK_ANIM_H_SHAKE) * 3]                 = ANIM_H_SHAKE_FAST, ANIM_H_SHAKE, ANIM_H_SHAKE_SLOW,
+    [(BACK_ANIM_V_SHAKE) * 3]                 = ANIM_V_SHAKE_BACK_FAST, ANIM_V_SHAKE_BACK, ANIM_V_SHAKE_BACK_SLOW,
+    [(BACK_ANIM_V_SHAKE_H_SLIDE) * 3]         = ANIM_V_SHAKE_H_SLIDE_FAST, ANIM_V_SHAKE_H_SLIDE, ANIM_V_SHAKE_H_SLIDE_SLOW,
+    [(BACK_ANIM_V_STRETCH) * 3]               = ANIM_V_STRETCH_BOTH_ENDS_TWICE, ANIM_V_STRETCH_BOTH_ENDS, ANIM_V_STRETCH_BOTH_ENDS_SLOW,
+    [(BACK_ANIM_H_STRETCH) * 3]               = ANIM_H_STRETCH_FAR_TWICE, ANIM_H_STRETCH_FAR, ANIM_H_STRETCH_FAR_SLOW,
+    [(BACK_ANIM_GROW_STUTTER) * 3]            = ANIM_GROW_STUTTER_TWICE, ANIM_GROW_STUTTER, ANIM_GROW_STUTTER_SLOW,
+    [(BACK_ANIM_V_SHAKE_LOW) * 3]             = ANIM_V_SHAKE_LOW_TWICE_FAST, ANIM_V_SHAKE_LOW_TWICE, ANIM_V_SHAKE_LOW_TWICE_SLOW,
+    [(BACK_ANIM_TRIANGLE_DOWN) * 3]           = ANIM_TRIANGLE_DOWN_TWICE, ANIM_TRIANGLE_DOWN, ANIM_TRIANGLE_DOWN_SLOW,
+    [(BACK_ANIM_CONCAVE_ARC_LARGE) * 3]       = ANIM_CONCAVE_ARC_LARGE_TWICE, ANIM_CONCAVE_ARC_LARGE, ANIM_CONCAVE_ARC_LARGE_SLOW,
+    [(BACK_ANIM_CONVEX_DOUBLE_ARC) * 3]       = ANIM_CONVEX_DOUBLE_ARC_TWICE, ANIM_CONVEX_DOUBLE_ARC, ANIM_CONVEX_DOUBLE_ARC_SLOW,
+    [(BACK_ANIM_CONCAVE_ARC_SMALL) * 3]       = ANIM_CONCAVE_ARC_SMALL_TWICE, ANIM_CONCAVE_ARC_SMALL, ANIM_CONCAVE_ARC_SMALL_SLOW,
+    [(BACK_ANIM_DIP_RIGHT_SIDE) * 3]          = ANIM_H_DIP_TWICE, ANIM_H_DIP, ANIM_H_DIP_FAST,
+    [(BACK_ANIM_SHRINK_GROW_VIBRATE) * 3]     = ANIM_SHRINK_GROW_VIBRATE_FAST, ANIM_SHRINK_GROW_VIBRATE, ANIM_SHRINK_GROW_VIBRATE_SLOW,
+    [(BACK_ANIM_JOLT_RIGHT) * 3]              = ANIM_JOLT_RIGHT_FAST, ANIM_JOLT_RIGHT, ANIM_JOLT_RIGHT_SLOW,
+    [(BACK_ANIM_SHAKE_FLASH_YELLOW) * 3]      = ANIM_SHAKE_FLASH_YELLOW_FAST, ANIM_SHAKE_FLASH_YELLOW, ANIM_SHAKE_FLASH_YELLOW_SLOW,
+    [(BACK_ANIM_SHAKE_GLOW_RED) * 3]          = ANIM_SHAKE_GLOW_RED_FAST, ANIM_SHAKE_GLOW_RED, ANIM_SHAKE_GLOW_RED_SLOW,
+    [(BACK_ANIM_SHAKE_GLOW_GREEN) * 3]        = ANIM_SHAKE_GLOW_GREEN_FAST, ANIM_SHAKE_GLOW_GREEN, ANIM_SHAKE_GLOW_GREEN_SLOW,
+    [(BACK_ANIM_SHAKE_GLOW_BLUE) * 3]         = ANIM_SHAKE_GLOW_BLUE_FAST,  ANIM_SHAKE_GLOW_BLUE, ANIM_SHAKE_GLOW_BLUE_SLOW,
 };
 
 static const u8 sBackAnimNatureModTable[NUM_NATURES] =
@@ -885,7 +887,7 @@ static void SetPosForRotation(struct Sprite *sprite, u16 index, s16 amplitudeX, 
 u8 GetSpeciesBackAnimSet(u16 species)
 {
     if (sSpeciesToBackAnimSet[species] != BACK_ANIM_NONE)
-        return sSpeciesToBackAnimSet[species] - 1;
+        return sSpeciesToBackAnimSet[species];
     else
         return 0;
 }
@@ -1523,27 +1525,27 @@ static void Anim_CircleCounterclockwise(struct Sprite *sprite)
     sprite->callback = CircleCounterclockwise;
 }
 
-#define GlowColor(color, colorIncrement, speed)                         \
-{                                                                       \
-    if (sprite->data[2] == 0)                                           \
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);          \
-                                                                        \
-    if (sprite->data[2] > 128)                                          \
-    {                                                                   \
-        BlendPalette(sprite->data[7], 16, 0, (color));                  \
-        sprite->callback = WaitAnimEnd;                                 \
-    }                                                                   \
-    else                                                                \
-    {                                                                   \
-        sprite->data[6] = Sin(sprite->data[2], (colorIncrement));       \
-        BlendPalette(sprite->data[7], 16, sprite->data[6], (color));    \
-    }                                                                   \
-    sprite->data[2] += (speed);                                         \
+static void GlowColor(struct Sprite *sprite, u16 color, u8 colorIncrement, u8 speed)
+{
+    if (sprite->data[2] == 0)
+        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
+
+    if (sprite->data[2] > 128)
+    {
+        BlendPalette(sprite->data[7], 16, 0, color);
+        sprite->callback = WaitAnimEnd;
+    }
+    else
+    {
+        sprite->data[6] = Sin(sprite->data[2], colorIncrement);
+        BlendPalette(sprite->data[7], 16, sprite->data[6], color);
+    }
+    sprite->data[2] += speed;
 }
 
 static void Anim_GlowBlack(struct Sprite *sprite)
 {
-    GlowColor(RGB_BLACK, 16, 1);
+    GlowColor(sprite, RGB_BLACK, 16, 1);
 }
 
 static void Anim_HorizontalStretch(struct Sprite *sprite)
@@ -1989,27 +1991,27 @@ static void Anim_BounceRotateToSides(struct Sprite *sprite)
 
 static void Anim_GlowOrange(struct Sprite *sprite)
 {
-    GlowColor(RGB(31, 22, 0), 12, 2);
+    GlowColor(sprite, RGB(31, 22, 0), 12, 2);
 }
 
 static void Anim_GlowRed(struct Sprite *sprite)
 {
-    GlowColor(RGB_RED, 12, 2);
+    GlowColor(sprite, RGB_RED, 12, 2);
 }
 
 static void Anim_GlowBlue(struct Sprite *sprite)
 {
-    GlowColor(RGB_BLUE, 12, 2);
+    GlowColor(sprite, RGB_BLUE, 12, 2);
 }
 
 static void Anim_GlowYellow(struct Sprite *sprite)
 {
-    GlowColor(RGB_YELLOW, 12, 2);
+    GlowColor(sprite, RGB_YELLOW, 12, 2);
 }
 
 static void Anim_GlowPurple(struct Sprite *sprite)
 {
-    GlowColor(RGB(24, 0, 24), 12, 2);
+    GlowColor(sprite, RGB(24, 0, 24), 12, 2);
 }
 
 static void BackAndLunge_0(struct Sprite *sprite);
@@ -5246,7 +5248,7 @@ static void ShakeFlashYellow(struct Sprite *sprite)
     }
 }
 
-static void Anim_ShakeFlashYellow_Fast(struct Sprite *sprite)
+static void DoShakeFlashYellow(struct Sprite *sprite, u8 speed)
 {
     if (++sprite->data[2] == 1)
     {
@@ -5254,38 +5256,25 @@ static void Anim_ShakeFlashYellow_Fast(struct Sprite *sprite)
         sprite->data[6] = 0;
         sprite->data[5] = 0;
         sprite->data[4] = 0;
-        sprite->data[3] = 0;
+        sprite->data[3] = speed;
     }
 
     ShakeFlashYellow(sprite);
+}
+
+static void Anim_ShakeFlashYellow_Fast(struct Sprite *sprite)
+{
+    DoShakeFlashYellow(sprite, 0);
 }
 
 static void Anim_ShakeFlashYellow(struct Sprite *sprite)
 {
-    if (++sprite->data[2] == 1)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[6] = 0;
-        sprite->data[5] = 0;
-        sprite->data[4] = 0;
-        sprite->data[3] = 1;
-    }
-
-    ShakeFlashYellow(sprite);
+    DoShakeFlashYellow(sprite, 1);
 }
 
 static void Anim_ShakeFlashYellow_Slow(struct Sprite *sprite)
 {
-    if (++sprite->data[2] == 1)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[6] = 0;
-        sprite->data[5] = 0;
-        sprite->data[4] = 0;
-        sprite->data[3] = 2;
-    }
-
-    ShakeFlashYellow(sprite);
+    DoShakeFlashYellow(sprite, 2);
 }
 
 enum {
@@ -5340,16 +5329,16 @@ static void ShakeGlow_Move(struct Sprite *sprite)
     }
 }
 
-static void Anim_ShakeGlowRed_Fast(struct Sprite *sprite)
+static void Anim_ShakeGlowColor(struct Sprite *sprite, u32 a, u32 b, u32 color)
 {
     if (sprite->data[2] == 0)
     {
         sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 10;
+        sprite->data[0] = a;
         sprite->data[5] = 0;
-        sprite->data[4] = 2;
+        sprite->data[4] = b;
         sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_RED;
+        sprite->data[1] = color;
     }
 
     if (sprite->data[2] % 2 == 0)
@@ -5359,174 +5348,51 @@ static void Anim_ShakeGlowRed_Fast(struct Sprite *sprite)
         ShakeGlow_Move(sprite);
 
     sprite->data[2]++;
+}
+
+static void Anim_ShakeGlowRed_Fast(struct Sprite *sprite)
+{
+    Anim_ShakeGlowColor(sprite, 10, 2, SHAKEGLOW_RED);
 }
 
 static void Anim_ShakeGlowRed(struct Sprite *sprite)
 {
-    if (sprite->data[2] == 0)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 20;
-        sprite->data[5] = 0;
-        sprite->data[4] = 1;
-        sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_RED;
-    }
-
-    if (sprite->data[2] % 2 == 0)
-        ShakeGlow_Blend(sprite);
-
-    if (sprite->data[2] >= (128 - sprite->data[0] * sprite->data[4]) / 2)
-        ShakeGlow_Move(sprite);
-
-    sprite->data[2]++;
+    Anim_ShakeGlowColor(sprite, 20, 1, SHAKEGLOW_RED);
 }
 
 static void Anim_ShakeGlowRed_Slow(struct Sprite *sprite)
 {
-    if (sprite->data[2] == 0)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 80;
-        sprite->data[5] = 0;
-        sprite->data[4] = 1;
-        sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_RED;
-    }
-
-    if (sprite->data[2] % 2 == 0)
-        ShakeGlow_Blend(sprite);
-
-    if (sprite->data[2] >= (128 - sprite->data[0] * sprite->data[4]) / 2)
-        ShakeGlow_Move(sprite);
-
-    sprite->data[2]++;
+    Anim_ShakeGlowColor(sprite, 80, 1, SHAKEGLOW_RED);
 }
 
 static void Anim_ShakeGlowGreen_Fast(struct Sprite *sprite)
 {
-    if (sprite->data[2] == 0)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 10;
-        sprite->data[5] = 0;
-        sprite->data[4] = 2;
-        sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_GREEN;
-    }
-
-    if (sprite->data[2] % 2 == 0)
-        ShakeGlow_Blend(sprite);
-
-    if (sprite->data[2] >= (128 - sprite->data[0] * sprite->data[4]) / 2)
-        ShakeGlow_Move(sprite);
-
-    sprite->data[2]++;
+    Anim_ShakeGlowColor(sprite, 10, 2, SHAKEGLOW_GREEN);
 }
 
 static void Anim_ShakeGlowGreen(struct Sprite *sprite)
 {
-    if (sprite->data[2] == 0)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 20;
-        sprite->data[5] = 0;
-        sprite->data[4] = 1;
-        sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_GREEN;
-    }
-
-    if (sprite->data[2] % 2 == 0)
-        ShakeGlow_Blend(sprite);
-
-    if (sprite->data[2] >= (128 - sprite->data[0] * sprite->data[4]) / 2)
-        ShakeGlow_Move(sprite);
-
-    sprite->data[2]++;
+    Anim_ShakeGlowColor(sprite, 20, 1, SHAKEGLOW_GREEN);
 }
 
 static void Anim_ShakeGlowGreen_Slow(struct Sprite *sprite)
 {
-    if (sprite->data[2] == 0)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 80;
-        sprite->data[5] = 0;
-        sprite->data[4] = 1;
-        sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_GREEN;
-    }
-
-    if (sprite->data[2] % 2 == 0)
-        ShakeGlow_Blend(sprite);
-
-    if (sprite->data[2] >= (128 - sprite->data[0] * sprite->data[4]) / 2)
-        ShakeGlow_Move(sprite);
-
-    sprite->data[2]++;
+    Anim_ShakeGlowColor(sprite, 80, 1, SHAKEGLOW_GREEN);
 }
 
 static void Anim_ShakeGlowBlue_Fast(struct Sprite *sprite)
 {
-    if (sprite->data[2] == 0)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 10;
-        sprite->data[5] = 0;
-        sprite->data[4] = 2;
-        sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_BLUE;
-    }
-
-    if (sprite->data[2] % 2 == 0)
-        ShakeGlow_Blend(sprite);
-
-    if (sprite->data[2] >= (128 - sprite->data[0] * sprite->data[4]) / 2)
-        ShakeGlow_Move(sprite);
-
-    sprite->data[2]++;
+    Anim_ShakeGlowColor(sprite, 10, 2, SHAKEGLOW_BLUE);
 }
 
 static void Anim_ShakeGlowBlue(struct Sprite *sprite)
 {
-    if (sprite->data[2] == 0)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 20;
-        sprite->data[5] = 0;
-        sprite->data[4] = 1;
-        sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_BLUE;
-    }
-
-    if (sprite->data[2] % 2 == 0)
-        ShakeGlow_Blend(sprite);
-
-    if (sprite->data[2] >= (128 - sprite->data[0] * sprite->data[4]) / 2)
-        ShakeGlow_Move(sprite);
-
-    sprite->data[2]++;
+    Anim_ShakeGlowColor(sprite, 20, 1, SHAKEGLOW_BLUE);
 }
 
 static void Anim_ShakeGlowBlue_Slow(struct Sprite *sprite)
 {
-    if (sprite->data[2] == 0)
-    {
-        sprite->data[7] = OBJ_PLTT_ID(sprite->oam.paletteNum);
-        sprite->data[0] = 80;
-        sprite->data[5] = 0;
-        sprite->data[4] = 1;
-        sprite->data[3] = 0;
-        sprite->data[1] = SHAKEGLOW_BLUE;
-    }
-
-    if (sprite->data[2] % 2 == 0)
-        ShakeGlow_Blend(sprite);
-
-    if (sprite->data[2] >= (128 - sprite->data[0] * sprite->data[4]) / 2)
-        ShakeGlow_Move(sprite);
-
-    sprite->data[2]++;
+    Anim_ShakeGlowColor(sprite, 80, 1, SHAKEGLOW_BLUE);
 }
 
 static void WaitAnimEnd(struct Sprite *sprite)

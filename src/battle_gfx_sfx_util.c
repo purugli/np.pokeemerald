@@ -1122,7 +1122,7 @@ void FillAroundBattleWindows(void)
 
     for (i = 0; i < 9; i++)
     {
-        for (j = 0; j < 16; j++)
+        for (j = 0; j < 16; vramPtr++, j++)
         {
             if (!(*vramPtr & 0xF000))
                 *vramPtr |= 0xF000;
@@ -1132,7 +1132,22 @@ void FillAroundBattleWindows(void)
                 *vramPtr |= 0x00F0;
             if (!(*vramPtr & 0x000F))
                 *vramPtr |= 0x000F;
-            vramPtr++;
+        }
+    }
+
+    vramPtr = (u16 *)(VRAM + 0x600);
+    for (i = 0; i < 18; i++)
+    {
+        for (j = 0; j < 16; vramPtr++, j++)
+        {
+            if (!(*vramPtr & 0xF000))
+                *vramPtr |= 0x6000;
+            if (!(*vramPtr & 0x0F00))
+                *vramPtr |= 0x0600;
+            if (!(*vramPtr & 0x00F0))
+                *vramPtr |= 0x0060;
+            if (!(*vramPtr & 0x000F))
+                *vramPtr |= 0x0006;
         }
     }
 }

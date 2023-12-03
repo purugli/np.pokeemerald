@@ -59,9 +59,9 @@ bool8 gTrainerApproachedPlayer;
 EWRAM_DATA u8 gApproachingTrainerId = 0;
 
 // const rom data
-static const u8 sEmotion_ExclamationMarkGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_exclamation.4bpp");
-static const u8 sEmotion_QuestionMarkGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_question.4bpp");
-static const u8 sEmotion_HeartGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_heart.4bpp");
+static const u8 sEmotion_Gfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_exclamation.4bpp",
+                                           "graphics/field_effects/pics/emotion_question.4bpp",
+                                           "graphics/field_effects/pics/emotion_heart.4bpp");
 
 static u8 (*const sDirectionalApproachDistanceFuncs[])(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y) =
 {
@@ -129,22 +129,7 @@ static const struct OamData sOamData_Icons =
 
 static const struct SpriteFrameImage sSpriteImageTable_ExclamationQuestionMark[] =
 {
-    {
-        .data = sEmotion_ExclamationMarkGfx,
-        .size = sizeof(sEmotion_ExclamationMarkGfx)
-    },
-    {
-        .data = sEmotion_QuestionMarkGfx,
-        .size = sizeof(sEmotion_QuestionMarkGfx)
-    }
-};
-
-static const struct SpriteFrameImage sSpriteImageTable_HeartIcon[] =
-{
-    {
-        .data = sEmotion_HeartGfx,
-        .size = sizeof(sEmotion_HeartGfx)
-    }
+    overworld_ascending_frames(sEmotion_Gfx, 2, 2)
 };
 
 static const union AnimCmd sSpriteAnim_Icons1[] =
@@ -159,10 +144,17 @@ static const union AnimCmd sSpriteAnim_Icons2[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sSpriteAnim_Icons3[] =
+{
+    ANIMCMD_FRAME(2, 60),
+    ANIMCMD_END
+};
+
 static const union AnimCmd *const sSpriteAnimTable_Icons[] =
 {
     sSpriteAnim_Icons1,
-    sSpriteAnim_Icons2
+    sSpriteAnim_Icons2,
+    sSpriteAnim_Icons3
 };
 
 static const struct SpriteTemplate sSpriteTemplate_ExclamationQuestionMark =
@@ -182,7 +174,7 @@ static const struct SpriteTemplate sSpriteTemplate_HeartIcon =
     .paletteTag = FLDEFF_PAL_TAG_GENERAL_0,
     .oam = &sOamData_Icons,
     .anims = sSpriteAnimTable_Icons,
-    .images = sSpriteImageTable_HeartIcon,
+    .images = sSpriteImageTable_ExclamationQuestionMark,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_TrainerIcons
 };
@@ -719,7 +711,7 @@ u8 FldEff_HeartIcon(void)
     u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_HeartIcon, 0, 0, 0x52);
 
     if (spriteId != MAX_SPRITES)
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_HEART_ICON, 0);
+        SetIconSpriteData(&gSprites[spriteId], FLDEFF_HEART_ICON, 2);
 
     return 0;
 }

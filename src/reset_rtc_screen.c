@@ -176,14 +176,13 @@ static const struct OamData sOamData_Arrow =
     .affineParam = 0,
 };
 
-static const u8 sArrowDown_Gfx[] = INCBIN_U8("graphics/reset_rtc_screen/arrow_down.4bpp");
-static const u8 sArrowRight_Gfx[] = INCBIN_U8("graphics/reset_rtc_screen/arrow_right.4bpp");
+static const u8 sArrow_Gfx[] = INCBIN_U8("graphics/reset_rtc_screen/arrow_down.4bpp",
+                                         "graphics/reset_rtc_screen/arrow_right.4bpp");
 static const u16 sArrow_Pal[] = INCBIN_U16("graphics/reset_rtc_screen/arrow.gbapal");
 
 static const struct SpriteFrameImage sPicTable_Arrow[] =
 {
-    obj_frame_tiles(sArrowDown_Gfx),
-    obj_frame_tiles(sArrowRight_Gfx)
+    overworld_ascending_frames(sArrow_Gfx, 1, 1)
 };
 
 static const struct SpritePalette sSpritePalette_Arrow =

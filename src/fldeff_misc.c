@@ -68,9 +68,9 @@ static const u8 sSecretPowerTree_Gfx[] = INCBIN_U8("graphics/field_effects/pics/
 static const u16 sSecretPowerPlant_Pal[] = INCBIN_U16("graphics/field_effects/palettes/secret_power_plant.gbapal");
 
 // TODO: These should also be combined into a single image, not matching for some reason
-static const u8 sSandPillar0_Gfx[] = INCBIN_U8("graphics/field_effects/pics/sand_pillar/0.4bpp");
-static const u8 sSandPillar1_Gfx[] = INCBIN_U8("graphics/field_effects/pics/sand_pillar/1.4bpp");
-static const u8 sSandPillar2_Gfx[] = INCBIN_U8("graphics/field_effects/pics/sand_pillar/2.4bpp");
+static const u8 sSandPillar_Gfx[] = INCBIN_U8("graphics/field_effects/pics/sand_pillar/0.4bpp",
+                                              "graphics/field_effects/pics/sand_pillar/1.4bpp",
+                                              "graphics/field_effects/pics/sand_pillar/2.4bpp");
 
 static const struct OamData sOam_SecretPower =
 {
@@ -134,30 +134,17 @@ static const union AnimCmd *const sAnimTable_SecretPower[] =
 
 static const struct SpriteFrameImage sPicTable_SecretPowerCave[] =
 {
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 0),
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 1),
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 2),
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 3),
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 4),
+    overworld_ascending_frames(sSecretPowerCave_Gfx, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_SecretPowerTree[] =
 {
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 0),
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 1),
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 2),
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 3),
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 4),
-    // 6th frame exists but isnt accessed, the tree vine metatile is used instead
+    overworld_ascending_frames(sSecretPowerTree_Gfx, 2, 2),
 };
 
 static const struct SpriteFrameImage sPicTable_SecretPowerShrub[] =
 {
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 0),
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 1),
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 2),
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 3),
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 4),
+    overworld_ascending_frames(sSecretPowerShrub_Gfx, 2, 2),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_SecretPowerCave =
@@ -223,9 +210,7 @@ static const union AnimCmd *const sAnimTable_SandPillar[] =
 
 static const struct SpriteFrameImage sPicTable_SandPillar[] =
 {
-    {sSandPillar0_Gfx, sizeof(sSandPillar0_Gfx)},
-    {sSandPillar1_Gfx, sizeof(sSandPillar1_Gfx)},
-    {sSandPillar2_Gfx, sizeof(sSandPillar2_Gfx)},
+    overworld_ascending_frames(sSandPillar_Gfx, 2, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_SandPillar =
@@ -246,9 +231,7 @@ static const u16 sRecordMixLights_Pal[] = INCBIN_U16("graphics/field_effects/pal
 
 static const struct SpriteFrameImage sPicTable_RecordMixLights[] =
 {
-    overworld_frame(sRecordMixLights_Gfx, 4, 1, 0),
-    overworld_frame(sRecordMixLights_Gfx, 4, 1, 1),
-    overworld_frame(sRecordMixLights_Gfx, 4, 1, 2),
+    overworld_ascending_frames(sRecordMixLights_Gfx, 4, 1),
 };
 
 static const struct SpritePalette sSpritePalette_RecordMixLights = {sRecordMixLights_Pal, 0x1000};

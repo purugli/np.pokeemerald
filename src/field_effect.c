@@ -248,8 +248,8 @@ static const u16 sNewGameBirch_Pal[16] = INCBIN_U16("graphics/birch_speech/birch
 
 static const u32 sPokeballGlow_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokeball_glow.4bpp");
 static const u16 sPokeballGlow_Pal[16] = INCBIN_U16("graphics/field_effects/palettes/pokeball_glow.gbapal");
-static const u32 sPokecenterMonitor0_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokecenter_monitor/0.4bpp");
-static const u32 sPokecenterMonitor1_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokecenter_monitor/1.4bpp");
+static const u32 sPokecenterMonitor_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokecenter_monitor/0.4bpp",
+                                                       "graphics/field_effects/pics/pokecenter_monitor/1.4bpp");
 static const u32 sHofMonitorBig_Gfx[] = INCBIN_U32("graphics/field_effects/pics/hof_monitor_big.4bpp");
 static const u8 sHofMonitorSmall_Gfx[] = INCBIN_U8("graphics/field_effects/pics/hof_monitor_small.4bpp");
 static const u16 sHofMonitor_Pal[16] = INCBIN_U16("graphics/field_effects/palettes/hof_monitor.gbapal");
@@ -266,10 +266,10 @@ static const u16 sFieldMoveStreaksIndoors_Tilemap[320] = INCBIN_U16("graphics/fi
 
 static const u16 sSpotlight_Pal[16] = INCBIN_U16("graphics/field_effects/pics/spotlight.gbapal");
 static const u8 sSpotlight_Gfx[] = INCBIN_U8("graphics/field_effects/pics/spotlight.4bpp");
-static const u8 sRockFragment_TopLeft[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_left.4bpp");
-static const u8 sRockFragment_TopRight[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_right.4bpp");
-static const u8 sRockFragment_BottomLeft[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_left.4bpp");
-static const u8 sRockFragment_BottomRight[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_bottom_right.4bpp");
+static const u8 sDeoxysRockFragments[] = INCBIN_U8("graphics/field_effects/pics/deoxys_rock_fragment_top_left.4bpp",
+                                                   "graphics/field_effects/pics/deoxys_rock_fragment_top_right.4bpp",
+                                                   "graphics/field_effects/pics/deoxys_rock_fragment_bottom_left.4bpp",
+                                                   "graphics/field_effects/pics/deoxys_rock_fragment_bottom_right.4bpp");
 
 bool8 (*const gFieldEffectScriptFuncs[])(u8 **, u32 *) =
 {
@@ -391,8 +391,7 @@ static const struct SpriteFrameImage sPicTable_PokeballGlow[] =
 
 static const struct SpriteFrameImage sPicTable_PokecenterMonitor[] =
 {
-    obj_frame_tiles(sPokecenterMonitor0_Gfx),
-    obj_frame_tiles(sPokecenterMonitor1_Gfx)
+    overworld_ascending_frames(sPokecenterMonitor_Gfx, 3, 2)
 };
 
 static const struct SpriteFrameImage sPicTable_HofMonitorBig[] =
@@ -3745,10 +3744,7 @@ static void DestroyDeoxysRockEffect_WaitAndEnd(s16 *data, u8 taskId)
 #undef tMapGroup
 
 static const struct SpriteFrameImage sImages_DeoxysRockFragment[] = {
-    obj_frame_tiles(sRockFragment_TopLeft),
-    obj_frame_tiles(sRockFragment_TopRight),
-    obj_frame_tiles(sRockFragment_BottomLeft),
-    obj_frame_tiles(sRockFragment_BottomRight),
+    overworld_ascending_frames(sDeoxysRockFragments, 1, 1),
 };
 
 static const union AnimCmd sAnim_RockFragment_TopLeft[] = {

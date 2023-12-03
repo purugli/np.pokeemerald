@@ -1797,7 +1797,7 @@ static void PopulateSpeciesFromTrainerParty(int matchCallId, u8 *destStr)
     party = gTrainers[trainerId].party;
     monId = Random() % gTrainers[trainerId].partySize;
 
-    speciesName = GetSpeciesName(party[monId].species);
+    speciesName = gSpeciesNames[party[monId].species];
 
     StringCopy(destStr, speciesName);
 }

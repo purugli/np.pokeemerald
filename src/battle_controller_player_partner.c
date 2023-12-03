@@ -718,6 +718,19 @@ static void PlayerPartnerHandleDrawTrainerPic(void)
 {
     u32 trainerPicId;
 
+    if (gPartnerTrainerId >= TRAINER_PARTNER(PARTNER_NONE))
+    {
+        trainerPicId = gPartners[gPartnerTrainerId - TRAINER_PARTNER(PARTNER_NONE)].trainerPic;
+        xPos = 90;
+        yPos = 80;
+    }
+    else
+    {
+        trainerPicId = GetFrontierTrainerFrontSpriteId(gPartnerTrainerId);
+        xPos = 32;
+        yPos = 80;
+    }
+
     // Use back pic only if the partner is Steven
     if (gPartnerTrainerId >= TRAINER_PARTNER(PARTNER_NONE))
     {
@@ -1082,7 +1095,10 @@ static void PlayerPartnerHandleIntroTrainerBallThrow(void)
 
     paletteNum = AllocSpritePalette(0xD6F9);
     if (gPartnerTrainerId >= TRAINER_PARTNER(PARTNER_NONE))
-        DecompressTrainerBackPic(gPartners[gPartnerTrainerId - TRAINER_PARTNER(PARTNER_NONE)].trainerPic, paletteNum);
+    {
+        u8 spriteId = gPartners[gPartnerTrainerId - TRAINER_PARTNER(PARTNER_NONE)].trainerPic;
+        DecompressTrainerBackPic(spriteId, paletteNum);
+    }
     else
         LoadPalette(gTrainerFrontPicTable[GetFrontierTrainerFrontSpriteId(gPartnerTrainerId)].palette, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
 

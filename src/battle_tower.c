@@ -2931,6 +2931,7 @@ static void FillPartnerParty(u16 trainerId)
         otID = partner->trainerType.partner.otId;
         for (i = 0; i < partner->partySize; i++)
         {
+            struct Pokemon *partnerParty;
             do
             {
                 j = Random32();
@@ -2938,9 +2939,8 @@ static void FillPartnerParty(u16 trainerId)
             partnerParty = &gPlayerParty[MULTI_PARTY_SIZE + i];
             CreateTrainerMon(partnerParty, partner, i, j, otID);
             SetMonData(partnerParty, MON_DATA_OT_NAME, partner->trainerName);
-            j = partner->gender;
+            j = partner->encounterMusic_gender;
             SetMonData(partnerParty, MON_DATA_OT_GENDER, &j);
-            CalculateMonStats(partnerParty);
         }
     }
     else if (trainerId == TRAINER_EREADER)

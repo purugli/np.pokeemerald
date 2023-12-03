@@ -2001,7 +2001,7 @@ void CopyFrontierBrainTrainerName(u8 *dst)
 bool8 IsFrontierBrainFemale(void)
 {
     s32 facility = VarGet(VAR_FRONTIER_FACILITY);
-    return gFrontierBrains[facility].gender;
+    return gFrontierBrains[facility].encounterMusic_gender;
 }
 
 void SetFrontierBrainObjEventGfx_2(void)

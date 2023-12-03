@@ -1897,14 +1897,13 @@ static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 f
         {
             if (trainer->doubleBattle == TRUE)
                 personalityValue = 0x80;
-            else if (trainer->gender == FEMALE)
+            else if (trainer->encounterMusic_gender & F_TRAINER_FEMALE)
                 personalityValue = 0x78; // Use personality more likely to result in a female Pokémon
             else
                 personalityValue = 0x88; // Use personality more likely to result in a male Pokémon
 
             personalityValue += CalcCRC32((const u8 *)&trainer->party[i], sizeof(*trainer->party)) << 8;
             CreateTrainerMon(&party[i], trainer, i, personalityValue, 0);
-            CalculateMonStats(&party[i]);
         }
 
         gBattleTypeFlags |= trainer->doubleBattle;

@@ -336,11 +336,8 @@ SECTIONS {
         src/gym_leader_rematch.o(.text);
         src/battle_transition_frontier.o(.text);
         src/international_string_util.o(.text);
-        src/battle_util3.o(.text);
-        src/pokemon_forms.o(.text);
         src/trainer_control.o(.text);
-        src/merrp_dns.o(.text);
-    } > ROM =0
+    } =0
 
     script_data :
     ALIGN(4)
@@ -1309,8 +1306,9 @@ SECTIONS {
     ALIGN(4)
     {
         src/graphics.o(.rodata);
-        src/player_sprites.o(.rodata);
-    } > ROM =0
+        src/pokemon_forms.o(.rodata);
+        src/trainer_name_strings.o(.rodata);
+    } =0
 
     extra :
     ALIGN(4)

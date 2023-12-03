@@ -51,8 +51,8 @@ struct TrainerMon
 
 struct Trainer
 {
-    /*0x00*/ u8 partySize:3;
-             u8 mugshotColor:5;
+    /*0x00*/ u8 partySize:7;
+             bool8 doubleBattle:1;
     /*0x01*/ u8 trainerClass;
     /*0x02*/ u8 encounterMusic:5;
              bool8 gender:1;
@@ -60,23 +60,27 @@ struct Trainer
              bool8 mugshotEnabled:1;
     /*0x03*/ u8 trainerPic;
     /*0x04*/ const u8 *trainerName;
-    union {
-        struct {
+    union
+    {
+        struct
+        {
             /*0x08*/ u16 items[MAX_TRAINER_ITEMS];
             /*0x10*/ u32 aiFlags;
         } trainer;
-        struct {
+        struct
+        {
             /*0x08*/ u32 otId;
             /*0x0C*/ u8 padding[4];
             /*0x10*/ u32 aiFlags;
         } partner;
-        struct {
+        struct
+        {
             /*0x08*/ u8 streakAppearances[4];
             // Flags to change the conversation when the Frontier Brain is encountered for a battle
             // First bit is has battled them before and not won yet, second bit is has battled them and won (obtained a Symbol)
             /*0x0C*/ u16 battledBrainBitFlags[2];
-            /*0x10*/ u16 objectEventGfxId;
-            /*0x12*/ u8 padding[2];
+            /*0x10*/ u8 objectEventGfxId;
+            /*0x11*/ u8 padding[3];
         } frontierBrain;
     } trainerType;
     /*0x14*/ const struct TrainerMon *party;
@@ -133,9 +137,6 @@ extern const u8 gGermanSpeciesNames[][POKEMON_NAME_LENGTH + 1];
 extern const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1];
 
 #include "trainer_control.h"
-#include "player_sprites.h"
-
-extern const struct Trainer gPartners[];
-extern const struct Trainer gFrontierBrains[];
+#include "trainer_name_strings.h"
 
 #endif // GUARD_DATA_H

@@ -32,7 +32,6 @@ void ReshowBattleScreenAfterMenu(void)
 {
     gPaletteFade.bufferTransferDisabled = 1;
     SetHBlankCallback(NULL);
-    SetVBlankCallback(NULL);
     SetGpuReg(REG_OFFSET_MOSAIC, 0);
     gBattleScripting.reshowMainState = 0;
     gBattleScripting.reshowHelperState = 0;
@@ -44,6 +43,10 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
     switch (gBattleScripting.reshowMainState)
     {
     case 0:
+        ResetSpriteData();
+        break;
+    case 1:
+        SetVBlankCallback(NULL);
         ScanlineEffect_Clear();
         BattleInitBgsAndWindows();
         SetBgAttribute(1, BG_ATTR_CHARBASEINDEX, 0);
@@ -62,14 +65,11 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         gBattle_BG3_X = 0;
         gBattle_BG3_Y = 0;
         break;
-    case 1:
+    case 2:
         CpuFastFill(0, (void *)(VRAM), VRAM_SIZE);
         break;
-    case 2:
-        LoadBattleTextboxAndBackground();
-        break;
     case 3:
-        ResetSpriteData();
+        LoadBattleTextboxAndBackground();
         break;
     case 4:
         FreeAllSpritePalettes();
@@ -171,19 +171,24 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
 
 static void ClearBattleBgCntBaseBlocks(void)
 {
-    vBgCnt *regBgcnt1, *regBgcnt2;
-
-    regBgcnt1 = (vBgCnt *)(&REG_BG1CNT);
-    regBgcnt1->charBaseBlock = 0;
-
-    regBgcnt2 = (vBgCnt *)(&REG_BG2CNT);
-    regBgcnt2->charBaseBlock = 0;
+    EnableInterrupts(INTR_FLAG_VBLANK);
+    SetGpuReg(REG_OFFSET_BLDCNT, 0);
+    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    SetGpuReg(REG_OFFSET_BLDY, 0);
+    SetGpuReg(REG_OFFSET_WININ, 0x3F);
+    SetGpuReg(REG_OFFSET_WINOUT, 0x3F);
+    SetGpuReg(REG_OFFSET_WIN0H, 0);
+    SetGpuReg(REG_OFFSET_WIN0V, 0);
+    SetGpuReg(REG_OFFSET_WIN1H, 0);
+    SetGpuReg(REG_OFFSET_WIN1V, 0);
+    SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_OBJWIN_ON);
 }
 
 static bool8 LoadBattlerSpriteGfx(u8 battler)
 {
     if (battler < gBattlersCount)
     {
+        u8 position = GetBattlerPosition(battler);
         if (GetBattlerSide(battler) != B_SIDE_PLAYER)
         {
             if (!gBattleSpritesDataPtr->battlerData[battler].behindSubstitute)
@@ -191,9 +196,9 @@ static bool8 LoadBattlerSpriteGfx(u8 battler)
             else
                 BattleLoadSubstituteOrMonSpriteGfx(battler, FALSE);
         }
-        else if (gBattleTypeFlags & BATTLE_TYPE_SAFARI && battler == B_POSITION_PLAYER_LEFT) // Should be checking position, not battler.
+        else if (gBattleTypeFlags & BATTLE_TYPE_SAFARI && position == B_POSITION_PLAYER_LEFT) // Should be checking position, not battler.
             DecompressTrainerBackPic(gSaveBlock2Ptr->playerGender, battler);
-        else if (gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL && battler == B_POSITION_PLAYER_LEFT) // Should be checking position, not battler.
+        else if (gBattleTypeFlags & BATTLE_TYPE_WALLY_TUTORIAL && position == B_POSITION_PLAYER_LEFT) // Should be checking position, not battler.
             DecompressTrainerBackPic(TRAINER_BACK_PIC_WALLY, battler);
         else if (!gBattleSpritesDataPtr->battlerData[battler].behindSubstitute)
             BattleLoadMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[battler]], battler);

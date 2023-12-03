@@ -40,5 +40,6 @@ void StartHealthboxSlideIn(u8 battler);
 void DoHitAnimHealthboxEffect(u8 battler);
 void LoadBallGfx(u8 ballId);
 void FreeBallGfx(u8 ballId);
+u16 GetBattlerPokeballItemId(u8 battlerId);
 
 #endif // GUARD_POKEBALL_H

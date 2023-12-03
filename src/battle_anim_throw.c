@@ -554,12 +554,8 @@ void AnimTask_SwitchOutBallEffect(u8 taskId)
     u32 selectedPalettes;
 
     spriteId = gBattlerSpriteIds[gBattleAnimAttacker];
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
-        ball = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_POKEBALL);
-    else
-        ball = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_POKEBALL);
 
-    ballId = ItemIdToBallId(ball);
+    ballId = GetBattlerPokeballItemId(gBattleAnimAttacker);
     switch (gTasks[taskId].data[0])
     {
     case 0:
@@ -579,16 +575,21 @@ void AnimTask_SwitchOutBallEffect(u8 taskId)
     }
 }
 
+static u16 GetThrownPokeballItemId(void)
+{
+    return ItemIdToBallId(gLastUsedItem);
+}
+
 void AnimTask_LoadBallGfx(u8 taskId)
 {
-    u8 ballId = ItemIdToBallId(gLastUsedItem);
+    u8 ballId = GetThrownPokeballItemId();
     LoadBallGfx(ballId);
     DestroyAnimVisualTask(taskId);
 }
 
 void AnimTask_FreeBallGfx(u8 taskId)
 {
-    u8 ballId = ItemIdToBallId(gLastUsedItem);
+    u8 ballId = GetThrownPokeballItemId();
     FreeBallGfx(ballId);
     DestroyAnimVisualTask(taskId);
 }
@@ -643,11 +644,9 @@ u8 ItemIdToBallId(u16 ballItem)
 
 void AnimTask_ThrowBall(u8 taskId)
 {
-    u8 ballId;
     u8 spriteId;
 
-    ballId = ItemIdToBallId(gLastUsedItem);
-    spriteId = CreateSprite(&gBallSpriteTemplates[ballId], 32, 80, 29);
+    spriteId = CreateSprite(&gBallSpriteTemplates[GetThrownPokeballItemId()], 32, 80, 29);
     gSprites[spriteId].sDuration = 34;
     gSprites[spriteId].sTargetX = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X);
     gSprites[spriteId].sTargetY = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y) - 16;
@@ -668,7 +667,6 @@ static void AnimTask_ThrowBall_Step(u8 taskId)
 void AnimTask_ThrowBall_StandingTrainer(u8 taskId)
 {
     s16 x, y;
-    u8 ballId;
     u8 subpriority;
     u8 spriteId;
 
@@ -683,9 +681,8 @@ void AnimTask_ThrowBall_StandingTrainer(u8 taskId)
         y = 5;
     }
 
-    ballId = ItemIdToBallId(gLastUsedItem);
     subpriority = GetBattlerSpriteSubpriority(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)) + 1;
-    spriteId = CreateSprite(&gBallSpriteTemplates[ballId], x + 32, y | 80, subpriority);
+    spriteId = CreateSprite(&gBallSpriteTemplates[GetThrownPokeballItemId()], x + 32, y | 80, subpriority);
     gSprites[spriteId].sDuration = 34;
     gSprites[spriteId].sTargetX = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X);
     gSprites[spriteId].sTargetY = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y) - 16;
@@ -780,7 +777,7 @@ static void SpriteCB_Ball_Arc(struct Sprite *sprite)
             sprite->sTimer = 0;
             sprite->callback = SpriteCB_Ball_MonShrink;
 
-            ballId = ItemIdToBallId(gLastUsedItem);
+            ballId = GetThrownPokeballItemId();
             AnimateBallOpenParticles(sprite->x, sprite->y - 5, 1, 28, ballId);
             LaunchBallFadeMonTask(FALSE, gBattleAnimTarget, 14, ballId);
         }
@@ -1334,7 +1331,7 @@ static void SpriteCB_Ball_Release_Step(struct Sprite *sprite)
     StartSpriteAffineAnim(sprite, 0);
     sprite->callback = SpriteCB_Ball_Release_Wait;
 
-    ballId = ItemIdToBallId(gLastUsedItem);
+    ballId = GetThrownPokeballItemId();
     AnimateBallOpenParticles(sprite->x, sprite->y - 5, 1, 28, ballId);
     LaunchBallFadeMonTask(TRUE, gBattleAnimTarget, 14, ballId);
 
@@ -2083,23 +2080,17 @@ void AnimTask_SetTargetToEffectBattler(u8 taskId)
 
 void TryShinyAnimation(u8 battler, struct Pokemon *mon)
 {
-    bool8 isShiny;
     u32 otId, personality;
-    u32 shinyValue;
     u8 taskCirc, taskDgnl;
 
-    isShiny = FALSE;
     gBattleSpritesDataPtr->healthBoxesData[battler].triedShinyMonAnim = TRUE;
-    otId = GetMonData(mon, MON_DATA_OT_ID);
-    personality = GetMonData(mon, MON_DATA_PERSONALITY);
 
     if (IsBattlerSpriteVisible(battler))
     {
-        shinyValue = GET_SHINY_VALUE(otId, personality);
-        if (shinyValue < SHINY_ODDS)
-            isShiny = TRUE;
+        otId = GetMonData(mon, MON_DATA_OT_ID);
+        personality = GetMonData(mon, MON_DATA_PERSONALITY);
 
-        if (isShiny)
+        if (IsShinyOtIdPersonality(otId, personality))
         {
             if (GetSpriteTileStartByTag(ANIM_TAG_GOLD_STARS) == 0xFFFF)
             {

@@ -124,9 +124,6 @@ static void VblankCb_TourneyInfoCard(void);
 static void DisplayMatchInfoOnCard(u8, u8);
 static void DisplayTrainerInfoOnCard(u8, u8);
 static int BufferDomeWinString(u8, u8 *);
-static u8 GetDomeBrainTrainerPicId(void);
-static u8 GetDomeBrainTrainerClass(void);
-static void CopyDomeBrainTrainerName(u8 *);
 static void CopyDomeTrainerName(u8 *, u16);
 static void HblankCb_TourneyTree(void);
 static void VblankCb_TourneyTree(void);
@@ -4416,7 +4413,7 @@ static void DisplayTrainerInfoOnCard(u8 flags, u8 trainerTourneyId)
     }
     else if (trainerId == TRAINER_FRONTIER_BRAIN)
     {
-        CopyDomeBrainTrainerName(gStringVar2);
+        CopyFrontierBrainTrainerNameByFacilityIndex(gStringVar2, FRONTIER_FACILITY_DOME);
         StringAppend(gStringVar1, gStringVar2);
     }
     else
@@ -4723,7 +4720,7 @@ static int BufferDomeWinString(u8 matchNum, u8 *tournamentIds)
             if (DOME_TRAINERS[tournamentId].trainerId == TRAINER_PLAYER)
                 StringCopy(gStringVar1, gSaveBlock2Ptr->playerName);
             else if (DOME_TRAINERS[tournamentId].trainerId == TRAINER_FRONTIER_BRAIN)
-                CopyDomeBrainTrainerName(gStringVar1);
+                CopyFrontierBrainTrainerNameByFacilityIndex(gStringVar1, FRONTIER_FACILITY_DOME);
             else
                 CopyDomeTrainerName(gStringVar1, DOME_TRAINERS[tournamentId].trainerId);
             count++;
@@ -4758,7 +4755,7 @@ static int BufferDomeWinString(u8 matchNum, u8 *tournamentIds)
                 if (DOME_TRAINERS[tournamentId].trainerId == TRAINER_PLAYER)
                     StringCopy(gStringVar1, gSaveBlock2Ptr->playerName);
                 else if (DOME_TRAINERS[tournamentId].trainerId == TRAINER_FRONTIER_BRAIN)
-                    CopyDomeBrainTrainerName(gStringVar1);
+                    CopyFrontierBrainTrainerNameByFacilityIndex(gStringVar1, FRONTIER_FACILITY_DOME);
                 else
                     CopyDomeTrainerName(gStringVar1, DOME_TRAINERS[tournamentId].trainerId);
             }
@@ -4942,7 +4939,7 @@ static void DisplayMatchInfoOnCard(u8 flags, u8 matchNo)
     if (trainerIds[0] == TRAINER_PLAYER)
         StringCopy(gStringVar1, gSaveBlock2Ptr->playerName);
     else if (trainerIds[0] == TRAINER_FRONTIER_BRAIN)
-        CopyDomeBrainTrainerName(gStringVar1);
+        CopyFrontierBrainTrainerNameByFacilityIndex(gStringVar1, FRONTIER_FACILITY_DOME);
     else
         CopyDomeTrainerName(gStringVar1, trainerIds[0]);
 
@@ -4960,7 +4957,7 @@ static void DisplayMatchInfoOnCard(u8 flags, u8 matchNo)
     if (trainerIds[1] == TRAINER_PLAYER)
         StringCopy(gStringVar1, gSaveBlock2Ptr->playerName);
     else if (trainerIds[1] == TRAINER_FRONTIER_BRAIN)
-        CopyDomeBrainTrainerName(gStringVar1);
+        CopyFrontierBrainTrainerNameByFacilityIndex(gStringVar1, FRONTIER_FACILITY_DOME);
     else
         CopyDomeTrainerName(gStringVar1, trainerIds[1]);
 
@@ -6138,7 +6135,7 @@ static void CopyDomeTrainerName(u8 *str, u16 trainerId)
 
     if (trainerId == TRAINER_FRONTIER_BRAIN)
     {
-        CopyDomeBrainTrainerName(str);
+        CopyFrontierBrainTrainerNameByFacilityIndex(str, FRONTIER_FACILITY_DOME);
     }
     else
     {
@@ -6156,21 +6153,11 @@ static void CopyDomeTrainerName(u8 *str, u16 trainerId)
     }
 }
 
-static u8 GetDomeBrainTrainerPicId(void)
-{
-    return gTrainers[TRAINER_TUCKER].trainerPic;
-}
-
-static u8 GetDomeBrainTrainerClass(void)
-{
-    return gTrainers[TRAINER_TUCKER].trainerClass;
-}
-
-static void CopyDomeBrainTrainerName(u8 *str)
+void CopyFrontierBrainTrainerNameByFacilityIndex(u8 *str, s32 facility)
 {
     int i;
 
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
-        str[i] = gTrainers[TRAINER_TUCKER].trainerName[i];
+        str[i] = gFrontierBrains[facility].trainerName[i];
     str[i] = EOS;
 }

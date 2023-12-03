@@ -40,12 +40,5 @@ gText_YouWantTheUsual::
 	.string "I'm delighted to see you, {PLAYER}!\n"
 	.string "You want the usual, am I right?$"
 
-gText_IllTakeYourPkmn2::
-	.string "Okay, I'll take your POKéMON\n"
-	.string "for a few seconds.$"
-
 gText_ThankYouForWaiting::
 	.string "Thank you for waiting.$"
-
-gText_WeHopeToSeeYouAgain2::
-	.string "We hope to see you again!$"

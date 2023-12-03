@@ -185,7 +185,6 @@ EWRAM_DATA static struct NamingScreenData *sNamingScreen = NULL;
 static const u8 sPCIcon_Gfx[] = INCBIN_U8("graphics/naming_screen/pc_icon_off.4bpp",
                                           "graphics/naming_screen/pc_icon_on.4bpp");
 static const u16 sKeyboard_Pal[] = INCBIN_U16("graphics/naming_screen/keyboard.gbapal");
-static const u16 sRival_Pal[] = INCBIN_U16("graphics/naming_screen/rival.gbapal"); // Unused, leftover from FRLG rival
 
 static const u8 *const sTransferredToPCMessages[] =
 {
@@ -351,7 +350,6 @@ static void Task_UpdateButtonFlash(u8);
 static u16 GetButtonPalOffset(u8);
 static void RestoreButtonColor(u8);
 static void StartButtonFlash(struct Task *, u8, bool8);
-static void CreateSprites(void);
 static void CreateCursorSprite(void);
 static void SetCursorPos(s16, s16);
 static void GetCursorPos(s16 *x, s16 *y);
@@ -376,21 +374,16 @@ static void DeleteTextCharacter(void);
 static bool8 AddTextCharacter(void);
 static void BufferCharacter(u8);
 static void SaveInputText(void);
-static void LoadGfx(void);
-static void CreateHelperTasks(void);
 static void LoadPalettes(void);
 static void DrawBgTilemap(u8, const void *);
-static void NamingScreen_Dummy(u8, u8);
 static void DrawTextEntry(void);
 static void PrintKeyboardKeys(u8, u8);
 static void DrawKeyboardPageOnDeck(void);
 static void PrintControls(void);
 static void CB2_NamingScreen(void);
-static void ResetVHBlank(void);
-static void SetVBlank(void);
 static void VBlankCB_NamingScreen(void);
-static void NamingScreen_ShowBgs(void);
-static bool8 IsWideLetter(u8);
+static void CreateInputHandlerTask(void);
+static void CreateButtonFlashTask(void);
 
 void DoNamingScreen(u8 templateNum, u8 *destBuffer, u16 monSpecies, u16 monGender, u32 monPersonality, MainCallback returnCallback)
 {
@@ -420,7 +413,8 @@ static void CB2_LoadNamingScreen(void)
     switch (gMain.state)
     {
     case 0:
-        ResetVHBlank();
+        SetVBlankCallback(NULL);
+        SetHBlankCallback(NULL);
         NamingScreen_Init();
         gMain.state++;
         break;
@@ -446,17 +440,30 @@ static void CB2_LoadNamingScreen(void)
         gMain.state++;
         break;
     case 6:
-        LoadGfx();
+        LZ77UnCompWram(gNamingScreenMenu_Gfx, sNamingScreen->tileBuffer);
+        LoadBgTiles(1, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
+        LoadBgTiles(2, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
+        LoadBgTiles(3, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
+        LoadSpriteSheets(sSpriteSheets);
+        LoadSpritePalettes(sSpritePalettes);
         gMain.state++;
         break;
     case 7:
-        CreateSprites();
+        CreateCursorSprite();
+        CreatePageSwapButtonSprites();
+        CreateBackOkSprites();
+        CreateTextEntrySprites();
+        CreateInputTargetIcon();
         UpdatePaletteFade();
-        NamingScreen_ShowBgs();
+        ShowBg(0);
+        ShowBg(1);
+        ShowBg(2);
+        ShowBg(3);
         gMain.state++;
         break;
     default:
-        CreateHelperTasks();
+        CreateInputHandlerTask();
+        CreateButtonFlashTask();
         CreateNamingScreenTask();
         break;
     }
@@ -547,7 +554,7 @@ static void Task_NamingScreen(u8 taskId)
     case STATE_FADE_IN:
         MainState_FadeIn();
         SetSpritesVisible();
-        SetVBlank();
+        SetVBlankCallback(VBlankCB_NamingScreen);
         break;
     case STATE_WAIT_FADE_IN:
         MainState_WaitFadeIn();
@@ -625,8 +632,6 @@ static bool8 MainState_FadeIn(void)
     DrawBgTilemap(1, gNamingScreenKeyboardUpper_Tilemap);
     PrintKeyboardKeys(sNamingScreen->windows[WIN_KB_PAGE_2], KEYBOARD_LETTERS_LOWER);
     PrintKeyboardKeys(sNamingScreen->windows[WIN_KB_PAGE_1], KEYBOARD_LETTERS_UPPER);
-    NamingScreen_Dummy(2, KEYBOARD_LETTERS_LOWER);
-    NamingScreen_Dummy(1, KEYBOARD_LETTERS_UPPER);
     DrawTextEntry();
     DrawTextEntryBox();
     PrintControls();
@@ -1107,15 +1112,6 @@ static void SpriteCB_Underscore(struct Sprite *sprite)
 #undef sYPosId
 #undef sDelay
 
-static void CreateSprites(void)
-{
-    CreateCursorSprite();
-    CreatePageSwapButtonSprites();
-    CreateBackOkSprites();
-    CreateTextEntrySprites();
-    CreateInputTargetIcon();
-}
-
 static void CreateCursorSprite(void)
 {
     sNamingScreen->cursorSpriteId = CreateSprite(&sSpriteTemplate_Cursor, 38, 88, 1);
@@ -1167,11 +1163,6 @@ static void SetCursorFlashing(bool8 flashing)
 {
     gSprites[sNamingScreen->cursorSpriteId].data[4] &= 0xFF;
     gSprites[sNamingScreen->cursorSpriteId].data[4] |= flashing << 8; // sFlashing
-}
-
-static void SquishCursor(void)
-{
-    StartSpriteAnim(&gSprites[sNamingScreen->cursorSpriteId], 1);
 }
 
 static bool8 IsCursorAnimFinished(void)
@@ -1393,15 +1384,18 @@ static void NamingScreen_NoIcon(void)
 
 }
 
-static void NamingScreen_CreatePlayerIcon(void)
+static void NamingScreen_CreateObjectEventIcon(u8 gfxId)
 {
-    u8 playerGfxId;
     u8 spriteId;
 
-    playerGfxId = GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, sNamingScreen->monSpecies);
-    spriteId = CreateObjectGraphicsSprite(playerGfxId, SpriteCallbackDummy, 56, 37, 0);
+    spriteId = CreateObjectGraphicsSprite(gfxId, SpriteCallbackDummy, 56, 37, 0);
     gSprites[spriteId].oam.priority = 3;
     StartSpriteAnim(&gSprites[spriteId], ANIM_STD_GO_SOUTH);
+}
+
+static void NamingScreen_CreatePlayerIcon(void)
+{
+    NamingScreen_CreateObjectEventIcon(GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, sNamingScreen->monSpecies));
 }
 
 static void NamingScreen_CreatePCIcon(void)
@@ -1424,11 +1418,7 @@ static void NamingScreen_CreateMonIcon(void)
 
 static void NamingScreen_CreateWaldaDadIcon(void)
 {
-    u8 spriteId;
-
-    spriteId = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_MAN_1, SpriteCallbackDummy, 56, 37, 0);
-    gSprites[spriteId].oam.priority = 3;
-    StartSpriteAnim(&gSprites[spriteId], ANIM_STD_GO_SOUTH);
+    NamingScreen_CreateObjectEventIcon(OBJ_EVENT_GFX_MAN_1);
 }
 
 //--------------------------------------------------
@@ -1480,7 +1470,7 @@ static bool8 KeyboardKeyHandler_Character(u8 input)
     {
         bool8 textFull = AddTextCharacter();
 
-        SquishCursor();
+        StartSpriteAnim(&gSprites[sNamingScreen->cursorSpriteId], 1);
         if (textFull)
         {
             SetInputState(INPUT_STATE_OVERRIDE);
@@ -1733,23 +1723,17 @@ static void DrawTextEntryBox(void)
     sDrawTextEntryBoxFuncs[sNamingScreen->templateNum]();
 }
 
-static void DummyGenderIcon(void);
 static void DrawGenderIcon(void);
 
 static void (*const sDrawGenderIconFuncs[])(void) =
 {
-    [FALSE] = DummyGenderIcon,
+    [FALSE] = NamingScreen_NoIcon,
     [TRUE]  = DrawGenderIcon,
 };
 
 static void TryDrawGenderIcon(void)
 {
     sDrawGenderIconFuncs[sNamingScreen->template->addGenderIcon]();
-}
-
-static void DummyGenderIcon(void)
-{
-
 }
 
 static const u8 sGenderColors[2][3] =
@@ -1862,22 +1846,6 @@ static void SaveInputText(void)
     }
 }
 
-static void LoadGfx(void)
-{
-    LZ77UnCompWram(gNamingScreenMenu_Gfx, sNamingScreen->tileBuffer);
-    LoadBgTiles(1, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
-    LoadBgTiles(2, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
-    LoadBgTiles(3, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
-    LoadSpriteSheets(sSpriteSheets);
-    LoadSpritePalettes(sSpritePalettes);
-}
-
-static void CreateHelperTasks(void)
-{
-    CreateInputHandlerTask();
-    CreateButtonFlashTask();
-}
-
 static void LoadPalettes(void)
 {
     LoadPalette(gNamingScreenMenu_Pal, BG_PLTT_ID(0), sizeof(gNamingScreenMenu_Pal));
@@ -1890,16 +1858,10 @@ static void DrawBgTilemap(u8 bg, const void *src)
     CopyToBgTilemapBuffer(bg, src, 0, 0);
 }
 
-static void NamingScreen_Dummy(u8 bg, u8 page)
-{
-
-}
-
 static void DrawTextEntry(void)
 {
     u8 i;
     u8 temp[2];
-    u16 extraWidth;
     u8 maxChars = sNamingScreen->template->maxChars;
     u16 x = sNamingScreen->inputCharBaseXPos - 0x40;
 
@@ -1909,9 +1871,8 @@ static void DrawTextEntry(void)
     {
         temp[0] = sNamingScreen->textBuffer[i];
         temp[1] = gText_ExpandedPlaceholder_Empty[0];
-        extraWidth = (IsWideLetter(temp[0]) == TRUE) ? 2 : 0;
 
-        AddTextPrinterParameterized(sNamingScreen->windows[WIN_TEXT_ENTRY], FONT_NORMAL, temp, i * 8 + x + extraWidth, 1, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(sNamingScreen->windows[WIN_TEXT_ENTRY], FONT_NORMAL, temp, i * 8 + x, 1, TEXT_SKIP_DRAW, NULL);
     }
 
     TryDrawGenderIcon();
@@ -1991,7 +1952,6 @@ static void DrawKeyboardPageOnDeck(void)
 
     DrawBgTilemap(bg, sNextKeyboardPageTilemaps[sNamingScreen->currentPage]);
     PrintKeyboardKeys(windowId, CurrentPageToNextKeyboardId());
-    NamingScreen_Dummy(bg, CurrentPageToNextKeyboardId());
     CopyBgTilemapBufferToVram(bg_);
 }
 
@@ -2013,17 +1973,6 @@ static void CB2_NamingScreen(void)
     UpdatePaletteFade();
 }
 
-static void ResetVHBlank(void)
-{
-    SetVBlankCallback(NULL);
-    SetHBlankCallback(NULL);
-}
-
-static void SetVBlank(void)
-{
-    SetVBlankCallback(VBlankCB_NamingScreen);
-}
-
 static void VBlankCB_NamingScreen(void)
 {
     LoadOam();
@@ -2035,48 +1984,6 @@ static void VBlankCB_NamingScreen(void)
     SetGpuRegBits(REG_OFFSET_BG1CNT, sNamingScreen->bg1Priority);
     SetGpuReg(REG_OFFSET_BG2CNT, GetGpuReg(REG_OFFSET_BG2CNT) & 0xFFFC);
     SetGpuRegBits(REG_OFFSET_BG2CNT, sNamingScreen->bg2Priority);
-}
-
-static void NamingScreen_ShowBgs(void)
-{
-    ShowBg(0);
-    ShowBg(1);
-    ShowBg(2);
-    ShowBg(3);
-}
-
-// Always false (presumably for non-latin languages)
-static bool8 IsWideLetter(u8 character)
-{
-    u8 i;
-
-    for (i = 0; sText_AlphabetUpperLower[i] != EOS; i++)
-    {
-        if (character == sText_AlphabetUpperLower[i])
-            return FALSE;
-    }
-    return FALSE;
-}
-
-// Debug? Arguments aren't sensible for non-player screens.
-static void UNUSED Debug_NamingScreenPlayer(void)
-{
-    DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnToFieldWithOpenMenu);
-}
-
-static void UNUSED Debug_NamingScreenBox(void)
-{
-    DoNamingScreen(NAMING_SCREEN_BOX, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnToFieldWithOpenMenu);
-}
-
-static void UNUSED Debug_NamingScreenCaughtMon(void)
-{
-    DoNamingScreen(NAMING_SCREEN_CAUGHT_MON, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnToFieldWithOpenMenu);
-}
-
-static void UNUSED Debug_NamingScreenNickname(void)
-{
-    DoNamingScreen(NAMING_SCREEN_NICKNAME, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnToFieldWithOpenMenu);
 }
 
 //--------------------------------------------------
@@ -2416,11 +2323,6 @@ static const union AnimCmd sAnim_PCIcon[] =
 
 static const union AnimCmd *const sAnims_Loop[] =
 {
-    sAnim_Loop
-};
-
-static const union AnimCmd *const sAnims_Cursor[] =
-{
     sAnim_Loop,
     sAnim_CursorSquish
 };
@@ -2490,7 +2392,7 @@ static const struct SpriteTemplate sSpriteTemplate_Cursor =
     .tileTag = GFXTAG_CURSOR,
     .paletteTag = PALTAG_CURSOR,
     .oam = &sOam_16x16,
-    .anims = sAnims_Cursor,
+    .anims = sAnims_Loop,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_Cursor

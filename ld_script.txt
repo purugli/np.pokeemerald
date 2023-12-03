@@ -36,6 +36,7 @@ SECTIONS {
 
         /* .bss.code starts at 0x3001AA8 */
         src/m4a.o(.bss.code);
+        src/m4a_hq_mixer.o(.bss.code);
 
         /* COMMON starts at 0x30022A8 */
         INCLUDE "sym_common.ld"
@@ -366,6 +367,7 @@ SECTIONS {
         src/librfu_intr.o(.text);
         src/librfu_rfu.o(.text);
         src/librfu_sio32id.o(.text);
+        src/m4a_hq_mixer.o(.text);
         src/libisagbprn.o(.text);
         src/pokemon_forms.o(.text);
         *libagbsyscall.a:ArcTan2.o(.text);

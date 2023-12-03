@@ -85,8 +85,6 @@ lt_o_SoundInfo_pcmBuffer: .word o_SoundInfo_pcmBuffer
 lt_PCM_DMA_BUF_SIZE:      .word PCM_DMA_BUF_SIZE
 	thumb_func_end SoundMain
 
-	.include "sound/m4a_hq_mixer.s"
-
 	thumb_func_start SoundMainBTM
 SoundMainBTM:
 	mov r12, r4

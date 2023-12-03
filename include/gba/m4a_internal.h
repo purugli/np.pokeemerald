@@ -139,7 +139,7 @@ struct SoundChannel
     u8 release;
     u8 key;             // midi key as it was translated into final pitch
     u8 envelopeVolume;
-    u8 envelopeVolumeRight;
+    u8 xpc;
     u8 envelopeVolumeLeft;
     u8 pseudoEchoVolume;
     u8 pseudoEchoLength;
@@ -159,9 +159,7 @@ struct SoundChannel
     struct MusicPlayerTrack *track;
     void *prevChannelPointer;
     void *nextChannelPointer;
-    u32 dummy4;
-    u16 xpi;
-    u16 xpc;
+    u8 dummy4[8];
 };
 
 #define MAX_DIRECTSOUND_CHANNELS 12

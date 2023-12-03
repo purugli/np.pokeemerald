@@ -1,6 +1,14 @@
+	.include "asm/macros.inc"
+	.include "constants/gba_constants.inc"
+	.include "constants/m4a_constants.inc"
+
 	.include "sound/m4a_hq_mixer_config.s"
 
+	.syntax unified
+	.text
+
 	thumb_func_start SoundMainRAM
+
 SoundMainRAM:
 	/* load Reverb level and check if we need to apply it */
 	str	r4, [sp, #ARG_BUFFER_POS_INDEX_HINT]
@@ -23,154 +31,138 @@ SoundMainRAM:
 C_channel_state_loop:
 	/* this is the main channel processing loop */
 	str	r0, [sp, #ARG_REMAIN_CHN]
-	ldr	r3, [r4, #CHN_WAVE_OFFSET]
-	ldrb r6, [r4, #CHN_STATUS]           @ r6 will hold the channel status
+	ldr	r3, [r4, #o_SoundChannel_wav]
+	ldrb r6, [r4, #o_SoundChannel_statusFlags] @ r6 will hold the channel status
 	movs r0, #0xC7                       @ check if any of the channel status flags is set
 	tst r0, r6                           @ check if none of the flags is set
 	beq	C_skip_channel
 	/* check channel flags */
-	lsls r0, r6, #25                     @ shift over the FLAG_CHN_INIT to CARRY
+	lsls r0, r6, #25                     @ shift over the SOUND_CHANNEL_SF_START to CARRY
 	bcc	C_adsr_echo_check                @ continue with normal channel procedure
 	/* check leftmost bit */
-	bmi	C_stop_channel                   @ FLAG_CHN_INIT | FLAG_CHN_RELEASE -> stop directly
+	bmi	C_stop_channel                   @ SOUND_CHANNEL_SF_START | SOUND_CHANNEL_SF_STOP -> stop directly
 	/* channel init procedure */
-	movs r6, #FLAG_CHN_ATTACK
+	movs r6, #SOUND_CHANNEL_SF_ENV_ATTACK
 	/* enabled compression if sample flag is set */
-	movs r0, r3                          @ r0 = CHN_WAVE_OFFSET
-	adds r0, #WAVE_DATA                  @ r0 = wave data offset
-	ldr	r2, [r3, #WAVE_LENGTH]
+	movs r0, r3                          @ r0 = o_SoundChannel_wav
+	adds r0, #o_WaveData_data            @ r0 = wave data offset
+	ldr	r2, [r3, #o_WaveData_size]
 	cmp	r2, #0
 	beq	C_channel_init_synth
-	ldrb r5, [r3, #WAVE_TYPE]
+	ldrb r5, [r3, #o_WaveData_type]
 	lsls r5, r5, #31
-	ldrb r5, [r4, #CHN_MODE]
+	ldrb r5, [r4, #o_SoundChannel_type]
 	bmi	C_channel_init_comp
-	lsls r5, r5, #27                     @ shift MODE_REVERSE flag to SIGN
+	lsls r5, r5, #27                     @ shift TONEDATA_TYPE_REV flag to SIGN
 	bmi	C_channel_init_noncomp_reverse
-	/* Pokemon games seem to init channels differently than other m4a games */
 C_channel_init_noncomp_forward:
-.if POKE_CHN_INIT==0
-.else
-	ldr	r1, [r4, #CHN_SAMPLE_COUNTDOWN]
+	ldr	r1, [r4, #o_SoundChannel_count]
 	adds r0, r1
 	subs r2, r1
-.endif
 	b C_channel_init_check_loop
 C_channel_init_synth:
-	movs r5, #MODE_SYNTH
-	strb r5, [r4, #CHN_MODE]
-	ldrb r1, [r3, #(WAVE_DATA + SYNTH_TYPE)]
+	movs r5, #TONEDATA_TYPE_SPL
+	strb r5, [r4, #o_SoundChannel_type]
+	ldrb r1, [r3, #(o_WaveData_data + SYNTH_TYPE)]
 	cmp	r1, #2
 	bne	C_channel_init_check_loop
 	/* start triangular synth wave at 90 degree phase
 	 * to avoid a pop sound at the start of the wave */
 	movs r5, #0x40
 	lsls r5, #24
-	str	r5, [r4, #CHN_FINE_POSITION]
+	str	r5, [r4, #o_SoundChannel_fw]
 	movs r5, #0
 	b C_channel_init_check_loop_no_fine_pos
 C_channel_init_noncomp_reverse:
-.if POKE_CHN_INIT==0
 	adds r0, r2
-.else
-	adds r0, r2
-	ldr	r1, [r4, #CHN_SAMPLE_COUNTDOWN]
+	ldr	r1, [r4, #o_SoundChannel_count]
 	subs r0, r1
 	subs r2, r1
-.endif
 	b C_channel_init_check_loop
 C_channel_init_comp:
-	movs r0, #MODE_COMP
+	movs r0, #TONEDATA_TYPE_CMP
 	orrs r5, r0
-	strb r5, [r4, #CHN_MODE]
-	lsls r5, r5, #27                     @ shift MODE_REVERSE flag to SIGN
+	strb r5, [r4, #o_SoundChannel_type]
+	lsls r5, r5, #27                     @ shift TONEDATA_TYPE_REV flag to SIGN
 	bmi C_channel_init_comp_reverse
 C_channel_init_comp_forward:
-.if POKE_CHN_INIT==0
-	movs r0, #0
-.else
-	ldr r0, [r4, #CHN_SAMPLE_COUNTDOWN]
+	ldr r0, [r4, #o_SoundChannel_count]
 	subs r2, r0
-.endif
 	b C_channel_init_check_loop
 C_channel_init_comp_reverse:
-.if POKE_CHN_INIT==0
-	movs r0, r2
-.else
-	ldr r1, [r4, #CHN_SAMPLE_COUNTDOWN]
+	ldr r1, [r4, #o_SoundChannel_count]
 	subs r2, r1
 	movs r0, r2
-.endif
 C_channel_init_check_loop:
 	movs r5, #0                          @ initial envelope = #0
-	str	r5, [r4, #CHN_FINE_POSITION]
+	str	r5, [r4, #o_SoundChannel_fw]
 C_channel_init_check_loop_no_fine_pos:
-	str	r0, [r4, #CHN_POSITION_ABS]
-	str	r2, [r4, #CHN_SAMPLE_COUNTDOWN]
-	strb r5, [r4, #CHN_ADSR_LEVEL]
-	movs r2, #CHN_SAMPLE_STOR            @ offset is too large to be used in one instruction
+	str	r0, [r4, #o_SoundChannel_currentPointer]
+	str	r2, [r4, #o_SoundChannel_count]
+	strb r5, [r4, #o_SoundChannel_envelopeVolume]
+	movs r2, #o_SoundChannel_xpc         @ offset is too large to be used in one instruction
 	strb r5, [r4, r2]
 	/* enabled loop if required */
-	ldrb r2, [r3, #WAVE_LOOP_FLAG]
+	ldrb r2, [r3, #o_WaveData_flags]
 	lsrs r0, r2, #6
 	beq	C_adsr_attack
 	/* loop enabled here */
-	adds r6, #FLAG_CHN_LOOP
+	adds r6, #SOUND_CHANNEL_SF_LOOP
 	b C_adsr_attack
 
 C_adsr_echo_check:
 	/* this is the normal ADSR procedure without init */
-	ldrb r5, [r4, #CHN_ADSR_LEVEL]
-	lsls r0, r6, #29                     @ FLAG_CHN_ECHO --> bit 31 (sign bit)
+	ldrb r5, [r4, #o_SoundChannel_envelopeVolume]
+	lsls r0, r6, #29                     @ SOUND_CHANNEL_SF_IEC --> bit 31 (sign bit)
 	bpl C_adsr_release_check
 	/* pseudo echo handler */
-	ldrb r0, [r4, #CHN_ECHO_REMAIN]
+	ldrb r0, [r4, #o_SoundChannel_pseudoEchoLength]
 	subs r0, #1
-	strb r0, [r4, #CHN_ECHO_REMAIN]
+	strb r0, [r4, #o_SoundChannel_pseudoEchoLength]
 	bhi	C_channel_vol_calc               @ continue normal if channel is still on
 
 C_stop_channel:
 	movs r0, #0
-	strb r0, [r4, #CHN_STATUS]
+	strb r0, [r4, #o_SoundChannel_statusFlags]
 
 C_skip_channel:
 	/* go to end of the channel loop */
 	b C_end_channel_state_loop
 
 C_adsr_release_check:
-	lsls r0, r6, #25                     @ FLAG_CHN_RELEASE --> bit 31 (sign bit)
+	lsls r0, r6, #25                     @ SOUND_CHANNEL_SF_STOP --> bit 31 (sign bit)
 	bpl	C_adsr_decay_check
 	/* release handler */
-	ldrb r0, [r4, #CHN_RELEASE]
+	ldrb r0, [r4, #o_SoundChannel_release]
 	muls r5, r5, r0
 	lsrs r5, #8
 	ble	C_adsr_released
 	/* pseudo echo init handler */
-	ldrb r0, [r4, #CHN_ECHO_VOL]
+	ldrb r0, [r4, #o_SoundChannel_pseudoEchoVolume]
 	cmp	r5, r0
 	bhi	C_channel_vol_calc
 
 C_adsr_released:
 	/* if volume released to #0 */
-	ldrb r5, [r4, #CHN_ECHO_VOL]
+	ldrb r5, [r4, #o_SoundChannel_pseudoEchoVolume]
 	cmp	r5, #0
 	beq	C_stop_channel
 	/* pseudo echo volume handler */
-	movs r0, #FLAG_CHN_ECHO
+	movs r0, #SOUND_CHANNEL_SF_IEC
 	orrs r6, r0                          @ set the echo flag
 	b C_adsr_save_and_finalize
 
 C_adsr_decay_check:
 	/* check if decay is active */
-	movs r2, #(FLAG_CHN_DECAY+FLAG_CHN_SUSTAIN)
+	movs r2, #(SOUND_CHANNEL_SF_ENV_DECAY+SOUND_CHANNEL_SF_ENV_SUSTAIN)
 	ands r2, r6
-	cmp	r2, #FLAG_CHN_DECAY
+	cmp	r2, #SOUND_CHANNEL_SF_ENV_DECAY
 	bne	C_adsr_attack_check              @ decay not active yet
 	/* decay handler */
-	ldrb r0, [r4, #CHN_DECAY]
+	ldrb r0, [r4, #o_SoundChannel_decay]
 	muls r5, r5, r0
 	lsrs r5, r5, #8
-	ldrb r0, [r4, #CHN_SUSTAIN]
+	ldrb r0, [r4, #o_SoundChannel_sustain]
 	cmp	r5, r0
 	bhi	C_channel_vol_calc               @ sample didn't decay yet
 	/* sustain handler */
@@ -181,12 +173,12 @@ C_adsr_decay_check:
 
 C_adsr_attack_check:
 	/* attack handler */
-	cmp	r2, #FLAG_CHN_ATTACK
+	cmp	r2, #SOUND_CHANNEL_SF_ENV_ATTACK
 	bne	C_channel_vol_calc               @ if it isn't in attack attack phase, it has to be in sustain (keep vol) --> branch
 
 C_adsr_attack:
 	/* apply attack summand */
-	ldrb r0, [r4, #CHN_ATTACK]
+	ldrb r0, [r4, #o_SoundChannel_attack]
 	adds r5, r0
 	cmp	r5, #0xFF
 	blo	C_adsr_save_and_finalize
@@ -199,23 +191,23 @@ C_adsr_next_state:
 
 C_adsr_save_and_finalize:
 	/* store channel status */
-	strb r6, [r4, #CHN_STATUS]
+	strb r6, [r4, #o_SoundChannel_statusFlags]
 
 C_channel_vol_calc:
 	/* store the calculated ADSR level */
-	strb r5, [r4, #CHN_ADSR_LEVEL]
+	strb r5, [r4, #o_SoundChannel_envelopeVolume]
 	/* apply master volume */
 	ldr	r0, [sp, #ARG_PCM_STRUCT]
 	ldrb r0, [r0, #VAR_MASTER_VOL]
 	adds r0, #1
 	muls r5, r0
 	/* left side volume */
-	ldrb r0, [r4, #CHN_VOL_2]
+	ldrb r0, [r4, #o_SoundChannel_leftVolume]
 	muls r0, r5
 	lsrs r0, #13
 	mov	r10, r0                          @ r10 = left volume
 	/* right side volume */
-	ldrb r0, [r4, #CHN_VOL_1]
+	ldrb r0, [r4, #o_SoundChannel_rightVolume]
 	muls r0, r5
 	lsrs r0, #13
 	mov	r11, r0                          @ r11 = right volume
@@ -223,13 +215,13 @@ C_channel_vol_calc:
 	 * Now we get closer to actual mixing:
 	 * For looped samples some additional operations are required
 	 */
-	movs r0, #FLAG_CHN_LOOP
+	movs r0, #SOUND_CHANNEL_SF_LOOP
 	ands r0, r6
 	beq	C_sample_loop_setup_skip
 	/* loop setup handler */
-	adds r3, #WAVE_LOOP_START
+	adds r3, #o_WaveData_loopStart
 	ldmia r3!, {r0, r1}                  @ r0 = loop start, r1 = loop end
-	ldrb r2, [r4, #CHN_MODE]
+	ldrb r2, [r4, #o_SoundChannel_type]
 	lsls r2, r2, #MODE_FLGSH_SIGN_REVERSE
 	bcs	C_sample_loop_setup_comp
 	adds r3, r0                          @ r3 = loop start position (absolute)
@@ -244,16 +236,20 @@ C_sample_loop_setup_skip:
 	/* do the rest of the setup */
 	str	r0, [sp, #ARG_LOOP_LENGTH]       @ if loop is off --> r0 = 0x0
 	ldr	r5, hq_buffer_literal
-	ldr	r2, [r4, #CHN_SAMPLE_COUNTDOWN]
-	ldr	r3, [r4, #CHN_POSITION_ABS]
-	ldrb r0, [r4, #CHN_MODE]
+	ldr	r2, [r4, #o_SoundChannel_count]
+	ldr	r3, [r4, #o_SoundChannel_currentPointer]
+	ldrb r0, [r4, #o_SoundChannel_type]
 	/* switch to arm */
 	adr	r1, C_mixing_setup
 	bx r1
 
 	.align 2
 hq_buffer_literal:
-	.word hq_buffer_ptr
+	.word SoundMainRAM_MixBuffer
+
+	thumb_func_end SoundMainRAM
+
+	arm_func_start C_mixing_setup
 
 	/* register usage:
 	 * r0:  scratch
@@ -270,24 +266,23 @@ hq_buffer_literal:
 	 * r11: volume
 	 * r12: sampval diff
 	 * lr:  scratch */
-	arm_func_start C_mixing_setup
 C_mixing_setup:
 	/* frequency and mixing loading routine */
-	ldrsb r6, [r4, #CHN_SAMPLE_STOR]
+	ldrsb r6, [r4, #o_SoundChannel_xpc]
 	ldr	r8, [sp, #ARG_FRAME_LENGTH]
 	orrs r11, r11, r10, lsl#16           @ r11 = 00LL00RR
 	beq	C_mixing_epilogue                @ volume #0 --> branch and skip channel processing
 	/* normal processing otherwise */
-	tst	r0, #(MODE_COMP|MODE_REVERSE)
+	tst	r0, #(TONEDATA_TYPE_CMP|TONEDATA_TYPE_REV)
 	bne	C_mixing_setup_comp_rev
-	tst	r0, #MODE_FIXED_FREQ
+	tst	r0, #TONEDATA_TYPE_FIX
 	bne	C_setup_fixed_freq_mixing
 C_mixing_setup_comp_rev:
 	push {r4, r9, r12}
-	add	 r4, r4, #CHN_FINE_POSITION
+	add	 r4, r4, #o_SoundChannel_fw
 	ldmia r4, {r7, lr}                   @ r7 = Fine Position, lr = Frequency
 	mul	r4, lr, r12                      @ r4 = inter sample steps = output rate factor * samplerate
-	tst	r0, #MODE_SYNTH
+	tst	r0, #TONEDATA_TYPE_SPL
 	bne	C_setup_synth
 	/*
 	 * Mixing goes with volume ranges 0-127
@@ -305,7 +300,7 @@ C_mixing_setup_comp_rev:
 	 * important: r0 is expected to be #0
 	 */
 	sub	r10, sp, #0x8
-	tst	r0, #MODE_FIXED_FREQ
+	tst	r0, #TONEDATA_TYPE_FIX
 	movne r4, #0x800000
 	movs r0, r0, lsl#(MODE_FLGSH_SIGN_REVERSE)
 	umlal r1, r0, r4, r8
@@ -397,9 +392,9 @@ C_data_load_comp_for_calc_pos:
 C_data_load_comp_decode:
 	ldr	r2, [r10, #8]           @ load chn_ptr from previous stmfd
 	@ zero flag should be only set when leaving from F_clear_mem (r1 = 0)
-	strbeq r1, [r2, #CHN_STATUS]
-	ldr	r2, [r2, #CHN_WAVE_OFFSET]
-	add	r2, #WAVE_DATA
+	strbeq r1, [r2, #o_SoundChannel_statusFlags]
+	ldr	r2, [r2, #o_SoundChannel_wav]
+	add	r2, #o_WaveData_data
 	mov	r1, #BDPCM_BLK_STRIDE
 	mla	r9, r1, r9, r2
 C_data_load_comp_loop:
@@ -469,7 +464,7 @@ C_data_load_uncomp_rev:
 	bl F_clear_mem
 	ldr	r2, [r10, #8]           @ load chn_ptr from previous stmfd
 	@ r1 should be zero here
-	strb r1, [r2, #CHN_STATUS]
+	strb r1, [r2, #o_SoundChannel_statusFlags]
 C_data_load_uncomp_rev_loop:
 	ldmia r9!, {r1}
 	@ Byteswap
@@ -515,8 +510,8 @@ C_data_load_uncomp_for:
 	 * The code below inits the DMA to read word aligned
 	 * samples from ROM to stack
 	 */
-	mov	r9, #REG_DMA3_SRC & 0xFF000000
-	add	r9, #REG_DMA3_SRC & 0x000000FF
+	mov	r9, #REG_DMA3 & 0xFF000000
+	add	r9, #REG_DMA3 & 0x000000FF
 	mov	r0, r0, lsr#2
 	sub	sp, sp, r0, lsl#2
 	orr	lr, r0, #0x84000000              @ DMA enable, 32-bit transfer type
@@ -690,12 +685,12 @@ C_unbuffered_mixing_skip_load:
 
 C_end_mixing:
 	pop	{r4, r9, r12}
-	str	 r7, [r4, #CHN_FINE_POSITION]
-	strb r6, [r4, #CHN_SAMPLE_STOR]
+	str	 r7, [r4, #o_SoundChannel_fw]
+	strb r6, [r4, #o_SoundChannel_xpc]
 	b C_mixing_end_store
 
 C_unbuffered_mixing_loop_or_end:
-	/* XXX: R0 or R6? */
+	/* XXX: r0 or r6? */
 	/* This loads the loop information end loops incase it should */
 	ldr	r0, [sp, #(ARG_LOOP_LENGTH+0xC)]
 	cmp	r0, #0                           @ check if loop is enabled; if Loop is enabled r6 is != 0
@@ -796,15 +791,18 @@ C_fixed_mixing_loop_continue:
 	pop	{r4, r9}
 
 C_mixing_end_store:
-	str	r2, [r4, #CHN_SAMPLE_COUNTDOWN]
-	str	r3, [r4, #CHN_POSITION_ABS]
+	str	r2, [r4, #o_SoundChannel_count]
+	str	r3, [r4, #o_SoundChannel_currentPointer]
 
 C_mixing_epilogue:
 	/* Switch to Thumb */
 	adr	r0, (C_end_channel_state_loop+1)
 	bx r0
 
+	arm_func_end C_mixing_setup
+
 	non_word_aligned_thumb_func_start C_end_channel_state_loop
+
 C_end_channel_state_loop:
 	ldr	r0, [sp, #ARG_REMAIN_CHN]
 	subs r0, #1
@@ -831,6 +829,8 @@ C_main_mixer_return:
 	/* Switch to ARM */
 	adr	r0, C_downsampler
 	bx r0
+
+	thumb_func_end C_end_channel_state_loop
 
 	arm_func_start C_downsampler
 
@@ -882,7 +882,7 @@ C_downsampler_loop:
 	mov	r12, r12, lsl#24
 	mov	r0, r12, asr#24
 
-	add	r9, r9, #DMA_BUFFER_SIZE    @ \ ldrsh  r12, [r9, #0x630]!
+	add	r9, r9, #PCM_DMA_BUF_SIZE   @ \ ldrsh  r12, [r9, #0x630]!
 	ldrsh r12, [r9]                 @ / is unfortunately not a valid instruction
 
 	add	r1, r1, r12, asr#8
@@ -896,7 +896,7 @@ C_downsampler_loop:
 	add	r0, r0, r12, asr#24
 
 	strh r6, [r9]                   @ \ strh  r6, [r9], #-0x630
-	sub	r9, r9, #DMA_BUFFER_SIZE    @ / is unfortunately not a valid instruction
+	sub	r9, r9, #PCM_DMA_BUF_SIZE   @ / is unfortunately not a valid instruction
 	ldrsh r12, [r9]
 	strh r7, [r9], #2
 
@@ -909,7 +909,7 @@ C_downsampler_loop:
 
 	stmia r10!, {r0, r1}
 .else /* if ENABLE_REVERB==0 */
-	mov	r0, #DMA_BUFFER_SIZE
+	mov	r0, #PCM_DMA_BUF_SIZE
 	strh r6, [r9, r0]
 	strh r7, [r9], #2
 
@@ -923,15 +923,18 @@ C_downsampler_loop:
 
 	.pool
 
+	arm_func_end C_downsampler
+
 	.align 1
 	non_word_aligned_thumb_func_start C_downsampler_return
+
 C_downsampler_return:
 	ldr	r0, [sp, #ARG_PCM_STRUCT]
 	lsrs r4, #16
 	strb r4, [r0, #VAR_EXT_NOISE_SHAPE_LEFT]
 	lsrs r5, #16
 	strb r5, [r0, #VAR_EXT_NOISE_SHAPE_RIGHT]
-	ldr	r3, =0x68736D53                     @ this is used to indicate the interrupt handler the rendering was finished properly
+	ldr	r3, =ID_NUMBER                      @ this is used to indicate the interrupt handler the rendering was finished properly
 	str	r3, [r0]
 	add	sp, sp, #0x1C
 	pop	{r0-r7}
@@ -944,7 +947,10 @@ C_downsampler_return:
 
 	.pool
 
+	thumb_func_end C_downsampler_return
+
 	arm_func_start C_setup_synth
+
 C_setup_synth:
 	ldrb r12, [r3, #SYNTH_TYPE]
 	cmp	r12, #0
@@ -1059,6 +1065,11 @@ C_clear_loop_rest:
 	bgt	C_clear_loop_rest
 	pop {r0, r2-r5, pc}
 
-SoundMainRAM_End:
-	.syntax unified
-	thumb_func_end SoundMainRAM
+	arm_func_end C_setup_synth
+
+	.align 2, 0 @ Don't pad with nop.
+
+	.section .bss.code
+SoundMainRAM_MixBuffer:
+	.space FRAME_LENGTH_13379 * 4
+	.size SoundMainRAM_MixBuffer, .-SoundMainRAM_MixBuffer

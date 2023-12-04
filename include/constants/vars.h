@@ -59,7 +59,7 @@
 #define VAR_CYCLING_ROAD_RECORD_TIME_H                   0x4029
 #define VAR_FRIENDSHIP_STEP_COUNTER                      0x402A
 #define VAR_POISON_STEP_COUNTER                          0x402B
-#define VAR_RESET_RTC_ENABLE                             0x402C
+#define VAR_UNUSED_0x402C                                0x402C // Unused Var, used to be VAR_RESET_RTC_ENABLE
 #define VAR_ENIGMA_BERRY_AVAILABLE                       0x402D
 #define VAR_WONDER_NEWS_STEP_COUNTER                     0x402E
 

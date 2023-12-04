@@ -336,6 +336,7 @@ SECTIONS {
         src/gym_leader_rematch.o(.text);
         src/battle_transition_frontier.o(.text);
         src/international_string_util.o(.text);
+        src/pokemon_forms.o(.text);
         src/trainer_control.o(.text);
     } > ROM =0
 
@@ -368,7 +369,6 @@ SECTIONS {
         src/librfu_sio32id.o(.text);
         src/m4a_hq_mixer.o(.text);
         src/libisagbprn.o(.text);
-        src/pokemon_forms.o(.text);
         *libagbsyscall.a:ArcTan2.o(.text);
         *libagbsyscall.a:BgAffineSet.o(.text);
         *libagbsyscall.a:CpuFastSet.o(.text);
@@ -697,6 +697,8 @@ SECTIONS {
         src/text_input_strings.o(.rodata);
         src/fonts.o(.rodata);
         src/international_string_util.o(.rodata);
+        src/pokemon_forms.o(.rodata);
+        src/trainer_name_strings.o(.rodata);
         src/mystery_event_msg.o(.rodata);
         data/mystery_gift.o(.rodata);
         src/m4a_tables.o(.rodata);
@@ -1306,8 +1308,6 @@ SECTIONS {
     ALIGN(4)
     {
         src/graphics.o(.rodata);
-        src/pokemon_forms.o(.rodata);
-        src/trainer_name_strings.o(.rodata);
     } > ROM =0
 
     extra :

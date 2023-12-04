@@ -29,6 +29,7 @@ SECTIONS {
         *libnosys.a:*.o(.bss*);
 
         src/m4a.o(.bss.code);
+        src/m4a_hq_mixer.o(.bss.code);
 
         src/*.o(COMMON);
         gflib/*.o(COMMON);
@@ -71,6 +72,7 @@ SECTIONS {
         src/librfu_intr.o(.text);
         src/librfu_rfu.o(.text);
         src/librfu_sio32id.o(.text);
+        src/m4a_hq_mixer.o(.text);
         *libagbsyscall.a:*.o(.text*);
         *libgcc.a:*.o(.text*);
         *libc.a:*.o(.text*);
@@ -117,10 +119,10 @@ SECTIONS {
         data/multiboot_pokemon_colosseum.o(.rodata);
     } > ROM =0
 
-    anim_mon_front_pic_data :
+    rom_header_gfx_data :
     ALIGN(4)
     {
-        src/anim_mon_front_pics.o(.rodata);
+        src/rom_header_graphics.o(.rodata);
     } > ROM =0
 
     gfx_data :

@@ -254,33 +254,6 @@ bool8 SiiRtcGetDateTime(struct SiiRtcInfo *rtc)
     return TRUE;
 }
 
-bool8 SiiRtcSetDateTime(struct SiiRtcInfo *rtc)
-{
-    u8 i;
-
-    if (sLocked == TRUE)
-        return FALSE;
-
-    sLocked = TRUE;
-
-    GPIO_PORT_DATA = SCK_HI;
-    GPIO_PORT_DATA = SCK_HI | CS_HI;
-
-    GPIO_PORT_DIRECTION = DIR_ALL_OUT;
-
-    WriteCommand(CMD_DATETIME | WR);
-
-    for (i = 0; i < DATETIME_BUF_LEN; i++)
-        WriteData(DATETIME_BUF(rtc, i));
-
-    GPIO_PORT_DATA = SCK_HI;
-    GPIO_PORT_DATA = SCK_HI;
-
-    sLocked = FALSE;
-
-    return TRUE;
-}
-
 bool8 SiiRtcGetTime(struct SiiRtcInfo *rtc)
 {
     u8 i;
@@ -303,73 +276,6 @@ bool8 SiiRtcGetTime(struct SiiRtcInfo *rtc)
         TIME_BUF(rtc, i) = ReadData();
 
     INFO_BUF(rtc, OFFSET_HOUR) &= 0x7F;
-
-    GPIO_PORT_DATA = SCK_HI;
-    GPIO_PORT_DATA = SCK_HI;
-
-    sLocked = FALSE;
-
-    return TRUE;
-}
-
-bool8 SiiRtcSetTime(struct SiiRtcInfo *rtc)
-{
-    u8 i;
-
-    if (sLocked == TRUE)
-        return FALSE;
-
-    sLocked = TRUE;
-
-    GPIO_PORT_DATA = SCK_HI;
-    GPIO_PORT_DATA = SCK_HI | CS_HI;
-
-    GPIO_PORT_DIRECTION = DIR_ALL_OUT;
-
-    WriteCommand(CMD_TIME | WR);
-
-    for (i = 0; i < TIME_BUF_LEN; i++)
-        WriteData(TIME_BUF(rtc, i));
-
-    GPIO_PORT_DATA = SCK_HI;
-    GPIO_PORT_DATA = SCK_HI;
-
-    sLocked = FALSE;
-
-    return TRUE;
-}
-
-bool8 SiiRtcSetAlarm(struct SiiRtcInfo *rtc)
-{
-    u8 i;
-    u8 alarmData[2];
-
-    if (sLocked == TRUE)
-        return FALSE;
-
-    sLocked = TRUE;
-
-    // Decode BCD.
-    alarmData[0] = (rtc->alarmHour & 0xF) + 10 * ((rtc->alarmHour >> 4) & 0xF);
-
-    // The AM/PM flag must be set correctly even in 24-hour mode.
-
-    if (alarmData[0] < 12)
-        alarmData[0] = rtc->alarmHour | ALARM_AM;
-    else
-        alarmData[0] = rtc->alarmHour | ALARM_PM;
-
-    alarmData[1] = rtc->alarmMinute;
-
-    GPIO_PORT_DATA = SCK_HI;
-    GPIO_PORT_DATA = SCK_HI | CS_HI;
-
-    GPIOPortDirection = DIR_ALL_OUT; // Why is this the only instance that uses a symbol?
-
-    WriteCommand(CMD_ALARM | WR);
-
-    for (i = 0; i < 2; i++)
-        WriteData(alarmData[i]);
 
     GPIO_PORT_DATA = SCK_HI;
     GPIO_PORT_DATA = SCK_HI;

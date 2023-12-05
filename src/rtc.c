@@ -215,51 +215,6 @@ void RtcReset(void)
     RtcRestoreInterrupts();
 }
 
-void FormatDecimalTime(u8 *dest, s32 hour, s32 minute, s32 second)
-{
-    dest = ConvertIntToDecimalStringN(dest, hour, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest++ = CHAR_COLON;
-    dest = ConvertIntToDecimalStringN(dest, minute, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest++ = CHAR_COLON;
-    dest = ConvertIntToDecimalStringN(dest, second, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest = EOS;
-}
-
-void FormatHexTime(u8 *dest, s32 hour, s32 minute, s32 second)
-{
-    dest = ConvertIntToHexStringN(dest, hour, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest++ = CHAR_COLON;
-    dest = ConvertIntToHexStringN(dest, minute, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest++ = CHAR_COLON;
-    dest = ConvertIntToHexStringN(dest, second, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest = EOS;
-}
-
-void FormatHexRtcTime(u8 *dest)
-{
-    FormatHexTime(dest, sRtc.hour, sRtc.minute, sRtc.second);
-}
-
-void FormatDecimalDate(u8 *dest, s32 year, s32 month, s32 day)
-{
-    dest = ConvertIntToDecimalStringN(dest, year, STR_CONV_MODE_LEADING_ZEROS, 4);
-    *dest++ = CHAR_HYPHEN;
-    dest = ConvertIntToDecimalStringN(dest, month, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest++ = CHAR_HYPHEN;
-    dest = ConvertIntToDecimalStringN(dest, day, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest = EOS;
-}
-
-void FormatHexDate(u8 *dest, s32 year, s32 month, s32 day)
-{
-    dest = ConvertIntToHexStringN(dest, year, STR_CONV_MODE_LEADING_ZEROS, 4);
-    *dest++ = CHAR_HYPHEN;
-    dest = ConvertIntToHexStringN(dest, month, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest++ = CHAR_HYPHEN;
-    dest = ConvertIntToHexStringN(dest, day, STR_CONV_MODE_LEADING_ZEROS, 2);
-    *dest = EOS;
-}
-
 void RtcCalcTimeDifference(struct SiiRtcInfo *rtc, struct Time *result, struct Time *t)
 {
     u16 days = RtcGetDayCount(rtc);

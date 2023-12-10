@@ -2,6 +2,7 @@
 #include "sprite.h"
 #include "main.h"
 #include "palette.h"
+#include "day_night.h"
 
 #define MAX_SPRITE_COPY_REQUESTS 64
 
@@ -88,7 +89,6 @@ static void GetAffineAnimFrame(u8 matrixNum, struct Sprite *sprite, struct Affin
 static void ApplyAffineAnimFrame(u8 matrixNum, struct AffineAnimFrameCmd *frameCmd);
 static u8 IndexOfSpriteTileTag(u16 tag);
 static void AllocSpriteTileRange(u16 tag, u16 start, u16 count);
-static void DoLoadSpritePalette(const u16 *src, u16 paletteOffset);
 static void UpdateSpriteMatrixAnchorPos(struct Sprite *, s32, s32);
 
 typedef void (*AnimFunc)(struct Sprite *);
@@ -1456,7 +1456,7 @@ void FreeAllSpritePalettes(void)
         sSpritePaletteTags[i] = TAG_NONE;
 }
 
-u8 LoadSpritePalette(const struct SpritePalette *palette)
+u8 LoadSpritePalette_HandleDNSTint(const struct SpritePalette *palette, bool32 applyDNSTint)
 {
     u8 index = IndexOfSpritePaletteTag(palette->tag);
 
@@ -1472,16 +1472,21 @@ u8 LoadSpritePalette(const struct SpritePalette *palette)
     else
     {
         sSpritePaletteTags[index] = palette->tag;
-        LoadPalette(palette->data, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
+        LoadPalette_HandleDNSTint(palette->data, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP, applyDNSTint);
         return index;
     }
+}
+
+u8 LoadSpritePalette(const struct SpritePalette *palette)
+{
+    return LoadSpritePalette_HandleDNSTint(palette, FALSE);
 }
 
 void LoadSpritePalettes(const struct SpritePalette *palettes)
 {
     u32 i;
     for (i = 0; palettes[i].data != NULL; i++)
-        if (LoadSpritePalette(&palettes[i]) == 0xFF)
+        if (LoadSpritePalette_HandleDNSTint(&palettes[i], FALSE) == 0xFF)
             break;
 }
 

@@ -15,6 +15,7 @@
 #include "palette.h"
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
+#include "day_night.h"
 
 static EWRAM_DATA u16 sReflectionPaletteBuffer[16] = {0};
 
@@ -94,7 +95,7 @@ void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite 
         reflectionSprite->sReflectionVerticalOffset = bridgeReflectionVerticalOffsets[bridgeType - 1];
         for (i = 1; i < ARRAY_COUNT(blueData); i++)
             blueData[i] = RGB(9, 14, 21);
-        reflectionSprite->oam.paletteNum = LoadSpritePalette(&bluePalette);
+        reflectionSprite->oam.paletteNum = LoadSpritePaletteWithDNSTint(&bluePalette);
         UpdatePaletteColorMap(reflectionSprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
         UpdateSpritePaletteWithWeather(reflectionSprite->oam.paletteNum);
     }
@@ -122,7 +123,7 @@ void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite 
 	    }
         reflectionPalette.data = sReflectionPaletteBuffer;
         reflectionPalette.tag = GetSpritePaletteTagByPaletteNum(reflectionSprite->oam.paletteNum) + 0x1000;
-        LoadSpritePalette(&reflectionPalette);
+        LoadSpritePaletteWithDNSTint(&reflectionPalette);
         reflectionSprite->oam.paletteNum = IndexOfSpritePaletteTag(reflectionPalette.tag);
         UpdatePaletteColorMap(reflectionSprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
         UpdateSpritePaletteWithWeather(reflectionSprite->oam.paletteNum);
@@ -1603,7 +1604,7 @@ void LoadFieldEffectPalette(u8 fieldEffect, u8 colorMap)
     const struct SpriteTemplate *spriteTemplate = gFieldEffectObjectTemplatePointers[fieldEffect];
     if (spriteTemplate->paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate->paletteTag);
+        LoadObjectEventPalette(spriteTemplate->paletteTag, TRUE);
         UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), colorMap);
     }
 }

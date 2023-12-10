@@ -1169,7 +1169,7 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
     objectEvent = &gObjectEvents[objectEventId];
     if (spriteTemplate->paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate->paletteTag);
+        LoadObjectEventPalette(spriteTemplate->paletteTag, TRUE);
         UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), COLOR_MAP_CONTRAST);
     }
 
@@ -1292,7 +1292,7 @@ static void MakeSpriteTemplateFromObjectEventTemplate(const struct ObjectEventTe
 }
 
 // Used to create a sprite using a graphicsId associated with object events.
-u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority)
+u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority, bool32 applyDNSTint)
 {
     struct SpriteTemplate *spriteTemplate;
     const struct SubspriteTable *subspriteTables;
@@ -1302,7 +1302,7 @@ u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *),
     spriteTemplate = Alloc(sizeof(struct SpriteTemplate));
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, callback, spriteTemplate, &subspriteTables);
     if (spriteTemplate->paletteTag != TAG_NONE)
-        LoadObjectEventPalette(spriteTemplate->paletteTag);
+        LoadObjectEventPalette(spriteTemplate->paletteTag, applyDNSTint);
 
     spriteId = CreateSprite(spriteTemplate, x, y, subpriority);
     Free(spriteTemplate);
@@ -1336,7 +1336,7 @@ u8 CreateVirtualObject(u8 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevatio
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, SpriteCB_VirtualObject, &spriteTemplate, &subspriteTables);
     if (spriteTemplate.paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate.paletteTag);
+        LoadObjectEventPalette(spriteTemplate.paletteTag, TRUE);
         UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate.paletteTag), COLOR_MAP_CONTRAST);
     }
     x += MAP_OFFSET;
@@ -1475,7 +1475,7 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
 
     if (spriteTemplate.paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate.paletteTag);
+        LoadObjectEventPalette(spriteTemplate.paletteTag, TRUE);
         UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate.paletteTag), COLOR_MAP_CONTRAST);
     }
 
@@ -1536,7 +1536,7 @@ void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u8 graphicsId)
     graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
     if (graphicsInfo->paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(graphicsInfo->paletteTag);
+        LoadObjectEventPalette(graphicsInfo->paletteTag, TRUE);
         UpdatePaletteColorMap(IndexOfSpritePaletteTag(graphicsInfo->paletteTag), COLOR_MAP_CONTRAST);
     }
     sprite = &gSprites[objectEvent->spriteId];
@@ -1608,7 +1608,7 @@ static void SetBerryTreeGraphics(struct ObjectEvent *objectEvent, struct Sprite 
         ObjectEventSetGraphicsId(objectEvent, gBerryTreeObjectEventGraphicsIdTable[berryStage]);
         sprite->images = gBerryTreePicTablePointers[berryId];
         StartSpriteAnim(sprite, berryStage);
-        LoadObjectEventPalette(gBerryTreePaletteTagTablePointers[berryId][berryStage]);
+        LoadObjectEventPalette(gBerryTreePaletteTagTablePointers[berryId][berryStage], TRUE);
         sprite->oam.paletteNum = IndexOfSpritePaletteTag(gBerryTreePaletteTagTablePointers[berryId][berryStage]);
         UpdatePaletteColorMap(sprite->oam.paletteNum, COLOR_MAP_CONTRAST);
     }
@@ -1714,7 +1714,7 @@ void FreeAndReserveObjectSpritePalettes(void)
     gReservedSpritePaletteCount = OBJ_PALSLOT_COUNT;
 }
 
-void LoadObjectEventPalette(u16 paletteTag)
+void LoadObjectEventPalette(u16 paletteTag, bool32 applyDNSTint)
 {
     u32 i;
 
@@ -1724,7 +1724,7 @@ void LoadObjectEventPalette(u16 paletteTag)
         if (spritePalette->tag == paletteTag)
         {
             if (IndexOfSpritePaletteTag(spritePalette->tag) == 0xFF)
-                LoadSpritePalette(spritePalette);
+                LoadSpritePalette_HandleDNSTint(spritePalette, applyDNSTint);
         }
     }
 }

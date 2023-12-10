@@ -336,6 +336,7 @@ SECTIONS {
         src/gym_leader_rematch.o(.text);
         src/battle_transition_frontier.o(.text);
         src/international_string_util.o(.text);
+        src/day_night.o(.text);
         src/pokemon_forms.o(.text);
         src/trainer_control.o(.text);
     } > ROM =0
@@ -697,6 +698,7 @@ SECTIONS {
         src/text_input_strings.o(.rodata);
         src/fonts.o(.rodata);
         src/international_string_util.o(.rodata);
+        src/day_night.o(.rodata);
         src/pokemon_forms.o(.rodata);
         src/trainer_name_strings.o(.rodata);
         src/mystery_event_msg.o(.rodata);

@@ -32,6 +32,7 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "region_map.h"
+#include "day_night.h"
 
 #define subsprite_table(ptr) {.subsprites = ptr, .subspriteCount = (sizeof ptr) / (sizeof(struct Subsprite))}
 
@@ -785,21 +786,22 @@ void FieldEffectScript_LoadTiles(u8 **script)
 void FieldEffectScript_LoadFadedPalette(u8 **script)
 {
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
-    u8 colorMap, paletteSlot;
-    LoadSpritePalette(palette);
+    u8 paletteSlot;
     (*script) += 4;
+    LoadSpritePalette_HandleDNSTint(palette, FieldEffectScript_ReadByte(script));
+    (*script)++;
     paletteSlot = IndexOfSpritePaletteTag(palette->tag);
-    colorMap = FieldEffectScript_ReadByte(script);
-    (*script) += 1;
-    UpdatePaletteColorMap(paletteSlot, colorMap);
+    UpdatePaletteColorMap(paletteSlot, FieldEffectScript_ReadByte(script));
     UpdateSpritePaletteWithWeather(paletteSlot);
+    (*script)++;
 }
 
 void FieldEffectScript_LoadPalette(u8 **script)
 {
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
-    LoadSpritePalette(palette);
     (*script) += 4;
+    LoadSpritePalette_HandleDNSTint(palette, FieldEffectScript_ReadByte(script));
+    (*script)++;
 }
 
 void FieldEffectScript_CallNative(u8 **script, u32 *val)

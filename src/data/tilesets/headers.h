@@ -2,12 +2,13 @@ const struct Tileset gTileset_General =
 {
     .isCompressed = TRUE,
     .isSecondary = FALSE,
+    .numTiles = NUM_TILES_IN_PRIMARY_EMERALD,
     .tiles = gTilesetTiles_General,
     .palettes = gTilesetPalettes_General,
     .metatiles = gMetatiles_General,
     .metatileAttributes = gMetatileAttributes_General,
     .callback = InitTilesetAnim_General,
-    .numTiles = NUM_TILES_IN_PRIMARY_EMERALD,
+    .paletteOverrides = sTilesetPalOverrides_General,
 };
 
 const struct Tileset gTileset_Petalburg =
@@ -19,6 +20,7 @@ const struct Tileset gTileset_Petalburg =
     .metatiles = gMetatiles_Petalburg,
     .metatileAttributes = gMetatileAttributes_Petalburg,
     .callback = InitTilesetAnim_Petalburg,
+    .paletteOverrides = sTilesetPalOverrides_Petalburg,
 };
 
 const struct Tileset gTileset_Rustboro =

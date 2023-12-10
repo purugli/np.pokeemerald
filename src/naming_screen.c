@@ -1388,7 +1388,7 @@ static void NamingScreen_CreateObjectEventIcon(u8 gfxId)
 {
     u8 spriteId;
 
-    spriteId = CreateObjectGraphicsSprite(gfxId, SpriteCallbackDummy, 56, 37, 0);
+    spriteId = CreateObjectGraphicsSprite(gfxId, SpriteCallbackDummy, 56, 37, 0, FALSE);
     gSprites[spriteId].oam.priority = 3;
     StartSpriteAnim(&gSprites[spriteId], ANIM_STD_GO_SOUTH);
 }

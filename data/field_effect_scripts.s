@@ -68,7 +68,7 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_MoveDeoxysRock            @ FLDEFF_MOVE_DEOXYS_ROCK
 
 gFieldEffectScript_ExclamationMarkIcon1::
-	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, COLOR_MAP_NONE, FldEff_ExclamationMarkIcon
+	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, FALSE, COLOR_MAP_NONE, FldEff_ExclamationMarkIcon
 	field_eff_end
 
 gFieldEffectScript_UseCutOnTallGrass::
@@ -84,11 +84,11 @@ gFieldEffectScript_Shadow::
 	field_eff_end
 
 gFieldEffectScript_TallGrass::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_TallGrass
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_TallGrass
 	field_eff_end
 
 gFieldEffectScript_Ripple::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, COLOR_MAP_DARK_CONTRAST, FldEff_Ripple
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_Ripple
 	field_eff_end
 
 gFieldEffectScript_FieldMoveShowMon::
@@ -96,7 +96,7 @@ gFieldEffectScript_FieldMoveShowMon::
 	field_eff_end
 
 gFieldEffectScript_Ash::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, COLOR_MAP_DARK_CONTRAST, FldEff_Ash
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_Ash
 	field_eff_end
 
 gFieldEffectScript_SurfBlob::
@@ -108,7 +108,7 @@ gFieldEffectScript_UseSurf::
 	field_eff_end
 
 gFieldEffectScript_GroundImpactDust::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_Dust
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_Dust
 	field_eff_end
 
 gFieldEffectScript_UseSecretPowerCave::
@@ -116,31 +116,31 @@ gFieldEffectScript_UseSecretPowerCave::
 	field_eff_end
 
 gFieldEffectScript_JumpTallGrass::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_JumpTallGrass
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_JumpTallGrass
 	field_eff_end
 
 gFieldEffectScript_SandFootprints::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_SandFootprints
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_SandFootprints
 	field_eff_end
 
 gFieldEffectScript_JumpBigSplash::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_JumpBigSplash
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_JumpBigSplash
 	field_eff_end
 
 gFieldEffectScript_Splash::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_Splash
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_Splash
 	field_eff_end
 
 gFieldEffectScript_JumpSmallSplash::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_JumpSmallSplash
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_JumpSmallSplash
 	field_eff_end
 
 gFieldEffectScript_LongGrass::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_LongGrass
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_LongGrass
 	field_eff_end
 
 gFieldEffectScript_WaterSurfacing::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_WaterSurfacing
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_WaterSurfacing
 	field_eff_end
 
 gFieldEffectScript_BerryTreeGrowthSparkle::
@@ -148,12 +148,12 @@ gFieldEffectScript_BerryTreeGrowthSparkle::
 	field_eff_end
 
 gFieldEffectScript_DeepSandFootprints::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_DeepSandFootprints
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_DeepSandFootprints
 	field_eff_end
 
 gFieldEffectScript_PokeCenterHeal::
-	field_eff_loadfadedpal gSpritePalette_PokeballGlow, COLOR_MAP_NONE
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_NONE, FldEff_PokecenterHeal
+	field_eff_loadfadedpal gSpritePalette_PokeballGlow, FALSE, COLOR_MAP_NONE
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, FALSE, COLOR_MAP_NONE, FldEff_PokecenterHeal
 	field_eff_end
 
 gFieldEffectScript_UseSecretPowerTree::
@@ -185,15 +185,15 @@ gFieldEffectScript_FlyIn::
 	field_eff_end
 
 gFieldEffectScript_QuestionMarkIcon::
-	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, COLOR_MAP_NONE, FldEff_QuestionMarkIcon
+	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, FALSE, COLOR_MAP_NONE, FldEff_QuestionMarkIcon
 	field_eff_end
 
 gFieldEffectScript_FeetInFlowingWater::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_FeetInFlowingWater
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_FeetInFlowingWater
 	field_eff_end
 
 gFieldEffectScript_BikeTireTracks::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_BikeTireTracks
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_BikeTireTracks
 	field_eff_end
 
 gFieldEffectScript_UseRockSmash::
@@ -209,15 +209,15 @@ gFieldEffectScript_UseDig::
 	field_eff_end
 
 gFieldEffectScript_SandPile::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_SandPile
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_SandPile
 	field_eff_end
 
 gFieldEffectScript_ShortGrass::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, COLOR_MAP_DARK_CONTRAST, FldEff_ShortGrass
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_ShortGrass
 	field_eff_end
 
 gFieldEffectScript_HotSpringsWater::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, COLOR_MAP_DARK_CONTRAST, FldEff_HotSpringsWater
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect2, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_HotSpringsWater
 	field_eff_end
 
 gFieldEffectScript_UseWaterfall::
@@ -229,20 +229,20 @@ gFieldEffectScript_UseDive::
 	field_eff_end
 
 gFieldEffectScript_PokeballTrail::
-	field_eff_loadpal gSpritePalette_Pokeball
+	field_eff_loadpal gSpritePalette_Pokeball, FALSE
 	field_eff_callnative FldEff_PokeballTrail
 	field_eff_end
 
 gFieldEffectScript_HeartIcon::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_NONE, FldEff_HeartIcon
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, FALSE, COLOR_MAP_NONE, FldEff_HeartIcon
 	field_eff_end
 
 gFieldEffectScript_AshPuff::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, COLOR_MAP_DARK_CONTRAST, FldEff_AshPuff
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_AshPuff
 	field_eff_end
 
 gFieldEffectScript_AshLaunch::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, COLOR_MAP_DARK_CONTRAST, FldEff_AshLaunch
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_AshLaunch
 	field_eff_end
 
 gFieldEffectScript_SweetScent::
@@ -250,31 +250,31 @@ gFieldEffectScript_SweetScent::
 	field_eff_end
 
 gFieldEffectScript_SandPillar::
-	field_eff_loadfadedpal_callnative gSpritePalette_SandPillar, COLOR_MAP_DARK_CONTRAST, FldEff_SandPillar
+	field_eff_loadfadedpal_callnative gSpritePalette_SandPillar, FALSE, COLOR_MAP_DARK_CONTRAST, FldEff_SandPillar
 	field_eff_end
 
 gFieldEffectScript_Bubbles::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, COLOR_MAP_DARK_CONTRAST, FldEff_Bubbles
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_Bubbles
 	field_eff_end
 
 gFieldEffectScript_Sparkle::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, COLOR_MAP_DARK_CONTRAST, FldEff_Sparkle
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_Sparkle
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerCave::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Cave, COLOR_MAP_CONTRAST, FldEff_SecretPowerCave
+	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Cave, TRUE, COLOR_MAP_CONTRAST, FldEff_SecretPowerCave
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerTree::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, COLOR_MAP_CONTRAST, FldEff_SecretPowerTree
+	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, TRUE, COLOR_MAP_CONTRAST, FldEff_SecretPowerTree
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerShrub::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, COLOR_MAP_CONTRAST, FldEff_SecretPowerShrub
+	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, TRUE, COLOR_MAP_CONTRAST, FldEff_SecretPowerShrub
 	field_eff_end
 
 gFieldEffectScript_ShowCutGrass::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, COLOR_MAP_DARK_CONTRAST, FldEff_CutGrass
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_CutGrass
 	field_eff_end
 
 gFieldEffectScript_FieldMoveShowMonInit::
@@ -290,8 +290,8 @@ gFieldEffectScript_SecretBaseBootPC::
 	field_eff_end
 
 gFieldEffectScript_HallOfFameRecord::
-	field_eff_loadfadedpal gSpritePalette_PokeballGlow, COLOR_MAP_NONE
-	field_eff_loadfadedpal_callnative gSpritePalette_HofMonitor, COLOR_MAP_NONE, FldEff_HallOfFameRecord
+	field_eff_loadfadedpal gSpritePalette_PokeballGlow, FALSE, COLOR_MAP_NONE
+	field_eff_loadfadedpal_callnative gSpritePalette_HofMonitor, FALSE, COLOR_MAP_NONE, FldEff_HallOfFameRecord
 	field_eff_end
 
 gFieldEffectScript_UseTeleport::

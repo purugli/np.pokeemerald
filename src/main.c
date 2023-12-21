@@ -79,6 +79,7 @@ static void CallCallbacks(void);
 static void SeedRngWithRtc(void);
 static void ReadKeys(void);
 void InitIntrHandlers(void);
+static void WaitForVBlank(void);
 void EnableVCountIntrAtLine150(void);
 
 #define B_START_SELECT (B_BUTTON | START_BUTTON | SELECT_BUTTON)
@@ -159,8 +160,7 @@ void AgbMain()
 
         PlayTimeCounter_Update();
         MapMusicMain();
-        gMain.intrCheck &= ~INTR_FLAG_VBLANK;
-        asm("swi 0x5");
+        WaitForVBlank();
     }
 }
 
@@ -399,6 +399,21 @@ static void SerialIntr(void)
 
 static void IntrDummy(void)
 {}
+
+static void WaitForVBlank(void)
+{
+    gMain.intrCheck &= ~INTR_FLAG_VBLANK;
+
+    if (gWirelessCommType != 0)
+    {
+        while (!(gMain.intrCheck & INTR_FLAG_VBLANK))
+            ;
+    }
+    else
+    {
+        asm("swi 0x5");
+    }
+}
 
 void SetTrainerHillVBlankCounter(u32 *counter)
 {

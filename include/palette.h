@@ -35,21 +35,23 @@ enum
 struct PaletteFadeControl
 {
     u32 multipurpose1;
-    u8 delayCounter:6;
-    u16 y:5; // blend coefficient
-    u16 targetY:5; // target blend coefficient
-    u16 blendColor:15;
-    bool16 active:1;
-    u16 multipurpose2:6;
-    bool16 yDec:1; // whether blend coefficient is decreasing
-    bool16 bufferTransferDisabled:1;
+    u16 delayCounter:6;
     u16 mode:2;
+    u16 deltaY:6; // rate of change of blend coefficient
+    bool16 active:1;
+    bool16 yDec:1; // whether blend coefficient is decreasing
+    u16 targetY:6; // target blend coefficient
+    bool16 bufferTransferDisabled:1;
     bool16 shouldResetBlendRegisters:1;
+    u16 multipurpose2:6;
     bool16 hardwareFadeFinishing:1;
-    u16 softwareFadeFinishingCounter:5;
-    bool16 softwareFadeFinishing:1;
     bool16 objPaletteToggle:1;
-    u8 deltaY:4; // rate of change of blend coefficient
+    u16 blendColor:15;
+    bool16 yChanged:1;
+    u16 softwareFadeFinishingCounter:3;
+    bool16 doEndDelay:1;
+    u16 y; // blend coefficient
+    u16 denominator;
 };
 
 extern struct PaletteFadeControl gPaletteFade;
@@ -66,8 +68,6 @@ u8 UpdatePaletteFade(void);
 void ResetPaletteFade(void);
 bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, u16 blendColor);
 void InvertPlttBuffer(u32 selectedPalettes);
-void TintPlttBuffer(u32 selectedPalettes, s8 r, s8 g, s8 b);
-void UnfadePlttBuffer(u32 selectedPalettes);
 void BeginFastPaletteFade(u8 submode);
 void BeginHardwarePaletteFade(u8 blendCnt, u8 delay, u8 y, u8 targetY, u8 shouldResetBlendRegisters);
 void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color);

@@ -32,7 +32,6 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "region_map.h"
-#include "day_night.h"
 
 #define subsprite_table(ptr) {.subsprites = ptr, .subspriteCount = (sizeof ptr) / (sizeof(struct Subsprite))}
 

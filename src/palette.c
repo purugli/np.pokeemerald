@@ -5,7 +5,6 @@
 #include "gpu_regs.h"
 #include "task.h"
 #include "constants/rgb.h"
-#include "day_night.h"
 
 enum
 {

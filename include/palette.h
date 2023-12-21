@@ -78,6 +78,8 @@ void TintPalette_GrayScale2(u16 *palette, u16 count);
 void TintPalette_SepiaTone(u16 *palette, u16 count);
 void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 bTone);
 
+#include "day_night.h"
+
 static inline void SetBackdropFromColor(u16 color)
 {
   FillPalette(color, 0, PLTT_SIZEOF(1));

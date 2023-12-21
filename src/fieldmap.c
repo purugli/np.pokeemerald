@@ -16,7 +16,6 @@
 #include "tv.h"
 #include "constants/rgb.h"
 #include "constants/metatile_behaviors.h"
-#include "day_night.h"
 
 struct ConnectionFlags
 {

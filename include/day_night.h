@@ -11,6 +11,7 @@ struct PaletteOverride
     const u16 *palette;
 };
 
+extern u16 ALIGNED(4) gPlttBufferPreDN[PLTT_BUFFER_SIZE];
 extern const struct PaletteOverride *gPaletteOverrides[];
 
 u32 GetTimeOfDay(void);

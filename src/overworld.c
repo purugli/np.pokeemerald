@@ -68,7 +68,6 @@
 #include "constants/weather.h"
 #include "region_map.h"
 #include "field_player_avatar.h"
-#include "day_night.h"
 
 struct CableClubPlayer
 {

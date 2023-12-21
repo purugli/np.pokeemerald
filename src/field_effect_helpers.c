@@ -15,7 +15,6 @@
 #include "palette.h"
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
-#include "day_night.h"
 
 static EWRAM_DATA u16 sReflectionPaletteBuffer[16] = {0};
 

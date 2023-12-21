@@ -67,7 +67,6 @@
 #include "palette.h"
 #include "tilesets.h"
 #include "field_player_avatar.h"
-#include "day_night.h"
 
 #define TAG_ITEM_ICON 5500
 

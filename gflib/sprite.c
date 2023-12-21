@@ -2,7 +2,6 @@
 #include "sprite.h"
 #include "main.h"
 #include "palette.h"
-#include "day_night.h"
 
 #define MAX_SPRITE_COPY_REQUESTS 64
 

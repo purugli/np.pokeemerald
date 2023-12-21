@@ -47,7 +47,7 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/union_room.h"
-#include "day_night.h"
+#include "palette.h"
 #include "constants/day_night.h"
 #include "region_map.h"
 #include "new_game.h"

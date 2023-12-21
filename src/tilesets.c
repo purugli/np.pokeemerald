@@ -1,8 +1,8 @@
 #include "global.h"
 #include "tilesets.h"
 #include "tileset_anims.h"
+#include "palette.h"
 #include "fieldmap.h"
-#include "day_night.h"
 #include "constants/day_night.h"
 
 #include "data/tilesets/graphics.h"

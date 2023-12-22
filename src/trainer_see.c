@@ -26,7 +26,7 @@ static u8 CheckPathBetweenTrainerAndPlayer(struct ObjectEvent *trainerObj, u8 ap
 static void InitTrainerApproachTask(struct ObjectEvent *trainerObj, u8 range);
 static void Task_RunTrainerSeeFuncList(u8 taskId);
 static void Task_EndTrainerApproach(u8 taskId);
-static void SetIconSpriteData(struct Sprite *sprite, u16 fldEffId, u8 spriteAnimNum);
+static u8 SetIconSpriteData(u8 spriteAnimNum);
 
 static u8 GetTrainerApproachDistanceSouth(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y);
 static u8 GetTrainerApproachDistanceNorth(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y);
@@ -127,56 +127,58 @@ static const struct OamData sOamData_Icons =
     .affineParam = 0,
 };
 
-static const struct SpriteFrameImage sSpriteImageTable_ExclamationQuestionMark[] =
+static const struct SpriteFrameImage sSpriteImageTable_Icons[] =
 {
     overworld_ascending_frames(sEmotion_Gfx, 2, 2)
 };
 
-static const union AnimCmd sSpriteAnim_Icons1[] =
+static const union AnimCmd sSpriteAnim_ExclamationMark[] =
 {
-    ANIMCMD_FRAME(0, 60),
+    ANIMCMD_FRAME(0, 4),
+    ANIMCMD_FRAME(1, 4),
+    ANIMCMD_FRAME(2, 52),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Icons2[] =
+static const union AnimCmd sSpriteAnim_QuestionMark[] =
 {
-    ANIMCMD_FRAME(1, 60),
+    ANIMCMD_FRAME(3, 4),
+    ANIMCMD_FRAME(4, 4),
+    ANIMCMD_FRAME(5, 52),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Icons3[] =
+static const union AnimCmd sSpriteAnim_Heart[] =
 {
-    ANIMCMD_FRAME(2, 60),
+    ANIMCMD_FRAME(0, 4),
+    ANIMCMD_FRAME(6, 4),
+    ANIMCMD_FRAME(7, 52),
     ANIMCMD_END
 };
 
 static const union AnimCmd *const sSpriteAnimTable_Icons[] =
 {
-    sSpriteAnim_Icons1,
-    sSpriteAnim_Icons2,
-    sSpriteAnim_Icons3
+    [EMOTE_EXCLAMATION_MARK] = sSpriteAnim_ExclamationMark,
+    [EMOTE_QUESTION_MARK]    = sSpriteAnim_QuestionMark,
+    [EMOTE_HEART]            = sSpriteAnim_Heart
 };
 
-static const struct SpriteTemplate sSpriteTemplate_ExclamationQuestionMark =
+static const struct SpriteTemplate sSpriteTemplate_Icons =
 {
     .tileTag = TAG_NONE,
     .paletteTag = FLDEFF_PAL_TAG_ARROW,
     .oam = &sOamData_Icons,
     .anims = sSpriteAnimTable_Icons,
-    .images = sSpriteImageTable_ExclamationQuestionMark,
+    .images = sSpriteImageTable_Icons,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_TrainerIcons
 };
 
-static const struct SpriteTemplate sSpriteTemplate_HeartIcon =
+const u16 gEmoteIdToFldEffId[EMOTE_COUNT] =
 {
-    .tileTag = TAG_NONE,
-    .paletteTag = FLDEFF_PAL_TAG_GENERAL_0,
-    .oam = &sOamData_Icons,
-    .anims = sSpriteAnimTable_Icons,
-    .images = sSpriteImageTable_ExclamationQuestionMark,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_TrainerIcons
+    [EMOTE_EXCLAMATION_MARK] = FLDEFF_EXCLAMATION_MARK_ICON,
+    [EMOTE_QUESTION_MARK]    = FLDEFF_QUESTION_MARK_ICON,
+    [EMOTE_HEART]            = FLDEFF_HEART_ICON
 };
 
 // code
@@ -688,46 +690,40 @@ void TryPrepareSecondApproachingTrainer(void)
 
 u8 FldEff_ExclamationMarkIcon(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
-
-    if (spriteId != MAX_SPRITES)
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 0);
-
-    return 0;
+    return SetIconSpriteData(EMOTE_EXCLAMATION_MARK);
 }
 
 u8 FldEff_QuestionMarkIcon(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x52);
-
-    if (spriteId != MAX_SPRITES)
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_QUESTION_MARK_ICON, 1);
-
-    return 0;
+    return SetIconSpriteData(EMOTE_QUESTION_MARK);
 }
 
 u8 FldEff_HeartIcon(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_HeartIcon, 0, 0, 0x52);
-
-    if (spriteId != MAX_SPRITES)
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_HEART_ICON, 2);
-
-    return 0;
+    return SetIconSpriteData(EMOTE_HEART);
 }
 
-static void SetIconSpriteData(struct Sprite *sprite, u16 fldEffId, u8 spriteAnimNum)
+static u8 SetIconSpriteData(u8 spriteAnimNum)
 {
-    sprite->oam.priority = 1;
-    sprite->coordOffsetEnabled = 1;
+    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_Icons, 0, 0, 0x53);
 
-    sprite->sLocalId = gFieldEffectArguments[0];
-    sprite->sMapNum = gFieldEffectArguments[1];
-    sprite->sMapGroup = gFieldEffectArguments[2];
-    sprite->sYVelocity = -5;
-    sprite->sFldEffId = fldEffId;
+    if (spriteId != MAX_SPRITES)
+    {
+        struct Sprite *sprite = &gSprites[spriteId];
 
-    StartSpriteAnim(sprite, spriteAnimNum);
+        sprite->oam.priority = 1;
+        sprite->coordOffsetEnabled = 1;
+
+        sprite->sLocalId = gFieldEffectArguments[0];
+        sprite->sMapNum = gFieldEffectArguments[1];
+        sprite->sMapGroup = gFieldEffectArguments[2];
+        sprite->sYVelocity = -5;
+        sprite->sFldEffId = gEmoteIdToFldEffId[spriteAnimNum];
+
+        StartSpriteAnim(sprite, spriteAnimNum);
+    }
+
+    return 0;
 }
 
 static void SpriteCB_TrainerIcons(struct Sprite *sprite)

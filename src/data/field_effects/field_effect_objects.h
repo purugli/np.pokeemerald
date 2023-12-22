@@ -850,7 +850,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_SmallSparkle = {
     .callback = UpdateSparkleFieldEffect,
 };
 
-const struct SpritePalette gSpritePalette_ArrowEmotionsFieldEffect = {gObjectEventPal_Brendan, FLDEFF_PAL_TAG_ARROW};
+const struct SpritePalette gSpritePalette_ArrowEmotionsFieldEffect = {gObjectEventPal_RedLeaf, FLDEFF_PAL_TAG_ARROW};
 
 static const struct SpriteFrameImage sPicTable_RayquazaSpotlightEffect[] = {
     overworld_frame(gObjectEventPic_Rayquaza, 4, 4, 0),

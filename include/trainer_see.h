@@ -27,4 +27,14 @@ u8 GetCurrentApproachingTrainerObjectEventId(void);
 u8 GetChosenApproachingTrainerObjectEventId(u8 arrayId);
 void PlayerFaceTrainerAfterBattle(void);
 
+enum
+{
+    EMOTE_EXCLAMATION_MARK,
+    EMOTE_QUESTION_MARK,
+    EMOTE_HEART,
+    EMOTE_COUNT
+};
+
+extern const u16 gEmoteIdToFldEffId[EMOTE_COUNT];
+
 #endif // GUARD_TRAINER_SEE_H

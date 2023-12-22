@@ -234,7 +234,7 @@ gFieldEffectScript_PokeballTrail::
 	field_eff_end
 
 gFieldEffectScript_HeartIcon::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, FALSE, COLOR_MAP_NONE, FldEff_HeartIcon
+	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, FALSE, COLOR_MAP_NONE, FldEff_HeartIcon
 	field_eff_end
 
 gFieldEffectScript_AshPuff::

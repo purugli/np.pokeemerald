@@ -4410,6 +4410,9 @@ extern const u16 gFrontierFactoryMenu_Gfx[34 * TILE_SIZE_4BPP / 2];
 extern const u16 gFrontierFactoryMenu_Tilemap[];
 extern const u16 gFrontierFactoryMenu_Pal[];
 
+// Object event pics
+extern const u8 gObjectEventPic_Fossil[];
+
 // Object event pals
 extern const u16 gObjectEventPal_Brendan[];
 extern const u16 gObjectEventPal_May[];

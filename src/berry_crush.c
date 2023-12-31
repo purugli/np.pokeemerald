@@ -1062,11 +1062,6 @@ static void BerryCrush_SetVBlankCB(void)
     SetVBlankCallback(VBlankCB);
 }
 
-static void UNUSED BerryCrush_InitVBlankCB(void)
-{
-    SetVBlankCallback(NULL);
-}
-
 static void SaveResults(void)
 {
     u32 time, presses;
@@ -1119,8 +1114,6 @@ static void SaveResults(void)
     sGame->powder = sGame->results.powder;
     if (GiveBerryPowder(sGame->powder))
         return;
-
-    sGame->noRoomForPowder = TRUE;
 }
 
 static void VBlankCB(void)
@@ -3440,7 +3433,6 @@ static void ResetGame(struct BerryCrushGame *game)
     u8 i = 0;
 
     IncrementGameStat(GAME_STAT_PLAYED_BERRY_CRUSH);
-    game->unused = 0;
     game->cmdTimer = 0;
     game->gameState = STATE_RESET;
     game->playAgainState = 0;
@@ -3449,7 +3441,6 @@ static void ResetGame(struct BerryCrushGame *game)
     game->totalAPresses = 0;
     game->targetDepth = 0;
     game->newDepth = 0;
-    game->noRoomForPowder = FALSE;
     game->newRecord = FALSE;
     game->playedSound = FALSE;
     game->endGame = FALSE;

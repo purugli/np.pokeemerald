@@ -32,12 +32,6 @@
 	special CallBattlePyramidFunction
 	.endm
 
-	@ Unused. Give the set prize item to the player. TRUE if room in Bag for prize, FALSE otherwise
-	.macro pyramid_giveprize
-	setvar VAR_0x8004, BATTLE_PYRAMID_FUNC_GIVE_PRIZE
-	special CallBattlePyramidFunction
-	.endm
-
 	@ Set the random values for the floor (used to determine object positions, e.g.), and clear trainer flags
 	.macro pyramid_seedfloor
 	setvar VAR_0x8004, BATTLE_PYRAMID_FUNC_SEED_FLOOR

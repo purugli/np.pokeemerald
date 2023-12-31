@@ -72,18 +72,15 @@ static void GetBattlePyramidData(void);
 static void SetBattlePyramidData(void);
 static void SavePyramidChallenge(void);
 static void SetBattlePyramidPrize(void);
-static void GiveBattlePyramidPrize(void);
 static void SeedPyramidFloor(void);
 static void SetPickupItem(void);
 static void HidePyramidItem(void);
 static void SetPyramidFacilityTrainers(void);
 static void ShowPostBattleHintText(void);
-static void UpdatePyramidWinStreak(void);
 static void GetInBattlePyramid(void);
 static void UpdatePyramidLightRadius(void);
 static void ClearPyramidPartyHeldItems(void);
 static void SetPyramidFloorPalette(void);
-static void BattlePyramidStartMenu(void);
 static void RestorePyramidPlayerParty(void);
 static void InitPyramidBagItems(u8);
 static u8 GetPyramidFloorTemplateId(void);
@@ -791,18 +788,15 @@ static void (* const sBattlePyramidFunctions[])(void) =
     [BATTLE_PYRAMID_FUNC_SET_DATA]          = SetBattlePyramidData,
     [BATTLE_PYRAMID_FUNC_SAVE]              = SavePyramidChallenge,
     [BATTLE_PYRAMID_FUNC_SET_PRIZE]         = SetBattlePyramidPrize,
-    [BATTLE_PYRAMID_FUNC_GIVE_PRIZE]        = GiveBattlePyramidPrize,
     [BATTLE_PYRAMID_FUNC_SEED_FLOOR]        = SeedPyramidFloor,
     [BATTLE_PYRAMID_FUNC_SET_ITEM]          = SetPickupItem,
     [BATTLE_PYRAMID_FUNC_HIDE_ITEM]         = HidePyramidItem,
     [BATTLE_PYRAMID_FUNC_SET_TRAINERS]      = SetPyramidFacilityTrainers,
     [BATTLE_PYRAMID_FUNC_SHOW_HINT_TEXT]    = ShowPostBattleHintText,
-    [BATTLE_PYRAMID_FUNC_UPDATE_STREAK]     = UpdatePyramidWinStreak,
     [BATTLE_PYRAMID_FUNC_IS_IN]             = GetInBattlePyramid,
     [BATTLE_PYRAMID_FUNC_UPDATE_LIGHT]      = UpdatePyramidLightRadius,
     [BATTLE_PYRAMID_FUNC_CLEAR_HELD_ITEMS]  = ClearPyramidPartyHeldItems,
     [BATTLE_PYRAMID_FUNC_SET_FLOOR_PALETTE] = SetPyramidFloorPalette,
-    [BATTLE_PYRAMID_FUNC_START_MENU]        = BattlePyramidStartMenu,
     [BATTLE_PYRAMID_FUNC_RESTORE_PARTY]     = RestorePyramidPlayerParty,
 };
 
@@ -947,20 +941,6 @@ static void SetBattlePyramidPrize(void)
         gSaveBlock2Ptr->frontier.pyramidPrize = sShortStreakRewardItems[Random() % ARRAY_COUNT(sShortStreakRewardItems)];
 }
 
-static void GiveBattlePyramidPrize(void)
-{
-    if (AddBagItem(gSaveBlock2Ptr->frontier.pyramidPrize, 1) == TRUE)
-    {
-        CopyItemName(gSaveBlock2Ptr->frontier.pyramidPrize, gStringVar1);
-        gSaveBlock2Ptr->frontier.pyramidPrize = 0;
-        gSpecialVar_Result = TRUE;
-    }
-    else
-    {
-        gSpecialVar_Result = FALSE;
-    }
-}
-
 static void SeedPyramidFloor(void)
 {
     int i;
@@ -1103,16 +1083,6 @@ static void ShowPostBattleHintText(void)
     ShowFieldMessage(sPostBattleTexts[textGroup][hintType][textIndex]);
 }
 
-static void UpdatePyramidWinStreak(void)
-{
-    u32 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
-
-    if (gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode] < 999)
-        gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode]++;
-    if (gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode] > gSaveBlock2Ptr->frontier.pyramidRecordStreaks[lvlMode])
-        gSaveBlock2Ptr->frontier.pyramidRecordStreaks[lvlMode] = gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode];
-}
-
 static void GetInBattlePyramid(void)
 {
     gSpecialVar_Result = InBattlePyramid();
@@ -1190,12 +1160,6 @@ static void Task_SetPyramidFloorPalette(u8 taskId)
         CpuCopy16(gBattlePyramidFloor_Pal[gSaveBlock2Ptr->frontier.curChallengeBattleNum], &gPlttBufferUnfaded[BG_PLTT_ID(6)], PLTT_SIZE_4BPP);
         DestroyTask(taskId);
     }
-}
-
-// Unused. Handled by BuildStartMenuActions
-static void BattlePyramidStartMenu(void)
-{
-    ShowBattlePyramidStartMenu();
 }
 
 static void RestorePyramidPlayerParty(void)
@@ -1472,11 +1436,6 @@ u8 GetTrainerEncounterMusicIdInBattlePyramid(u16 trainerId)
             return sTrainerClassEncounterMusic[i].trainerEncounterMusic;
     }
     return TRAINER_ENCOUNTER_MUSIC_MALE;
-}
-
-static void UNUSED BattlePyramidRetireChallenge(void)
-{
-    ScriptContext_SetupScript(BattlePyramid_Retire);
 }
 
 static u16 GetUniqueTrainerId(u8 objectEventId)

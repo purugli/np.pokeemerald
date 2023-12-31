@@ -278,28 +278,6 @@ int GetNumberRegistered(void)
     return state->numRegistered;
 }
 
-static int UNUSED GetNumSpecialTrainers(void)
-{
-    struct Pokenav_MatchCallMenu *state = GetSubstructPtr(POKENAV_SUBSTRUCT_MATCH_CALL_MAIN);
-    return state->numSpecialTrainers;
-}
-
-static int UNUSED GetNumNormalTrainers(void)
-{
-    struct Pokenav_MatchCallMenu *state = GetSubstructPtr(POKENAV_SUBSTRUCT_MATCH_CALL_MAIN);
-    return state->numRegistered - state->numSpecialTrainers;
-}
-
-static int UNUSED GetNormalTrainerHeaderId(int index)
-{
-    struct Pokenav_MatchCallMenu *state = GetSubstructPtr(POKENAV_SUBSTRUCT_MATCH_CALL_MAIN);
-    index += state->numSpecialTrainers;
-    if (index >= state->numRegistered)
-        return REMATCH_TABLE_ENTRIES;
-
-    return state->matchCallEntries[index].headerId;
-}
-
 struct PokenavMatchCallEntry *GetMatchCallList(void)
 {
     struct Pokenav_MatchCallMenu *state = GetSubstructPtr(POKENAV_SUBSTRUCT_MATCH_CALL_MAIN);
@@ -463,29 +441,6 @@ int GetIndexDeltaOfNextCheckPageUp(int index)
     }
 
     return 0;
-}
-
-static bool32 UNUSED HasRematchEntry(void)
-{
-    int i;
-
-    for (i = 0; i < REMATCH_TABLE_ENTRIES; i++)
-    {
-        if (IsRematchEntryRegistered(i) && gSaveBlock1Ptr->trainerRematches[i])
-            return TRUE;
-    }
-
-    for (i = 0; i < MC_HEADER_COUNT; i++)
-    {
-        if (MatchCall_GetEnabled(i))
-        {
-            int index = MatchCall_GetRematchTableIdx(i);
-            if (gSaveBlock1Ptr->trainerRematches[index])
-                return TRUE;
-        }
-    }
-
-    return FALSE;
 }
 
 static bool32 ShouldDoNearbyMessage(void)

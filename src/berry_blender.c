@@ -252,16 +252,6 @@ static const u16 sBlenderCenter_Pal[] = INCBIN_U16("graphics/berry_blender/cente
 static const u8 sBlenderCenter_Tilemap[] = INCBIN_U8("graphics/berry_blender/center_map.bin");
 static const u16 sBlenderOuter_Pal[] = INCBIN_U16("graphics/berry_blender/outer.gbapal");
 
-static const u16 sUnused_Pal[] = INCBIN_U16("graphics/berry_blender/unused.gbapal");
-static const u16 sEmpty_Pal[16 * 14] = {0};
-
-// unused text
-static const u8 sUnusedText_YesNo[] = _("YES\nNO");
-static const u8 sUnusedText_2[] = _("▶");
-static const u8 sUnusedText_Space[] = _(" ");
-static const u8 sUnusedText_Terminating[] = _("Terminating.");
-static const u8 sUnusedText_LinkPartnerNotFound[] = _("Link partner(s) not found.\nPlease try again.\p");
-
 static const u8 sText_BerryBlenderStart[] = _("Starting up the BERRY BLENDER.\pPlease select a BERRY from your BAG\nto put in the BERRY BLENDER.\p");
 static const u8 sText_NewParagraph[] = _("\p");
 static const u8 sText_WasMade[] = _(" was made!");
@@ -304,7 +294,6 @@ static const u8 sText_Space[] = _(" ");
 static const u8 sText_Ranking[] = _("RANKING");
 static const u8 sText_TheLevelIs[] = _("The level is ");
 static const u8 sText_TheFeelIs[] = _(", and the feel is ");
-static const u8 sText_Dot2[] = _(".");
 
 static const struct BgTemplate sBgTemplates[3] =
 {
@@ -914,16 +903,6 @@ static const u8 sBlackPokeblockFlavorFlags[] = {
     (1 << FLAVOR_BITTER) | (1 << FLAVOR_DRY)    | (1 << FLAVOR_SPICY),
     (1 << FLAVOR_SWEET)  | (1 << FLAVOR_DRY)    | (1 << FLAVOR_SPICY),
     (1 << FLAVOR_SOUR)   | (1 << FLAVOR_SWEET)  | (1 << FLAVOR_SPICY),
-};
-
-static const u8 sUnused[] =
-{
-    0xfe, 0x02, 0x02, 0xce, 0xd0, 0x37, 0x44, 0x07, 0x1f, 0x0c, 0x10,
-    0x00, 0xff, 0xfe, 0x91, 0x72, 0xce, 0xd0, 0x37, 0x44, 0x07, 0x1f,
-    0x0c, 0x10, 0x00, 0xff, 0x06, 0x27, 0x02, 0xff, 0x00, 0x0c, 0x48,
-    0x02, 0xff, 0x00, 0x01, 0x1f, 0x02, 0xff, 0x00, 0x16, 0x37, 0x02,
-    0xff, 0x00, 0x0d, 0x50, 0x4b, 0x02, 0xff, 0x06, 0x06, 0x06, 0x06,
-    0x05, 0x03, 0x03, 0x03, 0x02, 0x02, 0x03, 0x03, 0x03, 0x03, 0x02
 };
 
 static const struct WindowTemplate sBlenderRecordWindowTemplate =
@@ -2212,7 +2191,6 @@ static void CB2_PlayBlender(void)
         sBerryBlender->gameFrameTime++;
 
     HandlePlayerInput();
-    SetLinkDebugValues((u16)(sBerryBlender->speed), sBerryBlender->progressBarValue);
     UpdateOpponentScores();
     TryUpdateProgressBar(sBerryBlender->progressBarValue, MAX_PROGRESS_BAR);
     UpdateRPM(sBerryBlender->speed);
@@ -2359,26 +2337,6 @@ static u32 CalculatePokeblockColor(struct BlenderBerry* berries, s16 *_flavors, 
     return PBLOCK_CLR_NONE;
 }
 
-static void Debug_SetMaxRPMStage(s16 value)
-{
-    sDebug_MaxRPMStage = value;
-}
-
-static s16 UNUSED Debug_GetMaxRPMStage(void)
-{
-    return sDebug_MaxRPMStage;
-}
-
-static void Debug_SetGameTimeStage(s16 value)
-{
-    sDebug_GameTimeStage = value;
-}
-
-static s16 UNUSED Debug_GetGameTimeStage(void)
-{
-    return sDebug_GameTimeStage;
-}
-
 static void CalculatePokeblock(struct BlenderBerry *berries, struct Pokeblock *pokeblock, u8 numPlayers, u8 *flavors, u16 maxRPM)
 {
     s32 i, j;
@@ -2486,58 +2444,6 @@ static void CalculatePokeblock(struct BlenderBerry *berries, struct Pokeblock *p
         flavors[i] = sPokeblockFlavors[i];
 }
 
-static void UNUSED Debug_CalculatePokeblock(struct BlenderBerry* berries, struct Pokeblock* pokeblock, u8 numPlayers, u8 *flavors, u16 maxRPM)
-{
-    CalculatePokeblock(berries, pokeblock, numPlayers, flavors, maxRPM);
-}
-
-static void Debug_SetStageVars(void)
-{
-    u32 frames = (u16)(sBerryBlender->gameFrameTime);
-    u16 maxRPM = sBerryBlender->maxRPM;
-    s16 stage = 0;
-
-    if (frames < 900)
-        stage = 5;
-    else if ((u16)(frames - 900) < 600)
-        stage = 4;
-    else if ((u16)(frames - 1500) < 600)
-        stage = 3;
-    else if ((u16)(frames - 2100) < 900)
-        stage = 2;
-    else if ((u16)(frames - 3300) < 300)
-        stage = 1;
-
-    Debug_SetGameTimeStage(stage);
-
-    stage = 0;
-    if (maxRPM <= 64)
-    {
-        if (maxRPM >= 50 && maxRPM < 100)
-            stage = -1;
-        else if (maxRPM >= 100 && maxRPM < 150)
-            stage = -2;
-        else if (maxRPM >= 150 && maxRPM < 200)
-            stage = -3;
-        else if (maxRPM >= 200 && maxRPM < 250)
-            stage = -4;
-        else if (maxRPM >= 250 && maxRPM < 300)
-            stage = -5;
-        else if (maxRPM >= 350 && maxRPM < 400)
-            stage = -6;
-        else if (maxRPM >= 400 && maxRPM < 450)
-            stage = -7;
-        else if (maxRPM >= 500 && maxRPM < 550)
-            stage = -8;
-        else if (maxRPM >= 550 && maxRPM < 600)
-            stage = -9;
-        else if (maxRPM >= 600)
-            stage = -10;
-    }
-
-    Debug_SetMaxRPMStage(stage);
-}
-
 static void SendContinuePromptResponse(u16 *cmd)
 {
     if (gReceivedRemoteLinkPlayers && gWirelessCommType)
@@ -2552,8 +2458,6 @@ static void CB2_EndBlenderGame(void)
 
     if (sBerryBlender->gameEndState < 3)
         UpdateBlenderCenter();
-
-    GetMultiplayerId(); // unused return value
 
     switch (sBerryBlender->gameEndState)
     {
@@ -3455,7 +3359,6 @@ static bool8 PrintBlendingResults(void)
     struct Pokeblock pokeblock;
     u8 flavors[FLAVOR_COUNT + 1];
     u8 text[40];
-    u16 UNUSED berryIds[4];
 
     switch (sBerryBlender->mainState)
     {
@@ -3549,8 +3452,6 @@ static bool8 PrintBlendingResults(void)
 
         for (i = 0; i < BLENDER_MAX_PLAYERS; i++)
         {
-            if (sBerryBlender->chosenItemId[i] != 0)
-                berryIds[i] = sBerryBlender->chosenItemId[i] - FIRST_BERRY_INDEX;
             if (sBerryBlender->arrowIdToPlayerId[i] != NO_PLAYER)
             {
                 PutWindowTilemap(i);
@@ -3558,7 +3459,6 @@ static bool8 PrintBlendingResults(void)
             }
         }
 
-        Debug_SetStageVars();
         CalculatePokeblock(sBerryBlender->blendedBerries, &pokeblock, sBerryBlender->numPlayers, flavors, sBerryBlender->maxRPM);
         PrintMadePokeblockString(&pokeblock, sBerryBlender->stringVar);
         TryAddContestLinkTvShow(&pokeblock, &sBerryBlender->tvBlender);
@@ -3605,7 +3505,7 @@ static void PrintMadePokeblockString(struct Pokeblock *pokeblock, u8 *dst)
     ConvertIntToDecimalStringN(text, feel, STR_CONV_MODE_LEFT_ALIGN, 3);
     StringAppend(dst, text);
 
-    StringAppend(dst, sText_Dot2);
+    StringAppend(dst, sText_Dot);
     StringAppend(dst, sText_NewParagraph);
 }
 

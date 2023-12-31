@@ -203,7 +203,6 @@ static EWRAM_DATA union
     struct WirelessLink_Group *group;
     struct WirelessLink_URoom *uRoom;
 } sWirelessLinkMain = {};
-static EWRAM_DATA u32 sUnused = 0;
 EWRAM_DATA struct RfuGameCompatibilityData gRfuPartnerCompatibilityData = {};
 EWRAM_DATA u16 gUnionRoomOfferedSpecies = 0;
 EWRAM_DATA u8 gUnionRoomRequestedMonType = 0;
@@ -266,7 +265,7 @@ static s32 TradeBoardMenuHandler(u8 *, u8 *, u8 *, u8 *, const struct WindowTemp
 static s32 GetIndexOfNthTradeBoardOffer(struct RfuPlayer *, s32);
 static bool32 HasAtLeastTwoMonsOfLevel30OrLower(void);
 static u32 GetResponseIdx_InviteToURoomActivity(s32);
-static void ViewURoomPartnerTrainerCard(u8 *, struct WirelessLink_URoom *, bool8);
+static void ViewURoomPartnerTrainerCard(struct WirelessLink_URoom *, bool8);
 static void GetURoomActivityRejectMsg(u8 *, s32, u32);
 static u32 ConvPartnerUnameAndGetWhetherMetAlready(struct RfuPlayer *);
 static void GetURoomActivityStartMsg(u8 *, u8);
@@ -1030,9 +1029,6 @@ static void Task_TryJoinLinkGroup(u8 taskId)
             id = ListMenu_ProcessInput(data->listTaskId);
             if (JOY_NEW(A_BUTTON) && id != LIST_NOTHING_CHOSEN)
             {
-                // Needed to match
-                u32 UNUSED activity = data->playerList->players[id].rfu.data.activity;
-
                 if (data->playerList->players[id].groupScheduledAnim == UNION_ROOM_SPAWN_IN && !data->playerList->players[id].rfu.data.startedActivity)
                 {
                     u32 readyStatus = IsTryingToTradeAcrossVersionTooSoon(data, id);
@@ -1576,7 +1572,7 @@ static void WarpForWirelessMinigame(u16 linkService, u16 x, u16 y)
 {
     VarSet(VAR_CABLE_CLUB_STATE, linkService);
     SetWarpDestination(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, WARP_ID_NONE, x, y);
-    SetDynamicWarpWithCoords(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, WARP_ID_NONE, x, y);
+    SetDynamicWarpWithCoords(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, WARP_ID_NONE, x, y);
     WarpIntoMap();
 }
 
@@ -2132,9 +2128,6 @@ static void Task_CardOrNewsWithFriend(u8 taskId)
             id = ListMenu_ProcessInput(data->listTaskId);
             if (JOY_NEW(A_BUTTON) && id != LIST_NOTHING_CHOSEN)
             {
-                // Needed to match
-                u32 UNUSED activity = data->playerList->players[id].rfu.data.activity;
-
                 if (data->playerList->players[id].groupScheduledAnim == UNION_ROOM_SPAWN_IN && !data->playerList->players[id].rfu.data.startedActivity)
                 {
                     data->leaderId = id;
@@ -2766,7 +2759,7 @@ static void Task_RunUnionRoom(u8 taskId)
             {
                 if (gPlayerCurrActivity == ACTIVITY_CARD)
                 {
-                    ViewURoomPartnerTrainerCard(gStringVar4, uroom, FALSE);
+                    ViewURoomPartnerTrainerCard(uroom, FALSE);
                     uroom->state = UR_STATE_PRINT_CARD_INFO;
                 }
                 else
@@ -2950,7 +2943,7 @@ static void Task_RunUnionRoom(u8 taskId)
             else if (gPlayerCurrActivity == (ACTIVITY_CARD | IN_UNION_ROOM))
             {
                 Rfu_SendPacket(uroom->playerSendBuffer);
-                ViewURoomPartnerTrainerCard(gStringVar4, uroom, TRUE);
+                ViewURoomPartnerTrainerCard(uroom, TRUE);
                 uroom->state = UR_STATE_PRINT_CARD_INFO;
             }
             else
@@ -3341,8 +3334,6 @@ static void Task_InitUnionRoom(u8 taskId)
                     }
                 }
             }
-            break;
-        case PLIST_UNUSED:
             break;
         }
         break;
@@ -4420,7 +4411,7 @@ static u8 GetActivePartnersInfo(struct WirelessLink_URoom *data)
     return retVal;
 }
 
-static void ViewURoomPartnerTrainerCard(u8 *unused, struct WirelessLink_URoom *data, bool8 isParent)
+static void ViewURoomPartnerTrainerCard(struct WirelessLink_URoom *data, bool8 isParent)
 {
     struct TrainerCard *trainerCard = &gTrainerCards[GetMultiplayerId() ^ 1];
     s32 i;

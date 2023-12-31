@@ -44,7 +44,7 @@ u32 GetMetatileAttributesById(u16 metatileId, u8 attributeType);
 void GetCameraFocusCoords(u16 *x, u16 *y);
 u8 MapGridGetMetatileLayerTypeAt(int x, int y);
 u8 MapGridGetElevationAt(int x, int y);
-bool8 CameraMove(int deltaX, int deltaY);
+void CameraMove(int deltaX, int deltaY);
 void SaveMapView(void);
 u32 ExtractMetatileAttribute(u32, u8);
 u32 MapGridGetMetatileAttributeAt(int, int, u8);

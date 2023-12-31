@@ -108,8 +108,6 @@ static void HandleEndTurn_BattleLost(void);
 static void HandleEndTurn_RanFromBattle(void);
 static void HandleEndTurn_MonFled(void);
 static void HandleEndTurn_FinishBattle(void);
-static void SpriteCB_UnusedBattleInit(struct Sprite *sprite);
-static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite);
 
 EWRAM_DATA u16 gBattle_BG0_X = 0;
 EWRAM_DATA u16 gBattle_BG0_Y = 0;
@@ -135,7 +133,6 @@ EWRAM_DATA u8 gBattleTextBuff3[TEXT_BUFF_ARRAY_COUNT] = {0};
 EWRAM_DATA static u32 sFlickerArray[25] = {0};
 EWRAM_DATA u32 gBattleTypeFlags = 0;
 EWRAM_DATA u8 gBattleTerrain = 0;
-EWRAM_DATA u32 gUnusedFirstBattleVar1 = 0; // Never read
 EWRAM_DATA struct MultiPartnerMenuPokemon gMultiPartnerParty[MULTI_PARTY_SIZE] = {0};
 EWRAM_DATA static struct MultiPartnerMenuPokemon* sMultiPartnerPartyBuffer = NULL;
 EWRAM_DATA u8 *gBattleAnimBgTileBuffer = NULL;
@@ -172,7 +169,6 @@ EWRAM_DATA u8 gAbsentBattlerFlags = 0;
 EWRAM_DATA u8 gCritMultiplier = 0;
 EWRAM_DATA u8 gMultiHitCounter = 0;
 EWRAM_DATA const u8 *gBattlescriptCurrInstr = NULL;
-EWRAM_DATA u32 gUnusedBattleMainVar = 0;
 EWRAM_DATA u8 gChosenActionByBattler[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA const u8 *gSelectionBattleScripts[MAX_BATTLERS_COUNT] = {NULL};
 EWRAM_DATA const u8 *gPalaceSelectionBattleScripts[MAX_BATTLERS_COUNT] = {NULL};
@@ -186,9 +182,7 @@ EWRAM_DATA u8 gLastHitBy[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u16 gChosenMoveByBattler[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gMoveResultFlags = 0;
 EWRAM_DATA u32 gHitMarker = 0;
-EWRAM_DATA static u8 sUnusedBattlersArray[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gBideTarget[MAX_BATTLERS_COUNT] = {0};
-EWRAM_DATA u8 gUnusedFirstBattleVar2 = 0; // Never read
 EWRAM_DATA u16 gSideStatuses[NUM_BATTLE_SIDES] = {0};
 EWRAM_DATA struct SideTimer gSideTimers[NUM_BATTLE_SIDES] = {0};
 EWRAM_DATA u32 gStatuses3[MAX_BATTLERS_COUNT] = {0};
@@ -221,8 +215,6 @@ EWRAM_DATA u32 gTransformedPersonalities[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gPlayerDpadHoldFrames = 0;
 EWRAM_DATA struct BattleSpriteData *gBattleSpritesDataPtr = NULL;
 EWRAM_DATA struct MonSpritesGfx *gMonSpritesGfxPtr = NULL;
-EWRAM_DATA struct BattleHealthboxInfo *gBattleControllerOpponentHealthboxData = NULL; // Never read
-EWRAM_DATA struct BattleHealthboxInfo *gBattleControllerOpponentFlankHealthboxData = NULL; // Never read
 EWRAM_DATA u16 gBattleMovePower = 0;
 EWRAM_DATA u16 gMoveToLearn = 0;
 EWRAM_DATA u8 gBattleMonForms[MAX_BATTLERS_COUNT] = {0};
@@ -240,23 +232,6 @@ u8 gBattleControllerData[MAX_BATTLERS_COUNT]; // Used by the battle controllers 
 static const struct ScanlineEffectParams sIntroScanlineParams16Bit =
 {
     &REG_BG3HOFS, SCANLINE_EFFECT_DMACNT_16BIT, 1
-};
-
-// unused
-static const struct ScanlineEffectParams sIntroScanlineParams32Bit =
-{
-    &REG_BG3HOFS, SCANLINE_EFFECT_DMACNT_32BIT, 1
-};
-
-const struct SpriteTemplate gUnusedBattleInitSprite =
-{
-    .tileTag = 0,
-    .paletteTag = 0,
-    .oam = &gDummyOamData,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_UnusedBattleInit,
 };
 
 static const u8 sText_ShedinjaJpnName[] = _("ヌケニン"); // Nukenin
@@ -289,29 +264,6 @@ const struct OamData gOamData_BattleSpritePlayerSide =
     .priority = 2,
     .paletteNum = 2,
     .affineParam = 0,
-};
-
-static const union AnimCmd sAnim_Unused[] =
-{
-    ANIMCMD_FRAME(0, 5),
-    ANIMCMD_JUMP(0),
-};
-
-static const union AnimCmd *const sAnims_Unused[] =
-{
-    sAnim_Unused,
-};
-
-static const union AffineAnimCmd sAffineAnim_Unused[] =
-{
-    AFFINEANIMCMD_FRAME(-0x10, 0x0, 0, 4),
-    AFFINEANIMCMD_FRAME(0x0, 0x0, 0, 0x3C),
-    AFFINEANIMCMD_JUMP(1),
-};
-
-static const union AffineAnimCmd *const sAffineAnims_Unused[] =
-{
-    sAffineAnim_Unused,
 };
 
 static const s8 sCenterToCornerVecXs[8] ={-32, -16, -16, -32, -32};
@@ -1897,57 +1849,6 @@ void CB2_QuitRecordedBattle(void)
 #define sState data[0]
 #define sDelay data[4]
 
-static void SpriteCB_UnusedBattleInit(struct Sprite *sprite)
-{
-    sprite->sState = 0;
-    sprite->callback = SpriteCB_UnusedBattleInit_Main;
-}
-
-static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite)
-{
-    u16 *arr = (u16 *)gDecompressionBuffer;
-
-    switch (sprite->sState)
-    {
-    case 0:
-        sprite->sState++;
-        sprite->data[1] = 0;
-        sprite->data[2] = 0x281;
-        sprite->data[3] = 0;
-        sprite->sDelay = 1;
-        // fall through
-    case 1:
-        sprite->sDelay--;
-        if (sprite->sDelay == 0)
-        {
-            s32 i;
-            s32 r2;
-            s32 r0;
-
-            sprite->sDelay = 2;
-            r2 = sprite->data[1] + sprite->data[3] * 32;
-            r0 = sprite->data[2] - sprite->data[3] * 32;
-            for (i = 0; i < 29; i += 2)
-            {
-                arr[r2 + i] = 0x3D;
-                arr[r0 + i] = 0x3D;
-            }
-            sprite->data[3]++;
-            if (sprite->data[3] == 21)
-            {
-                sprite->sState++;
-                sprite->data[1] = 32;
-            }
-        }
-        break;
-    case 2:
-        sprite->data[1]--;
-        if (sprite->data[1] == 20)
-            SetMainCallback2(CB2_InitBattle);
-        break;
-    }
-}
-
 static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
 {
     u32 personalityValue;
@@ -1988,12 +1889,6 @@ static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 f
 
         gBattleTypeFlags |= trainer->doubleBattle;
     }
-}
-
-static void UNUSED HBlankCB_Battle(void)
-{
-    if (REG_VCOUNT < DISPLAY_HEIGHT && REG_VCOUNT >= 111)
-        SetGpuReg(REG_OFFSET_BG0CNT, BGCNT_SCREENBASE(24) | BGCNT_TXT256x512);
 }
 
 void VBlankCB_Battle(void)
@@ -2626,13 +2521,6 @@ void SpriteCallbackDummy_2(struct Sprite *sprite)
 #define sNumFlickers data[3]
 #define sDelay       data[4]
 
-static void UNUSED SpriteCB_InitFlicker(struct Sprite *sprite)
-{
-    sprite->sNumFlickers = 6;
-    sprite->sDelay = 1;
-    sprite->callback = SpriteCB_Flicker;
-}
-
 static void SpriteCB_Flicker(struct Sprite *sprite)
 {
     sprite->sDelay--;
@@ -2761,11 +2649,6 @@ static void SpriteCB_BattleSpriteSlideLeft(struct Sprite *sprite)
             sprite->data[1] = 0;
         }
     }
-}
-
-static void UNUSED SetIdleSpriteCallback(struct Sprite *sprite)
-{
-    sprite->callback = SpriteCB_Idle;
 }
 
 static void SpriteCB_Idle(struct Sprite *sprite)
@@ -2946,7 +2829,6 @@ static void BattleStartClearSetData(void)
             dataPtr[j] = 0;
 
         gDisableStructs[i].isFirstTurn = 2;
-        sUnusedBattlersArray[i] = 0;
         gLastMoves[i] = MOVE_NONE;
         gLastLandedMoves[i] = MOVE_NONE;
         gLastHitByType[i] = 0;
@@ -3249,7 +3131,7 @@ void FaintClearSetData(void)
     ClearBattlerAbilityHistory(gActiveBattler);
 }
 
-static void BattleIntroDrawPartySummaryScreen(struct Pokemon *party, u32 position)
+static void BattleIntroDrawPartySummaryScreen(struct Pokemon *party, u8 position)
 {
     u32 i;
     struct HpAndStatus hpStatus[PARTY_SIZE];
@@ -3313,6 +3195,7 @@ static void DoBattleIntro(void)
 {
     u32 i;
     u8 *state = &gBattleStruct->introState;
+    u8 battler;
 
     switch (*state)
     {
@@ -3349,7 +3232,7 @@ static void DoBattleIntro(void)
     case STATE_DRAW_SPRITES: // Copy battler data from STATE_GET_MON_DATA and STATE_LOOP_BATTLER_DATA. Draw trainer/Pokémon sprite.
         for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
         {
-            u32 side = GetBattlerSide(gActiveBattler);
+            u8 side = GetBattlerSide(gActiveBattler);
             if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI) && side == B_SIDE_PLAYER)
             {
                 memset(&gBattleMons[gActiveBattler], 0, sizeof(struct BattlePokemon));
@@ -3427,15 +3310,15 @@ static void DoBattleIntro(void)
             (*state)++;
         break;
     case STATE_INTRO_TEXT: // Print battle intro text.
-        i = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-        if (IsBattlerMarkedForControllerExec(i) == FALSE)
+        battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+        if (IsBattlerMarkedForControllerExec(battler) == FALSE)
         {
-            PrepareStringBattle(STRINGID_INTROMSG, i);
+            PrepareStringBattle(STRINGID_INTROMSG, battler);
             (*state)++;
         }
         break;
     case STATE_WAIT_FOR_INTRO_TEXT: // Wait for intro text to be printed.
-        if (IsBattlerMarkedForControllerExec(i) == FALSE)
+        if (IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)) == FALSE)
         {
             if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
                 (*state)++;
@@ -3445,12 +3328,11 @@ static void DoBattleIntro(void)
         break;
     case STATE_TRAINER_SEND_OUT_TEXT: // Print opposing trainer send out text.
         if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
-            i = B_POSITION_PLAYER_LEFT;
+            battler = B_POSITION_PLAYER_LEFT;
         else
-            i = B_POSITION_OPPONENT_LEFT;
-        i = GetBattlerAtPosition(i);
+            battler = B_POSITION_OPPONENT_LEFT;
 
-        PrepareStringBattle(STRINGID_INTROSENDOUT, i);
+        PrepareStringBattle(STRINGID_INTROSENDOUT, GetBattlerAtPosition(battler));
         (*state)++;
         break;
     case STATE_WAIT_FOR_TRAINER_SEND_OUT_TEXT: // Wait for opposing trainer send out text to be printed.
@@ -3459,10 +3341,10 @@ static void DoBattleIntro(void)
         break;
     case STATE_TRAINER_1_SEND_OUT_ANIM: // First opposing Pokémon send out animation.
         if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && !(gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER))
-            i = B_POSITION_PLAYER_LEFT;
+            battler = B_POSITION_PLAYER_LEFT;
         else
-            i = B_POSITION_OPPONENT_LEFT;
-        gActiveBattler = GetBattlerAtPosition(i);
+            battler = B_POSITION_OPPONENT_LEFT;
+        gActiveBattler = GetBattlerAtPosition(battler);
 
         BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
         MarkBattlerForControllerExec(gActiveBattler);

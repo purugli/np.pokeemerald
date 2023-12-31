@@ -23,5 +23,6 @@ void ProcessImmediateTimeEvents(void);
 void FillDNPlttBufferWithBlack(u32 offset, u16 size);
 void LoadCompressedPalette_HandleDNSTint(const u32 *src, u16 offset, u16 size, bool32 applyDNSTint);
 void LoadPalette_HandleDNSTint(const void *src, u16 offset, u16 size, bool32 applyDNSTint);
+void LoadPaletteFast_HandleDNSTint(const void *src, u16 offset, u16 size, bool32 applyDNSTint);
 
 #endif // GUARD_DAY_NIGHT_H

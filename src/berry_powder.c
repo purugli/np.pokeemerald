@@ -15,116 +15,6 @@
 
 static EWRAM_DATA u8 sBerryPowderVendorWindowId = 0;
 
-static const struct BgTemplate UNUSED sBerryPowderBgTemplates[] =
-{
-    {
-        .bg = 0,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 30,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 0,
-        .baseTile = 0
-    },
-    {
-        .bg = 1,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 12,
-        .screenSize = 1,
-        .paletteMode = 0,
-        .priority = 1,
-        .baseTile = 0
-    },
-    {
-        .bg = 2,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 14,
-        .screenSize = 1,
-        .paletteMode = 0,
-        .priority = 1,
-        .baseTile = 0
-    },
-    {
-        .bg = 3,
-        .charBaseIndex = 3,
-        .mapBaseIndex = 31,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 2,
-        .baseTile = 0
-    },
-};
-
-// ? Part of the BG templates?
-static const u32 UNUSED sUnknown[] = {0xFF, 0x00};
-
-static const struct WindowTemplate UNUSED sBerryPowderWindowTemplates[] =
-{
-    {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 1,
-        .width = 28,
-        .height = 2,
-        .paletteNum = 13,
-        .baseBlock = 19
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 5,
-        .width = 28,
-        .height = 14,
-        .paletteNum = 13,
-        .baseBlock = 75
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 5,
-        .width = 28,
-        .height = 7,
-        .paletteNum = 13,
-        .baseBlock = 75
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 8,
-        .width = 19,
-        .height = 3,
-        .paletteNum = 13,
-        .baseBlock = 19
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 22,
-        .tilemapTop = 7,
-        .width = 6,
-        .height = 4,
-        .paletteNum = 13,
-        .baseBlock = 76
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 4,
-        .tilemapTop = 6,
-        .width = 22,
-        .height = 5,
-        .paletteNum = 13,
-        .baseBlock = 19
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 5,
-        .tilemapTop = 8,
-        .width = 19,
-        .height = 3,
-        .paletteNum = 13,
-        .baseBlock = 19
-    },
-};
-
 static u32 DecryptBerryPowder(u32 *powder)
 {
     return *powder ^ gSaveBlock2Ptr->encryptionKey;
@@ -173,16 +63,6 @@ bool8 GiveBerryPowder(u32 amountToAdd)
         SetBerryPowder(powder, amount);
         return TRUE;
     }
-}
-
-static bool8 UNUSED TakeBerryPowder_(u32 cost)
-{
-    u32 *powder = &gSaveBlock2Ptr->berryCrush.berryPowderAmount;
-    if (!HasEnoughBerryPowder_(cost))
-        return FALSE;
-
-    SetBerryPowder(powder, DecryptBerryPowder(powder) - cost);
-    return TRUE;
 }
 
 bool8 TakeBerryPowder(void)

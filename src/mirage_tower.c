@@ -19,6 +19,8 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/metatile_labels.h"
+#include "field_effect.h"
+#include "graphics.h"
 
 struct MirageTowerPulseBlend
 {
@@ -78,8 +80,6 @@ static void UpdateDisintegrationEffect(u8 *, u16, u8, u8, u8);
 static const u8 ALIGNED(2) sBlankTile_Gfx[32] = {0};
 static const u8 sMirageTower_Gfx[] = INCBIN_U8("graphics/misc/mirage_tower.4bpp");
 static const u16 sMirageTowerTilemap[] = INCBIN_U16("graphics/misc/mirage_tower.bin");
-static const u16 sFossil_Pal[] = INCBIN_U16("graphics/object_events/pics/misc/fossil.gbapal"); // Unused
-static const u8 sFossil_Gfx[] = INCBIN_U8("graphics/object_events/pics/misc/fossil.4bpp"); // Duplicate of gObjectEventPic_Fossil
 static const u8 sMirageTowerCrumbles_Gfx[] = INCBIN_U8("graphics/misc/mirage_tower_crumbles.4bpp");
 static const u16 sMirageTowerCrumbles_Palette[] = INCBIN_U16("graphics/misc/mirage_tower_crumbles.gbapal");
 
@@ -154,7 +154,7 @@ static const union AnimCmd *const sAnims_FallingFossil[] =
 static const struct SpriteTemplate sSpriteTemplate_FallingFossil =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_1,
     .oam = &sOamData_FallingFossil,
     .anims = sAnims_FallingFossil,
     .images = NULL,
@@ -258,10 +258,6 @@ EWRAM_DATA static struct FallAnim_Fossil *sFallingFossil = NULL;
 EWRAM_DATA static struct FallAnim_Tower *sFallingTower = NULL;
 EWRAM_DATA static struct BgRegOffsets *sBgShakeOffsets = NULL;
 EWRAM_DATA static struct MirageTowerPulseBlend *sMirageTowerPulseBlend = NULL;
-
-// Holds data about the disintegration effect for Mirage Tower / the unchosen fossil.
-// Never read, presumably for debugging
-static u16 sDebug_DisintegrationData[8];
 
 bool8 IsMirageTowerVisible(void)
 {
@@ -447,7 +443,7 @@ static void FinishCeilingCrumbleTask(u8 taskId)
 
 static void CreateCeilingCrumbleSprites(void)
 {
-    u8 i;
+    u32 i;
     u8 spriteId;
 
     for (i = 0; i < 8; i++)
@@ -479,7 +475,7 @@ static void SpriteCB_CeilingCrumble(struct Sprite *sprite)
 
 static void SetInvisibleMirageTowerMetatiles(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sInvisibleMirageTowerMetatiles); i++)
         MapGridSetMetatileIdAt(sInvisibleMirageTowerMetatiles[i].x + MAP_OFFSET,
                                sInvisibleMirageTowerMetatiles[i].y + MAP_OFFSET,
@@ -577,8 +573,8 @@ static void InitMirageTowerShake(u8 taskId)
 #define INNER_BUFFER_LENGTH 0x30
 static void DoMirageTowerDisintegration(u8 taskId)
 {
-    u8 bgShakeTaskId, j;
-    u16 i;
+    u8 bgShakeTaskId;
+    u32 i, j;
     u8 index;
 
     switch (gTasks[taskId].tState)
@@ -665,31 +661,32 @@ static void DoMirageTowerDisintegration(u8 taskId)
 
 static void Task_FossilFallAndSink(u8 taskId)
 {
-    u16 i;
+    u32 i;
     u8 *buffer;
 
     switch (gTasks[taskId].tState)
     {
     case 1:
         sFallingFossil = AllocZeroed(sizeof(*sFallingFossil));
-        sFallingFossil->frameImageTiles = AllocZeroed(sizeof(sFossil_Gfx));
+        sFallingFossil->frameImageTiles = AllocZeroed(sizeof((u8)gObjectEventPic_Fossil));
         sFallingFossil->frameImage = AllocZeroed(sizeof(*sFallingFossil->frameImage));
         sFallingFossil->disintegrateRand = AllocZeroed(FOSSIL_DISINTEGRATE_LENGTH * sizeof(u16));
         sFallingFossil->disintegrateIdx = 0;
         break;
     case 2:
         buffer = sFallingFossil->frameImageTiles;
-        for (i = 0; i < sizeof(sFossil_Gfx); i++, buffer++)
-            *buffer = sFossil_Gfx[i];
+        for (i = 0; i < sizeof((u8)gObjectEventPic_Fossil); i++, buffer++)
+            *buffer = (u8)gObjectEventPic_Fossil[i];
         break;
     case 3:
         sFallingFossil->frameImage->data = sFallingFossil->frameImageTiles;
-        sFallingFossil->frameImage->size = sizeof(sFossil_Gfx);
+        sFallingFossil->frameImage->size = sizeof((u8)gObjectEventPic_Fossil);
         break;
     case 4:
         {
             struct SpriteTemplate fossilTemplate = sSpriteTemplate_FallingFossil;
             fossilTemplate.images = sFallingFossil->frameImage;
+            LoadObjectEventPalette(sSpriteTemplate_FallingFossil.paletteTag, TRUE);
             sFallingFossil->spriteId = CreateSprite(&fossilTemplate, 128, -16, 1);
             gSprites[sFallingFossil->spriteId].centerToCornerVecX = 0;
             gSprites[sFallingFossil->spriteId].data[0] = gSprites[sFallingFossil->spriteId].x;
@@ -715,6 +712,9 @@ static void Task_FossilFallAndSink(u8 taskId)
         // Wait for fossil to finish falling / disintegrating
         if (gSprites[sFallingFossil->spriteId].callback != SpriteCallbackDummy)
             return;
+        gSprites[sFallingFossil->spriteId].inUse = FALSE;
+        FieldEffectFreePaletteIfUnused(gSprites[sFallingFossil->spriteId].oam.paletteNum);
+        gSprites[sFallingFossil->spriteId].inUse = TRUE;
         DestroySprite(&gSprites[sFallingFossil->spriteId]);
         FREE_AND_SET_NULL(sFallingFossil->disintegrateRand);;
         FREE_AND_SET_NULL(sFallingFossil->frameImage);
@@ -759,27 +759,19 @@ static void UpdateDisintegrationEffect(u8 *tiles, u16 randId, u8 c, u8 size, u8 
     u8 flag, tileMask;
 
     height = randId / size;
-    sDebug_DisintegrationData[0] = height;
 
     width = randId % size;
-    sDebug_DisintegrationData[1] = width;
 
     row = height & 7;
     col = width & 7;
-    sDebug_DisintegrationData[2] = height & 7;
-    sDebug_DisintegrationData[3] = width & 7;
 
     widthTiles = width / 8;
     heightTiles = height / 8;
-    sDebug_DisintegrationData[4] = width / 8;
-    sDebug_DisintegrationData[5] = height / 8;
 
     var = (size / 8) * (heightTiles * 64) + (widthTiles * 64);
-    sDebug_DisintegrationData[6] = var;
 
     baseOffset = var + ((row * 8) + col);
     baseOffset /= 2;
-    sDebug_DisintegrationData[7] = var + ((row * 8) + col);
 
     flag = ((randId % 2) ^ 1);
     tileMask = (c << (flag << 2)) | 15 << (((flag ^ 1) << 2));

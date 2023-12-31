@@ -53,7 +53,6 @@ enum {
 
 enum {
     PACKET_MON_INFO = 1,
-    PACKET_UNUSED,
     PACKET_LEADER_STATE,
     PACKET_MEMBER_STATE,
 };
@@ -343,7 +342,6 @@ static void AddJumpScore(int);
 static int GetPlayersAtJumpPeak(void);
 static bool32 AreLinkQueuesEmpty(void);
 static int GetNumPlayersForBonus(u8 *);
-static void ClearUnreadField(void);
 static int GetScoreBonus(int);
 static void TryUpdateExcellentsRecord(u16);
 static bool32 HasEnoughScoreForPrize(void);
@@ -588,8 +586,6 @@ static void ResetForNewGame(struct PokemonJump *jump)
     jump->excellentsInRow = 0;
     jump->excellentsInRowRecord = 0;
     jump->initScoreUpdate = FALSE;
-    jump->unused2 = 0;
-    jump->unused3 = 0;
     jump->numPlayersAtPeak = 0;
     jump->allowVineUpdates = FALSE;
     jump->allPlayersReady = FALSE;
@@ -597,7 +593,6 @@ static void ResetForNewGame(struct PokemonJump *jump)
     jump->comm.jumpScore = 0;
     jump->comm.receivedBonusFlags = 0;
     jump->comm.jumpsInRow = 0;
-    jump->unused4 = TRUE;
     jump->showBonus = FALSE;
     jump->skipJumpUpdate = FALSE;
     jump->giveBonus = FALSE;
@@ -2033,7 +2028,6 @@ static void TryUpdateScore(void)
 
         if (!sPokemonJump->initScoreUpdate)
         {
-            ClearUnreadField();
             sPokemonJump->numPlayersAtPeak = 0;
             sPokemonJump->initScoreUpdate = TRUE;
             sPokemonJump->comm.receivedBonusFlags = 0;
@@ -2058,7 +2052,6 @@ static void TryUpdateScore(void)
                 memcpy(sPokemonJump->atJumpPeak3, sPokemonJump->atJumpPeak2, sizeof(u8) * MAX_RFU_PLAYERS);
             }
 
-            ClearUnreadField();
             sPokemonJump->numPlayersAtPeak = 0;
             sPokemonJump->initScoreUpdate = TRUE;
             sPokemonJump->comm.receivedBonusFlags = 0;
@@ -2226,11 +2219,6 @@ static int GetNumPlayersForBonus(u8 *atJumpPeak)
         sPokemonJump->showBonus = TRUE;
 
     return count;
-}
-
-static void ClearUnreadField(void)
-{
-    sPokemonJump->unused3 = 0;
 }
 
 // Bonuses given depend on the number of
@@ -2710,19 +2698,17 @@ static void CreateJumpMonSprite(struct PokemonJumpGfx *jumpGfx, struct PokemonJu
     struct SpriteSheet spriteSheet;
     struct SpritePalette spritePalette;
     u8 *buffer;
-    u8 *unusedBuffer;
     u8 subpriority;
     u8 spriteId;
 
     spriteTemplate = sSpriteTemplate_JumpMon;
     buffer = Alloc(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
-    unusedBuffer = Alloc(MON_PIC_SIZE);
     if (multiplayerId == GetPokeJumpMultiplayerId())
         subpriority = 3;
     else
         subpriority = multiplayerId + 4;
 
-    if (buffer && unusedBuffer)
+    if (buffer)
     {
         LoadSpecialPokePic(
             buffer,
@@ -2739,7 +2725,6 @@ static void CreateJumpMonSprite(struct PokemonJumpGfx *jumpGfx, struct PokemonJu
         LoadSpritePalette(&spritePalette);
 
         Free(buffer);
-        Free(unusedBuffer);
 
         spriteTemplate.tileTag += multiplayerId;
         spriteTemplate.paletteTag += multiplayerId;
@@ -3959,23 +3944,6 @@ static bool32 RecvPacket_MonInfo(int multiplayerId, struct PokemonJump_MonInfo *
     return FALSE;
 }
 
-struct UnusedPacket
-{
-    u8 id;
-    u32 data;
-    u32 filler;
-};
-
-// Data packet that's never sent
-// No function to read it either
-static void UNUSED SendPacket_Unused(u32 data)
-{
-    struct UnusedPacket packet;
-    packet.id = PACKET_UNUSED;
-    packet.data = data;
-    Rfu_SendPacket(&packet);
-}
-
 struct LeaderStatePacket
 {
     u8 id;
@@ -4103,8 +4071,6 @@ void ResetPokemonJumpRecords(void)
     records->bestJumpScore = 0;
     records->excellentsInRow = 0;
     records->gamesWithMaxPlayers = 0;
-    records->unused2 = 0;
-    records->unused1 = 0;
 }
 
 static bool32 TryUpdateRecords(u32 jumpScore, u16 jumpsInRow, u16 excellentsInRow)

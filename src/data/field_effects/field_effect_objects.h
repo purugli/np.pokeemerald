@@ -1,5 +1,6 @@
 const struct SpritePalette gSpritePalette_GeneralFieldEffect0 = {gFieldEffectObjectPalette0, FLDEFF_PAL_TAG_GENERAL_0};
 const struct SpritePalette gSpritePalette_GeneralFieldEffect1 = {gFieldEffectObjectPalette1, FLDEFF_PAL_TAG_GENERAL_1};
+static const union AnimCmd sAnim_DisguiseReveal[];
 
 static const union AnimCmd sAnim_Shadow[] =
 {
@@ -10,6 +11,7 @@ static const union AnimCmd sAnim_Shadow[] =
 static const union AnimCmd *const sAnimTable_Shadow[] =
 {
     sAnim_Shadow,
+    sAnim_DisguiseReveal,
 };
 
 static const struct SpriteFrameImage sPicTable_ShadowSmall[] = {
@@ -672,17 +674,11 @@ static const union AnimCmd sAnim_DisguiseReveal[] =
     ANIMCMD_END,
 };
 
-static const union AnimCmd *const sAnimTable_Disguise[] =
-{
-    sAnim_Shadow,
-    sAnim_DisguiseReveal,
-};
-
 const struct SpriteTemplate gFieldEffectObjectTemplate_TreeDisguise = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_NPC_3,
     .oam = &gObjectEventBaseOam_16x32,
-    .anims = sAnimTable_Disguise,
+    .anims = sAnimTable_Shadow,
     .images = sPicTable_TreeDisguise,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = UpdateDisguiseFieldEffect,
@@ -696,7 +692,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_MountainDisguise = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_NPC_2,
     .oam = &gObjectEventBaseOam_16x32,
-    .anims = sAnimTable_Disguise,
+    .anims = sAnimTable_Shadow,
     .images = sPicTable_MountainDisguise,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = UpdateDisguiseFieldEffect,

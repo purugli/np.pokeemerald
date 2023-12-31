@@ -993,9 +993,6 @@
 	.2byte \species
 	.byte \level
 	.2byte \item
-	.4byte 0
-	.4byte 0
-	.byte 0
 	.endm
 
 	@ Gives the player an Egg of the specified species.

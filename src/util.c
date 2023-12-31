@@ -156,11 +156,13 @@ void DoBgAffineSet(struct BgAffineDstData *dest, u32 texX, u32 texY, s16 scrX, s
 
 void CopySpriteTiles(u8 shape, u8 size, u8 *tiles, u16 *tilemap, u8 *output)
 {
-    u8 x, y;
-    s8 i, j;
-    u8 ALIGNED(4) xflip[32];
-    u8 h = sSpriteDimensions[shape][size][1];
-    u8 w = sSpriteDimensions[shape][size][0];
+    u32 x, y;
+    s32 i, j;
+    u32 ALIGNED(4) xflip[32];
+    u32 h = sSpriteDimensions[shape][size][1];
+    u32 w = sSpriteDimensions[shape][size][0];
+    u16 *tilemap_increment = tilemap + w;
+    int tilemapMasked = *tilemap & 0xc00;
 
     for (y = 0; y < h; y++)
     {
@@ -168,25 +170,26 @@ void CopySpriteTiles(u8 shape, u8 size, u8 *tiles, u16 *tilemap, u8 *output)
         {
             int tile = (*tilemap & 0x3ff) * 32;
 
-            if ((*tilemap & 0xc00) == 0)
+            if (tilemapMasked == 0)
             {
                 CpuCopy32(tiles + tile, output, 32);
             }
-            else if ((*tilemap & 0xc00) == 0x800)  // yflip
+            else if (tilemapMasked == 0x800)  // yflip
             {
                 for (i = 0; i < 8; i++)
                     CpuCopy32(tiles + (tile + (7 - i) * 4), output + i * 4, 4);
             }
             else  // xflip
             {
+                u32 i2 = 0;
                 for (i = 0; i < 8; i++)
                 {
                     for (j = 0; j < 4; j++)
                     {
-                        u8 i2 = i * 4;
                         xflip[i2 + (3-j)] = (tiles[tile + i2 + j] & 0xf) << 4;
                         xflip[i2 + (3-j)] |= tiles[tile + i2 + j] >> 4;
                     }
+                    i2 += 4;
                 }
                 if (*tilemap & 0x800)  // yflip
                 {
@@ -201,13 +204,13 @@ void CopySpriteTiles(u8 shape, u8 size, u8 *tiles, u16 *tilemap, u8 *output)
             tilemap++;
             output += 32;
         }
-        tilemap += (32 - w);
+        tilemap = tilemap_increment + (32 - w);
     }
 }
 
 int CountTrailingZeroBits(u32 value)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < 32; i++)
     {
@@ -221,7 +224,7 @@ int CountTrailingZeroBits(u32 value)
 
 u16 CalcCRC16(const u8 *data, s32 length)
 {
-    u16 i, j;
+    u32 i, j;
     u16 crc = 0x1121;
 
     for (i = 0; i < length; i++)
@@ -240,7 +243,7 @@ u16 CalcCRC16(const u8 *data, s32 length)
 
 u16 CalcCRC16WithTable(const u8 *data, u32 length)
 {
-    u16 i;
+    u32 i;
     u16 crc = 0x1121;
     u8 byte;
 
@@ -282,10 +285,9 @@ u32 CalcCRC32(const u8 *data, u32 length)
 
 void BlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor)
 {
-    u16 i;
+    u32 i, index = palOffset;  // Move calculation of `index` outside the loop
     for (i = 0; i < numEntries; i++)
     {
-        u16 index = i + palOffset;
         struct PlttData *data1 = (struct PlttData *)&gPlttBufferUnfaded[index];
         s8 r = data1->r;
         s8 g = data1->g;
@@ -294,5 +296,6 @@ void BlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor)
         gPlttBufferFaded[index] = RGB(r + (((data2->r - r) * coeff) >> 4),
                                       g + (((data2->g - g) * coeff) >> 4),
                                       b + (((data2->b - b) * coeff) >> 4));
+        index++;  // Increment `index` for the next iteration
     }
 }

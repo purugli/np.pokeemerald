@@ -651,15 +651,6 @@ void BattleArena_DeductSkillPoints(u8 battler, u16 stringId)
     }
 }
 
-static void UNUSED UpdateHPAtStart(u8 battler)
-{
-    u16 *hpAtStart = gBattleStruct->arenaStartHp;
-
-    hpAtStart[battler] = gBattleMons[battler].hp;
-    if (hpAtStart[BATTLE_OPPOSITE(battler)] > gBattleMons[BATTLE_OPPOSITE(battler)].hp)
-        hpAtStart[BATTLE_OPPOSITE(battler)] = gBattleMons[BATTLE_OPPOSITE(battler)].hp;
-}
-
 static void InitArenaChallenge(void)
 {
     bool32 isCurrent;
@@ -677,7 +668,7 @@ static void InitArenaChallenge(void)
     if (!isCurrent)
         gSaveBlock2Ptr->frontier.arenaWinStreaks[lvlMode] = 0;
 
-    SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, WARP_ID_NONE);
+    SetDynamicWarp(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, WARP_ID_NONE);
     gTrainerBattleOpponent_A = 0;
 }
 

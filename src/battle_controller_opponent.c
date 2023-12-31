@@ -239,9 +239,6 @@ static void Intro_WaitForShinyAnimAndHealthbox(void)
         twoMons = TRUE;
     }
 
-    gBattleControllerOpponentHealthboxData = &gBattleSpritesDataPtr->healthBoxesData[gActiveBattler];
-    gBattleControllerOpponentFlankHealthboxData = &gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)];
-
     if (healthboxAnimDone)
     {
         if (twoMons == TRUE)
@@ -1632,17 +1629,7 @@ static void OpponentHandleChoosePokemon(void)
                 battler2 = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
             }
 
-            if (gBattleTypeFlags & (BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TOWER_LINK_MULTI))
-            {
-                if (gActiveBattler == 1)
-                    firstId = 0, lastId = PARTY_SIZE / 2;
-                else
-                    firstId = PARTY_SIZE / 2, lastId = PARTY_SIZE;
-            }
-            else
-            {
-                firstId = 0, lastId = PARTY_SIZE;
-            }
+            GetAIPartyIndexes(&firstId, &lastId);
 
             for (chosenMonId = firstId; chosenMonId < lastId; chosenMonId++)
             {

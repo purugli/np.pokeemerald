@@ -152,37 +152,8 @@ static const TaskFunc sStaticCountdownFuncs[][4] =
 // tSpriteIds(2) is used for for the rightmost part of 'Start'
 #define tSpriteIds(i)     data[13 + i]
 
-#define sInterval       data[1] // Never read
 #define sAnimNum        data[2]
 #define sTaskId         data[3]
-#define sId             data[4] // Never read
-#define sNumberSpriteId data[5] // Never read
-
-static u32 UNUSED CreateStaticCountdownTask(u8 funcSetId, u8 taskPriority)
-{
-    u8 taskId = CreateTask(Task_StaticCountdown, taskPriority);
-    struct Task *task = &gTasks[taskId];
-
-    task->tState = STATE_IDLE;
-    task->tFuncSetId = funcSetId;
-    sStaticCountdownFuncs[funcSetId][FUNC_INIT](taskId);
-    return taskId;
-}
-
-static bool32 UNUSED StartStaticCountdown(void)
-{
-    u8 taskId = FindTaskIdByFunc(Task_StaticCountdown);
-    if (taskId == TASK_NONE)
-        return FALSE;
-
-    gTasks[taskId].tState = STATE_START;
-    return TRUE;
-}
-
-static bool32 UNUSED IsStaticCountdownRunning(void)
-{
-    return FuncIsActiveTask(Task_StaticCountdown);
-}
 
 static void Task_StaticCountdown(u8 taskId)
 {
@@ -219,10 +190,7 @@ static void StaticCountdown_CreateSprites(u8 taskId, s16 *data)
         sprite = &gSprites[tSpriteIds(i)];
         sprite->oam.priority = tPriority;
         sprite->invisible = TRUE;
-        sprite->sInterval = tInterval;
         sprite->sTaskId = taskId;
-        sprite->sId = i;
-        sprite->sNumberSpriteId = tSpriteIds(0);
     }
 }
 
@@ -353,10 +321,8 @@ static void Task_StaticCountdown_Run(u8 taskId)
 #undef tTimer
 #undef tLinkTimer
 #undef tSpriteIds
-#undef sInterval
 #undef sAnimNum
 #undef sTaskId
-#undef sId
 #undef sNumberSpriteId
 
 /*
@@ -370,7 +336,7 @@ static bool32 IsStartGraphicAnimRunning(u8 spriteId);
 static void Load321StartGfx(u16 tileTag, u16 palTag);
 static u8 CreateNumberSprite(u16 tileTag, u16 palTag, s16 x, s16 y, u8 subpriority);
 static void CreateStartSprite(u16 tileTag, u16 palTag, s16 x, s16 y, u8 subpriority, s16 *spriteId1, s16 *spriteId2);
-static void InitStartGraphic(u8 spriteId1, u8 spriteId2, u8 spriteId3);
+static void InitStartGraphic(u8 spriteId2, u8 spriteId3);
 static void SpriteCB_Start(struct Sprite *sprite);
 
 static const u16 s321Start_Pal[] = INCBIN_U16("graphics/link/321start.gbapal");
@@ -416,7 +382,7 @@ static void Task_MinigameCountdown(u8 taskId)
     case 1:
         if (!RunMinigameCountdownDigitsAnim(tSpriteId1))
         {
-            InitStartGraphic(tSpriteId1, tSpriteId2, tSpriteId3);
+            InitStartGraphic(tSpriteId2, tSpriteId3);
             FreeSpriteOamMatrix(&gSprites[tSpriteId1]);
             DestroySprite(&gSprites[tSpriteId1]);
             tState++;
@@ -524,8 +490,7 @@ static bool32 RunMinigameCountdownDigitsAnim(u8 spriteId)
 #undef sTimer
 #undef sAnimNum
 
-// First argument is unused.
-static void InitStartGraphic(u8 spriteId1, u8 spriteId2, u8 spriteId3)
+static void InitStartGraphic(u8 spriteId2, u8 spriteId3)
 {
     gSprites[spriteId2].y2 = -40;
     gSprites[spriteId3].y2 = -40;

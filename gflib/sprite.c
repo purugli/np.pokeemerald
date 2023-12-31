@@ -28,7 +28,6 @@
 
 #define SPRITE_TILE_IS_ALLOCATED(n) ((sSpriteTileAllocBitmap[(n) / 8] >> ((n) % 8)) & 1)
 
-
 struct SpriteCopyRequest
 {
     const u8 *src;
@@ -572,17 +571,10 @@ void LoadOam(void)
 
 void ClearSpriteCopyRequests(void)
 {
-    u32 i;
-
     sShouldProcessSpriteCopyRequests = FALSE;
     sSpriteCopyRequestCount = 0;
 
-    for (i = 0; i < MAX_SPRITE_COPY_REQUESTS; i++)
-    {
-        sSpriteCopyRequests[i].src = 0;
-        sSpriteCopyRequests[i].dest = 0;
-        sSpriteCopyRequests[i].size = 0;
-    }
+    memset(sSpriteCopyRequests, 0, sizeof(sSpriteCopyRequests));
 }
 
 void ResetOamMatrices(void)
@@ -613,8 +605,8 @@ void ResetSprite(struct Sprite *sprite)
 
 void CalcCenterToCornerVec(struct Sprite *sprite, u8 shape, u8 size, u8 affineMode)
 {
-    u8 x = sCenterToCornerVecTable[shape][size][0];
-    u8 y = sCenterToCornerVecTable[shape][size][1];
+    u32 x = sCenterToCornerVecTable[shape][size][0];
+    u32 y = sCenterToCornerVecTable[shape][size][1];
 
     if (affineMode & ST_OAM_AFFINE_DOUBLE_MASK)
     {
@@ -629,8 +621,6 @@ void CalcCenterToCornerVec(struct Sprite *sprite, u8 shape, u8 size, u8 affineMo
 s16 AllocSpriteTiles(u16 tileCount)
 {
     u32 i;
-    s16 start;
-    u16 numTilesFound;
 
     if (tileCount == 0)
     {
@@ -641,42 +631,30 @@ s16 AllocSpriteTiles(u16 tileCount)
         return 0;
     }
 
-    i = gReservedSpriteTileCount;
-
-    for (;;)
+    for (i = gReservedSpriteTileCount; i <= TOTAL_OBJ_TILE_COUNT - tileCount; i++)
     {
-        while (SPRITE_TILE_IS_ALLOCATED(i))
+        if (!SPRITE_TILE_IS_ALLOCATED(i))
         {
-            i++;
+            u32 j;
 
-            if (i == TOTAL_OBJ_TILE_COUNT)
-                return -1;
+            for (j = 1; j < tileCount; j++)
+            {
+                if (SPRITE_TILE_IS_ALLOCATED(i + j))
+                    break;
+            }
+
+            if (j == tileCount)
+            {
+                // Found a block of contiguous free tiles
+                for (j = 0; j < tileCount; j++)
+                    ALLOC_SPRITE_TILE(i + j);
+
+                return i;
+            }
         }
-
-        start = i;
-        numTilesFound = 1;
-
-        while (numTilesFound != tileCount)
-        {
-            i++;
-
-            if (i == TOTAL_OBJ_TILE_COUNT)
-                return -1;
-
-            if (!SPRITE_TILE_IS_ALLOCATED(i))
-                numTilesFound++;
-            else
-                break;
-        }
-
-        if (numTilesFound == tileCount)
-            break;
     }
 
-    for (i = start; i < tileCount + start; i++)
-        ALLOC_SPRITE_TILE(i);
-
-    return start;
+    return -1; // No contiguous block of tiles found
 }
 
 void SpriteCallbackDummy(struct Sprite *sprite)
@@ -1383,8 +1361,8 @@ void FreeSpriteTilesByTag(u16 tag)
         u32 i;
         u16 *rangeStarts;
         u16 *rangeCounts;
-        u16 start;
-        u16 count;
+        u32 start;
+        u32 count;
         rangeStarts = sSpriteTileRanges;
         start = rangeStarts[index * 2];
         rangeCounts = sSpriteTileRanges + 1;
@@ -1401,9 +1379,9 @@ void FreeSpriteTileRanges(void)
 {
     u32 i;
 
+    memset(sSpriteTileRangeTags, TAG_NONE, sizeof(sSpriteTileRangeTags));
     for (i = 0; i < MAX_SPRITES; i++)
     {
-        sSpriteTileRangeTags[i] = TAG_NONE;
         SET_SPRITE_TILE_RANGE(i, 0, 0);
     }
 }
@@ -1449,10 +1427,8 @@ void AllocSpriteTileRange(u16 tag, u16 start, u16 count)
 
 void FreeAllSpritePalettes(void)
 {
-    u32 i;
     gReservedSpritePaletteCount = 0;
-    for (i = 0; i < 16; i++)
-        sSpritePaletteTags[i] = TAG_NONE;
+    memset(sSpritePaletteTags, TAG_NONE, sizeof(sSpritePaletteTags));
 }
 
 u8 LoadSpritePalette_HandleDNSTint(const struct SpritePalette *palette, bool32 applyDNSTint)

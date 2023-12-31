@@ -46,7 +46,6 @@ enum
 // Windows displayed in the facilities map view.
 enum
 {
-    MAP_WINDOW_UNUSED, // Overlaps the "Battle Frontier" title area of the map
     MAP_WINDOW_NAME,
     MAP_WINDOW_DESCRIPTION,
     MAP_WINDOW_COUNT
@@ -289,15 +288,6 @@ static const struct WindowTemplate sPassWindowTemplates[WINDOW_COUNT] =
 
 static const struct WindowTemplate sMapWindowTemplates[] =
 {
-    [MAP_WINDOW_UNUSED] = {
-        .bg = 0,
-        .tilemapLeft = 0,
-        .tilemapTop = 1,
-        .width = 15,
-        .height = 5,
-        .paletteNum = 15,
-        .baseBlock = 0x1,
-    },
     [MAP_WINDOW_NAME] = {
         .bg = 0,
         .tilemapLeft = 20,
@@ -372,12 +362,6 @@ static const struct SpritePalette sSpritePalettes[] =
     {sMaleHead_Pal,                 TAG_HEAD_MALE},
     {sFemaleHead_Pal,               TAG_HEAD_FEMALE},
     {}
-};
-
-static const union AnimCmd sAnim_Frame1_Unused[] =
-{
-    ANIMCMD_FRAME(0, 0),
-    ANIMCMD_END
 };
 
 static const union AnimCmd sAnim_Frame1[] =
@@ -458,17 +442,6 @@ static const union AnimCmd *const sAnims_MapIndicatorCursor[] =
 {
     [MAP_INDICATOR_RECTANGLE] = sAnim_MapIndicatorCursor_Rectangle,
     [MAP_INDICATOR_SQUARE]    = sAnim_MapIndicatorCursor_Square
-};
-
-static const union AffineAnimCmd sAffineAnim_Unused[] =
-{
-    AFFINEANIMCMD_FRAME(256, 256, 0, 0),
-    AFFINEANIMCMD_END
-};
-
-static const union AffineAnimCmd *const sAffineAnims_Unused[] =
-{
-    sAffineAnim_Unused
 };
 
 static const struct SpriteTemplate sSpriteTemplates_Cursors[] =

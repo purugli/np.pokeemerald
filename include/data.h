@@ -134,4 +134,7 @@ extern const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1];
 #include "trainer_control.h"
 #include "trainer_name_strings.h"
 
+extern const struct Trainer gPartners[];
+extern const struct Trainer gFrontierBrains[];
+
 #endif // GUARD_DATA_H

@@ -66,10 +66,9 @@ void TransferPlttBuffer(void)
     }
 }
 
-u8 UpdatePaletteFade(void)
+u32 UpdatePaletteFade(void)
 {
-    u8 result;
-    u8 dummy = 0;
+    u32 result;
 
     if (sPlttBufferTransferPending)
         return PALETTE_FADE_STATUS_LOADING;
@@ -289,7 +288,7 @@ u8 UpdatePaletteFade(void)
         }
     }
 
-    sPlttBufferTransferPending = gPaletteFade.multipurpose1 | dummy;
+    sPlttBufferTransferPending = gPaletteFade.multipurpose1;
 
     return result;
 }
@@ -314,7 +313,7 @@ void ResetPaletteFade(void)
 
 bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, u16 blendColor)
 {
-    u16 denominator;
+    u32 denominator;
 
     if (delay >= 0)
     {
@@ -329,9 +328,8 @@ bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targe
     }
     else
     {
-        u32 i;
-        u8 deltaY;
-        s8 y;
+        u32 i, deltaY;
+        s32 y;
 
         if (delay < -14)
             delay = -14;
@@ -359,7 +357,7 @@ bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targe
     }
     else
     {
-        u8 temp;
+        u32 temp;
 
         startY *= 2;
         targetY *= 2;
@@ -451,11 +449,12 @@ static u8 UpdateNormalPaletteFade(void)
     }
     else
     {
-        u16 targetY = gPaletteFade.targetY * gPaletteFade.denominator;
-        u16 yWholeValue = gPaletteFade.y / gPaletteFade.denominator;
+        u32 targetY;
+        u32 yWholeValue = gPaletteFade.y / gPaletteFade.denominator;
         if (gPaletteFade.yChanged)
             BlendPalettesFine(gPaletteFade_selectedPalettes, yWholeValue, gPaletteFade.blendColor);
 
+        targetY = gPaletteFade.targetY * gPaletteFade.denominator;
         if (gPaletteFade.y == targetY)
         {
             gPaletteFade_selectedPalettes = 0;
@@ -463,7 +462,7 @@ static u8 UpdateNormalPaletteFade(void)
         }
         else
         {
-            u16 newY;
+            u32 newY;
 
             if (!gPaletteFade.yDec)
             {
@@ -505,7 +504,7 @@ void InvertPlttBuffer(u32 selectedPalettes)
     }
 }
 
-void BeginFastPaletteFade(u8 submode)
+void BeginFastPaletteFade(u32 submode)
 {
     gPaletteFade.deltaY = 2;
     gPaletteFade.y = 31;
@@ -523,7 +522,7 @@ void BeginFastPaletteFade(u8 submode)
     UpdatePaletteFade();
 }
 
-void BeginHardwarePaletteFade(u8 blendCnt, u8 delay, u8 y, u8 targetY, u8 shouldResetBlendRegisters)
+void BeginHardwarePaletteFade(u32 blendCnt, u32 delay, u32 y, u32 targetY, u32 shouldResetBlendRegisters)
 {
     gPaletteFade_blendCnt = blendCnt;
     gPaletteFade.delayCounter = delay;

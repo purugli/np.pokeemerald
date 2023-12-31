@@ -98,18 +98,6 @@ static const u16 sEvoSparkleMatrices[] =
     0x240, 0x200, 0x1C0, 0x180, 0x140, 0x100
 };
 
-static const s16 sUnused[] =
-{
-    -4, 0x10,
-    -3, 0x30,
-    -2, 0x50,
-    -1, 0x70,
-     1, 0x70,
-     2, 0x50,
-     3, 0x30,
-     4, 0x10
-};
-
 static void SpriteCB_Sparkle_Dummy(struct Sprite *sprite)
 {
 

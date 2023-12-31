@@ -304,7 +304,6 @@ SECTIONS {
         src/battle_tent.o(.text);
         src/braille.o(.text);
         src/multiboot.o(.text);
-        src/berry_fix_graphics.o(.text);
         src/battle_controller_player_partner.o(.text);
         src/mirage_tower.o(.text);
         src/berry_fix_program.o(.text);
@@ -337,6 +336,7 @@ SECTIONS {
         src/battle_transition_frontier.o(.text);
         src/international_string_util.o(.text);
         src/day_night.o(.text);
+        src/battle_util3.o(.text);
         src/pokemon_forms.o(.text);
         src/trainer_control.o(.text);
     } > ROM =0
@@ -666,7 +666,6 @@ SECTIONS {
         src/battle_tent.o(.rodata);
         src/braille.o(.rodata);
         src/multiboot.o(.rodata);
-        src/berry_fix_graphics.o(.rodata);
         src/battle_controller_player_partner.o(.rodata);
         src/mirage_tower.o(.rodata);
         src/berry_fix_program.o(.rodata);

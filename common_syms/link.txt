@@ -1,8 +1,6 @@
 gLinkPartnersHeldKeys
-gLinkDebugSeed
 gLocalLinkPlayerBlock
 gLinkErrorOccurred
-gLinkDebugFlags
 gLinkFiller1
 gRemoteLinkPlayersNotReceived
 gBlockReceivedStatus
@@ -10,11 +8,8 @@ gLinkFiller2
 gLinkHeldKeys
 gRecvCmds
 gLinkStatus
-gLinkDummy1
-gLinkDummy2
 gReadyToExitStandby
 gReadyToCloseLink
-gReadyCloseLinkType
 gSuppressLinkErrorMessage
 gWirelessCommType
 gSavedLinkPlayerCount
@@ -24,7 +19,6 @@ gReceivedRemoteLinkPlayers
 gLinkTestBGInfo
 gLinkCallback
 gShouldAdvanceLinkState
-gLinkTestBlockChecksums
 gBlockRequestType
 gLinkFiller3
 gLinkFiller4

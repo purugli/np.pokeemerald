@@ -2254,7 +2254,7 @@ void Task_LinkContest_FinalizeConnection(u8 taskId)
             StringGet_Nickname(gContestMons[i].nickname);
 
         DestroyTask(taskId);
-        SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, WARP_ID_NONE);
+        SetDynamicWarp(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, WARP_ID_NONE);
         UnlockPlayerFieldControls();
         ScriptContext_Enable();
     }

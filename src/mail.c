@@ -50,7 +50,6 @@ struct MailGraphics
     const u16 *palette;
     const u8 *tiles;
     const u8 *tileMap;
-    u32 unused;
     u16 textColor;
     u16 textShadow;
 };
@@ -137,7 +136,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Orange,
         .tiles = gMailTiles_Orange,
         .tileMap = gMailTilemap_Orange,
-        .unused = 0x2C0,
         .textColor = RGB(10, 10, 10),
         .textShadow = RGB(25, 25, 25),
     },
@@ -145,7 +143,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Harbor,
         .tiles = gMailTiles_Harbor,
         .tileMap = gMailTilemap_Harbor,
-        .unused = 0x2E0,
         .textColor = RGB_WHITE,
         .textShadow = RGB(17, 17, 17),
     },
@@ -153,7 +150,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Glitter,
         .tiles = gMailTiles_Glitter,
         .tileMap = gMailTilemap_Glitter,
-        .unused = 0x400,
         .textColor = RGB(10, 10, 10),
         .textShadow = RGB(25, 25, 25),
     },
@@ -161,7 +157,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Mech,
         .tiles = gMailTiles_Mech,
         .tileMap = gMailTilemap_Mech,
-        .unused = 0x1E0,
         .textColor = RGB_WHITE,
         .textShadow = RGB(17, 17, 17),
     },
@@ -169,7 +164,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Wood,
         .tiles = gMailTiles_Wood,
         .tileMap = gMailTilemap_Wood,
-        .unused = 0x2E0,
         .textColor = RGB_WHITE,
         .textShadow = RGB(17, 17, 17),
     },
@@ -177,7 +171,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Wave,
         .tiles = gMailTiles_Wave,
         .tileMap = gMailTilemap_Wave,
-        .unused = 0x300,
         .textColor = RGB(10, 10, 10),
         .textShadow = RGB(25, 25, 25),
     },
@@ -185,7 +178,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Bead,
         .tiles = gMailTiles_Bead,
         .tileMap = gMailTilemap_Bead,
-        .unused = 0x140,
         .textColor = RGB_WHITE,
         .textShadow = RGB(17, 17, 17),
     },
@@ -193,7 +185,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Shadow,
         .tiles = gMailTiles_Shadow,
         .tileMap = gMailTilemap_Shadow,
-        .unused = 0x300,
         .textColor = RGB_WHITE,
         .textShadow = RGB(17, 17, 17),
     },
@@ -201,7 +192,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Tropic,
         .tiles = gMailTiles_Tropic,
         .tileMap = gMailTilemap_Tropic,
-        .unused = 0x220,
         .textColor = RGB(10, 10, 10),
         .textShadow = RGB(25, 25, 25),
     },
@@ -209,7 +199,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Dream,
         .tiles = gMailTiles_Dream,
         .tileMap = gMailTilemap_Dream,
-        .unused = 0x340,
         .textColor = RGB(10, 10, 10),
         .textShadow = RGB(25, 25, 25),
     },
@@ -217,7 +206,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Fab,
         .tiles = gMailTiles_Fab,
         .tileMap = gMailTilemap_Fab,
-        .unused = 0x2a0,
         .textColor = RGB(10, 10, 10),
         .textShadow = RGB(25, 25, 25),
     },
@@ -225,7 +213,6 @@ static const struct MailGraphics sMailGraphics[] = {
         .palette = gMailPalette_Retro,
         .tiles = gMailTiles_Retro,
         .tileMap = gMailTilemap_Retro,
-        .unused = 0x520,
         .textColor = RGB(10, 10, 10),
         .textShadow = RGB(25, 25, 25),
     }
@@ -564,7 +551,7 @@ static bool8 MailReadBuildGraphics(void)
             CopyBgTilemapBufferToVram(2);
             break;
         case 12:
-            LoadPalette(GetOverworldTextboxPalettePtr(), BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+            LoadPalette(GetTextWindowPalette(0), BG_PLTT_ID(15), PLTT_SIZE_4BPP);
             gPlttBufferUnfaded[BG_PLTT_ID(15) + 10] = sMailGraphics[sMailRead->mailType].textColor;
             gPlttBufferFaded[BG_PLTT_ID(15) + 10] = sMailGraphics[sMailRead->mailType].textColor;
             gPlttBufferUnfaded[BG_PLTT_ID(15) + 11] = sMailGraphics[sMailRead->mailType].textShadow;

@@ -198,7 +198,6 @@ static void StopPuttingAwayDecorations_(u8 taskId);
 static void Task_StopPuttingAwayDecorations(u8 taskId);
 static void FieldCB_StopPuttingAwayDecorations(void);
 static void InitializeCameraSprite1(struct Sprite *sprite);
-static void LoadPlayerSpritePalette(void);
 static void FreePlayerSpritePalette(void);
 static void DecorationItemsMenuAction_AttemptToss(u8 taskId);
 static void TossDecorationPrompt(u8 taskId);
@@ -434,10 +433,6 @@ static const u16 sDecorShapeSizes[] = {
     [DECORSHAPE_3x2] = 32,
 };
 
-static const u16 sBrendanPalette[] = INCBIN_U16("graphics/decorations/brendan.gbapal");
-
-static const u16 sMayPalette[] = INCBIN_U16("graphics/decorations/may.gbapal");
-
 static const struct YesNoFuncTable sReturnDecorationYesNoFunctions =
 {
     .yesFunc = PutAwayDecoration,
@@ -452,15 +447,9 @@ static const struct YesNoFuncTable sStopPuttingAwayDecorationsYesNoFunctions =
 
 static const u8 sDecorationPuttingAwayCursor[] = INCBIN_U8("graphics/decorations/put_away_cursor.4bpp");
 
-static const struct SpritePalette sSpritePal_PuttingAwayCursorBrendan =
+static const struct SpritePalette sSpritePal_PuttingAwayCursor =
 {
-    .data = sBrendanPalette,
-    .tag = PLACE_DECORATION_PLAYER_TAG,
-};
-
-static const struct SpritePalette sSpritePal_PuttingAwayCursorMay =
-{
-    .data = sMayPalette,
+    .data = gObjectEventPal_Brendan,
     .tag = PLACE_DECORATION_PLAYER_TAG,
 };
 
@@ -883,7 +872,7 @@ static void InitDecorationItemsMenuScrollAndCursor2(void)
 static void PrintDecorationItemMenuItems(u8 taskId)
 {
     s16 *data;
-    u16 i;
+    u32 i;
 
     data = gTasks[taskId].data;
     if ((sCurDecorationCategory < DECORCAT_DOLL || sCurDecorationCategory > DECORCAT_CUSHION) && sDecorationContext.isPlayerRoom == TRUE && tDecorationMenuCommand == DECOR_MENU_PLACE)
@@ -1045,7 +1034,7 @@ static void RemoveDecorationItemsOtherWindows(void)
 
 static bool8 IsDecorationIndexInSecretBase(u8 idx)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sSecretBaseItemsIndicesBuffer); i++)
     {
         if (sSecretBaseItemsIndicesBuffer[i] == idx)
@@ -1057,7 +1046,7 @@ static bool8 IsDecorationIndexInSecretBase(u8 idx)
 
 static bool8 IsDecorationIndexInPlayersRoom(u8 idx)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sPlayerRoomItemsIndicesBuffer); i++)
     {
         if (sPlayerRoomItemsIndicesBuffer[i] == idx)
@@ -1069,7 +1058,7 @@ static bool8 IsDecorationIndexInPlayersRoom(u8 idx)
 
 static void IdentifyOwnedDecorationsCurrentlyInUseInternal(u8 taskId)
 {
-    u16 i, j, k;
+    u32 i, j, k;
     u16 count;
 
     count = 0;
@@ -1127,7 +1116,7 @@ static void IdentifyOwnedDecorationsCurrentlyInUse(u8 taskId)
 
 bool8 IsSelectedDecorInThePC(void)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sSecretBaseItemsIndicesBuffer); i++)
     {
         if (sSecretBaseItemsIndicesBuffer[i] == sDecorationsScrollOffset + sDecorationsCursorPos + 1)
@@ -1207,7 +1196,7 @@ static u16 GetDecorationElevation(u8 decoration, u8 tileIndex)
 
 static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, u16 decoration)
 {
-    u16 i, j;
+    u32 i, j;
     s16 x, y;
     u16 attributes;
     u16 impassableFlag;
@@ -1281,8 +1270,8 @@ void ShowDecorationOnMap(u16 mapX, u16 mapY, u16 decoration)
 
 void SetDecoration(void)
 {
-    u8 i;
-    u8 j;
+    u32 i;
+    u32 j;
 
     for (i = 0; i < NUM_DECORATION_FLAGS; i++)
     {
@@ -1312,7 +1301,7 @@ void SetDecoration(void)
 
 static bool8 HasDecorationSpace(void)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < sDecorationContext.size; i++)
     {
         if (sDecorationContext.items[i] == DECOR_NONE)
@@ -1397,6 +1386,11 @@ static void ConfigureCameraObjectForPlacingDecoration(struct PlaceDecorationGrap
     gSprites[gFieldCamera.spriteId].y = sDecorationMovementInfo[data->decoration->shape].cameraY;
 }
 
+static void CreateplayerDecoratingSprite(u8 x)
+{
+    sDecor_CameraSpriteObjectIdx2 = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_BRENDAN_DECORATING + gSaveBlock2Ptr->playerGender, SpriteCallbackDummy, x, 72, 0, FALSE);
+}
+
 static void SetUpPlacingDecorationPlayerAvatar(u8 taskId, struct PlaceDecorationGraphicsDataBuffer *data)
 {
     u8 x;
@@ -1405,11 +1399,7 @@ static void SetUpPlacingDecorationPlayerAvatar(u8 taskId, struct PlaceDecoration
     if (data->decoration->shape == DECORSHAPE_3x1 || data->decoration->shape == DECORSHAPE_3x3 || data->decoration->shape == DECORSHAPE_3x2)
         x -= 8;
 
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        sDecor_CameraSpriteObjectIdx2 = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_BRENDAN_DECORATING, SpriteCallbackDummy, x, 72, 0, FALSE);
-    else
-        sDecor_CameraSpriteObjectIdx2 = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_MAY_DECORATING, SpriteCallbackDummy, x, 72, 0, FALSE);
-
+    CreateplayerDecoratingSprite(x);
     gSprites[sDecor_CameraSpriteObjectIdx2].oam.priority = 1;
     DestroySprite(&gSprites[sDecor_CameraSpriteObjectIdx1]);
     sDecor_CameraSpriteObjectIdx1 = gFieldCamera.spriteId;
@@ -1515,8 +1505,8 @@ static bool8 IsFloorOrBoardAndHole(u16 behaviorAt, const struct Decoration *deco
 
 static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
 {
-    u8 i;
-    u8 j;
+    u32 i;
+    u32 j;
     u8 behaviorAt;
     u16 layerType;
     u8 mapY;
@@ -1672,7 +1662,7 @@ static void PlaceDecoration(u8 taskId)
 
 static void PlaceDecoration_(u8 taskId)
 {
-    u16 i;
+    u32 i;
 
     for (i = 0; i < sDecorationContext.size; i++)
     {
@@ -1927,7 +1917,7 @@ static void CopyTile(u8 *dest, u16 tile)
 {
     u8 ALIGNED(4) buffer[TILE_SIZE_4BPP];
     u16 mode;
-    u16 i;
+    u32 i;
 
     mode = tile >> 10;
     if (tile != 0)
@@ -1968,7 +1958,7 @@ static void CopyTile(u8 *dest, u16 tile)
 
 static void SetDecorSelectionBoxTiles(struct PlaceDecorationGraphicsDataBuffer *data)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < 64; i++)
         CopyTile(&data->image[i * TILE_SIZE_4BPP], data->tiles[i]);
 }
@@ -1980,7 +1970,7 @@ static u16 GetMetatile(u16 tile)
 
 static void SetDecorSelectionMetatiles(struct PlaceDecorationGraphicsDataBuffer *data)
 {
-    u8 i;
+    u32 i;
     u8 shape;
 
     shape = data->decoration->shape;
@@ -2178,7 +2168,7 @@ static void ClearDecorationContextIndex(u8 idx)
 // gSpecialVar_0x8006: localId of decoration object event (if any).
 void PutAwayDecorationIteration(void)
 {
-    u16 i;
+    u32 i;
 
     gSpecialVar_0x8005 = 0;
     gSpecialVar_Result = FALSE;
@@ -2201,24 +2191,9 @@ void PutAwayDecorationIteration(void)
     }
 }
 
-// Unused
-void GetObjectEventLocalIdByFlag(void)
-{
-    u8 i;
-
-    for (i = 0; i < gMapHeader.events->objectEventCount; i++)
-    {
-        if (gMapHeader.events->objectEvents[i].flagId == gSpecialVar_0x8004)
-        {
-            gSpecialVar_0x8005 = gMapHeader.events->objectEvents[i].localId;
-            break;
-        }
-    }
-}
-
 static void ClearRearrangementNonSprites(void)
 {
-    u8 i;
+    u32 i;
     u8 y;
     u8 x;
     int posX;
@@ -2281,7 +2256,7 @@ static void Task_PutAwayDecoration(u8 taskId)
 
 static bool8 HasDecorationsInUse(u8 taskId)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < sDecorationContext.size; i++)
     {
         if (sDecorationContext.items[i] != DECOR_NONE)
@@ -2295,12 +2270,9 @@ static void SetUpPuttingAwayDecorationPlayerAvatar(void)
 {
     GetPlayerFacingDirection();
     sDecor_CameraSpriteObjectIdx1 = gSprites[gFieldCamera.spriteId].data[0];
-    LoadPlayerSpritePalette();
+    LoadSpritePalette(&sSpritePal_PuttingAwayCursor);
     gFieldCamera.spriteId = CreateSprite(&sPuttingAwayCursorSpriteTemplate, 120, 80, 0);
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        sDecor_CameraSpriteObjectIdx2 = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_BRENDAN_DECORATING, SpriteCallbackDummy, 136, 72, 0, FALSE);
-    else
-        sDecor_CameraSpriteObjectIdx2 = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_MAY_DECORATING, SpriteCallbackDummy, 136, 72, 0, FALSE);
+    CreateplayerDecoratingSprite(136);
 
     gSprites[sDecor_CameraSpriteObjectIdx2].oam.priority = 1;
     DestroySprite(&gSprites[sDecor_CameraSpriteObjectIdx1]);
@@ -2495,7 +2467,7 @@ static void SetDecorRearrangementFlagIdIfFlagUnset(void)
 {
     u8 xOff;
     u8 yOff;
-    u16 i;
+    u32 i;
 
     xOff = sDecorationContext.pos[sDecorRearrangementDataBuffer[sCurDecorSelectedInRearrangement].idx] >> 4;
     yOff = sDecorationContext.pos[sDecorRearrangementDataBuffer[sCurDecorSelectedInRearrangement].idx] & 0x0F;
@@ -2511,7 +2483,7 @@ static void SetDecorRearrangementFlagIdIfFlagUnset(void)
 
 static bool8 AttemptMarkSpriteDecorUnderCursorForRemoval(u8 taskId)
 {
-    u16 i;
+    u32 i;
 
     for (i = 0; i < sDecorationContext.size; i++)
     {
@@ -2535,7 +2507,7 @@ static bool8 AttemptMarkSpriteDecorUnderCursorForRemoval(u8 taskId)
 
 static void MarkSpriteDecorsInBoundsForRemoval(u8 left, u8 top, u8 right, u8 bottom)
 {
-    u8 i;
+    u32 i;
     u8 xOff;
     u8 yOff;
     u8 decor;
@@ -2556,7 +2528,7 @@ static void MarkSpriteDecorsInBoundsForRemoval(u8 left, u8 top, u8 right, u8 bot
 
 static void AttemptMarkDecorUnderCursorForRemoval(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 xOff;
     u8 yOff;
     u8 var1;
@@ -2688,14 +2660,6 @@ static void InitializeCameraSprite1(struct Sprite *sprite)
         sprite->invisible = TRUE;
     else
         sprite->invisible = FALSE;
-}
-
-static void LoadPlayerSpritePalette(void)
-{
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        LoadSpritePalette(&sSpritePal_PuttingAwayCursorBrendan);
-    else
-        LoadSpritePalette(&sSpritePal_PuttingAwayCursorMay);
 }
 
 static void FreePlayerSpritePalette(void)

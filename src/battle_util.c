@@ -810,22 +810,6 @@ void PressurePPLoseOnUsingPerishSong(u8 attacker)
     }
 }
 
-static void UNUSED MarkAllBattlersForControllerExec(void)
-{
-    int i;
-
-    if (gBattleTypeFlags & BATTLE_TYPE_LINK)
-    {
-        for (i = 0; i < gBattlersCount; i++)
-            gBattleControllerExecFlags |= gBitTable[i] << (32 - MAX_BATTLERS_COUNT);
-    }
-    else
-    {
-        for (i = 0; i < gBattlersCount; i++)
-            gBattleControllerExecFlags |= gBitTable[i];
-    }
-}
-
 void MarkBattlerForControllerExec(u8 battlerId)
 {
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
@@ -3225,9 +3209,9 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
     int i = 0;
     u8 effect = ITEM_NO_EFFECT;
     u8 changedPP = 0;
-    u8 battlerHoldEffect, atkHoldEffect, UNUSED defHoldEffect;
-    u8 battlerHoldEffectParam, atkHoldEffectParam, UNUSED defHoldEffectParam;
-    u16 atkItem, defItem;
+    u8 battlerHoldEffect, atkHoldEffect;
+    u8 battlerHoldEffectParam, atkHoldEffectParam;
+    u16 atkItem;
 
     gLastUsedItem = gBattleMons[battlerId].item;
     if (gLastUsedItem == ITEM_ENIGMA_BERRY)
@@ -3251,19 +3235,6 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
     {
         atkHoldEffect = ItemId_GetHoldEffect(atkItem);
         atkHoldEffectParam = ItemId_GetHoldEffectParam(atkItem);
-    }
-
-    // def variables are unused
-    defItem = gBattleMons[gBattlerTarget].item;
-    if (defItem == ITEM_ENIGMA_BERRY)
-    {
-        defHoldEffect = gEnigmaBerries[gBattlerTarget].holdEffect;
-        defHoldEffectParam = gEnigmaBerries[gBattlerTarget].holdEffectParam;
-    }
-    else
-    {
-        defHoldEffect = ItemId_GetHoldEffect(defItem);
-        defHoldEffectParam = ItemId_GetHoldEffectParam(defItem);
     }
 
     switch (caseID)

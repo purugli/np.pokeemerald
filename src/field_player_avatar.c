@@ -96,7 +96,6 @@ static bool8 PlayerIsAnimActive(void);
 static bool8 PlayerCheckIfAnimFinishedOrInactive(void);
 
 static void PlayerGoSpin(u8);
-static void PlayerApplyTileForcedMovement(u8);
 static void PlayerRun(u8);
 static void PlayerNotOnBikeCollide(u8);
 static void PlayerNotOnBikeCollideWithFarawayIslandMew(u8);
@@ -365,13 +364,18 @@ static bool8 TryUpdatePlayerSpinDirection(void)
         struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
         if (playerObjEvent->heldMovementFinished)
         {
+            u32 i;
             u32 playerMetatileBehavior = playerObjEvent->currentMetatileBehavior;
             if (playerMetatileBehavior == MB_STOP_SPINNING)
                 return FALSE;
             if (playerMetatileBehavior >= MB_SPIN_RIGHT && playerMetatileBehavior <= MB_SPIN_DOWN)
                 gPlayerAvatar.lastSpinTile = playerMetatileBehavior;
             ObjectEventClearHeldMovement(playerObjEvent);
-            PlayerApplyTileForcedMovement(gPlayerAvatar.lastSpinTile);
+            for (i = 0; i < ARRAY_COUNT(sForcedMovementFuncs); i++)
+            {
+                if (sForcedMovementFuncs[i].check(gPlayerAvatar.lastSpinTile))
+                    sForcedMovementFuncs[i].apply();
+            }
         }
         return TRUE;
     }
@@ -816,10 +820,13 @@ static void DoPlayerAvatarTransition(void)
 
     if (flags != 0)
     {
-        for (i = 0; i < ARRAY_COUNT(sPlayerAvatarTransitionFuncs); i++, flags >>= 1)
+        i = 0;
+        while (flags != 0)
         {
             if (flags & 1)
                 sPlayerAvatarTransitionFuncs[i](&gObjectEvents[gPlayerAvatar.objectEventId]);
+            flags >>= 1;
+            i++;
         }
         gPlayerAvatar.transitionFlags = 0;
     }
@@ -1024,17 +1031,6 @@ static void PlayerGoSpin(u8 direction)
 {
     m4aSongNumStart(SE_M_RAZOR_WIND2);
     PlayerSetAnimId(GetSpinMovementAction(direction), COPY_MOVE_WALK_FAST);
-}
-
-static void PlayerApplyTileForcedMovement(u8 metatileBehavior)
-{
-    u32 i;
-
-    for (i = 0; i < ARRAY_COUNT(sForcedMovementFuncs); i++)
-    {
-        if (sForcedMovementFuncs[i].check(metatileBehavior))
-            sForcedMovementFuncs[i].apply();
-    }
 }
 
 // wheelie idle

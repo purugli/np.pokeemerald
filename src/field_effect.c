@@ -827,7 +827,7 @@ void FieldEffectStop(struct Sprite *sprite, u8 id)
 
 void FieldEffectFreeTilesIfUnused(u16 tileStart)
 {
-    u8 i;
+    u32 i;
     u16 tag = GetSpriteTileTagByTileStart(tileStart);
 
     if (tag != TAG_NONE)
@@ -841,7 +841,7 @@ void FieldEffectFreeTilesIfUnused(u16 tileStart)
 
 void FieldEffectFreePaletteIfUnused(u8 paletteNum)
 {
-    u8 i;
+    u32 i;
     u16 tag = GetSpritePaletteTagByPaletteNum(paletteNum);
 
     if (tag != TAG_NONE)
@@ -855,14 +855,12 @@ void FieldEffectFreePaletteIfUnused(u8 paletteNum)
 
 void FieldEffectActiveListClear(void)
 {
-    u8 i;
-    for (i = 0; i < ARRAY_COUNT(sActiveList); i++)
-        sActiveList[i] = 0xFF;
+    memset(sActiveList, 0xFF, sizeof(sActiveList));
 }
 
 void FieldEffectActiveListAdd(u8 id)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sActiveList); i++)
     {
         if (sActiveList[i] == 0xFF)
@@ -875,7 +873,7 @@ void FieldEffectActiveListAdd(u8 id)
 
 void FieldEffectActiveListRemove(u8 id)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sActiveList); i++)
     {
         if (sActiveList[i] == id)
@@ -888,7 +886,7 @@ void FieldEffectActiveListRemove(u8 id)
 
 bool8 FieldEffectActiveListContains(u8 id)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sActiveList); i++)
         if (sActiveList[i] == id)
             return TRUE;

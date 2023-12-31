@@ -35,7 +35,7 @@ struct BackupMapLayout gBackupMapLayout;
 
 static const struct ConnectionFlags sDummyConnectionFlags = {0};
 
-static void InitMapLayoutData(struct MapHeader *mapHeader);
+static void InitMapLayoutData(void);
 static void InitBackupMapLayoutData(const u16 *map, u16 width, u16 height);
 static void FillSouthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset);
 static void FillNorthConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset);
@@ -101,14 +101,14 @@ const struct MapHeader *const GetMapHeaderFromConnection(const struct MapConnect
 
 void InitMap(void)
 {
-    InitMapLayoutData(&gMapHeader);
+    InitMapLayoutData();
     SetOccupiedSecretBaseEntranceMetatiles(gMapHeader.events);
     RunOnLoadMapScript();
 }
 
 void InitMapFromSavedGame(void)
 {
-    InitMapLayoutData(&gMapHeader);
+    InitMapLayoutData();
     InitSecretBaseAppearance(FALSE);
     SetOccupiedSecretBaseEntranceMetatiles(gMapHeader.events);
     LoadSavedMapView();
@@ -128,11 +128,12 @@ void InitTrainerHillMap(void)
     GenerateTrainerHillFloorLayout(sBackupMapData);
 }
 
-static void InitMapLayoutData(struct MapHeader *mapHeader)
+static void InitMapLayoutData(void)
 {
     struct MapLayout const *mapLayout;
     int width;
     int height;
+    struct MapHeader *mapHeader = &gMapHeader;
     mapLayout = mapHeader->mapLayout;
     CpuFastFill16(MAPGRID_UNDEFINED, sBackupMapData, sizeof(sBackupMapData));
     gBackupMapLayout.map = sBackupMapData;
@@ -680,7 +681,7 @@ static void SetPositionFromConnection(const struct MapConnection *connection, in
     }
 }
 
-bool8 CameraMove(int x, int y)
+void CameraMove(int x, int y)
 {
     int direction;
     const struct MapConnection *connection;
@@ -708,7 +709,6 @@ bool8 CameraMove(int x, int y)
         gSaveBlock1Ptr->pos.y += y;
         MoveMapViewToBackup(direction);
     }
-    return gCamera.active;
 }
 
 static const struct MapConnection *GetIncomingConnection(u8 direction, int x, int y)
@@ -832,12 +832,6 @@ void GetCameraFocusCoords(u16 *x, u16 *y)
 {
     *x = gSaveBlock1Ptr->pos.x + MAP_OFFSET;
     *y = gSaveBlock1Ptr->pos.y + MAP_OFFSET;
-}
-
-static void UNUSED SetCameraCoords(u16 x, u16 y)
-{
-    gSaveBlock1Ptr->pos.x = x;
-    gSaveBlock1Ptr->pos.y = y;
 }
 
 void GetCameraCoords(u16 *x, u16 *y)

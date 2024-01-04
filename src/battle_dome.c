@@ -2782,26 +2782,15 @@ static int GetTypeEffectivenessPoints(int move, int targetSpecies, int mode)
     {
         // Calculate a "type power" value to determine the benefit of using this type move against the target.
         // This value will then be used to get the number of points to assign to the move.
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
-        {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
-            {
-                i += 3;
-                continue;
-            }
-            if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
-            {
-                #define WONDER_GUARD_EFFECTIVENESS TYPE_MUL_SUPER_EFFECTIVE
+        u32 typeEffectiveness1 = TYPE_EFFECT_MULTIPLIER(GetTypeModifier(moveType, defType1));
+        u32 typeEffectiveness2 = TYPE_EFFECT_MULTIPLIER(GetTypeModifier(moveType, defType2));
 
-                if (TYPE_EFFECT_DEF_TYPE(i) == defType1)
-                    if ((defAbility == ABILITY_WONDER_GUARD && TYPE_EFFECT_MULTIPLIER(i) == WONDER_GUARD_EFFECTIVENESS) || defAbility != ABILITY_WONDER_GUARD)
-                        typePower = (typePower * TYPE_EFFECT_MULTIPLIER(i)) / 10;
-                if (TYPE_EFFECT_DEF_TYPE(i) == defType2 && defType1 != defType2)
-                    if ((defAbility == ABILITY_WONDER_GUARD && TYPE_EFFECT_MULTIPLIER(i) == WONDER_GUARD_EFFECTIVENESS) || defAbility != ABILITY_WONDER_GUARD)
-                        typePower = (typePower * TYPE_EFFECT_MULTIPLIER(i)) / 10;
-            }
-            i += 3;
-        }
+        typePower = (typeEffectiveness1 * typePower) / 10;
+        if (defType2 != defType1)
+            typePower = (typeEffectiveness2 * typePower) / 10;
+
+        if (defAbility == ABILITY_WONDER_GUARD && typeEffectiveness1 != TYPE_x1 && typeEffectiveness2 != TYPE_x1)
+            typePower = TYPE_x0;
     }
 
     switch (mode)
@@ -5215,14 +5204,12 @@ static u16 GetWinningMove(int winnerTournamentId, int loserTournamentId, u8 roun
                 else
                     targetAbility = gSpeciesInfo[targetSpecies].abilities[0];
 
-                var = AI_TypeCalc(moveIds[i * MAX_MON_MOVES + j], targetSpecies, targetAbility);
-                if (var & MOVE_RESULT_NOT_VERY_EFFECTIVE && var & MOVE_RESULT_SUPER_EFFECTIVE)
-                    moveScores[i * MAX_MON_MOVES + j] += movePower;
-                else if (var & MOVE_RESULT_NO_EFFECT)
+                var = CalcPartyMonTypeEffectivenessMultiplier(moveIds[i * MAX_MON_MOVES + j], targetSpecies, targetAbility);
+                if (var == TYPE_MOD_NO_EFFECT)
                     moveScores[i * MAX_MON_MOVES + j] += 0;
-                else if (var & MOVE_RESULT_SUPER_EFFECTIVE)
+                else if (var >= TYPE_MOD_SUPER_EFFECTIVE)
                     moveScores[i * MAX_MON_MOVES + j] += movePower * 2;
-                else if (var & MOVE_RESULT_NOT_VERY_EFFECTIVE)
+                else if (var <= TYPE_MOD_NOT_EFFECTIVE)
                     moveScores[i * MAX_MON_MOVES + j] += movePower / 2;
                 else
                     moveScores[i * MAX_MON_MOVES + j] += movePower;

@@ -15,8 +15,7 @@
 #include "palette.h"
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
-
-static EWRAM_DATA u16 sReflectionPaletteBuffer[16] = {0};
+#include "field_player_avatar.h"
 
 static void UpdateObjectReflectionSprite(struct Sprite *);
 static void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite *sprite);
@@ -57,7 +56,8 @@ void SetUpReflection(struct ObjectEvent *objectEvent, struct Sprite *sprite, boo
     StartSpriteAnim(reflectionSprite, 0);
     reflectionSprite->affineAnims = gDummySpriteAffineAnimTable;
     reflectionSprite->affineAnimBeginning = TRUE;
-    reflectionSprite->subspriteMode = SUBSPRITES_OFF;
+    reflectionSprite->subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
+    reflectionSprite->subspriteTableNum = 0;
     reflectionSprite->sReflectionObjEventId = sprite->data[0];
     reflectionSprite->sReflectionObjEventLocalId = objectEvent->localId;
     reflectionSprite->sIsStillReflection = stillReflection;
@@ -71,6 +71,61 @@ static s16 GetReflectionVerticalOffset(struct ObjectEvent *objectEvent)
 {
     return GetObjectEventGraphicsInfo(objectEvent->graphicsId)->height - 2;
 }
+
+static void ApplyReflectionPalette(u16 paletteTag, struct Sprite *sprite)
+{
+    u16 filteredData[16];
+    struct SpritePalette filteredPal = {.tag = paletteTag, .data = filteredData};
+    u32 i;
+    u16 *src = &gPlttBufferUnfaded[OBJ_PLTT_ID(sprite->oam.paletteNum)];
+    u16 *dest = filteredData;
+    *dest++ = *src++;
+    if (sprite->sIsStillReflection == FALSE)
+    {
+        for (i = 0; i < 16 - 1; i++)
+        {
+            u32 color = *src++;
+            s32 R = GET_R(color) + 8;
+            s32 G = GET_G(color) + 8;
+            s32 B = GET_B(color) + 10;
+            if (R > 31)
+                R = 31;
+            if (G > 31)
+                G = 31;
+            if (B > 31)
+                B = 31;
+            *dest++ = RGB(R, G, B);
+        }
+    }
+    else
+    {
+        for (i = 0; i < 16 - 1; i++)
+        {
+            u32 color = *src++;
+            s32 R = (color << 27) >> 27;
+            s32 G = (color << 22) >> 27;
+            s32 B = (color << 17) >> 27;
+            R -= 5;
+            if (R < 0)
+                R = 0;
+            G += 3;
+            if (G > 31)
+                G = 31;
+            B += 16;
+            if (B > 31)
+                B = 31;
+            *dest++ = RGB2(R, G, B);
+        }
+    }
+    sprite->oam.paletteNum = LoadSpritePaletteWithDNSTint(&filteredPal);
+    UpdatePaletteColorMap(sprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
+    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum);
+}
+
+#define OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION OBJ_EVENT_PAL_TAG_NONE // Tag reused as it isn't assigned to anything and the game prevents this tag from being used for a OW palette
+#define PAL_TAG_REFLECTION_OFFSET 0x200
+#define PAL_RAW_REFLECTION_OFFSET 0x300
+#define REFLECTION_PAL_TAG(tag, num) ((tag) == TAG_NONE ? (num) + PAL_RAW_REFLECTION_OFFSET : (tag) + PAL_TAG_REFLECTION_OFFSET)
 
 void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite *reflectionSprite)
 {
@@ -92,40 +147,18 @@ void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite 
         struct SpritePalette bluePalette = {.tag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION, .data = blueData};
 
         reflectionSprite->sReflectionVerticalOffset = bridgeReflectionVerticalOffsets[bridgeType - 1];
-        for (i = 1; i < ARRAY_COUNT(blueData); i++)
-            blueData[i] = RGB(9, 14, 21);
+        CpuFill16(RGB(9, 14, 21), blueData, PLTT_SIZE_4BPP);
         reflectionSprite->oam.paletteNum = LoadSpritePaletteWithDNSTint(&bluePalette);
         UpdatePaletteColorMap(reflectionSprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
         UpdateSpritePaletteWithWeather(reflectionSprite->oam.paletteNum);
     }
     else
     {
-        u16 *pal;
-        struct SpritePalette reflectionPalette;
-
-        CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(reflectionSprite->oam.paletteNum)], sReflectionPaletteBuffer, PLTT_SIZE_4BPP);
-        pal = sReflectionPaletteBuffer;
-        for (i = 0; i < 16; i++)
-        {
-            u16 color = pal[i];
-            u32 R = GET_R(color) + 8;
-            u32 G = GET_G(color) + 8;
-            u32 B = GET_B(color) + 10;
-
-            if (R > 31)
-                R = 31;
-            if (G > 31)
-                G = 31;
-            if (B > 31)
-                B = 31;
-            pal[i] = RGB(R, G, B);
-	    }
-        reflectionPalette.data = sReflectionPaletteBuffer;
-        reflectionPalette.tag = GetSpritePaletteTagByPaletteNum(reflectionSprite->oam.paletteNum) + 0x1000;
-        LoadSpritePaletteWithDNSTint(&reflectionPalette);
-        reflectionSprite->oam.paletteNum = IndexOfSpritePaletteTag(reflectionPalette.tag);
-        UpdatePaletteColorMap(reflectionSprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
-        UpdateSpritePaletteWithWeather(reflectionSprite->oam.paletteNum);
+        const struct Sprite *mainSprite = &gSprites[objectEvent->spriteId];
+        u16 baseTag = GetSpritePaletteTagByPaletteNum(mainSprite->oam.paletteNum);
+        u16 paletteTag = REFLECTION_PAL_TAG(baseTag, mainSprite->oam.paletteNum);
+        if (IndexOfSpritePaletteTag(paletteTag) <= 16)
+            ApplyReflectionPalette(paletteTag, reflectionSprite);
     }
 }
 
@@ -136,15 +169,32 @@ static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
     if (!objectEvent->active || !objectEvent->hasReflection || objectEvent->localId != reflectionSprite->sReflectionObjEventLocalId)
     {
         reflectionSprite->inUse = FALSE;
+        FieldEffectFreePaletteIfUnused(reflectionSprite->oam.paletteNum);
     }
     else
     {
+        if (IndexOfSpritePaletteTag(OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION) != reflectionSprite->oam.paletteNum)
+        {
+            u16 baseTag = GetSpritePaletteTagByPaletteNum(mainSprite->oam.paletteNum);
+            u16 paletteTag = REFLECTION_PAL_TAG(baseTag, mainSprite->oam.paletteNum);
+            u8 paletteNum = IndexOfSpritePaletteTag(paletteTag);
+            if (paletteNum >= 16)
+            {
+                reflectionSprite->inUse = FALSE;
+                FieldEffectFreePaletteIfUnused(reflectionSprite->oam.paletteNum);
+                reflectionSprite->inUse = TRUE;
+                ApplyReflectionPalette(paletteTag, reflectionSprite);
+            }
+            else
+            {
+                reflectionSprite->oam.paletteNum = paletteNum;
+            }
+        }
         reflectionSprite->oam.shape = mainSprite->oam.shape;
         reflectionSprite->oam.size = mainSprite->oam.size;
         reflectionSprite->oam.matrixNum = mainSprite->oam.matrixNum | ST_OAM_VFLIP;
         reflectionSprite->oam.tileNum = mainSprite->oam.tileNum;
         reflectionSprite->subspriteTables = mainSprite->subspriteTables;
-        reflectionSprite->subspriteTableNum = mainSprite->subspriteTableNum;
         reflectionSprite->invisible = mainSprite->invisible;
         reflectionSprite->x = mainSprite->x;
         reflectionSprite->y = mainSprite->y + GetReflectionVerticalOffset(objectEvent) + reflectionSprite->sReflectionVerticalOffset;
@@ -157,6 +207,11 @@ static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
         if (objectEvent->hideReflection)
             reflectionSprite->invisible = TRUE;
 
+        if (reflectionSprite->subspriteTables[0].subsprites)
+        {
+            reflectionSprite->oam.affineMode = ST_OAM_AFFINE_OFF;
+            return;
+        }
         if (reflectionSprite->sIsStillReflection == FALSE)
         {
             // Sets the reflection sprite's rot/scale matrix to the appropriate

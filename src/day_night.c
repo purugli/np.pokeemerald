@@ -173,7 +173,7 @@ static void TintPalette_CustomToneWithCopy(u16 offset, u16 count, bool32 exclude
     }
 }
 
-static void TintPaletteForDayNight(u16 offset, u16 size)
+static void TintPaletteForDayNight(u16 offset, u16 size, bool32 fastCopy)
 {
     if (IsMapTypeOutdoors(gMapHeader.mapType))
     {
@@ -200,7 +200,12 @@ static void TintPaletteForDayNight(u16 offset, u16 size)
     }
     else
     {
-        CpuCopy16(&gPlttBufferPreDN[offset], &gPlttBufferUnfaded[offset], size);
+        const u16 *src = &gPlttBufferPreDN[offset];
+        u16 *dest = &gPlttBufferUnfaded[offset];
+        if (fastCopy)
+            CpuFastCopy(src, dest, size);
+        else
+            CpuCopy16(src, dest, size);
     }
 }
 
@@ -297,7 +302,7 @@ void LoadPalette_HandleDNSTint(const void *src, u16 offset, u16 size, bool32 app
     if (applyDNSTint)
     {
         CpuCopy16(src, &gPlttBufferPreDN[offset], size);
-        TintPaletteForDayNight(offset, size);
+        TintPaletteForDayNight(offset, size, FALSE);
     }
     else
     {
@@ -305,4 +310,26 @@ void LoadPalette_HandleDNSTint(const void *src, u16 offset, u16 size, bool32 app
         CpuCopy16(src, &gPlttBufferUnfaded[offset], size);
     }
     CpuCopy16(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
+}
+
+void LoadPaletteFast_HandleDNSTint(const void *src, u16 offset, u16 size, bool32 applyDNSTint)
+{
+    if ((u32)src & 3)
+    {
+        LoadPalette_HandleDNSTint(src, offset, size, applyDNSTint);
+    }
+    else
+    {
+        if (applyDNSTint)
+        {
+            CpuFastCopy(src, &gPlttBufferPreDN[offset], size);
+            TintPaletteForDayNight(offset, size, TRUE);
+        }
+        else
+        {
+            CpuFastFill(RGB_BLACK, &gPlttBufferPreDN[offset], size);
+            CpuFastCopy(src, &gPlttBufferUnfaded[offset], size);
+        }
+        CpuFastCopy(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
+    }
 }

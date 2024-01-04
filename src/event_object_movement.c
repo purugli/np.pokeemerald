@@ -138,6 +138,7 @@ static void RemoveObjectEventIfOutsideView(struct ObjectEvent *);
 static void SpawnObjectEventOnReturnToField(u8, s16, s16);
 static void SetPlayerAvatarObjectEventIdAndObjectId(u8, u8);
 static void ResetObjectEventFldEffData(struct ObjectEvent *);
+static u32 FindObjectEventPaletteIndexByTag(u16);
 static bool8 ObjectEventDoesElevationMatch(struct ObjectEvent *, u8);
 static void SpriteCB_CameraObject(struct Sprite *);
 static void CameraObject_0(struct Sprite *);
@@ -411,21 +412,21 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Npc2,                  OBJ_EVENT_PAL_TAG_NPC_2},
     {gObjectEventPal_Npc3,                  OBJ_EVENT_PAL_TAG_NPC_3},
     {gObjectEventPal_Npc4,                  OBJ_EVENT_PAL_TAG_NPC_4},
+    {gObjectEventPal_RG_SSAnne,             OBJ_EVENT_PAL_TAG_RG_SS_ANNE},
     {gObjectEventPal_Sidney,                OBJ_EVENT_PAL_TAG_SIDNEY},
     {gObjectEventPal_Glacia,                OBJ_EVENT_PAL_TAG_GLACIA},
     {gObjectEventPal_Brawly,                OBJ_EVENT_PAL_TAG_BRAWLY},
-    {gObjectEventPal_Wattson,               OBJ_EVENT_PAL_TAG_WATTSON},
     {gObjectEventPal_Brendan,               OBJ_EVENT_PAL_TAG_BRENDAN},
     {gObjectEventPal_RG_NpcGreen,           OBJ_EVENT_PAL_TAG_RG_NPC_GREEN},
-    {gObjectEventPal_RG_SSAnne,             OBJ_EVENT_PAL_TAG_RG_SS_ANNE},
+    {gObjectEventPal_RG_NpcWhite,           OBJ_EVENT_PAL_TAG_RG_NPC_WHITE},
     {gObjectEventPal_PlayerUnderwater,      OBJ_EVENT_PAL_TAG_PLAYER_UNDERWATER},
+    {gObjectEventPal_Wattson,               OBJ_EVENT_PAL_TAG_WATTSON},
     {gObjectEventPal_Steven,                OBJ_EVENT_PAL_TAG_STEVEN},
-    {gObjectEventPal_Scott,                 OBJ_EVENT_PAL_TAG_SCOTT},
     {gObjectEventPal_Truck,                 OBJ_EVENT_PAL_TAG_TRUCK},
     {gObjectEventPal_Vigoroth,              OBJ_EVENT_PAL_TAG_VIGOROTH},
     {gObjectEventPal_EnemyZigzagoon,        OBJ_EVENT_PAL_TAG_ZIGZAGOON},
     {gObjectEventPal_May,                   OBJ_EVENT_PAL_TAG_MAY},
-    {gObjectEventPal_RG_NpcWhite,           OBJ_EVENT_PAL_TAG_RG_NPC_WHITE},
+    {gObjectEventPal_Scott,                 OBJ_EVENT_PAL_TAG_SCOTT},
     {gObjectEventPal_MovingBox,             OBJ_EVENT_PAL_TAG_MOVING_BOX},
     {gObjectEventPal_CableCar,              OBJ_EVENT_PAL_TAG_CABLE_CAR},
     {gObjectEventPal_Rayquaza,              OBJ_EVENT_PAL_TAG_RAYQUAZA},
@@ -1138,6 +1139,8 @@ static void RemoveObjectEventInternal(struct ObjectEvent *objectEvent)
     image.size = GetObjectEventGraphicsInfo(objectEvent->graphicsId)->size;
     gSprites[objectEvent->spriteId].images = &image;
     DestroySprite(&gSprites[objectEvent->spriteId]);
+    if (gSprites[objectEvent->spriteId].inUse || gSprites[objectEvent->spriteId].oam.paletteNum != 0)
+        FieldEffectFreePaletteIfUnused(gSprites[objectEvent->spriteId].oam.paletteNum);
 }
 
 void RemoveAllObjectEventsExceptPlayer(void)
@@ -1151,6 +1154,24 @@ void RemoveAllObjectEventsExceptPlayer(void)
     }
 }
 
+static u16 GetObjectEventPaletteTag(struct ObjectEvent *objectEvent, struct SpriteTemplate *spriteTemplate)
+{
+    u16 paletteTag = spriteTemplate->paletteTag;
+    if (objectEvent->graphicsId == OBJ_EVENT_GFX_BERRY_TREE)
+    {
+        u8 berryStage = GetStageByBerryTreeId(objectEvent->trainerRange_berryTreeId);
+        if (berryStage != BERRY_STAGE_NO_BERRY)
+        {
+            u8 berryId = GetBerryTypeByBerryTreeId(objectEvent->trainerRange_berryTreeId) - 1;
+            berryStage--;
+            if (berryId > ITEM_TO_BERRY(LAST_BERRY_INDEX))
+                berryId = 0;
+            paletteTag = gBerryTreePaletteTagTablePointers[berryId][berryStage];
+        }
+    }
+    return paletteTag;
+}
+
 static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEventTemplate, struct SpriteTemplate *spriteTemplate, u8 mapNum, u8 mapGroup, s16 cameraX, s16 cameraY)
 {
     u8 spriteId;
@@ -1158,16 +1179,18 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
     struct Sprite *sprite;
     struct ObjectEvent *objectEvent;
     const struct ObjectEventGraphicsInfo *graphicsInfo;
+    u16 paletteTag;
 
     objectEventId = InitObjectEventStateFromTemplate(objectEventTemplate, mapNum, mapGroup);
     if (objectEventId == OBJECT_EVENTS_COUNT)
         return OBJECT_EVENTS_COUNT;
 
     objectEvent = &gObjectEvents[objectEventId];
-    if (spriteTemplate->paletteTag != TAG_NONE)
+    paletteTag = GetObjectEventPaletteTag(objectEvent, spriteTemplate);
+    if (paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate->paletteTag, TRUE);
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), COLOR_MAP_CONTRAST);
+        LoadObjectEventPalette(paletteTag, TRUE);
+        UpdatePaletteColorMap(IndexOfSpritePaletteTag(paletteTag), COLOR_MAP_CONTRAST);
     }
 
     if (objectEvent->movementType == MOVEMENT_TYPE_INVISIBLE)
@@ -1286,6 +1309,15 @@ static void CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(u16 graphics
 static void MakeSpriteTemplateFromObjectEventTemplate(const struct ObjectEventTemplate *objectEventTemplate, struct SpriteTemplate *spriteTemplate, const struct SubspriteTable **subspriteTables)
 {
     CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(objectEventTemplate->graphicsId, objectEventTemplate->movementType, spriteTemplate, subspriteTables);
+}
+
+static void UpdateSpritePalette(const struct SpritePalette *spritePalette, struct Sprite *sprite, bool32 applyDNSTint)
+{
+    sprite->inUse = FALSE;
+    FieldEffectFreePaletteIfUnused(sprite->oam.paletteNum);
+    sprite->inUse = TRUE;
+    sprite->oam.paletteNum = LoadSpritePalette_HandleDNSTint(spritePalette, applyDNSTint);
+    UpdatePaletteColorMap(sprite->oam.paletteNum, COLOR_MAP_CONTRAST);
 }
 
 // Used to create a sprite using a graphicsId associated with object events.
@@ -1456,6 +1488,7 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
     struct SpriteFrameImage spriteFrameImage;
     const struct SubspriteTable *subspriteTables;
     const struct ObjectEventGraphicsInfo *graphicsInfo;
+    u16 paletteTag;
 
     for (i = 0; i < ARRAY_COUNT(gLinkPlayerObjectEvents); i++)
     {
@@ -1470,10 +1503,11 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
     CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(objectEvent->graphicsId, objectEvent->movementType, &spriteTemplate, &subspriteTables);
     spriteTemplate.images = &spriteFrameImage;
 
-    if (spriteTemplate.paletteTag != TAG_NONE)
+    paletteTag = GetObjectEventPaletteTag(objectEvent, &spriteTemplate);
+    if (paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate.paletteTag, TRUE);
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate.paletteTag), COLOR_MAP_CONTRAST);
+        LoadObjectEventPalette(paletteTag, TRUE);
+        UpdatePaletteColorMap(IndexOfSpritePaletteTag(paletteTag), COLOR_MAP_CONTRAST);
     }
 
     i = CreateSprite(&spriteTemplate, 0, 0, 0);
@@ -1525,24 +1559,18 @@ static void SetPlayerAvatarObjectEventIdAndObjectId(u8 objectEventId, u8 spriteI
     SetPlayerAvatarExtraStateTransition(gObjectEvents[objectEventId].graphicsId, PLAYER_AVATAR_FLAG_CONTROLLABLE);
 }
 
-void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u8 graphicsId)
+static void ObjectEventSetGraphics(struct ObjectEvent *objectEvent, const struct SpriteFrameImage *images, u8 graphicsId)
 {
     const struct ObjectEventGraphicsInfo *graphicsInfo;
     struct Sprite *sprite;
 
     graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
-    if (graphicsInfo->paletteTag != TAG_NONE)
-    {
-        LoadObjectEventPalette(graphicsInfo->paletteTag, TRUE);
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(graphicsInfo->paletteTag), COLOR_MAP_CONTRAST);
-    }
     sprite = &gSprites[objectEvent->spriteId];
     sprite->oam.shape = graphicsInfo->oam->shape;
     sprite->oam.size = graphicsInfo->oam->size;
-    sprite->images = graphicsInfo->images;
+    sprite->images = images;
     sprite->anims = sStepAnimTables[graphicsInfo->anims].anims;
     sprite->subspriteTables = graphicsInfo->subspriteTables;
-    sprite->oam.paletteNum = IndexOfSpritePaletteTag(graphicsInfo->paletteTag);
     objectEvent->inanimate = graphicsInfo->inanimate;
     objectEvent->graphicsId = graphicsId;
     SetSpritePosToMapCoords(objectEvent->currentCoords.x, objectEvent->currentCoords.y, &sprite->x, &sprite->y);
@@ -1552,6 +1580,15 @@ void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u8 graphicsId)
     sprite->y += 16 + sprite->centerToCornerVecY;
     if (objectEvent->trackedByCamera)
         CameraObjectReset1();
+}
+
+void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u8 graphicsId)
+{
+    const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
+    u32 paletteIndex = FindObjectEventPaletteIndexByTag(graphicsInfo->paletteTag);
+    if (paletteIndex != 0xFF)
+        UpdateSpritePalette(&sObjectEventSpritePalettes[paletteIndex], &gSprites[objectEvent->spriteId], TRUE);
+    ObjectEventSetGraphics(objectEvent, graphicsInfo->images, graphicsId);
 }
 
 void ObjectEventSetGraphicsIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup, u8 graphicsId)
@@ -1595,6 +1632,7 @@ static void SetBerryTreeGraphics(struct ObjectEvent *objectEvent, struct Sprite 
     berryStage = GetStageByBerryTreeId(objectEvent->trainerRange_berryTreeId);
     if (berryStage != BERRY_STAGE_NO_BERRY)
     {
+        u32 paletteIndex;
         objectEvent->invisible = FALSE;
         sprite->invisible = FALSE;
         berryId = GetBerryTypeByBerryTreeId(objectEvent->trainerRange_berryTreeId) - 1;
@@ -1602,12 +1640,11 @@ static void SetBerryTreeGraphics(struct ObjectEvent *objectEvent, struct Sprite 
         if (berryId > ITEM_TO_BERRY(LAST_BERRY_INDEX))
             berryId = 0;
 
-        ObjectEventSetGraphicsId(objectEvent, gBerryTreeObjectEventGraphicsIdTable[berryStage]);
-        sprite->images = gBerryTreePicTablePointers[berryId];
+        paletteIndex = FindObjectEventPaletteIndexByTag(gBerryTreePaletteTagTablePointers[berryId][berryStage]);
+        if (paletteIndex != 0xFF)
+            UpdateSpritePalette(&sObjectEventSpritePalettes[paletteIndex], sprite, TRUE);
+        ObjectEventSetGraphics(objectEvent, gBerryTreePicTablePointers[berryId], gBerryTreeObjectEventGraphicsIdTable[berryStage]);
         StartSpriteAnim(sprite, berryStage);
-        LoadObjectEventPalette(gBerryTreePaletteTagTablePointers[berryId][berryStage], TRUE);
-        sprite->oam.paletteNum = IndexOfSpritePaletteTag(gBerryTreePaletteTagTablePointers[berryId][berryStage]);
-        UpdatePaletteColorMap(sprite->oam.paletteNum, COLOR_MAP_CONTRAST);
     }
 }
 
@@ -1713,17 +1750,26 @@ void FreeAndReserveObjectSpritePalettes(void)
 
 void LoadObjectEventPalette(u16 paletteTag, bool32 applyDNSTint)
 {
+    u32 i = FindObjectEventPaletteIndexByTag(paletteTag);
+
+    if (i != 0xFF)
+    {
+        const struct SpritePalette *spritePalette = &sObjectEventSpritePalettes[i];
+        if (IndexOfSpritePaletteTag(spritePalette->tag) == 0xFF)
+            LoadSpritePalette_HandleDNSTint(spritePalette, applyDNSTint);
+    }
+}
+
+static u32 FindObjectEventPaletteIndexByTag(u16 tag)
+{
     u32 i;
 
     for (i = 0; sObjectEventSpritePalettes[i].tag != OBJ_EVENT_PAL_TAG_NONE; i++)
     {
-        const struct SpritePalette *spritePalette = &sObjectEventSpritePalettes[i];
-        if (spritePalette->tag == paletteTag)
-        {
-            if (IndexOfSpritePaletteTag(spritePalette->tag) == 0xFF)
-                LoadSpritePalette_HandleDNSTint(spritePalette, applyDNSTint);
-        }
+        if (sObjectEventSpritePalettes[i].tag == tag)
+            return i;
     }
+    return 0xFF;
 }
 
 void ShiftObjectEventCoords(struct ObjectEvent *objectEvent, s16 x, s16 y)
@@ -7411,10 +7457,12 @@ void SetVirtualObjectGraphics(u8 virtualObjId, u8 graphicsId)
         struct Sprite *sprite = &gSprites[spriteId];
         const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
         u16 tileNum = sprite->oam.tileNum;
+        u32 paletteIndex = FindObjectEventPaletteIndexByTag(graphicsInfo->paletteTag);
 
+        if (paletteIndex != 0xFF)
+            UpdateSpritePalette(&sObjectEventSpritePalettes[paletteIndex], sprite, TRUE);
         sprite->oam = *graphicsInfo->oam;
         sprite->oam.tileNum = tileNum;
-        sprite->oam.paletteNum = IndexOfSpritePaletteTag(graphicsInfo->paletteTag);
         sprite->images = graphicsInfo->images;
 
         if (graphicsInfo->subspriteTables == NULL)

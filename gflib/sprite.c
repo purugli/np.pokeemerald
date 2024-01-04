@@ -1447,7 +1447,7 @@ u8 LoadSpritePalette_HandleDNSTint(const struct SpritePalette *palette, bool32 a
     else
     {
         sSpritePaletteTags[index] = palette->tag;
-        LoadPalette_HandleDNSTint(palette->data, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP, applyDNSTint);
+        LoadPaletteFast_HandleDNSTint(palette->data, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP, applyDNSTint);
         return index;
     }
 }

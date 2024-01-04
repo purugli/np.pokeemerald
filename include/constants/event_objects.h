@@ -276,22 +276,22 @@
 
 #define OBJ_EVENT_PAL_TAG_BRENDAN                 0x1100
 #define OBJ_EVENT_PAL_TAG_RG_NPC_GREEN            0x1101
-#define OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION       0x1102
+#define OBJ_EVENT_PAL_TAG_RG_NPC_WHITE            0x1102
 #define OBJ_EVENT_PAL_TAG_NPC_1                   0x1103
 #define OBJ_EVENT_PAL_TAG_NPC_2                   0x1104
 #define OBJ_EVENT_PAL_TAG_NPC_3                   0x1105
 #define OBJ_EVENT_PAL_TAG_NPC_4                   0x1106
-#define OBJ_EVENT_PAL_TAG_SIDNEY                  0x1107
-#define OBJ_EVENT_PAL_TAG_GLACIA                  0x1108
-#define OBJ_EVENT_PAL_TAG_BRAWLY                  0x1109
-#define OBJ_EVENT_PAL_TAG_WATTSON                 0x110A
-#define OBJ_EVENT_PAL_TAG_STEVEN                  0x110B
-#define OBJ_EVENT_PAL_TAG_SCOTT                   0x110C
+#define OBJ_EVENT_PAL_TAG_RG_SS_ANNE              0x1107
+#define OBJ_EVENT_PAL_TAG_SIDNEY                  0x1108
+#define OBJ_EVENT_PAL_TAG_GLACIA                  0x1109
+#define OBJ_EVENT_PAL_TAG_BRAWLY                  0x110A
+#define OBJ_EVENT_PAL_TAG_WATTSON                 0x110B
+#define OBJ_EVENT_PAL_TAG_STEVEN                  0x110C
 #define OBJ_EVENT_PAL_TAG_TRUCK                   0x110D
 #define OBJ_EVENT_PAL_TAG_VIGOROTH                0x110E
 #define OBJ_EVENT_PAL_TAG_ZIGZAGOON               0x110F
 #define OBJ_EVENT_PAL_TAG_MAY                     0x1110
-#define OBJ_EVENT_PAL_TAG_RG_NPC_WHITE            0x1111
+#define OBJ_EVENT_PAL_TAG_SCOTT                   0x1111
 #define OBJ_EVENT_PAL_TAG_MOVING_BOX              0x1112
 #define OBJ_EVENT_PAL_TAG_CABLE_CAR               0x1113
 #define OBJ_EVENT_PAL_TAG_RAYQUAZA                0x1114
@@ -300,7 +300,7 @@
 #define OBJ_EVENT_PAL_TAG_ANABEL                  0x1117
 #define OBJ_EVENT_PAL_TAG_GROUDON                 0x1118
 #define OBJ_EVENT_PAL_TAG_TUCKER                  0x1119
-#define OBJ_EVENT_PAL_TAG_RG_SS_ANNE              0x111A
+#define OBJ_EVENT_PAL_TAG_BERRY_TREE_SPROUT       0x111A
 #define OBJ_EVENT_PAL_TAG_SUBMARINE_SHADOW        0x111B
 #define OBJ_EVENT_PAL_TAG_POOCHYENA               0x111C
 #define OBJ_EVENT_PAL_TAG_RED_LEAF                0x111D
@@ -310,9 +310,8 @@
 #define OBJ_EVENT_PAL_TAG_LUGIA                   0x1121
 #define OBJ_EVENT_PAL_TAG_RS_BRENDAN              0x1122
 #define OBJ_EVENT_PAL_TAG_RS_MAY                  0x1123
-#define OBJ_EVENT_PAL_TAG_BERRY_TREE_SPROUT       0x1124
-#define OBJ_EVENT_PAL_TAG_AGUAV_BERRY_TREE        0x1125
-#define OBJ_EVENT_PAL_TAG_SALAC_BERRY_TREE        0x1126
+#define OBJ_EVENT_PAL_TAG_AGUAV_BERRY_TREE        0x1124
+#define OBJ_EVENT_PAL_TAG_SALAC_BERRY_TREE        0x1125
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
 
 #define SHADOW_SIZE_S   0

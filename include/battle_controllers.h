@@ -99,12 +99,6 @@ enum {
 // Special return values in gBattleBufferB from Battle Controller functions.
 #define RET_VALUE_LEVELED_UP   11
 
-struct UnusedControllerStruct
-{
-    u8 unk:7;
-    u8 flag:1;
-};
-
 struct HpAndStatus
 {
     u16 hp;
@@ -191,8 +185,6 @@ enum
     CONTROLLER_CMDS_COUNT
 };
 
-extern struct UnusedControllerStruct gUnusedControllerStruct;
-
 // general functions
 void HandleLinkBattleSetup(void);
 void SetUpBattleVarsAndBirchZigzagoon(void);
@@ -227,7 +219,6 @@ void BtlController_EmitDataTransfer(u8 bufferId, u16 size, void *data);
 void BtlController_EmitTwoReturnValues(u8 bufferId, u8 ret8, u16 ret16);
 void BtlController_EmitChosenMonReturnValue(u8 bufferId, u8 partyId, u8 *battlePartyOrder);
 void BtlController_EmitOneReturnValue(u8 bufferId, u16 ret);
-void BtlController_EmitOneReturnValue_Duplicate(u8 bufferId, u16 ret);
 void BtlController_EmitHitAnimation(u8 bufferId);
 void BtlController_EmitCantSwitch(u8 bufferId);
 void BtlController_EmitPlaySE(u8 bufferId, u16 songId);
@@ -248,12 +239,13 @@ void BtlController_EmitEndLinkBattle(u8 bufferId, u8 battleOutcome);
 void SetControllerToPlayer(void);
 void BattleControllerDummy(void);
 void PlayerHandleGetRawMonData(void);
+u32 CopyPlayerMonData(u8 monId, u8 *dst);
+void SetPlayerMonData(u8 monId);
 void SetBattleEndCallbacks(void);
 void SpriteCB_FreePlayerSpriteLoadMonSprite(struct Sprite *sprite);
 void CB2_SetUpReshowBattleScreenAfterMenu(void);
-void CB2_SetUpReshowBattleScreenAfterMenu2(void);
 void Task_PlayerController_RestoreBgmAfterCry(u8 taskId);
-void ActionSelectionCreateCursorAt(u8 cursorPos, u8 unused);
+void ActionSelectionCreateCursorAt(u8 cursorPos);
 void ActionSelectionDestroyCursorAt(u8 cursorPos);
 void InitMoveSelectionsVarsAndStrings(void);
 
@@ -262,6 +254,8 @@ void SetControllerToRecordedPlayer(void);
 
 // opponent controller
 void SetControllerToOpponent(void);
+u32 GetOpponentMonData(u8 monId, u8 *dst);
+void SetOpponentMonData(u8 monId);
 
 // player partner controller
 void SetControllerToPlayerPartner(void);

@@ -1687,7 +1687,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             UpdateLvlInHealthbox(healthboxSpriteId, level);
         if (elementId == HEALTHBOX_HEALTH_BAR || elementId == HEALTHBOX_ALL)
         {
-            LoadBattleBarGfx(0);
+            LoadBattleBarGfx();
             SetBattleBarStruct(battlerId, healthboxSpriteId, maxHp, currHp, 0);
             MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR);
         }
@@ -1698,7 +1698,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             u32 exp, currLevelExp;
             s32 currExpBarValue, maxExpBarValue;
 
-            LoadBattleBarGfx(3);
+            LoadBattleBarGfx();
             species = GetMonData(mon, MON_DATA_SPECIES);
             exp = GetMonData(mon, MON_DATA_EXP);
             currLevelExp = gExperienceTables[gSpeciesInfo[species].growthRate][level];
@@ -1722,7 +1722,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             UpdateLvlInHealthbox(healthboxSpriteId, level);
         if (elementId == HEALTHBOX_HEALTH_BAR || elementId == HEALTHBOX_ALL)
         {
-            LoadBattleBarGfx(0);
+            LoadBattleBarGfx();
             SetBattleBarStruct(battlerId, healthboxSpriteId, maxHp, currHp, 0);
             MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR);
         }

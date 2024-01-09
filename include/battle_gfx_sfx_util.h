@@ -12,13 +12,11 @@ void InitAndLaunchSpecialAnimation(u8 activeBattlerId, u8 attacker, u8 target, u
 bool8 IsMoveWithoutAnimation(u16 moveId, u8 animationTurn);
 bool8 IsBattleSEPlaying(u8 battlerId);
 void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId);
-void BattleGfxSfxDummy2(u16 species);
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battlerId);
 void DecompressTrainerBackPic(u16 backPicId, u8 battlerId);
-void BattleGfxSfxDummy3(u8 gender);
 void FreeTrainerFrontPicPalette(u16 frontPicId);
 bool8 BattleLoadAllHealthBoxesGfx(u8 state);
-void LoadBattleBarGfx(u8 unused);
+void LoadBattleBarGfx(void);
 bool8 BattleInitAllSprites(u8 *state1, u8 *battlerId);
 void ClearSpritesHealthboxAnimData(void);
 void CopyAllBattleSpritesInvisibilities(void);

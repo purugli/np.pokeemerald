@@ -147,7 +147,7 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
                 SetBattlerShadowSpriteCallback(opponentBattler, species);
             }
 
-            ActionSelectionCreateCursorAt(gActionSelectionCursor[gBattlerInMenuId], 0);
+            ActionSelectionCreateCursorAt(gActionSelectionCursor[gBattlerInMenuId]);
 
             if (gWirelessCommType != 0 && gReceivedRemoteLinkPlayers)
             {

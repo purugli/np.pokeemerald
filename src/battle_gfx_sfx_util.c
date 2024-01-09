@@ -605,10 +605,6 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId)
     }
 }
 
-void BattleGfxSfxDummy2(u16 species)
-{
-}
-
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battlerId)
 {
     u8 position = GetBattlerPosition(battlerId);
@@ -621,10 +617,6 @@ void DecompressTrainerBackPic(u16 backPicId, u8 battlerId)
 {
     LoadPalette(gTrainerBackPicPaletteTable[backPicId],
                 OBJ_PLTT_ID(battlerId), PLTT_SIZE_4BPP);
-}
-
-void BattleGfxSfxDummy3(u8 gender)
-{
 }
 
 void FreeTrainerFrontPicPalette(u16 frontPicId)
@@ -687,7 +679,7 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
     return retVal;
 }
 
-void LoadBattleBarGfx(u8 unused)
+void LoadBattleBarGfx(void)
 {
     LZ77UnCompWram(gBattleInterfaceGfx_BattleBar, gMonSpritesGfxPtr->barFontGfx);
 }

@@ -549,15 +549,27 @@ void AI_TrySwitchOrUseItem(void)
     BtlController_EmitTwoReturnValues(BUFFER_B, B_ACTION_USE_MOVE, BATTLE_OPPOSITE(gActiveBattler) << 8);
 }
 
-static void ModulateByTypeEffectiveness(u32 atkType, u32 defType1, u32 defType2, u32 *var)
+static void ModulateByTypeEffectiveness(u8 atkType, u8 defType1, u8 defType2, u8 *var)
 {
-    u32 typeEffectiveness1 = TYPE_EFFECT_MULTIPLIER(GetTypeModifier(atkType, defType1));
+    s32 i = 0;
 
-    *var = (*var * typeEffectiveness1) / TYPE_MUL_NORMAL;
-    if (defType2 != defType1)
+    while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
     {
-        u32 typeEffectiveness2 = TYPE_EFFECT_MULTIPLIER(GetTypeModifier(atkType, defType2));
-        *var = (*var * typeEffectiveness2) / TYPE_MUL_NORMAL;
+        if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+        {
+            i += 3;
+            continue;
+        }
+        else if (TYPE_EFFECT_ATK_TYPE(i) == atkType)
+        {
+            // Check type1.
+            if (TYPE_EFFECT_DEF_TYPE(i) == defType1)
+                *var = (*var * TYPE_EFFECT_MULTIPLIER(i)) / TYPE_MUL_NORMAL;
+            // Check type2.
+            if (TYPE_EFFECT_DEF_TYPE(i) == defType2 && defType1 != defType2)
+                *var = (*var * TYPE_EFFECT_MULTIPLIER(i)) / TYPE_MUL_NORMAL;
+        }
+        i += 3;
     }
 }
 
@@ -614,7 +626,7 @@ u8 GetMostSuitableMonToSwitchInto(void)
 
     while (invalidMons != (1 << PARTY_SIZE) - 1) // All mons are invalid.
     {
-        u32 dmg = TYPE_MUL_NO_EFFECT;
+        u8 dmg = TYPE_MUL_NO_EFFECT;
         bestMonId = PARTY_SIZE;
         // Find the mon whose type is the most suitable offensively.
         for (i = firstId; i < lastId; i++)
@@ -630,7 +642,7 @@ u8 GetMostSuitableMonToSwitchInto(void)
             {
                 u32 type1 = gSpeciesInfo[species].types[0];
                 u32 type2 = gSpeciesInfo[species].types[1];
-                u32 typeDmg = TYPE_MUL_NORMAL;
+                u8 typeDmg = TYPE_MUL_NORMAL;
                 ModulateByTypeEffectiveness(gBattleMons[opposingBattler].type1, type1, type2, &typeDmg);
                 ModulateByTypeEffectiveness(gBattleMons[opposingBattler].type2, type1, type2, &typeDmg);
 

@@ -14,7 +14,6 @@ bool8 IsBattleSEPlaying(u8 battlerId);
 void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId);
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battlerId);
 void DecompressTrainerBackPic(u16 backPicId, u8 battlerId);
-void FreeTrainerFrontPicPalette(u16 frontPicId);
 bool8 BattleLoadAllHealthBoxesGfx(u8 state);
 void LoadBattleBarGfx(void);
 bool8 BattleInitAllSprites(u8 *state1, u8 *battlerId);

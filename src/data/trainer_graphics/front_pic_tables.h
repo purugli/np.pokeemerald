@@ -97,9 +97,9 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(RS_MAY, gTrainerFrontPic_RubySapphireMay, TRAINER_PIC_SIZE),
 };
 
-#define TRAINER_PAL(trainerPic, pal) [TRAINER_PIC_##trainerPic] = {pal, TRAINER_PIC_##trainerPic}
+#define TRAINER_PAL(trainerPic, pal) [TRAINER_PIC_##trainerPic] = pal
 
-const struct SpritePalette gTrainerFrontPicPaletteTable[] =
+const u16 *const gTrainerFrontPicPaletteTable[] =
 {
     TRAINER_PAL(HIKER, gTrainerPalette_Hiker),
     TRAINER_PAL(AQUA_GRUNT_M, gTrainerPalette_AquaGruntM),

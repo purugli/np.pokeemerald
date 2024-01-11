@@ -48,42 +48,42 @@ const struct SpriteFrameImage gBattlerPicTable_OpponentRight[] =
 
 const struct SpriteFrameImage gTrainerBackPicTable_Brendan[] =
 {
-    {gTrainerBackPic_Brendan, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_Brendan + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 const struct SpriteFrameImage gTrainerBackPicTable_May[] =
 {
-    {gTrainerBackPic_May, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_May + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 const struct SpriteFrameImage gTrainerBackPicTable_Red[] =
 {
-    {gTrainerBackPic_Red, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_Red + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 const struct SpriteFrameImage gTrainerBackPicTable_Leaf[] =
 {
-    {gTrainerBackPic_Leaf, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_Leaf + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireBrendan[] =
 {
-    {gTrainerBackPic_RubySapphireBrendan, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_RubySapphireBrendan + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireMay[] =
 {
-    {gTrainerBackPic_RubySapphireMay, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_RubySapphireMay + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 const struct SpriteFrameImage gTrainerBackPicTable_Wally[] =
 {
-    {gTrainerBackPic_Wally, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_Wally + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 const struct SpriteFrameImage gTrainerBackPicTable_Steven[] =
 {
-    {gTrainerBackPic_Steven, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_Steven + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 static const union AnimCmd sAnim_GeneralFrame0[] =
@@ -259,6 +259,7 @@ const union AnimCmd *const gAnims_MonPic[MAX_MON_PIC_FRAMES] =
     sAnim_GeneralFrame3,
 };
 
+#define SPECIES_SPRITE(species, sprite) [SPECIES_##species] = sprite
 #define SPECIES_PAL(species, pal) [SPECIES_##species] = {pal, SPECIES_##species}
 #define SPECIES_SHINY_PAL(species, pal) [SPECIES_##species] = {pal, SPECIES_##species + SPECIES_SHINY_TAG}
 

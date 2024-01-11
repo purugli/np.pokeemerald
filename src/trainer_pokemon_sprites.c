@@ -54,16 +54,6 @@ bool16 ResetAllPicSprites(void)
     return FALSE;
 }
 
-static void LoadPicPaletteByTagOrSlot(const struct SpritePalette *palette, u8 paletteSlot, u16 paletteTag)
-{
-    sCreatingSpriteTemplate.paletteTag = paletteTag;
-
-    if (paletteTag == TAG_NONE)
-        LoadPalette(palette->data, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
-    else
-        LoadSpritePalette(palette);
-}
-
 u16 CreateMonPicSprite(u16 species, u32 otId, u32 personality, bool8 useAffine, s16 x, s16 y, u8 paletteSlot, u16 paletteTag)
 {
     u8 *framePics;
@@ -71,6 +61,7 @@ u16 CreateMonPicSprite(u16 species, u32 otId, u32 personality, bool8 useAffine, 
     int j;
     u32 i;
     u8 spriteId;
+    const struct SpritePalette *palette;
 
     for (i = 0; i < PICS_COUNT; i ++)
     {
@@ -110,7 +101,12 @@ u16 CreateMonPicSprite(u16 species, u32 otId, u32 personality, bool8 useAffine, 
         sCreatingSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
     }
     sCreatingSpriteTemplate.callback = DummyPicSpriteCallback;
-    LoadPicPaletteByTagOrSlot(GetMonSpritePalStructFromOtIdPersonality(species, otId, personality), paletteSlot, paletteTag);
+    sCreatingSpriteTemplate.paletteTag = paletteTag;
+    palette = GetMonSpritePalStructFromOtIdPersonality(species, otId, personality);
+    if (paletteTag == TAG_NONE)
+        LoadPalette(palette->data, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
+    else
+        LoadSpritePalette(palette);
     spriteId = CreateSprite(&sCreatingSpriteTemplate, x, y, 0);
     if (paletteTag == TAG_NONE)
         gSprites[spriteId].oam.paletteNum = paletteSlot;
@@ -122,7 +118,7 @@ u16 CreateMonPicSprite(u16 species, u32 otId, u32 personality, bool8 useAffine, 
     return spriteId;
 }
 
-u16 CreateTrainerPicSprite(u16 trainerPicId, s16 x, s16 y, u8 paletteSlot, u16 paletteTag)
+u16 CreateTrainerPicSprite(u16 trainerPicId, s16 x, s16 y, u8 paletteSlot)
 {
     u32 i;
     u8 *framePics;
@@ -160,13 +156,13 @@ u16 CreateTrainerPicSprite(u16 trainerPicId, s16 x, s16 y, u8 paletteSlot, u16 p
     sCreatingSpriteTemplate.images = images;
     sCreatingSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
     sCreatingSpriteTemplate.callback = DummyPicSpriteCallback;
-    LoadPicPaletteByTagOrSlot(&gTrainerFrontPicPaletteTable[trainerPicId], paletteSlot, paletteTag);
+    sCreatingSpriteTemplate.paletteTag = TAG_NONE;
+    LoadPalette(gTrainerFrontPicPaletteTable[trainerPicId], OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
     spriteId = CreateSprite(&sCreatingSpriteTemplate, x, y, 0);
-    if (paletteTag == TAG_NONE)
-        gSprites[spriteId].oam.paletteNum = paletteSlot;
+    gSprites[spriteId].oam.paletteNum = paletteSlot;
     sSpritePics[i].frames = framePics;
     sSpritePics[i].images = images;
-    sSpritePics[i].paletteTag = paletteTag;
+    sSpritePics[i].paletteTag = TAG_NONE;
     sSpritePics[i].spriteId = spriteId;
     sSpritePics[i].active = TRUE;
     return spriteId;
@@ -206,7 +202,7 @@ u16 CreateTrainerCardTrainerPicSprite(u16 trainerPicId, u16 destX, u16 destY)
     {
         LZ77UnCompWram(gTrainerFrontPicTable[trainerPicId].data, framePics);
         BlitBitmapRectToWindow(2, framePics, 0, 0, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT, destX, destY, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT);
-        LoadPalette(gTrainerFrontPicPaletteTable[trainerPicId].data, PLTT_ID(8), PLTT_SIZE_4BPP);
+        LoadPalette(gTrainerFrontPicPaletteTable[trainerPicId], PLTT_ID(8), PLTT_SIZE_4BPP);
         Free(framePics);
         return 0;
     }

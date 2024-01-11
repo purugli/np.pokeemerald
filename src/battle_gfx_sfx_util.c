@@ -610,18 +610,15 @@ void DecompressTrainerFrontPic(u16 frontPicId, u8 battlerId)
     u8 position = GetBattlerPosition(battlerId);
     LZ77UnCompWram(gTrainerFrontPicTable[frontPicId].data,
                    gMonSpritesGfxPtr->sprites.ptr[position]);
-    LoadSpritePalette(&gTrainerFrontPicPaletteTable[frontPicId]);
+    position = AllocSpritePalette(frontPicId);
+    LoadPalette(gTrainerFrontPicPaletteTable[frontPicId],
+                OBJ_PLTT_ID(position), PLTT_SIZE_4BPP);
 }
 
 void DecompressTrainerBackPic(u16 backPicId, u8 battlerId)
 {
     LoadPalette(gTrainerBackPicPaletteTable[backPicId],
                 OBJ_PLTT_ID(battlerId), PLTT_SIZE_4BPP);
-}
-
-void FreeTrainerFrontPicPalette(u16 frontPicId)
-{
-    FreeSpritePaletteByTag(gTrainerFrontPicPaletteTable[frontPicId].tag);
 }
 
 bool8 BattleLoadAllHealthBoxesGfx(u8 state)

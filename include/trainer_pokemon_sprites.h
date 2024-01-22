@@ -7,5 +7,7 @@ u16 FreeAndDestroyPicSprite(u16 spriteId);
 u16 CreateTrainerPicSprite(u16 trainerPicId, s16 x, s16 y, u8 paletteSlot);
 u16 FreeAndDestroyTrainerPicSprite(u16 spriteId);
 u16 CreateTrainerCardTrainerPicSprite(u16 trainerPicId, u16 destX, u16 destY);
+u16 GetPlayerFrontTrainerPicId(u8 version, u8 gender);
+u8 GetPlayerBackTrainerPicId(u8 version, u8 gender);
 
 #endif // GUARD_TRAINER_POKEMON_SPRITES_H

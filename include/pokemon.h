@@ -528,5 +528,6 @@ const u8 *GetTrainerNameFromId(u16 trainerId);
 struct MonSpritesGfxManager *CreateMonSpritesGfxManager(void);
 void DestroyMonSpritesGfxManager(void);
 u8 *MonSpritesGfxManager_GetSpritePtr(void);
+u8 PlayerGenderToBackTrainerPicId(u8 playerGender);
 
 #endif // GUARD_POKEMON_H

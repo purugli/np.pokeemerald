@@ -27,6 +27,7 @@
 #include "link_rfu.h"
 #include "constants/rgb.h"
 #include "constants/trade.h"
+#include "trainer_pokemon_sprites.h"
 
 // Window IDs for the link error screens
 enum {
@@ -2167,4 +2168,26 @@ void ResetRecvBuffer(void)
                 gLink.recvQueue.data[i][j][k] = LINKCMD_NONE;
         }
     }
+}
+
+u32 GetVersionId(u8 version)
+{
+    u32 versionId = 0;
+    if (version < VERSION_EMERALD)
+        versionId = 1;
+    else if (version > VERSION_EMERALD)
+        versionId = 2;
+    return versionId;
+}
+
+u16 GetLinkPlayerFrontTrainerPicId(u8 multiplayerId)
+{
+    struct LinkPlayer *linkPlayer = &gLinkPlayers[multiplayerId];
+    return GetPlayerFrontTrainerPicId((u8)linkPlayer->version, linkPlayer->gender);
+}
+
+u8 GetLinkPlayerBackTrainerPicId(u8 multiplayerId)
+{
+    struct LinkPlayer *linkPlayer = &gLinkPlayers[multiplayerId];
+    return GetPlayerBackTrainerPicId((u8)linkPlayer->version, linkPlayer->gender);
 }

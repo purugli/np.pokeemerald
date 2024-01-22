@@ -52,6 +52,7 @@
 #include "region_map.h"
 #include "new_game.h"
 #include "pokemon_icon.h"
+#include "trainer_pokemon_sprites.h"
 
 #define FRIENDSHIP_EVO_THRESHOLD 220
 
@@ -6650,10 +6651,7 @@ u16 FacilityClassToPicIndex(u16 facilityClass)
 
 u16 PlayerGenderToFrontTrainerPicId(u8 playerGender)
 {
-    if (playerGender != MALE)
-        return FacilityClassToPicIndex(FACILITY_CLASS_MAY);
-    else
-        return FacilityClassToPicIndex(FACILITY_CLASS_BRENDAN);
+    return GetPlayerFrontTrainerPicId(GAME_VERSION, playerGender);
 }
 
 void HandleSetPokedexFlag(u16 nationalNum, u8 caseId, u32 personality)
@@ -6811,4 +6809,9 @@ u8 *MonSpritesGfxManager_GetSpritePtr(void)
     {
         return gfx->spritePointers[B_POSITION_OPPONENT_LEFT];
     }
+}
+
+u8 PlayerGenderToBackTrainerPicId(u8 playerGender)
+{
+    return GetPlayerBackTrainerPicId(GAME_VERSION, playerGender);
 }

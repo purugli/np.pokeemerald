@@ -3021,21 +3021,7 @@ static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion)
 
     if (linkPlayerObjEvent->active)
     {
-        switch (gameVersion)
-        {
-        case VERSION_FIRE_RED:
-        case VERSION_LEAF_GREEN:
-            objEvent->spriteId = CreateObjectGraphicsSprite(GetFRLGAvatarGraphicsIdByGender(linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0, FALSE);
-            break;
-        case VERSION_RUBY:
-        case VERSION_SAPPHIRE:
-            objEvent->spriteId = CreateObjectGraphicsSprite(GetRSAvatarGraphicsIdByGender(linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0, FALSE);
-            break;
-        case VERSION_EMERALD:
-            objEvent->spriteId = CreateObjectGraphicsSprite(GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0, FALSE);
-            break;
-        }
-
+        objEvent->spriteId = CreateObjectGraphicsSprite(GetLinkPlayerAvatarGraphicsIdByGender(gameVersion, linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0, FALSE);
         sprite = &gSprites[objEvent->spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->data[0] = linkPlayerId;

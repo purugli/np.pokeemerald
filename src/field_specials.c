@@ -564,16 +564,7 @@ void SpawnLinkPartnerObjectEvent(void)
     {
         if (myLinkPlayerNumber != i)
         {
-            switch ((u8)gLinkPlayers[i].version)
-            {
-            case VERSION_RUBY:
-            case VERSION_SAPPHIRE:
-                linkSpriteId = GetRSAvatarGraphicsIdByGender(gLinkPlayers[i].gender);
-                break;
-            default:
-                linkSpriteId = GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, gLinkPlayers[i].gender);
-                break;
-            }
+            linkSpriteId = GetLinkPlayerAvatarGraphicsIdByGender((u8)gLinkPlayers[i].version, gLinkPlayers[i].gender);
             SpawnSpecialObjectEventParameterized(linkSpriteId, movementTypes[j], 240 - i, coordOffsets[j][0] + x + MAP_OFFSET, coordOffsets[j][1] + y + MAP_OFFSET, 0);
             j++;
             if (j == MAX_LINK_PLAYERS)
@@ -2721,7 +2712,7 @@ void SetBattleTowerLinkPlayerGfx(void)
     u32 i;
     for (i = 0; i < 2; i++)
     {
-        VarSet(VAR_OBJ_GFX_ID_F - i, GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, gLinkPlayers[i].gender));
+        VarSet(VAR_OBJ_GFX_ID_F - i, GetLinkPlayerAvatarGraphicsIdByGender((u8)gLinkPlayers[i].version, gLinkPlayers[i].gender));
     }
 }
 

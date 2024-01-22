@@ -341,6 +341,8 @@ static const struct DoorGraphics sDoorAnimGraphicsTable[] =
     {METATILE_RG_SeaCottage_Teleporter_Door,                DOOR_SOUND_SLIDING, DOOR_SIZE_1x2, sDoorAnimTiles_RG_Teleporter, sDoorAnimPalettes_RG_Teleporter, &gTileset_RG_SeaCottage},
     {METATILE_RG_TrainerTower_LobbyElevatorDoor,            DOOR_SOUND_SLIDING, DOOR_SIZE_1x2, sDoorAnimTiles_RG_TrainerTowerLobbyElevator, sDoorAnimPalettes_RG_TrainerTowerLobbyElevator, &gTileset_RG_TrainerTower},
     {METATILE_RG_TrainerTower_RoofElevatorDoor,             DOOR_SOUND_SLIDING, DOOR_SIZE_1x2, sDoorAnimTiles_RG_TrainerTowerRoofElevator, sDoorAnimPalettes_RG_TrainerTowerRoofElevator, &gTileset_RG_TrainerTower},
+    {METATILE_Custom_General_SlidingSingleDoor,             DOOR_SOUND_SLIDING, DOOR_SIZE_1x1, sDoorAnimTiles_RG_SlidingSingle, sDoorAnimPalettes_RG_SlidingSingle, &gTileset_Custom_General},
+    {METATILE_Custom_General_SlidingDoubleDoor,             DOOR_SOUND_SLIDING, DOOR_SIZE_1x1, sDoorAnimTiles_RG_SlidingDouble, sDoorAnimPalettes_RG_SlidingDouble, &gTileset_Custom_General},
     {},
 };
 

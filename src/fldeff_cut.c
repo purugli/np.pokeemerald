@@ -121,6 +121,18 @@ static const u16 sCutGrassMetatileMapping[][2] = {
         [CUT_GRASS_BOTTOM] = METATILE_RG_ViridianForest_HugeTreeTopMiddle_Grass,
         [CUT_GRASS_TOP]    = METATILE_RG_ViridianForest_HugeTreeTopMiddle_Mowed
     }, {
+        [CUT_GRASS_BOTTOM] = METATILE_Custom_General_Plain_Grass,
+        [CUT_GRASS_TOP]    = METATILE_Custom_General_Plain_Mowed
+    }, {
+        [CUT_GRASS_BOTTOM] = METATILE_Custom_General_ThinTreeTop_Grass,
+        [CUT_GRASS_TOP]    = METATILE_Custom_General_ThinTreeTop_Mowed
+    }, {
+        [CUT_GRASS_BOTTOM] = METATILE_Custom_General_WideTreeTopLeft_Grass,
+        [CUT_GRASS_TOP]    = METATILE_Custom_General_WideTreeTopLeft_Mowed
+    }, {
+        [CUT_GRASS_BOTTOM] = METATILE_Custom_General_WideTreeTopRight_Grass,
+        [CUT_GRASS_TOP]    = METATILE_Custom_General_WideTreeTopRight_Mowed
+    }, {
         [CUT_GRASS_BOTTOM] = 0xffff,
         [CUT_GRASS_TOP]    = 0xffff
     }

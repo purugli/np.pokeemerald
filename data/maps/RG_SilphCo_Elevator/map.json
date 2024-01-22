@@ -1,7 +1,7 @@
 {
   "id": "MAP_RG_SILPH_CO_ELEVATOR",
   "name": "RG_SilphCo_Elevator",
-  "layout": "LAYOUT_RG_SILPH_CO_ELEVATOR",
+  "layout": "LAYOUT_RG_ELEVATOR",
   "music": "MUS_RG_SILPH",
   "region_map_section": "MAPSEC_SILPH_CO",
   "requires_flash": false,

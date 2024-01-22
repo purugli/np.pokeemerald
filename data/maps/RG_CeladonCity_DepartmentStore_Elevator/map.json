@@ -1,7 +1,7 @@
 {
   "id": "MAP_RG_CELADON_CITY_DEPARTMENT_STORE_ELEVATOR",
   "name": "RG_CeladonCity_DepartmentStore_Elevator",
-  "layout": "LAYOUT_RG_CELADON_CITY_DEPARTMENT_STORE_ELEVATOR",
+  "layout": "LAYOUT_RG_ELEVATOR",
   "music": "MUS_POKE_MART",
   "region_map_section": "MAPSEC_CELADON_CITY",
   "requires_flash": false,

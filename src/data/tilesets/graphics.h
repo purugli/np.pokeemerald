@@ -460,28 +460,6 @@ const u16 gTilesetPalettes_PokemonFanClub[][16] =
 	INCBIN_U16("data/tilesets/secondary/pokemon_fan_club/palettes/15.gbapal"),
 };
 
-const u32 gTilesetTiles_RG_General[] = INCBIN_U32("data/tilesets/frlg/primary/general/tiles.4bpp.lz");
-
-const u16 gTilesetPalettes_RG_General[][16] =
-{
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/00.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/01.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/02.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/03.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/04.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/05.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/06.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/07.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/08.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/09.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/10.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/11.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/12.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/13.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/14.gbapal"),
-    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/15.gbapal"),
-};
-
 const u32 gTilesetTiles_MeteorFalls[] = INCBIN_U32("data/tilesets/secondary/meteor_falls/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_MeteorFalls[][16] =
@@ -527,7 +505,6 @@ const u16 gTilesetPalettes_OceanicMuseum[][16] =
 };
 
 const u32 gTilesetTiles_CableClub[] = INCBIN_U32("data/tilesets/secondary/cable_club/tiles.4bpp");
-const u32 gTilesetTiles_UnknownCableClub[] = INCBIN_U32("data/tilesets/secondary/cable_club/unknown_tiles.4bpp");
 
 const u16 gTilesetPalettes_CableClub[][16] =
 {
@@ -681,8 +658,6 @@ const u16 gTilesetPalettes_RusturfTunnel[][16] =
 	INCBIN_U16("data/tilesets/secondary/rusturf_tunnel/palettes/15.gbapal"),
 };
 
-const u32 gTilesetTiles_RG_GenericBuilding1[] = INCBIN_U32("data/tilesets/frlg/secondary/generic_building_1/tiles.4bpp.lz");
-
 const u16 gTilesetPalettes_SecretBaseBrownCave[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/brown_cave/palettes/00.gbapal"),
@@ -702,8 +677,6 @@ const u16 gTilesetPalettes_SecretBaseBrownCave[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/brown_cave/palettes/14.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/brown_cave/palettes/15.gbapal"),
 };
-
-const u32 gTilesetTiles_RG_DepartmentStore[] = INCBIN_U32("data/tilesets/frlg/secondary/department_store/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_SecretBaseTree[][16] =
 {
@@ -725,8 +698,6 @@ const u16 gTilesetPalettes_SecretBaseTree[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/tree/palettes/15.gbapal"),
 };
 
-const u32 gTilesetTiles_RG_PalletTown[] = INCBIN_U32("data/tilesets/frlg/secondary/pallet_town/tiles.4bpp.lz");
-
 const u16 gTilesetPalettes_SecretBaseShrub[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/shrub/palettes/00.gbapal"),
@@ -746,8 +717,6 @@ const u16 gTilesetPalettes_SecretBaseShrub[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/shrub/palettes/14.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/shrub/palettes/15.gbapal"),
 };
-
-const u32 gTilesetTiles_RG_ViridianCity[] = INCBIN_U32("data/tilesets/frlg/secondary/viridian_city/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_SecretBaseBlueCave[][16] =
 {
@@ -769,8 +738,6 @@ const u16 gTilesetPalettes_SecretBaseBlueCave[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/blue_cave/palettes/15.gbapal"),
 };
 
-const u32 gTilesetTiles_RG_PewterCity[] = INCBIN_U32("data/tilesets/frlg/secondary/pewter_city/tiles.4bpp.lz");
-
 const u16 gTilesetPalettes_SecretBaseYellowCave[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/yellow_cave/palettes/00.gbapal"),
@@ -790,8 +757,6 @@ const u16 gTilesetPalettes_SecretBaseYellowCave[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/yellow_cave/palettes/14.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/yellow_cave/palettes/15.gbapal"),
 };
-
-const u32 gTilesetTiles_RG_CeruleanCity[] = INCBIN_U32("data/tilesets/frlg/secondary/cerulean_city/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_SecretBaseRedCave[][16] =
 {
@@ -1481,28 +1446,6 @@ const u16 gTilesetPalettes_MossdeepGameCorner[][16] =
 	INCBIN_U16("data/tilesets/secondary/mossdeep_game_corner/palettes/15.gbapal"),
 };
 
-const u32 gTilesetTiles_IslandHarbor[] = INCBIN_U32("data/tilesets/frlg/secondary/island_harbor/tiles.4bpp.lz");
-
-const u16 gTilesetPalettes_IslandHarbor[][16] =
-{
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/00.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/01.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/02.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/03.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/04.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/05.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/06.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/07.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/08.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/09.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/10.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/11.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/12.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/13.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/14.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/15.gbapal"),
-};
-
 const u32 gTilesetTiles_TrainerHill[] = INCBIN_U32("data/tilesets/secondary/trainer_hill/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_TrainerHill[][16] =
@@ -1523,28 +1466,6 @@ const u16 gTilesetPalettes_TrainerHill[][16] =
 	INCBIN_U16("data/tilesets/secondary/trainer_hill/palettes/13.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/trainer_hill/palettes/14.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/trainer_hill/palettes/15.gbapal"),
-};
-
-const u32 gTilesetTiles_NavelRock[] = INCBIN_U32("data/tilesets/frlg/secondary/navel_rock/tiles.4bpp.lz");
-
-const u16 gTilesetPalettes_NavelRock[][16] =
-{
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/00.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/01.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/02.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/03.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/04.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/05.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/06.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/07.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/08.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/09.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/10.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/11.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/12.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/13.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/14.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/15.gbapal"),
 };
 
 const u32 gTilesetTiles_BattleFrontierRankingHall[] = INCBIN_U32("data/tilesets/secondary/battle_frontier_ranking_hall/tiles.4bpp.lz");
@@ -1635,6 +1556,30 @@ const u16 gTilesetPalettes_UnionRoom[][16] =
 
 const u32 gTilesetTiles_UnionRoom[] = INCBIN_U32("data/tilesets/secondary/union_room/tiles.4bpp.lz");
 
+const u32 gTilesetTiles_RG_General[] = INCBIN_U32("data/tilesets/frlg/primary/general/tiles.4bpp.lz");
+
+const u16 gTilesetPalettes_RG_General[][16] =
+{
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/00.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/01.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/02.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/03.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/04.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/05.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/06.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/07.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/08.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/09.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/10.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/11.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/12.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/13.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/14.gbapal"),
+    INCBIN_U16("data/tilesets/frlg/primary/general/palettes/15.gbapal"),
+};
+
+const u32 gTilesetTiles_RG_GenericBuilding1[] = INCBIN_U32("data/tilesets/frlg/secondary/generic_building_1/tiles.4bpp.lz");
+
 const u16 gTilesetPalettes_RG_GenericBuilding1[][16] =
 {
     INCBIN_U16("data/tilesets/frlg/secondary/generic_building_1/palettes/00.gbapal"),
@@ -1654,6 +1599,8 @@ const u16 gTilesetPalettes_RG_GenericBuilding1[][16] =
     INCBIN_U16("data/tilesets/frlg/secondary/generic_building_1/palettes/14.gbapal"),
     INCBIN_U16("data/tilesets/frlg/secondary/generic_building_1/palettes/15.gbapal"),
 };
+
+const u32 gTilesetTiles_RG_DepartmentStore[] = INCBIN_U32("data/tilesets/frlg/secondary/department_store/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_RG_DepartmentStore[][16] =
 {
@@ -1675,6 +1622,8 @@ const u16 gTilesetPalettes_RG_DepartmentStore[][16] =
     INCBIN_U16("data/tilesets/frlg/secondary/department_store/palettes/15.gbapal"),
 };
 
+const u32 gTilesetTiles_RG_PalletTown[] = INCBIN_U32("data/tilesets/frlg/secondary/pallet_town/tiles.4bpp.lz");
+
 const u16 gTilesetPalettes_RG_PalletTown[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pallet_town/palettes/00.gbapal"),
@@ -1694,6 +1643,8 @@ const u16 gTilesetPalettes_RG_PalletTown[][16] =
 	INCBIN_U16("data/tilesets/frlg/secondary/pallet_town/palettes/14.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pallet_town/palettes/15.gbapal"),
 };
+
+const u32 gTilesetTiles_RG_ViridianCity[] = INCBIN_U32("data/tilesets/frlg/secondary/viridian_city/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_RG_ViridianCity[][16] =
 {
@@ -1715,6 +1666,8 @@ const u16 gTilesetPalettes_RG_ViridianCity[][16] =
 	INCBIN_U16("data/tilesets/frlg/secondary/viridian_city/palettes/15.gbapal"),
 };
 
+const u32 gTilesetTiles_RG_PewterCity[] = INCBIN_U32("data/tilesets/frlg/secondary/pewter_city/tiles.4bpp.lz");
+
 const u16 gTilesetPalettes_RG_PewterCity[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pewter_city/palettes/00.gbapal"),
@@ -1734,6 +1687,8 @@ const u16 gTilesetPalettes_RG_PewterCity[][16] =
 	INCBIN_U16("data/tilesets/frlg/secondary/pewter_city/palettes/14.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pewter_city/palettes/15.gbapal"),
 };
+
+const u32 gTilesetTiles_RG_CeruleanCity[] = INCBIN_U32("data/tilesets/frlg/secondary/cerulean_city/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_RG_CeruleanCity[][16] =
 {
@@ -2703,6 +2658,28 @@ const u16 gTilesetPalettes_RG_BerryForest[][16] =
 	INCBIN_U16("data/tilesets/frlg/secondary/berry_forest/palettes/15.gbapal"),
 };
 
+const u32 gTilesetTiles_NavelRock[] = INCBIN_U32("data/tilesets/frlg/secondary/navel_rock/tiles.4bpp.lz");
+
+const u16 gTilesetPalettes_NavelRock[][16] =
+{
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/00.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/01.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/02.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/03.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/04.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/05.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/06.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/07.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/08.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/09.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/10.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/11.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/12.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/13.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/14.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/15.gbapal"),
+};
+
 const u32 gTilesetTiles_RG_TanobyRuins[] = INCBIN_U32("data/tilesets/frlg/secondary/tanoby_ruins/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_RG_TanobyRuins[][16] =
@@ -2813,6 +2790,28 @@ const u16 gTilesetPalettes_RG_TrainerTower[][16] =
 	INCBIN_U16("data/tilesets/frlg/secondary/trainer_tower/palettes/15.gbapal"),
 };
 
+const u32 gTilesetTiles_RG_IslandHarbor[] = INCBIN_U32("data/tilesets/frlg/secondary/island_harbor/tiles.4bpp.lz");
+
+const u16 gTilesetPalettes_RG_IslandHarbor[][16] =
+{
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/00.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/01.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/02.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/03.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/04.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/05.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/06.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/07.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/08.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/09.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/10.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/11.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/12.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/13.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/14.gbapal"),
+	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/15.gbapal"),
+};
+
 const u32 gTilesetTiles_RG_PokemonLeague[] = INCBIN_U32("data/tilesets/frlg/secondary/pokemon_league/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_RG_PokemonLeague[][16] =
@@ -2835,24 +2834,24 @@ const u16 gTilesetPalettes_RG_PokemonLeague[][16] =
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_league/palettes/15.gbapal"),
 };
 
-const u32 gTilesetTiles_RG_HallOfFame[] = INCBIN_U32("data/tilesets/frlg/secondary/hall_of_fame/tiles.4bpp.lz");
+const u32 gTilesetTiles_Custom_General[] = INCBIN_U32("data/tilesets/custom/primary/general/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_HallOfFame[][16] =
+const u16 gTilesetPalettes_Custom_General[][16] =
 {
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/00.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/01.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/02.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/03.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/04.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/05.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/06.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/07.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/08.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/09.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/10.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/11.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/12.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/13.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/14.gbapal"),
-	INCBIN_U16("data/tilesets/frlg/secondary/hall_of_fame/palettes/15.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/00.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/01.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/02.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/03.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/04.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/05.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/06.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/07.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/08.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/09.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/10.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/11.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/12.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/13.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/14.gbapal"),
+    INCBIN_U16("data/tilesets/custom/primary/general/palettes/15.gbapal"),
 };

@@ -1,7 +1,7 @@
 {
   "id": "MAP_RG_ONE_ISLAND_HARBOR",
   "name": "RG_OneIsland_Harbor",
-  "layout": "LAYOUT_ISLAND_HARBOR",
+  "layout": "LAYOUT_RG_ISLAND_HARBOR",
   "music": "MUS_RG_SEVII_123",
   "region_map_section": "MAPSEC_ONE_ISLAND",
   "requires_flash": false,

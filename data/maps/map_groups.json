@@ -27,13 +27,13 @@
     "gMapGroup_Dungeons",
     "gMapGroup_IndoorDynamic",
     "gMapGroup_SpecialArea",
-    "gMapGroup_RG_Dungeons",
     "gMapGroup_IndoorRoute109",
     "gMapGroup_IndoorRoute110",
     "gMapGroup_IndoorRoute113",
     "gMapGroup_IndoorRoute123",
     "gMapGroup_IndoorRoute119",
     "gMapGroup_IndoorRoute124",
+    "gMapGroup_RG_Dungeons",
     "gMapGroup_RG_SpecialArea",
     "gMapGroup_RG_TownsAndRoutes",
     "gMapGroup_RG_IndoorPallet",
@@ -50,6 +50,8 @@
     "gMapGroup_RG_IndoorRoute2",
     "gMapGroup_RG_IndoorRoute4",
     "gMapGroup_RG_IndoorRoute5",
+    "gMapGroup_RG_IndoorRoute6",
+    "gMapGroup_RG_IndoorRoute7",
     "gMapGroup_RG_IndoorRoute8",
     "gMapGroup_RG_IndoorRoute10",
     "gMapGroup_RG_IndoorRoute11",
@@ -267,7 +269,6 @@
     "LilycoveCity_ContestHall",
     "LilycoveCity_PokemonCenter_1F",
     "LilycoveCity_PokemonCenter_2F",
-    "RG_Route6_NorthEntrance",
     "LilycoveCity_PokemonTrainerFanClub",
     "LilycoveCity_Harbor",
     "LilycoveCity_MoveDeletersHouse",
@@ -398,9 +399,6 @@
     "SeafloorCavern_Room9",
     "CaveOfOrigin_Entrance",
     "CaveOfOrigin_1F",
-    "RG_ViridianForest",
-    "RG_MtMoon_1F",
-    "RG_MtMoon_B1F",
     "CaveOfOrigin_B1F",
     "VictoryRoad_1F",
     "VictoryRoad_B1F",
@@ -433,9 +431,6 @@
     "SealedChamber_OuterRoom",
     "SealedChamber_InnerRoom",
     "ScorchedSlab",
-    "RG_MtMoon_B2F",
-    "RG_RockTunnel_1F",
-    "RG_RockTunnel_B1F",
     "SkyPillar_Entrance",
     "SkyPillar_Outside",
     "SkyPillar_1F",
@@ -498,12 +493,6 @@
     "RecordCorner",
     "BattleColosseum_4P",
     "ContestHall",
-    "RG_SixIsland_DottedHole_1F",
-    "RG_SixIsland_DottedHole_B1F",
-    "RG_SixIsland_DottedHole_B2F",
-    "RG_SixIsland_DottedHole_B3F",
-    "RG_SixIsland_DottedHole_B4F",
-    "RG_SixIsland_DottedHole_SapphireRoom",
     "ContestHallBeauty",
     "ContestHallTough",
     "ContestHallCool",
@@ -584,45 +573,56 @@
     "BattleFrontier_Lounge7",
     "BattleFrontier_ReceptionGate",
     "BattleFrontier_Lounge8",
-    "RG_Route7_EastEntrance",
     "BattleFrontier_PokemonCenter_1F",
     "BattleFrontier_PokemonCenter_2F",
     "BattleFrontier_Mart",
     "FarawayIsland_Entrance",
     "FarawayIsland_Interior",
-    "BirthIsland_Exterior",
-    "BirthIsland_Harbor",
     "TrainerHill_Entrance",
     "TrainerHill_1F",
     "TrainerHill_2F",
     "TrainerHill_3F",
     "TrainerHill_4F",
     "TrainerHill_Roof",
-    "NavelRock_Exterior",
-    "NavelRock_Harbor",
-    "NavelRock_Entrance",
-    "NavelRock_B1F",
-    "NavelRock_Fork",
-    "NavelRock_Up1",
-    "NavelRock_Up2",
-    "NavelRock_Up3",
-    "NavelRock_Up4",
-    "NavelRock_Top",
-    "NavelRock_Down01",
-    "NavelRock_Down02",
-    "NavelRock_Down03",
-    "NavelRock_Down04",
-    "NavelRock_Down05",
-    "NavelRock_Down06",
-    "NavelRock_Down07",
-    "NavelRock_Down08",
-    "NavelRock_Down09",
-    "NavelRock_Down10",
-    "NavelRock_Down11",
-    "NavelRock_Bottom",
     "TrainerHill_Elevator"
   ],
+  "gMapGroup_IndoorRoute109": [
+    "Route109_SeashoreHouse"
+  ],
+  "gMapGroup_IndoorRoute110": [
+    "Route110_TrickHouseEntrance",
+    "Route110_TrickHouseEnd",
+    "Route110_TrickHouseCorridor",
+    "Route110_TrickHousePuzzle1",
+    "Route110_TrickHousePuzzle2",
+    "Route110_TrickHousePuzzle3",
+    "Route110_TrickHousePuzzle4",
+    "Route110_TrickHousePuzzle5",
+    "Route110_TrickHousePuzzle6",
+    "Route110_TrickHousePuzzle7",
+    "Route110_TrickHousePuzzle8",
+    "Route110_SeasideCyclingRoadNorthEntrance",
+    "Route110_SeasideCyclingRoadSouthEntrance"
+  ],
+  "gMapGroup_IndoorRoute113": [
+    "Route113_GlassWorkshop"
+  ],
+  "gMapGroup_IndoorRoute123": [
+    "Route123_BerryMastersHouse"
+  ],
+  "gMapGroup_IndoorRoute119": [
+    "Route119_WeatherInstitute_1F",
+    "Route119_WeatherInstitute_2F",
+    "Route119_House"
+  ],
+  "gMapGroup_IndoorRoute124": [
+    "Route124_DivingTreasureHuntersHouse"
+  ],
   "gMapGroup_RG_Dungeons": [
+    "RG_ViridianForest",
+    "RG_MtMoon_1F",
+    "RG_MtMoon_B1F",
+    "RG_MtMoon_B2F",
     "RG_SSAnne_Exterior",
     "RG_SSAnne_1F_Corridor",
     "RG_SSAnne_2F_Corridor",
@@ -700,6 +700,8 @@
     "RG_PokemonLeague_LancesRoom",
     "RG_PokemonLeague_ChampionsRoom",
     "RG_PokemonLeague_HallOfFame",
+    "RG_RockTunnel_1F",
+    "RG_RockTunnel_B1F",
     "RG_SeafoamIslands_1F",
     "RG_SeafoamIslands_B1F",
     "RG_SeafoamIslands_B2F",
@@ -732,42 +734,17 @@
     "RG_FourIsland_IcefallCave_B1F",
     "RG_FourIsland_IcefallCave_Back",
     "RG_FiveIsland_RocketWarehouse",
+    "RG_SixIsland_DottedHole_1F",
+    "RG_SixIsland_DottedHole_B1F",
+    "RG_SixIsland_DottedHole_B2F",
+    "RG_SixIsland_DottedHole_B3F",
+    "RG_SixIsland_DottedHole_B4F",
+    "RG_SixIsland_DottedHole_SapphireRoom",
     "RG_SixIsland_PatternBush",
     "RG_SixIsland_AlteringCave"
   ],
-  "gMapGroup_IndoorRoute109": [
-    "Route109_SeashoreHouse"
-  ],
-  "gMapGroup_IndoorRoute110": [
-    "Route110_TrickHouseEntrance",
-    "Route110_TrickHouseEnd",
-    "Route110_TrickHouseCorridor",
-    "Route110_TrickHousePuzzle1",
-    "Route110_TrickHousePuzzle2",
-    "Route110_TrickHousePuzzle3",
-    "Route110_TrickHousePuzzle4",
-    "Route110_TrickHousePuzzle5",
-    "Route110_TrickHousePuzzle6",
-    "Route110_TrickHousePuzzle7",
-    "Route110_TrickHousePuzzle8",
-    "Route110_SeasideCyclingRoadNorthEntrance",
-    "Route110_SeasideCyclingRoadSouthEntrance"
-  ],
-  "gMapGroup_IndoorRoute113": [
-    "Route113_GlassWorkshop"
-  ],
-  "gMapGroup_IndoorRoute123": [
-    "Route123_BerryMastersHouse"
-  ],
-  "gMapGroup_IndoorRoute119": [
-    "Route119_WeatherInstitute_1F",
-    "Route119_WeatherInstitute_2F",
-    "Route119_House"
-  ],
-  "gMapGroup_IndoorRoute124": [
-    "Route124_DivingTreasureHuntersHouse"
-  ],
   "gMapGroup_RG_SpecialArea": [
+    "RG_NavelRock_Exterior",
     "RG_TrainerTower_1F",
     "RG_TrainerTower_2F",
     "RG_TrainerTower_3F",
@@ -803,7 +780,30 @@
     "RG_SevenIsland_TanobyRuins_ViapoisChamber",
     "RG_ThreeIsland_DunsparceTunnel",
     "RG_SevenIsland_SevaultCanyon_TanobyKey",
-    "RG_OneIsland_KindleRoad_EmberSpa"
+    "RG_NavelRock_Entrance",
+    "RG_NavelRock_Top",
+    "RG_NavelRock_Bottom",
+    "RG_NavelRock_Up1",
+    "RG_NavelRock_Up2",
+    "RG_NavelRock_Up3",
+    "RG_NavelRock_Up4",
+    "RG_NavelRock_Down01",
+    "RG_NavelRock_Down02",
+    "RG_NavelRock_Down03",
+    "RG_NavelRock_Down04",
+    "RG_NavelRock_Down05",
+    "RG_NavelRock_Down06",
+    "RG_NavelRock_Down07",
+    "RG_NavelRock_Down08",
+    "RG_NavelRock_Down09",
+    "RG_NavelRock_Down10",
+    "RG_NavelRock_Down11",
+    "RG_NavelRock_B1F",
+    "RG_NavelRock_Fork",
+    "RG_BirthIsland_Exterior",
+    "RG_OneIsland_KindleRoad_EmberSpa",
+    "RG_BirthIsland_Harbor",
+    "RG_NavelRock_Harbor"
   ],
   "gMapGroup_RG_TownsAndRoutes": [
     "RG_PalletTown",
@@ -995,6 +995,12 @@
   "gMapGroup_RG_IndoorRoute5": [
     "RG_Route5_PokemonDayCare",
     "RG_Route5_SouthEntrance"
+  ],
+  "gMapGroup_RG_IndoorRoute6": [
+    "RG_Route6_NorthEntrance"
+  ],
+  "gMapGroup_RG_IndoorRoute7": [
+    "RG_Route7_EastEntrance"
   ],
   "gMapGroup_RG_IndoorRoute8": [
     "RG_Route8_WestEntrance"

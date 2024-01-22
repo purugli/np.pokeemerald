@@ -1,7 +1,7 @@
 {
   "id": "MAP_RG_TRAINER_TOWER_ELEVATOR",
   "name": "RG_TrainerTower_Elevator",
-  "layout": "LAYOUT_RG_TRAINER_TOWER_ELEVATOR",
+  "layout": "LAYOUT_RG_ELEVATOR",
   "music": "MUS_B_TOWER_RS",
   "region_map_section": "MAPSEC_TRAINER_TOWER_2",
   "requires_flash": false,

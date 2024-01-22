@@ -383,6 +383,7 @@ void SetMewAboveGrass(void)
     }
     else
     {
+        u16 fldEffObj;
         // Mew emerging from grass when found
         // Also do field effect for grass shaking as it emerges
         VarSet(VAR_FARAWAY_ISLAND_STEP_COUNTER, 0xFFFF);
@@ -397,7 +398,11 @@ void SetMewAboveGrass(void)
         x = mew->currentCoords.x;
         y = mew->currentCoords.y;
         SetSpritePosToOffsetMapCoords(&x, &y, 8, 8);
-        sGrassSpriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_LONG_GRASS], x, y, gSprites[mew->spriteId].subpriority - 1);
+        if (mew->currentMetatileBehavior == MB_LONG_GRASS_COVERED)
+            fldEffObj = FLDEFFOBJ_LONG_GRASS_COVERED;
+        else
+            fldEffObj = FLDEFFOBJ_LONG_GRASS;
+        sGrassSpriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[fldEffObj], x, y, gSprites[mew->spriteId].subpriority - 1);
         if (sGrassSpriteId != MAX_SPRITES)
         {
             struct Sprite *sprite = &gSprites[sGrassSpriteId];

@@ -236,11 +236,17 @@ static const u8 *const sModeStrings[NUM_TRAINER_HILL_MODES] =
 static const struct ObjectEventTemplate sTrainerObjectEventTemplate =
 {
     .graphicsId = OBJ_EVENT_GFX_BRENDAN_NORMAL,
-    .elevation = 3,
-    .movementType = MOVEMENT_TYPE_LOOK_AROUND,
-    .movementRangeX = 1,
-    .movementRangeY = 1,
-    .trainerType = TRAINER_TYPE_NORMAL,
+    .objUnion =
+    {
+        .normal =
+        {
+            .elevation = 3,
+            .movementType = MOVEMENT_TYPE_LOOK_AROUND,
+            .movementRangeX = 1,
+            .movementRangeY = 1,
+            .trainerType = TRAINER_TYPE_NORMAL,
+        }
+    }
 };
 
 static const u32 sNextFloorMapNum[NUM_TRAINER_HILL_FLOORS] =
@@ -633,8 +639,8 @@ void LoadTrainerHillObjectEventTemplates(void)
         eventTemplates[i].x = sHillData->floors[floorId].map.trainerCoords[i] & 0xF;
         eventTemplates[i].y = ((sHillData->floors[floorId].map.trainerCoords[i] >> 4) & 0xF) + HILL_FLOOR_HEIGHT_MARGIN;
         bits = i << 2;
-        eventTemplates[i].movementType = ((sHillData->floors[floorId].map.trainerDirections >> bits) & 0xF) + MOVEMENT_TYPE_FACE_UP;
-        eventTemplates[i].trainerRange_berryTreeId = (sHillData->floors[floorId].map.trainerRanges >> bits) & 0xF;
+        eventTemplates[i].objUnion.normal.movementType = ((sHillData->floors[floorId].map.trainerDirections >> bits) & 0xF) + MOVEMENT_TYPE_FACE_UP;
+        eventTemplates[i].objUnion.normal.trainerRange_berryTreeId = (sHillData->floors[floorId].map.trainerRanges >> bits) & 0xF;
         eventTemplates[i].script = TrainerHill_EventScript_TrainerBattle;
         gSaveBlock2Ptr->frontier.trainerIds[i] = i + 1;
     }

@@ -1299,7 +1299,7 @@ static void MarkPyramidTrainerAsBattled(u16 trainerId)
     }
 
     gObjectEvents[gSelectedObjectEvent].movementType = MOVEMENT_TYPE_WANDER_AROUND;
-    gSaveBlock1Ptr->objectEventTemplates[gSpecialVar_LastTalked - 1].movementType = MOVEMENT_TYPE_WANDER_AROUND;
+    gSaveBlock1Ptr->objectEventTemplates[gSpecialVar_LastTalked - 1].objUnion.normal.movementType = MOVEMENT_TYPE_WANDER_AROUND;
     gObjectEvents[gSelectedObjectEvent].initialCoords.x = gObjectEvents[gSelectedObjectEvent].currentCoords.x;
     gObjectEvents[gSelectedObjectEvent].initialCoords.y = gObjectEvents[gSelectedObjectEvent].currentCoords.y;
 }

@@ -248,19 +248,19 @@ void TurnRotatingTileObjects(void)
                 {
                 case DIR_EAST:
                     movementScript = sMovement_FaceUp;
-                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].movementType = MOVEMENT_TYPE_FACE_UP;
+                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_UP;
                     break;
                 case DIR_SOUTH:
                     movementScript = sMovement_FaceRight;
-                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].movementType = MOVEMENT_TYPE_FACE_RIGHT;
+                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_RIGHT;
                     break;
                 case DIR_WEST:
                     movementScript = sMovement_FaceDown;
-                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].movementType = MOVEMENT_TYPE_FACE_DOWN;
+                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_DOWN;
                     break;
                 case DIR_NORTH:
                     movementScript = sMovement_FaceLeft;
-                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].movementType = MOVEMENT_TYPE_FACE_LEFT;
+                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_LEFT;
                     break;
                 default:
                     continue;
@@ -277,19 +277,19 @@ void TurnRotatingTileObjects(void)
                 {
                 case DIR_EAST:
                     movementScript = sMovement_FaceDown;
-                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].movementType = MOVEMENT_TYPE_FACE_DOWN;
+                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_DOWN;
                     break;
                 case DIR_SOUTH:
                     movementScript = sMovement_FaceLeft;
-                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].movementType = MOVEMENT_TYPE_FACE_LEFT;
+                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_LEFT;
                     break;
                 case DIR_WEST:
                     movementScript = sMovement_FaceUp;
-                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].movementType = MOVEMENT_TYPE_FACE_UP;
+                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_UP;
                     break;
                 case DIR_NORTH:
                     movementScript = sMovement_FaceRight;
-                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].movementType = MOVEMENT_TYPE_FACE_RIGHT;
+                    objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_RIGHT;
                     break;
                 default:
                     continue;
@@ -337,22 +337,22 @@ static void TurnUnsavedRotatingTileObject(u8 eventTemplateId, u8 puzzleTileNum)
     else
         rotation = ROTATE_NONE;
 
-    movementType = objectEvents[eventTemplateId].movementType;
+    movementType = objectEvents[eventTemplateId].objUnion.normal.movementType;
     if (rotation == ROTATE_COUNTERCLOCKWISE)
     {
         switch (movementType)
         {
         case MOVEMENT_TYPE_FACE_RIGHT:
-            objectEvents[eventTemplateId].movementType = MOVEMENT_TYPE_FACE_UP;
+            objectEvents[eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_UP;
             break;
         case MOVEMENT_TYPE_FACE_DOWN:
-            objectEvents[eventTemplateId].movementType = MOVEMENT_TYPE_FACE_RIGHT;
+            objectEvents[eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_RIGHT;
             break;
         case MOVEMENT_TYPE_FACE_LEFT:
-            objectEvents[eventTemplateId].movementType = MOVEMENT_TYPE_FACE_DOWN;
+            objectEvents[eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_DOWN;
             break;
         case MOVEMENT_TYPE_FACE_UP:
-            objectEvents[eventTemplateId].movementType = MOVEMENT_TYPE_FACE_LEFT;
+            objectEvents[eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_LEFT;
             break;
         default:
             break;
@@ -363,16 +363,16 @@ static void TurnUnsavedRotatingTileObject(u8 eventTemplateId, u8 puzzleTileNum)
         switch (movementType)
         {
         case MOVEMENT_TYPE_FACE_RIGHT:
-            objectEvents[eventTemplateId].movementType = MOVEMENT_TYPE_FACE_DOWN;
+            objectEvents[eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_DOWN;
             break;
         case MOVEMENT_TYPE_FACE_DOWN:
-            objectEvents[eventTemplateId].movementType = MOVEMENT_TYPE_FACE_LEFT;
+            objectEvents[eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_LEFT;
             break;
         case MOVEMENT_TYPE_FACE_LEFT:
-            objectEvents[eventTemplateId].movementType = MOVEMENT_TYPE_FACE_UP;
+            objectEvents[eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_UP;
             break;
         case MOVEMENT_TYPE_FACE_UP:
-            objectEvents[eventTemplateId].movementType = MOVEMENT_TYPE_FACE_RIGHT;
+            objectEvents[eventTemplateId].objUnion.normal.movementType = MOVEMENT_TYPE_FACE_RIGHT;
             break;
         default:
             break;

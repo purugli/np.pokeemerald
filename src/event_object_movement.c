@@ -1135,12 +1135,15 @@ void RemoveObjectEventByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 
 static void RemoveObjectEventInternal(struct ObjectEvent *objectEvent)
 {
+    u8 paletteNum;
     struct SpriteFrameImage image;
+
     image.size = GetObjectEventGraphicsInfo(objectEvent->graphicsId)->size;
     gSprites[objectEvent->spriteId].images = &image;
+    paletteNum = gSprites[objectEvent->spriteId].oam.paletteNum;
     DestroySprite(&gSprites[objectEvent->spriteId]);
     if (gSprites[objectEvent->spriteId].inUse || gSprites[objectEvent->spriteId].oam.paletteNum != 0)
-        FieldEffectFreePaletteIfUnused(gSprites[objectEvent->spriteId].oam.paletteNum);
+        FieldEffectFreePaletteIfUnused(paletteNum);
 }
 
 void RemoveAllObjectEventsExceptPlayer(void)
@@ -1187,11 +1190,9 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
 
     objectEvent = &gObjectEvents[objectEventId];
     paletteTag = GetObjectEventPaletteTag(objectEvent, spriteTemplate);
-    if (paletteTag != TAG_NONE)
-    {
-        LoadObjectEventPalette(paletteTag, TRUE);
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(paletteTag), COLOR_MAP_CONTRAST);
-    }
+    LoadObjectEventPalette(paletteTag, FALSE);
+    PatchObjectPalette(paletteTag, IndexOfSpritePaletteTag(paletteTag), TRUE);
+    UpdatePaletteColorMap(IndexOfSpritePaletteTag(paletteTag), COLOR_MAP_CONTRAST);
 
     if (objectEvent->movementType == MOVEMENT_TYPE_INVISIBLE)
         objectEvent->invisible = TRUE;
@@ -1330,8 +1331,9 @@ u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *),
 
     spriteTemplate = Alloc(sizeof(struct SpriteTemplate));
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, callback, spriteTemplate, &subspriteTables);
-    if (spriteTemplate->paletteTag != TAG_NONE)
-        LoadObjectEventPalette(spriteTemplate->paletteTag, applyDNSTint);
+    LoadObjectEventPalette(spriteTemplate->paletteTag, FALSE);
+    PatchObjectPalette(spriteTemplate->paletteTag, IndexOfSpritePaletteTag(spriteTemplate->paletteTag), applyDNSTint);
+    UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), COLOR_MAP_CONTRAST);
 
     spriteId = CreateSprite(spriteTemplate, x, y, subpriority);
     Free(spriteTemplate);
@@ -1363,11 +1365,9 @@ u8 CreateVirtualObject(u8 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevatio
 
     graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, SpriteCB_VirtualObject, &spriteTemplate, &subspriteTables);
-    if (spriteTemplate.paletteTag != TAG_NONE)
-    {
-        LoadObjectEventPalette(spriteTemplate.paletteTag, TRUE);
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate.paletteTag), COLOR_MAP_CONTRAST);
-    }
+    LoadObjectEventPalette(spriteTemplate.paletteTag, FALSE);
+    PatchObjectPalette(spriteTemplate.paletteTag, IndexOfSpritePaletteTag(spriteTemplate.paletteTag), TRUE);
+    UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate.paletteTag), COLOR_MAP_CONTRAST);
     x += MAP_OFFSET;
     y += MAP_OFFSET;
     SetSpritePosToOffsetMapCoords(&x, &y, 8, 16);
@@ -1383,6 +1383,8 @@ u8 CreateVirtualObject(u8 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevatio
         sprite->coordOffsetEnabled = TRUE;
         sprite->sVirtualObjId = virtualObjId;
         sprite->sVirtualObjElev = elevation;
+
+        PatchObjectPalette(spriteTemplate.paletteTag, sprite->oam.paletteNum, TRUE);
 
         if (subspriteTables != NULL)
         {
@@ -1504,11 +1506,9 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
     spriteTemplate.images = &spriteFrameImage;
 
     paletteTag = GetObjectEventPaletteTag(objectEvent, &spriteTemplate);
-    if (paletteTag != TAG_NONE)
-    {
-        LoadObjectEventPalette(paletteTag, TRUE);
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(paletteTag), COLOR_MAP_CONTRAST);
-    }
+    LoadObjectEventPalette(paletteTag, FALSE);
+    PatchObjectPalette(paletteTag, IndexOfSpritePaletteTag(paletteTag), TRUE);
+    UpdatePaletteColorMap(IndexOfSpritePaletteTag(paletteTag), COLOR_MAP_CONTRAST);
 
     i = CreateSprite(&spriteTemplate, 0, 0, 0);
     if (i != MAX_SPRITES)
@@ -1758,6 +1758,14 @@ void LoadObjectEventPalette(u16 paletteTag, bool32 applyDNSTint)
         if (IndexOfSpritePaletteTag(spritePalette->tag) == 0xFF)
             LoadSpritePalette_HandleDNSTint(spritePalette, applyDNSTint);
     }
+}
+
+void PatchObjectPalette(u16 paletteTag, u8 paletteSlot, bool32 applyDNSTint)
+{
+    // paletteTag is assumed to exist in sObjectEventSpritePalettes
+    u32 paletteIndex = FindObjectEventPaletteIndexByTag(paletteTag);
+
+    LoadPalette_HandleDNSTint(sObjectEventSpritePalettes[paletteIndex].data, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP, applyDNSTint);
 }
 
 static u32 FindObjectEventPaletteIndexByTag(u16 tag)

@@ -258,7 +258,7 @@ gFieldEffectScript_Bubbles::
 	field_eff_end
 
 gFieldEffectScript_Sparkle::
-	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect3, TRUE, COLOR_MAP_DARK_CONTRAST, FldEff_Sparkle
+	field_eff_callnative FldEff_Sparkle
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerCave::

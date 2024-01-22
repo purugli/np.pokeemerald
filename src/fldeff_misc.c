@@ -22,7 +22,8 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/metatile_labels.h"
 #include "constants/songs.h"
-
+#include "constants/field_weather.h"
+#include "field_effect_helpers.h"
 
 EWRAM_DATA struct MapPosition gPlayerFacingPosition = {0};
 
@@ -961,12 +962,12 @@ void DoSecretBaseGlitterMatSparkle(void)
 
     SetSpritePosToOffsetMapCoords(&x, &y, 8, 4);
 
+    LoadFieldEffectPalette(FLDEFFOBJ_SPARKLE, COLOR_MAP_DARK_CONTRAST);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SPARKLE], x, y, 0);
     if (spriteId != MAX_SPRITES)
     {
         gSprites[spriteId].coordOffsetEnabled = TRUE;
         gSprites[spriteId].oam.priority = 1;
-        gSprites[spriteId].oam.paletteNum = 5;
         gSprites[spriteId].callback = SpriteCB_GlitterMatSparkle;
         gSprites[spriteId].data[0] = 0;
     }

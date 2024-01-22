@@ -966,12 +966,12 @@ u32 FldEff_SurfBlob(void)
     u8 spriteId;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
-    LoadFieldEffectPalette(FLDEFFOBJ_SURF_BLOB, COLOR_MAP_CONTRAST);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SURF_BLOB], gFieldEffectArguments[0], gFieldEffectArguments[1], 150);
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
+        sprite->oam.paletteNum = 0;
         sprite->sPlayerObjId = gFieldEffectArguments[2];
         sprite->sVelocity = -1;
         sprite->sPrevX = -1;
@@ -1255,13 +1255,13 @@ u32 FldEff_BerryTreeGrowthSparkle(void)
     u8 spriteId;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 4);
+    LoadFieldEffectPalette(FLDEFFOBJ_SPARKLE, COLOR_MAP_DARK_CONTRAST);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SPARKLE], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        LoadFieldEffectPalette(FLDEFFOBJ_SPARKLE, COLOR_MAP_DARK_CONTRAST);
         sprite->sWaitFldEff = FLDEFF_BERRY_TREE_GROWTH_SPARKLE;
     }
     return 0;
@@ -1655,7 +1655,8 @@ void LoadFieldEffectPalette(u8 fieldEffect, u8 colorMap)
     const struct SpriteTemplate *spriteTemplate = gFieldEffectObjectTemplatePointers[fieldEffect];
     if (spriteTemplate->paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate->paletteTag, TRUE);
+        LoadObjectEventPalette(spriteTemplate->paletteTag, FALSE);
+        PatchObjectPalette(spriteTemplate->paletteTag, IndexOfSpritePaletteTag(spriteTemplate->paletteTag), TRUE);
         UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), colorMap);
     }
 }

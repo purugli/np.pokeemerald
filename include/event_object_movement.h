@@ -105,7 +105,7 @@ void SetObjectEventDirection(struct ObjectEvent *objectEvent, u8 direction);
 u8 GetFirstInactiveObjectEventId(void);
 void RemoveObjectEventByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup);
 void TryMoveObjectEventToMapCoords(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s16 y);
-void PatchObjectPalette(u16 paletteTag, u8 paletteSlot);
+void PatchObjectPalette(u16 paletteTag, u8 paletteSlot, bool32 applyDNSTint);
 void SpawnObjectEventsOnReturnToField(s16 x, s16 y);
 void OverrideSecretBaseDecorationSpriteScript(u8 localId, u8 mapNum, u8 mapGroup, u8 decorCat);
 void GetMapCoordsFromSpritePos(s16 x, s16 y, s16 *destX, s16 *destY);

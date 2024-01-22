@@ -307,7 +307,7 @@ $(MID_SUBDIR)/mus_route104.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G047 -V097
 
 $(MID_SUBDIR)/mus_gsc_pewter.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -V080
+	$(MID) $< $@ -E -R$(STD_REVERB) -G173 -V084
 
 $(MID_SUBDIR)/mus_birch_lab.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G033 -V080
@@ -427,7 +427,7 @@ $(MID_SUBDIR)/mus_rg_sevii_cave.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G147 -V090
 
 $(MID_SUBDIR)/mus_rg_sevii_dungeon.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G146 -V090
+	$(MID) $< $@ -E -R$(STD_REVERB) -G146 -V100
 
 $(MID_SUBDIR)/mus_rg_sevii_route.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G187 -V080
@@ -552,8 +552,8 @@ $(MID_SUBDIR)/mus_rg_vs_wild.s: %.s: %.mid
 $(MID_SUBDIR)/mus_rg_victory_gym_leader.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G171 -V090
 
-$(MID_SUBDIR)/mus_rg_victory_trainer.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G169 -V089
+$(MID_SUBDIR)/mus_gsc_vs_trainer_kanto.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G115 -v090 -P1
 
 $(MID_SUBDIR)/mus_rg_victory_wild.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G170 -V090
@@ -1256,3 +1256,11 @@ $(MID_SUBDIR)/se_m_leer.s: %.s: %.mid
 
 $(MID_SUBDIR)/se_dex_search.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G127 -v100 -P5
+
+### New Music ###
+
+$(MID_SUBDIR)/mus_gsc_route3.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G152 -V083
+
+$(MID_SUBDIR)/mus_gsc_viridian_forest.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G146 -V090

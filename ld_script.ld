@@ -1148,7 +1148,7 @@ SECTIONS {
         sound/songs/midi/mus_rg_silph.o(.rodata);
         sound/songs/midi/mus_rg_fuchsia.o(.rodata);
         sound/songs/midi/mus_rg_celadon.o(.rodata);
-        sound/songs/midi/mus_rg_victory_trainer.o(.rodata);
+        sound/songs/midi/mus_gsc_vs_trainer_kanto.o(.rodata);
         sound/songs/midi/mus_rg_victory_wild.o(.rodata);
         sound/songs/midi/mus_rg_victory_gym_leader.o(.rodata);
         sound/songs/midi/mus_rg_vermillion.o(.rodata);
@@ -1185,6 +1185,8 @@ SECTIONS {
         sound/songs/midi/mus_rg_trainer_tower.o(.rodata);
         sound/songs/midi/mus_rg_slow_pallet.o(.rodata);
         sound/songs/midi/mus_rg_teachy_tv_menu.o(.rodata);
+        sound/songs/midi/mus_gsc_viridian_forest.o(.rodata);
+        sound/songs/midi/mus_gsc_route3.o(.rodata);
         sound/songs/midi/ph_trap_blend.o(.rodata);
         sound/songs/midi/ph_trap_held.o(.rodata);
         sound/songs/midi/ph_trap_solo.o(.rodata);

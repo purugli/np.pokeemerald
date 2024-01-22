@@ -440,7 +440,7 @@ gSongTable::
 	song mus_rg_silph, 0, 0
 	song mus_rg_fuchsia, 0, 0
 	song mus_rg_celadon, 0, 0
-	song mus_rg_victory_trainer, 0, 0
+	song mus_gsc_vs_trainer_kanto, 0, 0
 	song mus_rg_victory_wild, 0, 0
 	song mus_rg_victory_gym_leader, 0, 0
 	song mus_rg_vermillion, 0, 0
@@ -477,6 +477,8 @@ gSongTable::
 	song mus_rg_trainer_tower, 0, 0
 	song mus_rg_slow_pallet, 0, 0
 	song mus_rg_teachy_tv_menu, 0, 0
+	song mus_gsc_viridian_forest, 0, 0
+	song mus_gsc_route3, 0, 0
 	song ph_trap_blend, 2, 2
 	song ph_trap_held, 2, 2
 	song ph_trap_solo, 2, 2

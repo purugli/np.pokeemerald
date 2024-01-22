@@ -168,7 +168,6 @@
 .include "sound/voicegroups/voicegroup166.inc"
 .include "sound/voicegroups/voicegroup167.inc"
 .include "sound/voicegroups/voicegroup168.inc"
-.include "sound/voicegroups/voicegroup169.inc"
 .include "sound/voicegroups/voicegroup170.inc"
 .include "sound/voicegroups/voicegroup171.inc"
 .include "sound/voicegroups/voicegroup172.inc"
@@ -190,3 +189,5 @@
 .include "sound/voicegroups/voicegroup188.inc"
 .include "sound/voicegroups/voicegroup189.inc"
 .include "sound/voicegroups/voicegroup190.inc"
+@ Free voicegroups
+.include "sound/voicegroups/voicegroup169.inc"

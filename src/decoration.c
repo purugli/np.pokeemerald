@@ -113,7 +113,6 @@ EWRAM_DATA static u16 sDecorationsCursorPos = 0;
 EWRAM_DATA static u16 sDecorationsScrollOffset = 0;
 EWRAM_DATA u8 gCurDecorationIndex = 0;
 EWRAM_DATA static u8 sCurDecorationCategory = DECORCAT_DESK;
-EWRAM_DATA static u32 UNUSED sFiller[2] = {};
 EWRAM_DATA static struct DecorationPCContext sDecorationContext = {};
 EWRAM_DATA static u8 sDecorMenuWindowIds[WINDOW_COUNT] = {};
 EWRAM_DATA static struct DecorationItemsMenu *sDecorationItemsMenu = NULL;
@@ -1056,7 +1055,7 @@ static bool8 IsDecorationIndexInPlayersRoom(u8 idx)
     return FALSE;
 }
 
-static void IdentifyOwnedDecorationsCurrentlyInUseInternal(u8 taskId)
+static void IdentifyOwnedDecorationsCurrentlyInUse(u8 taskId)
 {
     u32 i, j, k;
     u16 count;
@@ -1107,11 +1106,6 @@ static void IdentifyOwnedDecorationsCurrentlyInUseInternal(u8 taskId)
             }
         }
     }
-}
-
-static void IdentifyOwnedDecorationsCurrentlyInUse(u8 taskId)
-{
-    IdentifyOwnedDecorationsCurrentlyInUseInternal(taskId);
 }
 
 bool8 IsSelectedDecorInThePC(void)
@@ -1185,86 +1179,84 @@ static u16 GetDecorationElevation(u8 decoration, u8 tileIndex)
     {
     case DECOR_STAND:
         elevation = sDecorationStandElevations[tileIndex] << MAPGRID_ELEVATION_SHIFT;
-        return elevation;
+        break;
     case DECOR_SLIDE:
         elevation = sDecorationSlideElevation[tileIndex] << MAPGRID_ELEVATION_SHIFT;
-        return elevation;
-    default:
-        return elevation;
+        break;
+    }
+    return elevation;
+}
+
+static void GetDecorationDimensions(u16 decoration, u8 *decWidth, u8 *decHeight)
+{
+    *decWidth = *decHeight = 1;
+    switch (gDecorations[decoration].shape)
+    {
+    case DECORSHAPE_2x1:
+        *decWidth = 2;
+        break;
+    case DECORSHAPE_3x1: // unused
+        *decWidth = 3;
+        break;
+    case DECORSHAPE_4x2:
+        *decWidth = 4, *decHeight = 2;
+        break;
+    case DECORSHAPE_2x2:
+        *decWidth = *decHeight = 2;
+        break;
+    case DECORSHAPE_1x2:
+        *decHeight = 2;
+        break;
+    case DECORSHAPE_1x3: // unused
+        *decHeight = 3;
+        break;
+    case DECORSHAPE_2x4:
+        *decWidth = 2, *decHeight = 4;
+        break;
+    case DECORSHAPE_3x3:
+        *decWidth = *decHeight = 3;
+        break;
+    case DECORSHAPE_3x2:
+        *decWidth = 3, *decHeight = 2;
+        break;
     }
 }
 
-static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, u16 decoration)
+static u16 GetDecorationMetatileLayerType(const struct Decoration *decoration, int x, int y)
 {
-    u32 i, j;
-    s16 x, y;
-    u16 attributes;
-    u16 impassableFlag;
-    u16 overlapsWall;
-    u16 elevation;
+    return GetMetatileAttributesById(NUM_TILES_IN_PRIMARY_EMERALD + decoration->tiles[x * y], METATILE_ATTRIBUTE_LAYER_TYPE);
+}
 
+void ShowDecorationOnMap(u16 mapX, u16 mapY, u16 decoration)
+{
+    u8 decWidth, decHeight;
+    s16 x, y;
+    u32 i, j, metatile;
+    u16 elevation;
+    const struct Decoration *decor = &gDecorations[decoration];
+
+    GetDecorationDimensions(decoration, &decWidth, &decHeight);
     for (j = 0; j < decHeight; j++)
     {
         y = mapY - decHeight + 1 + j;
         for (i = 0; i < decWidth; i++)
         {
             x = mapX + i;
-            attributes = NUM_TILES_IN_PRIMARY_EMERALD + gDecorations[decoration].tiles[j * decWidth + i];
-            if (MetatileBehavior_IsSecretBaseImpassable(GetMetatileAttributesById(attributes, METATILE_ATTRIBUTE_BEHAVIOR)) == TRUE
-             || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && GetMetatileAttributesById(attributes, METATILE_ATTRIBUTE_LAYER_TYPE) != METATILE_LAYER_TYPE_NORMAL))
-                impassableFlag = MAPGRID_COLLISION_MASK;
-            else
-                impassableFlag = 0;
+            metatile = NUM_TILES_IN_PRIMARY_EMERALD + decor->tiles[j * decWidth + i];
+            if (MetatileBehavior_IsSecretBaseImpassable(GetMetatileAttributesById(metatile, METATILE_ATTRIBUTE_BEHAVIOR)) == TRUE
+             || (decor->permission != DECORPERM_PASS_FLOOR && GetMetatileAttributesById(metatile, METATILE_ATTRIBUTE_LAYER_TYPE) != METATILE_LAYER_TYPE_NORMAL))
+                metatile |= MAPGRID_COLLISION_MASK;
 
             // Choose the metatile that has the wall background instead of the floor if overlapping a wall.
-            if (gDecorations[decoration].permission != DECORPERM_NA_WALL && MetatileBehavior_IsSecretBaseNorthWall(MapGridGetMetatileBehaviorAt(x, y)) == TRUE)
-                overlapsWall = 1;
-            else
-                overlapsWall = 0;
+            if (decor->permission != DECORPERM_NA_WALL && MetatileBehavior_IsSecretBaseNorthWall(MapGridGetMetatileBehaviorAt(x, y)) == TRUE)
+                metatile |= 1;
 
-            elevation = GetDecorationElevation(gDecorations[decoration].id, j * decWidth + i);
+            elevation = GetDecorationElevation(decor->id, j * decWidth + i);
             if (elevation != 0xFFFF)
-                MapGridSetMetatileEntryAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY_EMERALD | overlapsWall)) | impassableFlag | elevation);
+                MapGridSetMetatileEntryAt(x, y, metatile | elevation);
             else
-                MapGridSetMetatileIdAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY_EMERALD | overlapsWall)) | impassableFlag);
+                MapGridSetMetatileIdAt(x, y, metatile);
         }
-    }
-}
-
-void ShowDecorationOnMap(u16 mapX, u16 mapY, u16 decoration)
-{
-    switch (gDecorations[decoration].shape)
-    {
-    case DECORSHAPE_1x1:
-        ShowDecorationOnMap_(mapX, mapY, 1, 1, decoration);
-        break;
-    case DECORSHAPE_2x1:
-        ShowDecorationOnMap_(mapX, mapY, 2, 1, decoration);
-        break;
-    case DECORSHAPE_3x1: // unused
-        ShowDecorationOnMap_(mapX, mapY, 3, 1, decoration);
-        break;
-    case DECORSHAPE_4x2:
-        ShowDecorationOnMap_(mapX, mapY, 4, 2, decoration);
-        break;
-    case DECORSHAPE_2x2:
-        ShowDecorationOnMap_(mapX, mapY, 2, 2, decoration);
-        break;
-    case DECORSHAPE_1x2:
-        ShowDecorationOnMap_(mapX, mapY, 1, 2, decoration);
-        break;
-    case DECORSHAPE_1x3: // unused
-        ShowDecorationOnMap_(mapX, mapY, 1, 3, decoration);
-        break;
-    case DECORSHAPE_2x4:
-        ShowDecorationOnMap_(mapX, mapY, 2, 4, decoration);
-        break;
-    case DECORSHAPE_3x3:
-        ShowDecorationOnMap_(mapX, mapY, 3, 3, decoration);
-        break;
-    case DECORSHAPE_3x2:
-        ShowDecorationOnMap_(mapX, mapY, 3, 2, decoration);
-        break;
     }
 }
 
@@ -1393,9 +1385,8 @@ static void CreateplayerDecoratingSprite(u8 x)
 
 static void SetUpPlacingDecorationPlayerAvatar(u8 taskId, struct PlaceDecorationGraphicsDataBuffer *data)
 {
-    u8 x;
+    u8 x = 16 * (u8)gTasks[taskId].tDecorWidth + sDecorationMovementInfo[data->decoration->shape].cameraX - 8 * ((u8)gTasks[taskId].tDecorWidth - 1);
 
-    x = 16 * (u8)gTasks[taskId].tDecorWidth + sDecorationMovementInfo[data->decoration->shape].cameraX - 8 * ((u8)gTasks[taskId].tDecorWidth - 1);
     if (data->decoration->shape == DECORSHAPE_3x1 || data->decoration->shape == DECORSHAPE_3x3 || data->decoration->shape == DECORSHAPE_3x2)
         x -= 8;
 
@@ -1407,50 +1398,10 @@ static void SetUpPlacingDecorationPlayerAvatar(u8 taskId, struct PlaceDecoration
 
 static void SetUpDecorationShape(u8 taskId)
 {
-    switch (gDecorations[gCurDecorationItems[gCurDecorationIndex]].shape)
-    {
-        case DECORSHAPE_1x1:
-            gTasks[taskId].tDecorWidth = 1;
-            gTasks[taskId].tDecorHeight = 1;
-            break;
-        case DECORSHAPE_2x1:
-            gTasks[taskId].tDecorWidth = 2;
-            gTasks[taskId].tDecorHeight = 1;
-            break;
-        case DECORSHAPE_3x1:
-            gTasks[taskId].tDecorWidth = 3;
-            gTasks[taskId].tDecorHeight = 1;
-            break;
-        case DECORSHAPE_4x2:
-            gTasks[taskId].tDecorWidth = 4;
-            gTasks[taskId].tDecorHeight = 2;
-            break;
-        case DECORSHAPE_2x2:
-            gTasks[taskId].tDecorWidth = 2;
-            gTasks[taskId].tDecorHeight = 2;
-            break;
-        case DECORSHAPE_1x2:
-            gTasks[taskId].tDecorWidth = 1;
-            gTasks[taskId].tDecorHeight = 2;
-            break;
-        case DECORSHAPE_1x3:
-            gTasks[taskId].tDecorWidth = 1;
-            gTasks[taskId].tDecorHeight = 3;
-            gTasks[taskId].tCursorY++;
-            break;
-        case DECORSHAPE_2x4:
-            gTasks[taskId].tDecorWidth = 2;
-            gTasks[taskId].tDecorHeight = 4;
-            break;
-        case DECORSHAPE_3x3:
-            gTasks[taskId].tDecorWidth = 3;
-            gTasks[taskId].tDecorHeight = 3;
-            break;
-        case DECORSHAPE_3x2:
-            gTasks[taskId].tDecorWidth = 3;
-            gTasks[taskId].tDecorHeight = 2;
-            break;
-    }
+    u8 decWidth, decHeight;
+    s16 *data = gTasks[taskId].data;
+    GetDecorationDimensions(gCurDecorationItems[gCurDecorationIndex], &decWidth, &decHeight);
+    tDecorWidth = decWidth, tDecorHeight = decHeight;
 }
 
 static void AttemptPlaceDecoration(u8 taskId)
@@ -1513,8 +1464,9 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
     u8 mapX;
     s16 curY;
     s16 curX;
-    mapY = gTasks[taskId].tDecorHeight;
-    mapX = gTasks[taskId].tDecorWidth;
+    s16 *data = gTasks[taskId].data;
+    mapY = tDecorHeight;
+    mapX = tDecorWidth;
 
     switch (decoration->permission)
     {
@@ -1522,12 +1474,12 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
     case DECORPERM_PASS_FLOOR:
         for (i = 0; i < mapY; i++)
         {
-            curY = gTasks[taskId].tCursorY - i;
+            curY = tCursorY - i;
             for (j = 0; j < mapX; j++)
             {
-                curX = gTasks[taskId].tCursorX + j;
+                curX = tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY_EMERALD + decoration->tiles[(mapY - 1 - i) * mapX + j], METATILE_ATTRIBUTE_LAYER_TYPE);
+                layerType = GetDecorationMetatileLayerType(decoration, mapX + j, mapY - 1 - i);
                 if (!IsFloorOrBoardAndHole(behaviorAt, decoration))
                     return FALSE;
 
@@ -1543,12 +1495,12 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
     case DECORPERM_BEHIND_FLOOR:
         for (i = 0; i < mapY - 1; i++)
         {
-            curY = gTasks[taskId].tCursorY - i;
+            curY = tCursorY - i;
             for (j = 0; j < mapX; j++)
             {
-                curX = gTasks[taskId].tCursorX + j;
+                curX = tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY_EMERALD + decoration->tiles[(mapY - 1 - i) * mapX + j], METATILE_ATTRIBUTE_LAYER_TYPE);
+                layerType = GetDecorationMetatileLayerType(decoration, mapX + j, mapY - 1 - i);
                 if (!MetatileBehavior_IsNormal(behaviorAt) && !IsSecretBaseTrainerSpot(behaviorAt, layerType))
                     return FALSE;
 
@@ -1560,12 +1512,12 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             }
         }
 
-        curY = gTasks[taskId].tCursorY - mapY + 1;
+        curY = tCursorY - mapY + 1;
         for (j = 0; j < mapX; j++)
         {
-            curX = gTasks[taskId].tCursorX + j;
+            curX = tCursorX + j;
             behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-            layerType = GetMetatileAttributesById(NUM_TILES_IN_PRIMARY_EMERALD + decoration->tiles[j], METATILE_ATTRIBUTE_LAYER_TYPE);
+            layerType = GetDecorationMetatileLayerType(decoration, j, 1);
             if (!MetatileBehavior_IsNormal(behaviorAt) && !MetatileBehavior_IsSecretBaseNorthWall(behaviorAt))
                 return FALSE;
 
@@ -1580,10 +1532,10 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
     case DECORPERM_NA_WALL:
         for (i = 0; i < mapY; i++)
         {
-            curY = gTasks[taskId].tCursorY - i;
+            curY = tCursorY - i;
             for (j = 0; j < mapX; j++)
             {
-                curX = gTasks[taskId].tCursorX + j;
+                curX = tCursorX + j;
                 if (!MetatileBehavior_IsSecretBaseNorthWall(MapGridGetMetatileBehaviorAt(curX, curY)))
                     return FALSE;
 
@@ -1593,10 +1545,10 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
         }
         break;
     case DECORPERM_SPRITE:
-        curY = gTasks[taskId].tCursorY;
+        curY = tCursorY;
         for (j = 0; j < mapX; j++)
         {
-            curX = gTasks[taskId].tCursorX + j;
+            curX = tCursorX + j;
             behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
             if (decoration->shape == DECORSHAPE_1x2)
             {
@@ -1640,16 +1592,17 @@ static void PlaceDecorationPrompt(u8 taskId)
 
 static void PlaceDecoration(u8 taskId)
 {
+    s16 *data = gTasks[taskId].data;
     ClearDialogWindowAndFrame(0, FALSE);
     PlaceDecoration_(taskId);
     if (gDecorations[gCurDecorationItems[gCurDecorationIndex]].permission != DECORPERM_SPRITE)
     {
-        ShowDecorationOnMap(gTasks[taskId].tCursorX, gTasks[taskId].tCursorY, gCurDecorationItems[gCurDecorationIndex]);
+        ShowDecorationOnMap(tCursorX, tCursorY, gCurDecorationItems[gCurDecorationIndex]);
     }
     else
     {
-        sCurDecorMapX = gTasks[taskId].tCursorX - MAP_OFFSET;
-        sCurDecorMapY = gTasks[taskId].tCursorY - MAP_OFFSET;
+        sCurDecorMapX = tCursorX - MAP_OFFSET;
+        sCurDecorMapY = tCursorY - MAP_OFFSET;
         ScriptContext_SetupScript(SecretBase_EventScript_SetDecoration);
     }
 
@@ -2238,7 +2191,7 @@ static void Task_PutAwayDecoration(u8 taskId)
         break;
     case 2:
         LockPlayerFieldControls();
-        IdentifyOwnedDecorationsCurrentlyInUseInternal(taskId);
+        IdentifyOwnedDecorationsCurrentlyInUse(taskId);
         FadeInFromBlack();
         gTasks[taskId].tState = 3;
         break;
@@ -2378,56 +2331,7 @@ static void ContinuePuttingAwayDecorationsPrompt(u8 taskId)
 
 static void SetDecorRearrangementShape(u8 decor, struct DecorRearrangementDataBuffer *data)
 {
-    if (gDecorations[decor].shape == DECORSHAPE_1x1)
-    {
-        data->width = 1;
-        data->height = 1;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_2x1)
-    {
-        data->width = 2;
-        data->height = 1;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_3x1)
-    {
-        data->width = 3;
-        data->height = 1;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_4x2)
-    {
-        data->width = 4;
-        data->height = 2;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_2x2)
-    {
-        data->width = 2;
-        data->height = 2;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_1x2)
-    {
-        data->width = 1;
-        data->height = 2;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_1x3)
-    {
-        data->width = 1;
-        data->height = 3;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_2x4)
-    {
-        data->width = 2;
-        data->height = 4;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_3x3)
-    {
-        data->width = 3;
-        data->height = 3;
-    }
-    else if (gDecorations[decor].shape == DECORSHAPE_3x2)
-    {
-        data->width = 3;
-        data->height = 2;
-    }
+    GetDecorationDimensions(decor, &data->width, &data->height);
 }
 
 static void SetCameraSpritePosition(u8 x, u8 y)
@@ -2693,7 +2597,7 @@ static void TossDecoration(u8 taskId)
     gCurDecorationItems[gCurDecorationIndex] = DECOR_NONE;
     sNumOwnedDecorationsInCurCategory = GetNumOwnedDecorationsInCategory(sCurDecorationCategory);
     CondenseDecorationsInCategory(sCurDecorationCategory);
-    IdentifyOwnedDecorationsCurrentlyInUseInternal(taskId);
+    IdentifyOwnedDecorationsCurrentlyInUse(taskId);
     StringExpandPlaceholders(gStringVar4, gText_DecorationThrownAway);
     DisplayItemMessageOnField(taskId, gStringVar4, ReturnToDecorationItemsAfterInvalidSelection);
 }

@@ -286,9 +286,8 @@ static u8 CheckMovementInputAcroBike(u8 *newDirection, u16 newKeys, u16 heldKeys
 static u8 AcroBikeHandleInputNormal(u8 *newDirection, u16 newKeys, u16 heldKeys)
 {
     u8 direction;
-    bool32 isAcroBike;
+    bool32 isAcroBike = gSaveBlock2Ptr->playerBike == ACRO_BIKE;
 
-    isAcroBike = gSaveBlock2Ptr->playerBike == ACRO_BIKE;
     if (isAcroBike)
     {
         gPlayerAvatar.bikeFrameCounter = 0;

@@ -278,8 +278,8 @@
 #define SKIP_FRONT_ANIM (1 << 7)
 
 // used by ShouldIgnoreDeoxysForm
-#define DEOXYS_CHECK_BATTLE_SPRITE      1
-#define DEOXYS_CHECK_TRADE_MAIN         3
-#define DEOXYS_CHECK_BATTLE_ANIM        5
+#define DEOXYS_CHECK_BATTLE_SPRITE      0
+#define DEOXYS_CHECK_TRADE_MAIN         1
+#define DEOXYS_CHECK_BATTLE_ANIM        2
 
 #endif // GUARD_CONSTANTS_POKEMON_H

@@ -947,12 +947,6 @@ void CopySecondaryTilesetToVramUsingHeap(struct MapLayout const *mapLayout)
     CopyTilesetToVramUsingHeap(mapLayout->secondaryTileset, NUM_TILES_TOTAL - numPrimaryTiles, numPrimaryTiles);
 }
 
-static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
-{
-    u32 numPrimaryPals = NUM_PALS_IN_PRIMARY_EMERALD + mapLayout->secondaryTileset->dontUsePal7;
-    LoadTilesetPalette(mapLayout->primaryTileset, BG_PLTT_ID(0), numPrimaryPals * PLTT_SIZE_4BPP);
-}
-
 void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout)
 {
     u32 numPrimaryPals = NUM_PALS_IN_PRIMARY_EMERALD + mapLayout->secondaryTileset->dontUsePal7;
@@ -973,7 +967,8 @@ void LoadMapTilesetPalettes(struct MapLayout const *mapLayout)
 {
     if (mapLayout)
     {
-        LoadPrimaryTilesetPalette(mapLayout);
+        u32 numPrimaryPals = NUM_PALS_IN_PRIMARY_EMERALD + mapLayout->secondaryTileset->dontUsePal7;
+        LoadTilesetPalette(mapLayout->primaryTileset, BG_PLTT_ID(0), numPrimaryPals * PLTT_SIZE_4BPP);
         LoadSecondaryTilesetPalette(mapLayout);
     }
 }

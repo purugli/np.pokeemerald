@@ -357,10 +357,10 @@ bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targe
     }
     else
     {
-        u32 temp;
+        u32 bufferTransferState;
 
-        startY *= 2;
-        targetY *= 2;
+        startY <<= 1;
+        targetY <<= 1;
         gPaletteFade_selectedPalettes = selectedPalettes;
         gPaletteFade.y = startY * denominator;
         gPaletteFade.targetY = targetY;
@@ -385,13 +385,13 @@ bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targe
 
         UpdatePaletteFade();
 
-        temp = gPaletteFade.bufferTransferDisabled;
+        bufferTransferState = gPaletteFade.bufferTransferDisabled;
         gPaletteFade.bufferTransferDisabled = FALSE;
         CpuCopy32(gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
         sPlttBufferTransferPending = FALSE;
         if (gPaletteFade.mode == HARDWARE_FADE && gPaletteFade.active)
             UpdateBlendRegisters();
-        gPaletteFade.bufferTransferDisabled = temp;
+        gPaletteFade.bufferTransferDisabled = bufferTransferState;
         return TRUE;
     }
 }
@@ -578,7 +578,7 @@ static bool8 IsSoftwarePaletteFadeFinishing(void)
 
 void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color)
 {
-    BlendPalettesFine(selectedPalettes, coeff * 2, color);
+    BlendPalettesFine(selectedPalettes, coeff << 1, color);
 }
 
 void BlendPalettesUnfaded(u32 selectedPalettes, u8 coeff, u16 color)

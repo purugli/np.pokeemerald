@@ -198,6 +198,7 @@ void StartWeather(void)
         LoadPaletteWithDNSTint(gFogPalette, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
         for (i = 0; i < NUM_PALS_TOTAL; i++)
             sBasePaletteColorMapTypes[i] = COLOR_MAP_DARK_CONTRAST;
+        sPaletteColorMapTypes = sBasePaletteColorMapTypes;
         gWeatherPtr->contrastColorMapSpritePalIndex = index;
         gWeatherPtr->rainSpriteCount = 0;
         gWeatherPtr->curRainSpriteIndex = 0;
@@ -793,7 +794,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex)
     default:
         if (gWeatherPtr->currWeather != WEATHER_FOG_HORIZONTAL)
         {
-            ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex);
+            ApplyWeatherColorMapToPal(paletteIndex);
         }
         else
         {

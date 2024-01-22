@@ -43,7 +43,6 @@ static void GetChallengeStatus(void);
 static void GetFrontierData(void);
 static void SetFrontierData(void);
 static void SetSelectedPartyOrder(void);
-static void DoSoftReset_(void);
 static void SetFrontierTrainers(void);
 static void SaveSelectedParty(void);
 static void ShowFacilityResultsWindow(void);
@@ -55,7 +54,6 @@ static void GetFacilitySymbolCount(void);
 static void GiveFacilitySymbol(void);
 static void CheckBattleTypeFlag(void);
 static void CheckPartyIneligibility(void);
-static void ValidateVisitingTrainer(void);
 static void IncrementWinStreak(void);
 static void RestoreHeldItems(void);
 static void SaveRecordBattle(void);
@@ -176,7 +174,7 @@ static void (* const sFrontierUtilFuncs[])(void) =
     [FRONTIER_UTIL_FUNC_GET_DATA]              = GetFrontierData,
     [FRONTIER_UTIL_FUNC_SET_DATA]              = SetFrontierData,
     [FRONTIER_UTIL_FUNC_SET_PARTY_ORDER]       = SetSelectedPartyOrder,
-    [FRONTIER_UTIL_FUNC_SOFT_RESET]            = DoSoftReset_,
+    [FRONTIER_UTIL_FUNC_SOFT_RESET]            = DoSoftReset,
     [FRONTIER_UTIL_FUNC_SET_TRAINERS]          = SetFrontierTrainers,
     [FRONTIER_UTIL_FUNC_SAVE_PARTY]            = SaveSelectedParty,
     [FRONTIER_UTIL_FUNC_RESULTS_WINDOW]        = ShowFacilityResultsWindow,
@@ -188,7 +186,7 @@ static void (* const sFrontierUtilFuncs[])(void) =
     [FRONTIER_UTIL_FUNC_GIVE_FACILITY_SYMBOL]  = GiveFacilitySymbol,
     [FRONTIER_UTIL_FUNC_CHECK_BATTLE_TYPE]     = CheckBattleTypeFlag,
     [FRONTIER_UTIL_FUNC_CHECK_INELIGIBLE]      = CheckPartyIneligibility,
-    [FRONTIER_UTIL_FUNC_CHECK_VISIT_TRAINER]   = ValidateVisitingTrainer,
+    [FRONTIER_UTIL_FUNC_CHECK_VISIT_TRAINER]   = ValidateEReaderTrainer,
     [FRONTIER_UTIL_FUNC_INCREMENT_STREAK]      = IncrementWinStreak,
     [FRONTIER_UTIL_FUNC_RESTORE_HELD_ITEMS]    = RestoreHeldItems,
     [FRONTIER_UTIL_FUNC_SAVE_BATTLE]           = SaveRecordBattle,
@@ -437,11 +435,6 @@ static void SetSelectedPartyOrder(void)
     ReducePlayerPartyToSelectedMons();
 }
 
-static void DoSoftReset_(void)
-{
-    DoSoftReset();
-}
-
 static void SetFrontierTrainers(void)
 {
     gFacilityTrainers = gBattleFrontierTrainers;
@@ -449,7 +442,7 @@ static void SetFrontierTrainers(void)
 
 static void SaveSelectedParty(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < MAX_FRONTIER_PARTY_SIZE; i++)
     {
@@ -1647,11 +1640,6 @@ static void CheckPartyIneligibility(void)
     #undef numEligibleMons
 }
 
-static void ValidateVisitingTrainer(void)
-{
-    ValidateEReaderTrainer();
-}
-
 static void IncrementWinStreak(void)
 {
     s32 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
@@ -1702,7 +1690,7 @@ static void IncrementWinStreak(void)
 
 static void RestoreHeldItems(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < MAX_FRONTIER_PARTY_SIZE; i++)
     {
@@ -1735,7 +1723,7 @@ static void BufferFrontierTrainerName(void)
 
 static void ResetSketchedMoves(void)
 {
-    u8 i, j, k;
+    u32 i, j, k;
 
     for (i = 0; i < MAX_FRONTIER_PARTY_SIZE; i++)
     {

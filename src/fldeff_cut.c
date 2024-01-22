@@ -253,19 +253,15 @@ static void StartCutGrassFieldEffect(void)
 
 bool8 FldEff_CutGrass(void)
 {
-    u32 i, j, cutRange, userAbility, tileCountFromPlayer;
+    u32 i, j;
     s32 x, y, lowerY;
+    u32 cutRange = CUT_NORMAL_SIDE;
+    u32 tileCountFromPlayer = 1;
 
-    userAbility = GetMonAbility(&gPlayerParty[GetCursorSelectionMonId()]);
-    if (userAbility == ABILITY_HYPER_CUTTER)
+    if (GetMonAbility(&gPlayerParty[GetCursorSelectionMonId()]) == ABILITY_HYPER_CUTTER)
     {
         cutRange = CUT_HYPER_SIDE;
         tileCountFromPlayer = 2;
-    }
-    else
-    {
-        cutRange = CUT_NORMAL_SIDE;
-        tileCountFromPlayer = 1;
     }
 
     PlaySE(SE_M_CUT);

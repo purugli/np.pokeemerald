@@ -8,6 +8,7 @@
 #include "data.h"
 #include "pokemon.h"
 #include "constants/trainers.h"
+#include "trainer_card.h"
 #include "link.h"
 
 #define PICS_COUNT 8
@@ -202,7 +203,7 @@ u16 CreateTrainerCardTrainerPicSprite(u16 trainerPicId, u16 destX, u16 destY)
     if (framePics)
     {
         LZ77UnCompWram(gTrainerFrontPicTable[trainerPicId].data, framePics);
-        BlitBitmapRectToWindow(2, framePics, 0, 0, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT, destX, destY, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT);
+        BlitBitmapRectToWindow(WIN_TRAINER_PIC, framePics, 0, 0, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT, destX, destY, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT);
         LoadPalette(gTrainerFrontPicPaletteTable[trainerPicId], PLTT_ID(8), PLTT_SIZE_4BPP);
         Free(framePics);
         return 0;

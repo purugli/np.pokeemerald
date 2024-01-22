@@ -76,5 +76,4 @@ void CreateTrainerMon(struct Pokemon *party, const struct Trainer *trainer, u32 
         u32 pokeball = partyData->pokeball;
         SetMonData(party, MON_DATA_POKEBALL, &pokeball);
     }
-    CalculateMonStats(party);
 }

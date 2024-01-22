@@ -832,18 +832,6 @@ static u32 GetBattleTerrainByMapScene(u32 mapBattleScene)
     return BATTLE_TERRAIN_PLAIN;
 }
 
-static void LoadBattleTerrainGfx(u32 terrain)
-{
-    const struct BattleBackground *terrainTable;
-    if (terrain >= ARRAY_COUNT(sBattleTerrainTable))
-        terrain = BATTLE_TERRAIN_PLAIN;
-    // Copy to bg3
-    terrainTable = &sBattleTerrainTable[terrain];
-    LZ77UnCompVram(terrainTable->tileset, (void *)BG_CHAR_ADDR(2));
-    LZ77UnCompVram(terrainTable->tilemap, (void *)BG_SCREEN_ADDR(26));
-    LoadCompressedPalette(terrainTable->palette, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
-}
-
 static void LoadBattleTerrainEntryGfx(u32 terrain)
 {
     const struct BattleBackground *terrainTable;
@@ -954,15 +942,16 @@ static u32 GetBattleTerrainOverride(void)
 
 void DrawMainBattleBackground(void)
 {
-    LoadBattleTerrainGfx(GetBattleTerrainOverride());
+    LoadChosenBattleElement(3);
+    LoadChosenBattleElement(4);
+    LoadChosenBattleElement(5);
 }
 
 void LoadBattleTextboxAndBackground(void)
 {
-    LZ77UnCompVram(gBattleTextboxTiles, (void *)(BG_CHAR_ADDR(0)));
-    CopyToBgTilemapBuffer(0, gBattleTextboxTilemap, 0, 0);
-    CopyBgTilemapBufferToVram(0);
-    LoadCompressedPalette(gBattleTextboxPalette, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
+    LoadChosenBattleElement(0);
+    LoadChosenBattleElement(1);
+    LoadChosenBattleElement(2);
     LoadBattleMenuWindowGfx();
     DrawMainBattleBackground();
 }
@@ -1299,11 +1288,9 @@ void DrawBattleEntryBackground(void)
     }
 }
 
-bool8 LoadChosenBattleElement(u8 caseId)
+void LoadChosenBattleElement(u8 caseId)
 {
-    bool8 ret = FALSE;
-    const struct BattleBackground *terrainTable;
-    terrainTable = &sBattleTerrainTable[GetBattleTerrainOverride()];
+    const struct BattleBackground *terrainTable = &sBattleTerrainTable[GetBattleTerrainOverride()];
     switch (caseId)
     {
     case 0:
@@ -1328,10 +1315,5 @@ bool8 LoadChosenBattleElement(u8 caseId)
     case 6:
         LoadBattleMenuWindowGfx();
         break;
-    default:
-        ret = TRUE;
-        break;
     }
-
-    return ret;
 }

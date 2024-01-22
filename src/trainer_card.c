@@ -33,12 +33,6 @@
 #include "constants/trainers.h"
 #include "constants/union_room.h"
 
-enum {
-    WIN_MSG,
-    WIN_CARD_TEXT,
-    WIN_TRAINER_PIC,
-};
-
 struct TrainerCardData
 {
     u8 mainState;

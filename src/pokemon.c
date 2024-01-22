@@ -2172,18 +2172,21 @@ void ZeroMonData(struct Pokemon *mon)
     SetMonData(mon, MON_DATA_MAIL, &arg);
 }
 
-void ZeroPlayerPartyMons(void)
+static void ZeroPartyMons(struct Pokemon *party)
 {
     s32 i;
     for (i = 0; i < PARTY_SIZE; i++)
-        ZeroMonData(&gPlayerParty[i]);
+        ZeroMonData(&party[i]);
+}
+
+void ZeroPlayerPartyMons(void)
+{
+    ZeroPartyMons(gPlayerParty);
 }
 
 void ZeroEnemyPartyMons(void)
 {
-    s32 i;
-    for (i = 0; i < PARTY_SIZE; i++)
-        ZeroMonData(&gEnemyParty[i]);
+    ZeroPartyMons(gEnemyParty);
 }
 
 void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
@@ -2575,7 +2578,6 @@ bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)
 {
     switch (caseId)
     {
-    case 0:
     default:
         return FALSE;
     case DEOXYS_CHECK_BATTLE_SPRITE:
@@ -2586,8 +2588,6 @@ bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)
         if (gLinkPlayers[GetMultiplayerId()].id == battlerId)
             return FALSE;
         break;
-    case 2:
-        break;
     case DEOXYS_CHECK_TRADE_MAIN:
         if (!(gBattleTypeFlags & BATTLE_TYPE_MULTI))
             return FALSE;
@@ -2596,8 +2596,6 @@ bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)
         if (battlerId == 1 || battlerId == 4 || battlerId == 5)
             return TRUE;
         return FALSE;
-    case 4:
-        break;
     case DEOXYS_CHECK_BATTLE_ANIM:
         if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         {
@@ -4354,9 +4352,10 @@ u8 GetMonsStateToDoubles(void)
 
     for (i = 0; i < gPlayerPartyCount; i++)
     {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) != SPECIES_EGG
+        u32 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL);
+        if (species != SPECIES_EGG
          && GetMonData(&gPlayerParty[i], MON_DATA_HP, NULL) != 0
-         && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) != SPECIES_NONE)
+         && species != SPECIES_NONE)
             aliveCount++;
     }
 
@@ -4410,7 +4409,8 @@ void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord)
     {
         if (gBattleResources->secretBase->party.species[i])
         {
-            CreateMon(&gEnemyParty[i],
+            struct Pokemon *secretBaseParty = &gEnemyParty[i];
+            CreateMon(secretBaseParty,
                 gBattleResources->secretBase->party.species[i],
                 gBattleResources->secretBase->party.levels[i],
                 15,
@@ -4419,13 +4419,13 @@ void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord)
                 OT_ID_RANDOM_NO_SHINY,
                 0);
 
-            SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, &gBattleResources->secretBase->party.heldItems[i]);
+            SetMonData(secretBaseParty, MON_DATA_HELD_ITEM, &gBattleResources->secretBase->party.heldItems[i]);
 
             for (j = 0; j < NUM_STATS; j++)
-                SetMonData(&gEnemyParty[i], MON_DATA_HP_EV + j, &gBattleResources->secretBase->party.EVs[i]);
+                SetMonData(secretBaseParty, MON_DATA_HP_EV + j, &gBattleResources->secretBase->party.EVs[i]);
 
             for (j = 0; j < MAX_MON_MOVES; j++)
-                SetMonMoveSlot(&gEnemyParty[i], gBattleResources->secretBase->party.moves[i * MAX_MON_MOVES + j], j);
+                SetMonMoveSlot(secretBaseParty, gBattleResources->secretBase->party.moves[i * MAX_MON_MOVES + j], j);
         }
     }
 }
@@ -4506,52 +4506,54 @@ void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex)
     u16 *hpSwitchout;
     s32 i;
     u8 nickname[POKEMON_NAME_BUFFER_SIZE];
+    struct BattlePokemon *battleMon = &gBattleMons[battlerId];
+    struct Pokemon *mon = &gPlayerParty[partyIndex];
 
-    gBattleMons[battlerId].species = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPECIES, NULL);
-    gBattleMons[battlerId].item = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HELD_ITEM, NULL);
+    battleMon->species = GetMonData(mon, MON_DATA_SPECIES, NULL);
+    battleMon->item = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        gBattleMons[battlerId].moves[i] = GetMonData(&gPlayerParty[partyIndex], MON_DATA_MOVE1 + i, NULL);
-        gBattleMons[battlerId].pp[i] = GetMonData(&gPlayerParty[partyIndex], MON_DATA_PP1 + i, NULL);
+        battleMon->moves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, NULL);
+        battleMon->pp[i] = GetMonData(mon, MON_DATA_PP1 + i, NULL);
     }
 
-    gBattleMons[battlerId].ppBonuses = GetMonData(&gPlayerParty[partyIndex], MON_DATA_PP_BONUSES, NULL);
-    gBattleMons[battlerId].friendship = GetMonData(&gPlayerParty[partyIndex], MON_DATA_FRIENDSHIP, NULL);
-    gBattleMons[battlerId].experience = GetMonData(&gPlayerParty[partyIndex], MON_DATA_EXP, NULL);
-    gBattleMons[battlerId].hpIV = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HP_IV, NULL);
-    gBattleMons[battlerId].attackIV = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ATK_IV, NULL);
-    gBattleMons[battlerId].defenseIV = GetMonData(&gPlayerParty[partyIndex], MON_DATA_DEF_IV, NULL);
-    gBattleMons[battlerId].speedIV = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPEED_IV, NULL);
-    gBattleMons[battlerId].spAttackIV = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPATK_IV, NULL);
-    gBattleMons[battlerId].spDefenseIV = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPDEF_IV, NULL);
-    gBattleMons[battlerId].personality = GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY, NULL);
-    gBattleMons[battlerId].status1 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_STATUS, NULL);
-    gBattleMons[battlerId].level = GetMonData(&gPlayerParty[partyIndex], MON_DATA_LEVEL, NULL);
-    gBattleMons[battlerId].hp = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HP, NULL);
-    gBattleMons[battlerId].maxHP = GetMonData(&gPlayerParty[partyIndex], MON_DATA_MAX_HP, NULL);
-    gBattleMons[battlerId].attack = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ATK, NULL);
-    gBattleMons[battlerId].defense = GetMonData(&gPlayerParty[partyIndex], MON_DATA_DEF, NULL);
-    gBattleMons[battlerId].speed = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPEED, NULL);
-    gBattleMons[battlerId].spAttack = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPATK, NULL);
-    gBattleMons[battlerId].spDefense = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPDEF, NULL);
-    gBattleMons[battlerId].isEgg = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_EGG, NULL);
-    gBattleMons[battlerId].abilityNum = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ABILITY_NUM, NULL);
-    gBattleMons[battlerId].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID, NULL);
-    gBattleMons[battlerId].type1 = gSpeciesInfo[gBattleMons[battlerId].species].types[0];
-    gBattleMons[battlerId].type2 = gSpeciesInfo[gBattleMons[battlerId].species].types[1];
-    gBattleMons[battlerId].ability = GetAbilityBySpecies(gBattleMons[battlerId].species, gBattleMons[battlerId].abilityNum);
-    GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, nickname);
-    StringCopy_Nickname(gBattleMons[battlerId].nickname, nickname);
-    GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_NAME, gBattleMons[battlerId].otName);
+    battleMon->ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES, NULL);
+    battleMon->friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, NULL);
+    battleMon->experience = GetMonData(mon, MON_DATA_EXP, NULL);
+    battleMon->hpIV = GetMonData(mon, MON_DATA_HP_IV, NULL);
+    battleMon->attackIV = GetMonData(mon, MON_DATA_ATK_IV, NULL);
+    battleMon->defenseIV = GetMonData(mon, MON_DATA_DEF_IV, NULL);
+    battleMon->speedIV = GetMonData(mon, MON_DATA_SPEED_IV, NULL);
+    battleMon->spAttackIV = GetMonData(mon, MON_DATA_SPATK_IV, NULL);
+    battleMon->spDefenseIV = GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
+    battleMon->personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
+    battleMon->status1 = GetMonData(mon, MON_DATA_STATUS, NULL);
+    battleMon->level = GetMonData(mon, MON_DATA_LEVEL, NULL);
+    battleMon->hp = GetMonData(mon, MON_DATA_HP, NULL);
+    battleMon->maxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
+    battleMon->attack = GetMonData(mon, MON_DATA_ATK, NULL);
+    battleMon->defense = GetMonData(mon, MON_DATA_DEF, NULL);
+    battleMon->speed = GetMonData(mon, MON_DATA_SPEED, NULL);
+    battleMon->spAttack = GetMonData(mon, MON_DATA_SPATK, NULL);
+    battleMon->spDefense = GetMonData(mon, MON_DATA_SPDEF, NULL);
+    battleMon->isEgg = GetMonData(mon, MON_DATA_IS_EGG, NULL);
+    battleMon->abilityNum = GetMonData(mon, MON_DATA_ABILITY_NUM, NULL);
+    battleMon->otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
+    battleMon->type1 = gSpeciesInfo[battleMon->species].types[0];
+    battleMon->type2 = gSpeciesInfo[battleMon->species].types[1];
+    battleMon->ability = GetAbilityBySpecies(battleMon->species, battleMon->abilityNum);
+    GetMonData(mon, MON_DATA_NICKNAME, nickname);
+    StringCopy_Nickname(battleMon->nickname, nickname);
+    GetMonData(mon, MON_DATA_OT_NAME, battleMon->otName);
 
     hpSwitchout = &gBattleStruct->hpOnSwitchout[GetBattlerSide(battlerId)];
-    *hpSwitchout = gBattleMons[battlerId].hp;
+    *hpSwitchout = battleMon->hp;
 
     for (i = 0; i < NUM_BATTLE_STATS; i++)
-        gBattleMons[battlerId].statStages[i] = DEFAULT_STAT_STAGE;
+        battleMon->statStages[i] = DEFAULT_STAT_STAGE;
 
-    gBattleMons[battlerId].status2 = 0;
+    battleMon->status2 = 0;
     UpdateSentPokesToOpponentValue(battlerId);
     ClearTemporarySpeciesSpriteData(battlerId, FALSE);
 }

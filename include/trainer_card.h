@@ -19,6 +19,12 @@ enum
     MON_ICON_TINT_SEPIA,
 };
 
+enum {
+    WIN_MSG,
+    WIN_CARD_TEXT,
+    WIN_TRAINER_PIC,
+};
+
 struct TrainerCard
 {
     /*0x00*/ u8 gender;

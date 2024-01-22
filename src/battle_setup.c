@@ -396,10 +396,9 @@ void BattleSetup_StartWildBattle(u32 flags)
     {
         gMain.savedCallback = CB2_EndWildBattle;
         gBattleTypeFlags = flags;
-        if (InBattlePyramid())
+        if (flags & BATTLE_TYPE_PYRAMID)
         {
             VarSet(VAR_TEMP_PLAYING_PYRAMID_MUSIC, 0);
-            gBattleTypeFlags |= BATTLE_TYPE_PYRAMID;
         }
         CreateBattleStartTask(GetWildBattleTransition(), 0);
         IncrementGameStat(GAME_STAT_TOTAL_BATTLES);

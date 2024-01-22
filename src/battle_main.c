@@ -1885,6 +1885,7 @@ static void CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 f
 
             personalityValue += CalcCRC32((const u8 *)&trainer->party[i], sizeof(*trainer->party)) << 8;
             CreateTrainerMon(&party[i], trainer, i, personalityValue, 0);
+            CalculateMonStats(&party[i]);
         }
 
         gBattleTypeFlags |= trainer->doubleBattle;

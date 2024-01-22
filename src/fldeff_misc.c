@@ -1195,7 +1195,7 @@ static void Task_WateringBerryTreeAnim_Start(u8 taskId)
         || ObjectEventClearHeldMovementIfFinished(playerObjEvent))
     {
         // Start watering
-        SetPlayerAvatarWatering(GetPlayerFacingDirection());
+        SetPlayerAvatarAnimation(PLAYER_AVATAR_GFX_WATERING, GetFaceDirectionAnimNum(GetPlayerFacingDirection()));
         ObjectEventSetHeldMovement(playerObjEvent, GetWalkInPlaceNormalMovementAction(GetPlayerFacingDirection()));
         gTasks[taskId].func = Task_WateringBerryTreeAnim_Continue;
     }

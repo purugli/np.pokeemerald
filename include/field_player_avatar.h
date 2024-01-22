@@ -47,7 +47,7 @@ u8 GetJumpSpecialMovementAction(u32);
 bool8 PartyHasMonWithSurf(void);
 bool8 IsPlayerFacingSurfableFishableWater(void);
 bool8 IsPlayerSurfingNorth(void);
-void SetPlayerAvatarWatering(u8 direction);
+void SetPlayerAvatarAnimation(u32 playerAnimId, u32 animNum);
 u8 GetPlayerAvatarFlags(void);
 void UpdatePlayerAvatarTransitionState(void);
 u8 GetLinkPlayerAvatarGraphicsIdByGender(u8, u8);

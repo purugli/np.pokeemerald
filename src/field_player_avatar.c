@@ -353,12 +353,11 @@ static bool8 TryUpdatePlayerSpinDirection(void)
         struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
         if (playerObjEvent->heldMovementFinished)
         {
-            u32 i;
-            u32 playerMetatileBehavior = playerObjEvent->currentMetatileBehavior;
-            if (playerMetatileBehavior == MB_STOP_SPINNING)
+            u32 i = playerObjEvent->currentMetatileBehavior;
+            if (i == MB_STOP_SPINNING)
                 return FALSE;
-            if (playerMetatileBehavior >= MB_SPIN_RIGHT && playerMetatileBehavior <= MB_SPIN_DOWN)
-                gPlayerAvatar.lastSpinTile = playerMetatileBehavior;
+            if (i >= MB_SPIN_RIGHT && i <= MB_SPIN_DOWN)
+                gPlayerAvatar.lastSpinTile = i;
             ObjectEventClearHeldMovement(playerObjEvent);
             for (i = 0; i < ARRAY_COUNT(sForcedMovementFuncs); i++)
             {
@@ -1361,7 +1360,7 @@ void SetPlayerInvisibility(bool8 invisible)
         gSprites[gObjectEvents[gPlayerAvatar.objectEventId].fieldEffectSpriteId].invisible = invisible;
 }
 
-static void SetPlayerAvatarAnimation(u32 playerAnimId, u32 animNum)
+void SetPlayerAvatarAnimation(u32 playerAnimId, u32 animNum)
 {
     u8 gfxId = sPlayerAvatarAnimGfxIds[playerAnimId][gSaveBlock2Ptr->playerGender];
     ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], gfxId);
@@ -1378,11 +1377,6 @@ void PlayerUseAcroBikeOnBumpySlope(u8 direction)
     ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_BIKE));
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetAcroWheelieDirectionAnimNum(direction));
     SeekSpriteAnim(&gSprites[gPlayerAvatar.spriteId], 1);
-}
-
-void SetPlayerAvatarWatering(u8 direction)
-{
-    SetPlayerAvatarAnimation(PLAYER_AVATAR_GFX_WATERING, GetFaceDirectionAnimNum(direction));
 }
 
 extern const struct SpritePalette gSpritePalette_ArrowEmotionsFieldEffect;

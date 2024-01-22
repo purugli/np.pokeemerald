@@ -3,7 +3,6 @@
 #include "tileset_anims.h"
 #include "palette.h"
 #include "fieldmap.h"
-#include "constants/day_night.h"
 
 #include "data/tilesets/graphics.h"
 #include "data/tilesets/metatiles.h"

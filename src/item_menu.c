@@ -98,6 +98,7 @@ enum {
     WIN_POCKET_NAME,
     WIN_TMHM_INFO_ICONS,
     WIN_TMHM_INFO,
+    WIN_MESSAGE, // Identical to ITEMWIN_MESSAGE. Unused?
 };
 
 // Item list ID for toSwapPos to indicate an item is not currently being swapped
@@ -434,6 +435,15 @@ static const struct WindowTemplate sDefaultBagWindows[] =
         .height = 6,
         .paletteNum = 12,
         .baseBlock = 0x189,
+    },
+    [WIN_MESSAGE] = {
+        .bg = 1,
+        .tilemapLeft = 2,
+        .tilemapTop = 15,
+        .width = 27,
+        .height = 4,
+        .paletteNum = 15,
+        .baseBlock = 0x1B1,
     },
     DUMMY_WIN_TEMPLATE,
 };
@@ -2492,8 +2502,6 @@ static void RemoveItemMessageWindow(u8 windowType)
     if (*windowId != WINDOW_NONE)
     {
         ClearDialogWindowAndFrameToTransparent(*windowId, FALSE);
-        // This ClearWindowTilemap call is redundant, since ClearDialogWindowAndFrameToTransparent already calls it.
-        ClearWindowTilemap(*windowId);
         RemoveWindow(*windowId);
         ScheduleBgCopyTilemapToVram(1);
         *windowId = WINDOW_NONE;

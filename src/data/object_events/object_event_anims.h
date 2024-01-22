@@ -776,6 +776,14 @@ static const union AnimCmd *const sAnimTable_Standard[] = {
     [ANIM_STD_GO_FASTEST_NORTH] = sAnim_GoFastestNorth,
     [ANIM_STD_GO_FASTEST_WEST] = sAnim_GoFastestWest,
     [ANIM_STD_GO_FASTEST_EAST] = sAnim_GoFastestEast,
+    [ANIM_RUN_SOUTH] = sAnim_RunSouth,
+    [ANIM_RUN_NORTH] = sAnim_RunNorth,
+    [ANIM_RUN_WEST] = sAnim_RunWest,
+    [ANIM_RUN_EAST] = sAnim_RunEast,
+    [ANIM_SPIN_SOUTH] = sAnim_SpinSouth,
+    [ANIM_SPIN_NORTH] = sAnim_SpinNorth,
+    [ANIM_SPIN_WEST] = sAnim_SpinWest,
+    [ANIM_SPIN_EAST] = sAnim_SpinEast,
 };
 
 static const union AnimCmd *const sAnimTable_HoOh[] = {
@@ -825,37 +833,6 @@ static const union AnimCmd *const sAnimTable_Rayquaza[] = {
     [ANIM_STD_GO_FASTEST_NORTH] = sAnim_GetOnOffSurfBlobNorth,
     [ANIM_STD_GO_FASTEST_WEST] = sAnim_QuintyPlumpFaceWest,
     [ANIM_STD_GO_FASTEST_EAST] = sAnim_GetOnOffSurfBlobSouth,
-};
-
-static const union AnimCmd *const sAnimTable_BrendanMayNormal[] = {
-    [ANIM_STD_FACE_SOUTH] = sAnim_StayStill,
-    [ANIM_STD_FACE_NORTH] = sAnim_QuintyPlumpFaceNorth,
-    [ANIM_STD_FACE_WEST] = sAnim_QuintyPlumpFaceWest,
-    [ANIM_STD_FACE_EAST] = sAnim_QuintyPlumpFaceEast,
-    [ANIM_STD_GO_SOUTH] = sAnim_GoSouth,
-    [ANIM_STD_GO_NORTH] = sAnim_GoNorth,
-    [ANIM_STD_GO_WEST] = sAnim_GoWest,
-    [ANIM_STD_GO_EAST] = sAnim_GoEast,
-    [ANIM_STD_GO_FAST_SOUTH] = sAnim_GoFastSouth,
-    [ANIM_STD_GO_FAST_NORTH] = sAnim_GoFastNorth,
-    [ANIM_STD_GO_FAST_WEST] = sAnim_GoFastWest,
-    [ANIM_STD_GO_FAST_EAST] = sAnim_GoFastEast,
-    [ANIM_STD_GO_FASTER_SOUTH] = sAnim_GoFasterSouth,
-    [ANIM_STD_GO_FASTER_NORTH] = sAnim_GoFasterNorth,
-    [ANIM_STD_GO_FASTER_WEST] = sAnim_GoFasterWest,
-    [ANIM_STD_GO_FASTER_EAST] = sAnim_GoFasterEast,
-    [ANIM_STD_GO_FASTEST_SOUTH] = sAnim_GoFastestSouth,
-    [ANIM_STD_GO_FASTEST_NORTH] = sAnim_GoFastestNorth,
-    [ANIM_STD_GO_FASTEST_WEST] = sAnim_GoFastestWest,
-    [ANIM_STD_GO_FASTEST_EAST] = sAnim_GoFastestEast,
-    [ANIM_RUN_SOUTH] = sAnim_RunSouth,
-    [ANIM_RUN_NORTH] = sAnim_RunNorth,
-    [ANIM_RUN_WEST] = sAnim_RunWest,
-    [ANIM_RUN_EAST] = sAnim_RunEast,
-    [ANIM_SPIN_SOUTH] = sAnim_SpinSouth,
-    [ANIM_SPIN_NORTH] = sAnim_SpinNorth,
-    [ANIM_SPIN_WEST] = sAnim_SpinWest,
-    [ANIM_SPIN_EAST] = sAnim_SpinEast,
 };
 
 static const union AnimCmd *const sAnimTable_Bike[] = {
@@ -1008,10 +985,6 @@ static const struct StepAnimTable sStepAnimTables[] = {
     },
     [OBJ_EVENT_ANIM_RAYQUAZA] = {
         .anims = sAnimTable_Rayquaza,
-    },
-    [OBJ_EVENT_ANIM_PLAYER] = {
-        .anims = sAnimTable_BrendanMayNormal,
-        .animPos = {1, 3, 0, 2},
     },
     [OBJ_EVENT_ANIM_BIKE] = {
         .anims = sAnimTable_Bike,

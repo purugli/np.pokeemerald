@@ -214,7 +214,7 @@ void AddTextPrinterDiffStyle(bool8 allowSkippingDelayWithButtonPress)
     {
         // An object is selected and no color has been specified.
         // Use the text color normally associated with this object's sprite.
-        u8 gfxId = gObjectEvents[gSelectedObjectEvent].graphicsId;
+        u16 gfxId = gObjectEvents[gSelectedObjectEvent].graphicsId;
         if (gfxId >= OBJ_EVENT_GFX_VAR_0)
             gfxId = VarGetObjectEventGraphicsId(gfxId - OBJ_EVENT_GFX_VAR_0);
         gSpecialVar_TextColor = GetObjectEventGraphicsInfo(gfxId)->textColor;

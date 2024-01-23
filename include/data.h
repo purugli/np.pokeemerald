@@ -76,8 +76,8 @@ struct Trainer
             // Flags to change the conversation when the Frontier Brain is encountered for a battle
             // First bit is has battled them before and not won yet, second bit is has battled them and won (obtained a Symbol)
             /*0x0C*/ u16 battledBrainBitFlags[2];
-            /*0x10*/ u8 objectEventGfxId;
-            /*0x11*/ u8 padding[3];
+            /*0x10*/ u16 objectEventGfxId;
+            /*0x12*/ u8 padding[2];
         } frontierBrain;
     } trainerType;
     /*0x14*/ const struct TrainerMon *party;

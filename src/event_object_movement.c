@@ -1054,9 +1054,9 @@ static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *tem
 {
     struct ObjectEvent *objectEvent;
     u8 objectEventId;
+    s16 x;
+    s16 y;
     bool8 isClone = FALSE;
-    s16 x = 0;
-    s16 y = 0;
 
     if (template->kind == OBJ_KIND_CLONE)
     {

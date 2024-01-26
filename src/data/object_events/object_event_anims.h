@@ -728,6 +728,42 @@ static const union AnimCmd sAnim_HoOhFlapWings[] =
     ANIMCMD_JUMP(0),
 };
 
+static const union AnimCmd sAnim_QuintyPlumpRunSouth[] =
+{
+    ANIMCMD_FRAME(10, 5),
+    ANIMCMD_FRAME(7, 3),
+    ANIMCMD_FRAME(10, 5, .hFlip = TRUE),
+    ANIMCMD_FRAME(7, 3),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sAnim_QuintyPlumpRunNorth[] =
+{
+    ANIMCMD_FRAME(11, 5),
+    ANIMCMD_FRAME(8, 3),
+    ANIMCMD_FRAME(11, 5, .hFlip = TRUE),
+    ANIMCMD_FRAME(8, 3),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sAnim_QuintyPlumpRunWest[] =
+{
+    ANIMCMD_FRAME(12, 5),
+    ANIMCMD_FRAME(9, 3),
+    ANIMCMD_FRAME(13, 5),
+    ANIMCMD_FRAME(9, 3),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sAnim_QuintyPlumpRunEast[] =
+{
+    ANIMCMD_FRAME(12, 5, .hFlip = TRUE),
+    ANIMCMD_FRAME(9, 3, .hFlip = TRUE),
+    ANIMCMD_FRAME(13, 5, .hFlip = TRUE),
+    ANIMCMD_FRAME(9, 3, .hFlip = TRUE),
+    ANIMCMD_JUMP(0),
+};
+
 static const union AnimCmd *const sAnimTable_Inanimate[] = {
     [ANIM_STAY_STILL] = sAnim_StayStill,
 };
@@ -753,6 +789,14 @@ static const union AnimCmd *const sAnimTable_QuintyPlump[] = {
     [ANIM_STD_GO_FASTEST_NORTH] = sAnim_QuintyPlumpGoFastestNorth,
     [ANIM_STD_GO_FASTEST_WEST] = sAnim_QuintyPlumpGoFastestWest,
     [ANIM_STD_GO_FASTEST_EAST] = sAnim_QuintyPlumpGoFastestEast,
+    [ANIM_RUN_SOUTH] = sAnim_QuintyPlumpRunSouth,
+    [ANIM_RUN_NORTH] = sAnim_QuintyPlumpRunNorth,
+    [ANIM_RUN_WEST] = sAnim_QuintyPlumpRunWest,
+    [ANIM_RUN_EAST] = sAnim_QuintyPlumpRunEast,
+    [ANIM_SPIN_SOUTH] = sAnim_SpinSouth,
+    [ANIM_SPIN_NORTH] = sAnim_SpinNorth,
+    [ANIM_SPIN_WEST] = sAnim_SpinWest,
+    [ANIM_SPIN_EAST] = sAnim_SpinEast,
 };
 
 static const union AnimCmd *const sAnimTable_Standard[] = {

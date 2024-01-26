@@ -440,8 +440,8 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Tucker,                OBJ_EVENT_PAL_TAG_TUCKER},
     {gObjectEventPal_SubmarineShadow,       OBJ_EVENT_PAL_TAG_SUBMARINE_SHADOW},
     {gObjectEventPal_Poochyena,             OBJ_EVENT_PAL_TAG_POOCHYENA},
-    {gObjectEventPal_RedLeaf,               OBJ_EVENT_PAL_TAG_RED_LEAF},
     {gObjectEventPal_Spenser,               OBJ_EVENT_PAL_TAG_SPENSER},
+    {gObjectEventPal_RG_RedLeaf,            OBJ_EVENT_PAL_TAG_RG_RED_LEAF},
     {gObjectEventPal_BirthIslandStone,      OBJ_EVENT_PAL_TAG_BIRTH_ISLAND_STONE},
     {gObjectEventPal_HoOh,                  OBJ_EVENT_PAL_TAG_HO_OH},
     {gObjectEventPal_Lugia,                 OBJ_EVENT_PAL_TAG_LUGIA},
@@ -450,7 +450,8 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_BerryTreeSprout,       OBJ_EVENT_PAL_TAG_BERRY_TREE_SPROUT},
     {gObjectEventPal_AguavBerryTree,        OBJ_EVENT_PAL_TAG_AGUAV_BERRY_TREE},
     {gObjectEventPal_SalacBerryTree,        OBJ_EVENT_PAL_TAG_SALAC_BERRY_TREE},
-    {NULL,                                  OBJ_EVENT_PAL_TAG_NONE}, 
+    {gObjectEventPal_Custom_Blue,           OBJ_EVENT_PAL_TAG_CUSTOM_BLUE},
+    {NULL,                                  OBJ_EVENT_PAL_TAG_NONE},
 };
 
 #include "data/object_events/berry_tree_graphics_tables.h"

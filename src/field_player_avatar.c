@@ -1224,7 +1224,7 @@ u16 GetLinkPlayerAvatarGraphicsIdByGender(u8 version, u8 gender)
     switch (GetVersionId(version))
     {
     case 2:
-        gfxId = OBJ_EVENT_GFX_RED + gender;
+        gfxId = OBJ_EVENT_GFX_RG_RED_NORMAL + gender;
         break;
     case 1:
         gfxId = OBJ_EVENT_GFX_LINK_RS_BRENDAN + gender;

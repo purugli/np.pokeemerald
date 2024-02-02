@@ -725,11 +725,12 @@ static void SpriteCB_HealthBoxOther(struct Sprite *sprite)
 
 void SetBattleBarStruct(u8 battlerId, u8 healthboxSpriteId, s32 maxVal, s32 oldVal, s32 receivedValue)
 {
-    gBattleSpritesDataPtr->battleBars[battlerId].healthboxSpriteId = healthboxSpriteId;
-    gBattleSpritesDataPtr->battleBars[battlerId].maxValue = maxVal;
-    gBattleSpritesDataPtr->battleBars[battlerId].oldValue = oldVal;
-    gBattleSpritesDataPtr->battleBars[battlerId].receivedValue = receivedValue;
-    gBattleSpritesDataPtr->battleBars[battlerId].currValue = -32768;
+    struct BattleBarInfo *battleBars = &gBattleSpritesDataPtr->battleBars[battlerId];
+    battleBars->healthboxSpriteId = healthboxSpriteId;
+    battleBars->maxValue = maxVal;
+    battleBars->oldValue = oldVal;
+    battleBars->receivedValue = receivedValue;
+    battleBars->currValue = -32768;
 }
 
 static void SetHealthboxSpriteVisibility(u8 healthboxSpriteId, bool32 invisible)
@@ -964,6 +965,7 @@ u8 CreatePartyStatusSummarySprites(u8 battlerId, struct HpAndStatus *partyInfo, 
     u8 summaryBarSpriteId;
     u8 ballIconSpritesIds[PARTY_SIZE];
     u8 taskId;
+    struct Sprite *ballIconSprite;
 
     if (!skipPlayer || GetBattlerPosition(battlerId) != B_POSITION_OPPONENT_RIGHT)
     {
@@ -1018,32 +1020,33 @@ u8 CreatePartyStatusSummarySprites(u8 battlerId, struct HpAndStatus *partyInfo, 
     for (i = 0; i < PARTY_SIZE; i++)
     {
         ballIconSpritesIds[i] = CreateSpriteAtEnd(&sStatusSummaryBallsSpriteTemplates[isOpponent], bar_X, bar_Y - 4, 9);
+        ballIconSprite = &gSprites[ballIconSpritesIds[i]];
 
         if (!isBattleStart)
-            gSprites[ballIconSpritesIds[i]].callback = SpriteCB_StatusSummaryBalls_OnSwitchout;
+            ballIconSprite->callback = SpriteCB_StatusSummaryBalls_OnSwitchout;
 
         if (!isOpponent)
         {
-            gSprites[ballIconSpritesIds[i]].x2 = 0;
-            gSprites[ballIconSpritesIds[i]].y2 = 0;
+            ballIconSprite->x2 = 0;
+            ballIconSprite->y2 = 0;
         }
 
-        gSprites[ballIconSpritesIds[i]].data[0] = summaryBarSpriteId;
+        ballIconSprite->data[0] = summaryBarSpriteId;
 
         if (!isOpponent)
         {
-            gSprites[ballIconSpritesIds[i]].x += 10 * i + 24;
-            gSprites[ballIconSpritesIds[i]].data[1] = i * 7 + 10;
-            gSprites[ballIconSpritesIds[i]].x2 = 120;
+            ballIconSprite->x += 10 * i + 24;
+            ballIconSprite->data[1] = i * 7 + 10;
+            ballIconSprite->x2 = 120;
         }
         else
         {
-            gSprites[ballIconSpritesIds[i]].x -= 10 * (5 - i) + 24;
-            gSprites[ballIconSpritesIds[i]].data[1] = (6 - i) * 7 + 10;
-            gSprites[ballIconSpritesIds[i]].x2 = -120;
+            ballIconSprite->x -= 10 * (5 - i) + 24;
+            ballIconSprite->data[1] = (6 - i) * 7 + 10;
+            ballIconSprite->x2 = -120;
         }
 
-        gSprites[ballIconSpritesIds[i]].data[2] = isOpponent;
+        ballIconSprite->data[2] = isOpponent;
     }
 
     if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
@@ -1055,18 +1058,18 @@ u8 CreatePartyStatusSummarySprites(u8 battlerId, struct HpAndStatus *partyInfo, 
                 if (partyInfo[i].hp == HP_EMPTY_SLOT)
                 {
                     // empty slot or an egg
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 1;
-                    gSprites[ballIconSpritesIds[i]].data[7] = 1;
+                    ballIconSprite->oam.tileNum += 1;
+                    ballIconSprite->data[7] = 1;
                 }
                 else if (partyInfo[i].hp == 0)
                 {
                     // fainted mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    ballIconSprite->oam.tileNum += 3;
                 }
                 else if (partyInfo[i].status != 0)
                 {
                     // mon with major status
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 2;
+                    ballIconSprite->oam.tileNum += 2;
                 }
             }
         }
@@ -1085,17 +1088,17 @@ u8 CreatePartyStatusSummarySprites(u8 battlerId, struct HpAndStatus *partyInfo, 
                 else if (partyInfo[j].hp == 0)
                 {
                     // fainted mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    ballIconSprite->oam.tileNum += 3;
                 }
                 else if (gBattleTypeFlags & BATTLE_TYPE_ARENA && gBattleStruct->arenaLostPlayerMons & gBitTable[j])
                 {
                     // fainted arena mon
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 3;
+                    ballIconSprite->oam.tileNum += 3;
                 }
                 else if (partyInfo[j].status != 0)
                 {
                     // mon with primary status
-                    gSprites[ballIconSpritesIds[i]].oam.tileNum += 2;
+                    ballIconSprite->oam.tileNum += 2;
                 }
                 i++;
             }

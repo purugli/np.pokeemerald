@@ -3225,21 +3225,22 @@ static void DoBattleIntro(void)
     case STATE_DRAW_SPRITES: // Copy battler data from STATE_GET_MON_DATA and STATE_LOOP_BATTLER_DATA. Draw trainer/Pokémon sprite.
         for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
         {
+            struct BattlePokemon *battleMon = &gBattleMons[gActiveBattler];
             u8 side = GetBattlerSide(gActiveBattler);
             if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI) && side == B_SIDE_PLAYER)
             {
-                memset(&gBattleMons[gActiveBattler], 0, sizeof(struct BattlePokemon));
+                memset(battleMon, 0, sizeof(struct BattlePokemon));
             }
             else
             {
-                memcpy(&gBattleMons[gActiveBattler], &gBattleBufferB[gActiveBattler][4], sizeof(struct BattlePokemon));
-                gBattleMons[gActiveBattler].type1 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[0];
-                gBattleMons[gActiveBattler].type2 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[1];
-                gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].abilityNum);
-                gBattleStruct->hpOnSwitchout[side] = gBattleMons[gActiveBattler].hp;
-                gBattleMons[gActiveBattler].status2 = 0;
+                memcpy(battleMon, &gBattleBufferB[gActiveBattler][4], sizeof(struct BattlePokemon));
+                battleMon->type1 = gSpeciesInfo[battleMon->species].types[0];
+                battleMon->type2 = gSpeciesInfo[battleMon->species].types[1];
+                battleMon->ability = GetAbilityBySpecies(battleMon->species, battleMon->abilityNum);
+                gBattleStruct->hpOnSwitchout[side] = battleMon->hp;
+                battleMon->status2 = 0;
                 for (i = 0; i < NUM_BATTLE_STATS; i++)
-                    gBattleMons[gActiveBattler].statStages[i] = DEFAULT_STAT_STAGE;
+                    battleMon->statStages[i] = DEFAULT_STAT_STAGE;
             }
 
             // Draw sprite.
@@ -3624,11 +3625,12 @@ u8 IsRunningFromBattleImpossible(void)
     u8 holdEffect;
     u8 side;
     s32 i;
+    struct BattlePokemon *battleMon = &gBattleMons[gActiveBattler];
 
-    if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)
+    if (battleMon->item == ITEM_ENIGMA_BERRY)
         holdEffect = gEnigmaBerries[gActiveBattler].holdEffect;
     else
-        holdEffect = ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item);
+        holdEffect = ItemId_GetHoldEffect(battleMon->item);
 
     gPotentialItemEffectBattler = gActiveBattler;
 
@@ -3636,7 +3638,7 @@ u8 IsRunningFromBattleImpossible(void)
         return BATTLE_RUN_SUCCESS;
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         return BATTLE_RUN_SUCCESS;
-    if (gBattleMons[gActiveBattler].ability == ABILITY_RUN_AWAY)
+    if (battleMon->ability == ABILITY_RUN_AWAY)
         return BATTLE_RUN_SUCCESS;
 
     side = GetBattlerSide(gActiveBattler);
@@ -3652,7 +3654,7 @@ u8 IsRunningFromBattleImpossible(void)
             return BATTLE_RUN_FAILURE;
         }
         if (side != GetBattlerSide(i)
-         && gBattleMons[gActiveBattler].ability != ABILITY_LEVITATE
+         && battleMon->ability != ABILITY_LEVITATE
          && !IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_FLYING)
          && gBattleMons[i].ability == ABILITY_ARENA_TRAP)
         {
@@ -3670,7 +3672,7 @@ u8 IsRunningFromBattleImpossible(void)
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PREVENTS_ESCAPE;
         return BATTLE_RUN_FAILURE;
     }
-    if ((gBattleMons[gActiveBattler].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
+    if ((battleMon->status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
         || (gStatuses3[gActiveBattler] & STATUS3_ROOTED))
     {
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_CANT_ESCAPE;
@@ -3734,6 +3736,7 @@ static void HandleTurnActionSelectionState(void)
     gBattleCommunication[ACTIONS_CONFIRMED_COUNT] = 0;
     for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
     {
+        struct BattlePokemon *battleMon = &gBattleMons[gActiveBattler];
         u8 position = GetBattlerPosition(gActiveBattler);
         switch (gBattleCommunication[gActiveBattler])
         {
@@ -3758,8 +3761,8 @@ static void HandleTurnActionSelectionState(void)
                 }
                 else
                 {
-                    if (gBattleMons[gActiveBattler].status2 & STATUS2_MULTIPLETURNS
-                        || gBattleMons[gActiveBattler].status2 & STATUS2_RECHARGE)
+                    if (battleMon->status2 & STATUS2_MULTIPLETURNS
+                        || battleMon->status2 & STATUS2_RECHARGE)
                     {
                         gChosenActionByBattler[gActiveBattler] = B_ACTION_USE_MOVE;
                         gBattleCommunication[gActiveBattler] = STATE_WAIT_ACTION_CONFIRMED_STANDBY;
@@ -3801,17 +3804,17 @@ static void HandleTurnActionSelectionState(void)
                     {
                         struct ChooseMoveStruct moveInfo;
 
-                        moveInfo.species = gBattleMons[gActiveBattler].species;
-                        moveInfo.monType1 = gBattleMons[gActiveBattler].type1;
-                        moveInfo.monType2 = gBattleMons[gActiveBattler].type2;
+                        moveInfo.species = battleMon->species;
+                        moveInfo.monType1 = battleMon->type1;
+                        moveInfo.monType2 = battleMon->type2;
 
                         for (i = 0; i < MAX_MON_MOVES; i++)
                         {
-                            moveInfo.moves[i] = gBattleMons[gActiveBattler].moves[i];
-                            moveInfo.currentPp[i] = gBattleMons[gActiveBattler].pp[i];
+                            moveInfo.moves[i] = battleMon->moves[i];
+                            moveInfo.currentPp[i] = battleMon->pp[i];
                             moveInfo.maxPp[i] = CalculatePPWithBonus(
-                                                            gBattleMons[gActiveBattler].moves[i],
-                                                            gBattleMons[gActiveBattler].ppBonuses,
+                                                            battleMon->moves[i],
+                                                            battleMon->ppBonuses,
                                                             i);
                         }
 
@@ -3840,7 +3843,7 @@ static void HandleTurnActionSelectionState(void)
                     break;
                 case B_ACTION_SWITCH:
                     *(gBattleStruct->battlerPartyIndexes + gActiveBattler) = gBattlerPartyIndexes[gActiveBattler];
-                    if (gBattleMons[gActiveBattler].status2 & (STATUS2_WRAPPED | STATUS2_ESCAPE_PREVENTION)
+                    if (battleMon->status2 & (STATUS2_WRAPPED | STATUS2_ESCAPE_PREVENTION)
                         || gBattleTypeFlags & BATTLE_TYPE_ARENA
                         || gStatuses3[gActiveBattler] & STATUS3_ROOTED)
                     {
@@ -3849,7 +3852,7 @@ static void HandleTurnActionSelectionState(void)
                     else if ((i = ABILITY_ON_OPPOSING_FIELD(gActiveBattler, ABILITY_SHADOW_TAG))
                              || ((i = ABILITY_ON_OPPOSING_FIELD(gActiveBattler, ABILITY_ARENA_TRAP))
                                  && !IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_FLYING)
-                                 && gBattleMons[gActiveBattler].ability != ABILITY_LEVITATE)
+                                 && battleMon->ability != ABILITY_LEVITATE)
                              || ((i = AbilityBattleEffects(ABILITYEFFECT_CHECK_FIELD_EXCEPT_BATTLER, gActiveBattler, ABILITY_MAGNET_PULL, 0, 0))
                                  && IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_STEEL)))
                     {
@@ -3997,7 +4000,7 @@ static void HandleTurnActionSelectionState(void)
                                 RecordedBattle_SetBattlerAction(gActiveBattler, gBattleBufferB[gActiveBattler][3]);
                             }
                             *(gBattleStruct->chosenMovePositions + gActiveBattler) = gBattleBufferB[gActiveBattler][2];
-                            gChosenMoveByBattler[gActiveBattler] = gBattleMons[gActiveBattler].moves[*(gBattleStruct->chosenMovePositions + gActiveBattler)];
+                            gChosenMoveByBattler[gActiveBattler] = battleMon->moves[*(gBattleStruct->chosenMovePositions + gActiveBattler)];
                             *(gBattleStruct->moveTarget + gActiveBattler) = gBattleBufferB[gActiveBattler][3];
                             gBattleCommunication[gActiveBattler]++;
                         }

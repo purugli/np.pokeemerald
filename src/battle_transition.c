@@ -60,7 +60,7 @@ struct TransitionData
     u16 WIN0H;
     u16 WIN0V;
     u16 unused1;
-    u16 unused2;
+    u16 WIN1V;
     u16 BLDCNT;
     u16 BLDALPHA;
     u16 BLDY;
@@ -68,8 +68,8 @@ struct TransitionData
     s16 cameraY;
     s16 BG0HOFS_Lower;
     s16 BG0HOFS_Upper;
-    s16 unused3;
     s16 BG0VOFS; // not used
+    s16 unused3;
     s16 counter;
     s16 unused4;
     s16 data[11];
@@ -111,6 +111,7 @@ static void Task_Phoebe(u8);
 static void Task_Glacia(u8);
 static void Task_Drake(u8);
 static void Task_Champion(u8);
+static void Task_Spiral(u8);
 static void Task_Aqua(u8);
 static void Task_Magma(u8);
 static void Task_Regice(u8);
@@ -258,6 +259,9 @@ static void Mugshots_CreateTrainerPics(struct Task *);
 static void VBlankCB_Mugshots(void);
 static void VBlankCB_MugshotsFadeOut(void);
 static void HBlankCB_Mugshots(void);
+static bool8 Spiral_Init(struct Task *);
+static bool8 Spiral_End(struct Task *);
+static void VBlankCB_Spiral(void);
 static void InitTransitionData(void);
 static void FadeScreenBlack(void);
 static void CreateIntroTask(void);
@@ -505,6 +509,32 @@ static const TransitionStateFunc sWave_Funcs[] =
     Wave_Init,
     Wave_Main,
     Wave_End
+};
+
+static const s16 sSpiral_AngleData[] =
+{
+    0x0,
+    0x26E,
+    0x100,
+    0x69,
+    0x0,
+    -0x69,
+    -0x100,
+    -0x266E,
+    0x0,
+    0x26E,
+    0x100,
+    0x69,
+    0x0,
+    -0x69,
+    -0x100,
+    -0x266E,
+};
+
+static const TransitionStateFunc sSpiral_Funcs[] =
+{
+    Spiral_Init,
+    Spiral_End
 };
 
 static const TransitionStateFunc sMugshot_Funcs[] =
@@ -2085,6 +2115,265 @@ static void VBlankCB_Wave(void)
 
 #undef tX
 #undef tSinIndex
+
+//---------------------
+// B_TRANSITION_SPIRAL
+//---------------------
+
+static void Task_Spiral(u8 taskId)
+{
+    while (sSpiral_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
+}
+
+static void Spiral_UpdateFrame(s16 initRadius, s16 deltaAngleMax, u8 offsetMaybe)
+{
+    u8 sinIndex;
+    s32 i, amplitude2;
+    s16 amplitude1, angleData;
+    s32 y1, x1, y2, x2;
+
+    for (i = DISPLAY_HEIGHT * 2; i < DISPLAY_HEIGHT * 6; i++)
+        gScanlineEffectRegBuffers[1][i] = DISPLAY_WIDTH / 2;
+
+    for (i = 0, sinIndex = 0; i < (deltaAngleMax * 16); i++, sinIndex++)
+    {
+        amplitude1 = initRadius + (sinIndex >> 3);
+        amplitude2 = amplitude1;
+        if ((sinIndex >> 3) != ((sinIndex + 1) >> 3))
+            amplitude2 += 1;
+
+        y1 = DISPLAY_HEIGHT / 2 - Sin(sinIndex, amplitude1);
+        x1 = Cos(sinIndex, amplitude1) + DISPLAY_WIDTH / 2;
+        y2 = DISPLAY_HEIGHT / 2 - Sin(sinIndex + 1, amplitude2);
+        x2 = Cos(sinIndex + 1, amplitude2) + DISPLAY_WIDTH / 2;
+
+        if (y1 < 0 && y2 < 0)
+            continue;
+        if (y1 > DISPLAY_HEIGHT - 1 && y2 > DISPLAY_HEIGHT - 1)
+            continue;
+
+        if (y1 < 0)
+            y1 = 0;
+        if (y1 > DISPLAY_HEIGHT - 1)
+            y1 = DISPLAY_HEIGHT - 1;
+        if (x1 < 0)
+            x1 = 0;
+        if (x1 > 255)
+            x1 = 255;
+        if (y2 < 0)
+            y2 = 0;
+        if (y2 > DISPLAY_HEIGHT - 1)
+            y2 = DISPLAY_HEIGHT - 1;
+        if (x2 < 0)
+            x2 = 0;
+        if (x2 > 255)
+            x2 = 255;
+
+        y2 -= y1;
+
+        if (sinIndex >= 64 && sinIndex < 64 * 3)
+        {
+            gScanlineEffectRegBuffers[1][y1 + DISPLAY_HEIGHT * 2] = x1;
+
+            if (y2 == 0)
+                continue;
+
+            x2 -= x1;
+            if (x2 < -1 && x1 > 1)
+                x1--;
+            else if (x2 > 1 && x1 < 255)
+                x1++;
+
+            if (y2 < 0)
+                for (; y2 < 0; y2++)
+                    gScanlineEffectRegBuffers[1][y1 + y2 + DISPLAY_HEIGHT * 2] = x1;
+            else
+                for (; y2 > 0; y2--)
+                    gScanlineEffectRegBuffers[1][y1 + y2 + DISPLAY_HEIGHT * 2] = x1;
+        }
+        else
+        {
+            gScanlineEffectRegBuffers[1][y1 + DISPLAY_HEIGHT * 3] = x1;
+
+            if (y2 == 0)
+                continue;
+
+            x2 -= x1;
+            if (x2 < -1 && x1 > 1)
+                x1--;
+            else if (x2 > 1 && x1 < 255)
+                x1++;
+
+            if (y2 < 0)
+                for (; y2 < 0; y2++)
+                    gScanlineEffectRegBuffers[1][y1 + y2 + DISPLAY_HEIGHT * 3] = x1;
+            else
+                for (; y2 > 0; y2--)
+                    gScanlineEffectRegBuffers[1][y1 + y2 + DISPLAY_HEIGHT * 3] = x1;
+        }
+    }
+
+    if (offsetMaybe == 0 || deltaAngleMax % 4 == 0)
+    {
+        for (i = 0; i < DISPLAY_HEIGHT; i++)
+            gScanlineEffectRegBuffers[1][i * 2 + offsetMaybe] = gScanlineEffectRegBuffers[1][i + DISPLAY_HEIGHT * 2] << 8
+                                                              | gScanlineEffectRegBuffers[1][i + DISPLAY_HEIGHT * 3];
+        return;
+    }
+
+    angleData = sSpiral_AngleData[deltaAngleMax];
+    y1 = Sin(deltaAngleMax * 16, initRadius + (deltaAngleMax << 1));
+
+    switch (deltaAngleMax / 4)
+    {
+    case 0:
+        if (y1 > DISPLAY_HEIGHT / 2)
+            y1 = DISPLAY_HEIGHT / 2;
+        for (i = y1; i > 0; i--)
+        {
+            sTransitionData->data[2] = x1 = ((i * angleData) >> 8) + DISPLAY_WIDTH / 2;
+            if (x1 < 0 || x1 > 255)
+                continue;
+            sTransitionData->cameraX = 400 - i;
+            sTransitionData->data[10] = gScanlineEffectRegBuffers[1][400 - i];
+            if (gScanlineEffectRegBuffers[1][560 - i] < x1)
+                gScanlineEffectRegBuffers[1][560 - i] = DISPLAY_WIDTH / 2;
+            else if (gScanlineEffectRegBuffers[1][400 - i] < x1)
+                gScanlineEffectRegBuffers[1][400 - i] = x1;
+        }
+        break;
+    case 1:
+        if (y1 > DISPLAY_HEIGHT / 2)
+            y1 = DISPLAY_HEIGHT / 2;
+        for (i = y1; i > 0; i--)
+        {
+            sTransitionData->data[2] = x1 = ((i * angleData) >> 8) + DISPLAY_WIDTH / 2;
+            if (x1 < 0 || x1 > 255)
+                continue;
+            sTransitionData->cameraX = 400 - i;
+            sTransitionData->data[10] = gScanlineEffectRegBuffers[1][400 - i];
+            if (gScanlineEffectRegBuffers[1][400 - i] < x1)
+                gScanlineEffectRegBuffers[1][400 - i] = x1;
+        }
+        break;
+    case 2:
+        if (y1 < -(DISPLAY_HEIGHT / 2 - 1))
+            y1 = -(DISPLAY_HEIGHT / 2 - 1);
+        for (i = y1; i <= 0; i++)
+        {
+            sTransitionData->data[2] = x1 = ((i * angleData) >> 8) + DISPLAY_WIDTH / 2;
+            if (x1 < 0 || x1 > 255)
+                continue;
+            sTransitionData->cameraX = 560 - i;
+            sTransitionData->data[10] = gScanlineEffectRegBuffers[1][560 - i];
+            if (gScanlineEffectRegBuffers[1][400 - i] >= x1)
+                gScanlineEffectRegBuffers[1][400 - i] = DISPLAY_WIDTH / 2;
+            else if (gScanlineEffectRegBuffers[1][560 - i] > x1)
+                gScanlineEffectRegBuffers[1][560 - i] = x1;
+        }
+        break;
+    case 3:
+        if (y1 < -(DISPLAY_HEIGHT / 2 - 1))
+            y1 = -(DISPLAY_HEIGHT / 2 - 1);
+        for (i = y1; i <= 0; i++)
+        {
+            sTransitionData->data[2] = x1 = ((i * angleData) >> 8) + 120;
+            if (x1 < 0 || x1 > 255)
+                continue;
+            sTransitionData->cameraX = 560 - i;
+            sTransitionData->data[10] = gScanlineEffectRegBuffers[1][560 - i];
+            if (gScanlineEffectRegBuffers[1][560 - i] > x1)
+                gScanlineEffectRegBuffers[1][560 - i] = x1;
+        }
+        break;
+    default:
+        break;
+    }
+
+    for (i = 0; i < DISPLAY_HEIGHT; i++)
+        gScanlineEffectRegBuffers[1][i * 2 + offsetMaybe] = (gScanlineEffectRegBuffers[1][i + DISPLAY_HEIGHT * 2] << 8)
+                                                           | gScanlineEffectRegBuffers[1][i + DISPLAY_HEIGHT * 3];
+}
+
+static bool8 Spiral_Init(struct Task *task)
+{
+    InitTransitionData();
+    ScanlineEffect_Clear();
+    sTransitionData->WININ = 0;
+    sTransitionData->WINOUT = WININ_WIN0_ALL;
+    sTransitionData->WIN0H = WIN_RANGE(DISPLAY_WIDTH / 2, DISPLAY_WIDTH / 2);
+    sTransitionData->WIN0V = WIN_RANGE(48, DISPLAY_HEIGHT - 48);
+    sTransitionData->WIN1V = WIN_RANGE(16, DISPLAY_HEIGHT - 16);
+    sTransitionData->counter = 0;
+    DmaCopy16(3, gScanlineEffectRegBuffers[1], gScanlineEffectRegBuffers[0], DISPLAY_HEIGHT * 4);
+    SetVBlankCallback(VBlankCB_Spiral);
+    task->tState++;
+    task->data[1] = 0;
+    task->data[2] = 0;
+    return FALSE;
+}
+
+static bool8 Spiral_End(struct Task *task)
+{
+    s16 win_top, win_bottom;
+
+    Spiral_UpdateFrame(task->data[2], task->data[1], 1);
+    sTransitionData->VBlank_DMA |= TRUE;
+    if (++task->data[1] == (int)ARRAY_COUNT(sSpiral_AngleData) + 1)
+    {
+        Spiral_UpdateFrame(task->data[2], 16, 0);
+        win_top = 48 - task->data[2];
+        if (win_top < 0)
+            win_top = 0;
+        win_bottom = task->data[2] + 112;
+        if (win_bottom > 255)
+            win_bottom = 255;
+        sTransitionData->WIN0V = WIN_RANGE(win_top, win_bottom);
+        task->data[2] += 32;
+        task->data[1] = 0;
+        Spiral_UpdateFrame(task->data[2], 0, 1);
+        win_top = 48 - task->data[2];
+        if (win_top < 0)
+            win_top = 0;
+        win_bottom = task->data[2] + 112;
+        if (win_bottom > 255)
+            win_bottom = 255;
+        sTransitionData->WIN1V = WIN_RANGE(win_top, win_bottom);
+        sTransitionData->VBlank_DMA |= TRUE;
+        if (task->data[2] >= DISPLAY_HEIGHT)
+        {
+            sTransitionData->counter = 1;
+            FadeScreenBlack();
+        }
+    }
+    return FALSE;
+}
+
+static void VBlankCB_Spiral(void)
+{
+    DmaStop(0);
+    VBlankCB_BattleTransition();
+    if (sTransitionData->counter != 0)
+    {
+        u8 taskId = FindTaskIdByFunc(Task_Spiral);
+        DestroyTask(taskId);
+    }
+    else
+    {
+        if (sTransitionData->VBlank_DMA != 0)
+        {
+            DmaCopy16(3, gScanlineEffectRegBuffers[1], gScanlineEffectRegBuffers[0], DISPLAY_HEIGHT * 4);
+            sTransitionData->VBlank_DMA = FALSE;
+        }
+        REG_WININ = sTransitionData->WININ;
+        REG_WINOUT = sTransitionData->WINOUT;
+        REG_WIN0V = sTransitionData->WIN0V;
+        REG_WIN1V = sTransitionData->WIN1V;
+        REG_WIN0H = gScanlineEffectRegBuffers[0][0];
+        REG_WIN1H = gScanlineEffectRegBuffers[0][1];
+        DmaSet(0, gScanlineEffectRegBuffers[0], &REG_WIN0H, (DMA_32BIT << 16) | B_TRANS_DMA_FLAGS);
+    }
+}
 
 //----------------------------------------------------------------
 // B_TRANSITION_SIDNEY, B_TRANSITION_PHOEBE, B_TRANSITION_GLACIA,

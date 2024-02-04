@@ -6940,7 +6940,7 @@ static const struct SubspriteTable sSubspriteTable_DigitalDisplay_Win[] =
     {ARRAY_COUNT(sSubsprites_DigitalDisplay_Win), sSubsprites_DigitalDisplay_Win}
 };
 
-static const struct Subsprite sSubsprites_DigitalDisplay_Smoke[] =
+static const struct Subsprite sSubsprites_DigitalDisplay_SmokeBig[] =
 {
     {
         .x = -16,
@@ -6954,7 +6954,8 @@ static const struct Subsprite sSubsprites_DigitalDisplay_Smoke[] =
 
 static const struct SubspriteTable sSubspriteTable_DigitalDisplay_Smoke[] =
 {
-    {ARRAY_COUNT(sSubsprites_DigitalDisplay_Smoke), sSubsprites_DigitalDisplay_Smoke}
+    {ARRAY_COUNT(sSubsprites_DigitalDisplay_SmokeBig),   sSubsprites_DigitalDisplay_SmokeBig},
+    {ARRAY_COUNT(sSubsprites_DigitalDisplay_SmokeSmall), sSubsprites_DigitalDisplay_SmokeSmall}
 };
 
 /*

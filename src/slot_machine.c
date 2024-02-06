@@ -6952,6 +6952,18 @@ static const struct Subsprite sSubsprites_DigitalDisplay_SmokeBig[] =
     }
 };
 
+static const struct Subsprite sSubsprites_DigitalDisplay_SmokeSmall[] =
+{
+    {
+        .x = -8,
+        .y = -8,
+        .shape = SPRITE_SHAPE(16x16),
+        .size = SPRITE_SIZE(16x16),
+        .tileOffset = 16,
+        .priority = 3,
+    }
+};
+
 static const struct SubspriteTable sSubspriteTable_DigitalDisplay_Smoke[] =
 {
     {ARRAY_COUNT(sSubsprites_DigitalDisplay_SmokeBig),   sSubsprites_DigitalDisplay_SmokeBig},

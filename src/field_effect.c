@@ -1,4 +1,5 @@
 #include "global.h"
+#include "data.h"
 #include "decompress.h"
 #include "event_object_movement.h"
 #include "field_camera.h"
@@ -237,9 +238,6 @@ static void Task_MoveDeoxysRock(u8 taskId);
 static u8 sActiveList[32];
 
 // External declarations
-extern const struct SpritePalette gMonPaletteTable[];
-extern const u16 *const gTrainerFrontPicPaletteTable[];
-extern const struct CompressedSpriteSheet gTrainerFrontPicTable[];
 extern u8 *gFieldEffectScriptPointers[];
 extern const struct SpriteTemplate *const gFieldEffectObjectTemplatePointers[];
 
@@ -896,10 +894,11 @@ bool8 FieldEffectActiveListContains(u8 id)
 u8 CreateTrainerSprite(u8 trainerSpriteID, s16 x, s16 y, u8 subpriority, u8 *buffer)
 {
     struct SpriteTemplate spriteTemplate;
+    const struct TrainerSprite *trainerSprite = &gTrainerSpriteTable[trainerSpriteID];
     u8 paletteNum = AllocSpritePalette(trainerSpriteID);
-    LoadPalette(gTrainerFrontPicPaletteTable[trainerSpriteID], OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
-    LoadCompressedSpriteSheetOverrideBuffer(&gTrainerFrontPicTable[trainerSpriteID], buffer);
-    spriteTemplate.tileTag = gTrainerFrontPicTable[trainerSpriteID].tag;
+    LoadPalette(trainerSprite->palette, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+    LoadCompressedSpriteSheetOverrideBuffer(&trainerSprite->sprite, buffer);
+    spriteTemplate.tileTag = trainerSpriteID;
     spriteTemplate.paletteTag = trainerSpriteID;
     spriteTemplate.oam = &sOam_64x64;
     spriteTemplate.anims = gDummySpriteAnimTable;

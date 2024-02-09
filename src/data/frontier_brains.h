@@ -2,7 +2,7 @@ const struct Trainer gFrontierBrains[] = {
     [FRONTIER_FACILITY_TOWER] =
     {
         .trainerClass = TRAINER_CLASS_SALON_MAIDEN,
-        .encounterMusic_gender = FEMALE,
+        .gender = FEMALE,
         .trainerPic = TRAINER_PIC_SALON_MAIDEN_ANABEL,
         .trainerName = COMPOUND_STRING("ANABEL"),
         .trainerType = FRONTIER_BRAIN(.streakAppearances = {35, 70, 35, 1},
@@ -14,7 +14,7 @@ const struct Trainer gFrontierBrains[] = {
     [FRONTIER_FACILITY_DOME] =
     {
         .trainerClass = TRAINER_CLASS_DOME_ACE,
-        .encounterMusic_gender = MALE,
+        .gender = MALE,
         .trainerPic = TRAINER_PIC_DOME_ACE_TUCKER,
         .trainerName = COMPOUND_STRING("TUCKER"),
         .trainerType = FRONTIER_BRAIN(.streakAppearances = {4, 9, 5, 0},
@@ -26,7 +26,7 @@ const struct Trainer gFrontierBrains[] = {
     [FRONTIER_FACILITY_PALACE] =
     {
         .trainerClass = TRAINER_CLASS_PALACE_MAVEN,
-        .encounterMusic_gender = MALE,
+        .gender = MALE,
         .trainerPic = TRAINER_PIC_PALACE_MAVEN_SPENSER,
         .trainerName = COMPOUND_STRING("SPENSER"),
         .trainerType = FRONTIER_BRAIN(.streakAppearances = {21, 42, 21, 1},
@@ -38,7 +38,7 @@ const struct Trainer gFrontierBrains[] = {
     [FRONTIER_FACILITY_ARENA] =
     {
         .trainerClass = TRAINER_CLASS_ARENA_TYCOON,
-        .encounterMusic_gender = FEMALE,
+        .gender = FEMALE,
         .trainerPic = TRAINER_PIC_ARENA_TYCOON_GRETA,
         .trainerName = COMPOUND_STRING("GRETA"),
         .trainerType = FRONTIER_BRAIN(.streakAppearances = {28, 56, 28, 1},
@@ -50,7 +50,7 @@ const struct Trainer gFrontierBrains[] = {
     [FRONTIER_FACILITY_FACTORY] =
     {
         .trainerClass = TRAINER_CLASS_FACTORY_HEAD,
-        .encounterMusic_gender = MALE,
+        .gender = MALE,
         .trainerPic = TRAINER_PIC_FACTORY_HEAD_NOLAND,
         .trainerName = COMPOUND_STRING("NOLAND"),
         .trainerType = FRONTIER_BRAIN(.streakAppearances = {21, 42, 21, 1},
@@ -62,7 +62,7 @@ const struct Trainer gFrontierBrains[] = {
     [FRONTIER_FACILITY_PIKE] =
     {
         .trainerClass = TRAINER_CLASS_PIKE_QUEEN,
-        .encounterMusic_gender = FEMALE,
+        .gender = FEMALE,
         .trainerPic = TRAINER_PIC_PIKE_QUEEN_LUCY,
         .trainerName = COMPOUND_STRING("LUCY"),
         .trainerType = FRONTIER_BRAIN(.streakAppearances = {28, 140, 56, 1},
@@ -74,7 +74,7 @@ const struct Trainer gFrontierBrains[] = {
     [FRONTIER_FACILITY_PYRAMID] =
     {
         .trainerClass = TRAINER_CLASS_PYRAMID_KING,
-        .encounterMusic_gender = MALE,
+        .gender = MALE,
         .trainerPic = TRAINER_PIC_PYRAMID_KING_BRANDON,
         .trainerName = COMPOUND_STRING("BRANDON"),
         .trainerType = FRONTIER_BRAIN(.streakAppearances = {21, 70, 35, 0},

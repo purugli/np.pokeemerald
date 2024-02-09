@@ -1084,7 +1084,7 @@ static void PlayerPartnerHandleIntroTrainerBallThrow(void)
     if (gPartnerTrainerId >= TRAINER_PARTNER(PARTNER_NONE))
         DecompressTrainerBackPic(gPartners[gPartnerTrainerId - TRAINER_PARTNER(PARTNER_NONE)].trainerPic, paletteNum);
     else
-        LoadPalette(gTrainerFrontPicPaletteTable[GetFrontierTrainerFrontSpriteId(gPartnerTrainerId)], OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+        LoadPalette(gTrainerSpriteTable[GetFrontierTrainerFrontSpriteId(gPartnerTrainerId)].palette, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
 
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.paletteNum = paletteNum;
 

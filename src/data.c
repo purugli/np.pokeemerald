@@ -8,6 +8,7 @@
 #include "constants/trainers.h"
 #include "constants/battle_ai.h"
 #include "strings.h"
+#include "battle_transition.h"
 
 const u16 gMinigameDigits_Pal[] = INCBIN_U16("graphics/link/minigame_digits.gbapal");
 const u32 gMinigameDigits_Gfx[] = INCBIN_U32("graphics/link/minigame_digits.4bpp.lz");
@@ -56,14 +57,24 @@ const struct SpriteFrameImage gTrainerBackPicTable_May[] =
     {gTrainerBackPic_May + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_Red[] =
+const struct SpriteFrameImage gTrainerBackPicTable_RG_Red[] =
 {
-    {gTrainerBackPic_Red + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_RG_Red + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_Leaf[] =
+const struct SpriteFrameImage gTrainerBackPicTable_RG_Leaf[] =
 {
-    {gTrainerBackPic_Leaf + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {gTrainerBackPic_RG_Leaf + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+};
+
+const struct SpriteFrameImage gTrainerBackPicTable_RG_Pokedude[] =
+{
+    {gTrainerBackPic_RG_Pokedude + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+};
+
+const struct SpriteFrameImage gTrainerBackPicTable_RG_OldMan[] =
+{
+    {gTrainerBackPic_RG_OldMan + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
 };
 
 const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireBrendan[] =

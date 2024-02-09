@@ -699,7 +699,6 @@ SECTIONS {
         src/international_string_util.o(.rodata);
         src/day_night.o(.rodata);
         src/pokemon_forms.o(.rodata);
-        src/trainer_name_strings.o(.rodata);
         src/mystery_event_msg.o(.rodata);
         data/mystery_gift.o(.rodata);
         src/m4a_tables.o(.rodata);

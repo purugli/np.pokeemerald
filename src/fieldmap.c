@@ -907,23 +907,19 @@ static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u1
     {
         if (tileset->isSecondary == FALSE)
         {
-            gPaletteOverrides[0] = tileset->paletteOverrides;
             LoadPalette(&black, destOffset, PLTT_SIZEOF(1));
-            LoadPaletteWithDNSTint(tileset->palettes[0] + 1, destOffset + 1, size - PLTT_SIZEOF(1));
+            LoadPalette(tileset->palettes[0] + 1, destOffset + 1, size - PLTT_SIZEOF(1));
             ApplyGlobalTintToPaletteEntries(destOffset + 1, (size - PLTT_SIZEOF(1)) >> 1);
         }
         else if (tileset->isSecondary == TRUE)
         {
-            u32 numPrimaryPals;
-            gPaletteOverrides[1] = tileset->paletteOverrides;
-            numPrimaryPals = NUM_PALS_IN_PRIMARY_EMERALD + tileset->dontUsePal7;
-            LoadPaletteWithDNSTint(tileset->palettes[numPrimaryPals], destOffset, size);
+            u32 numPrimaryPals = NUM_PALS_IN_PRIMARY_EMERALD + tileset->dontUsePal7;
+            LoadPalette(tileset->palettes[numPrimaryPals], destOffset, size);
             ApplyGlobalTintToPaletteEntries(destOffset, size >> 1);
         }
         else
         {
-            gPaletteOverrides[2] = tileset->paletteOverrides;
-            LoadCompressedPaletteWithDNSTint((const u32 *)tileset->palettes, destOffset, size);
+            LoadCompressedPalette((const u32 *)tileset->palettes, destOffset, size);
             ApplyGlobalTintToPaletteEntries(destOffset, size >> 1);
         }
     }

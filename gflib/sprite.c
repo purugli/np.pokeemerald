@@ -1431,7 +1431,7 @@ void FreeAllSpritePalettes(void)
     memset(sSpritePaletteTags, TAG_NONE, sizeof(sSpritePaletteTags));
 }
 
-u8 LoadSpritePalette_HandleDNSTint(const struct SpritePalette *palette, bool32 applyDNSTint)
+u8 LoadSpritePalette(const struct SpritePalette *palette)
 {
     u8 index = IndexOfSpritePaletteTag(palette->tag);
 
@@ -1447,21 +1447,16 @@ u8 LoadSpritePalette_HandleDNSTint(const struct SpritePalette *palette, bool32 a
     else
     {
         sSpritePaletteTags[index] = palette->tag;
-        LoadPaletteFast_HandleDNSTint(palette->data, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP, applyDNSTint);
+        LoadPaletteFast(palette->data, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
         return index;
     }
-}
-
-u8 LoadSpritePalette(const struct SpritePalette *palette)
-{
-    return LoadSpritePalette_HandleDNSTint(palette, FALSE);
 }
 
 void LoadSpritePalettes(const struct SpritePalette *palettes)
 {
     u32 i;
     for (i = 0; palettes[i].data != NULL; i++)
-        if (LoadSpritePalette_HandleDNSTint(&palettes[i], FALSE) == 0xFF)
+        if (LoadSpritePalette(&palettes[i]) == 0xFF)
             break;
 }
 

@@ -248,20 +248,35 @@ void RtcCalcLocalTime(void)
     RtcCalcTimeDifference(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
 }
 
-void RtcCalcLocalTimeFast(void)
+static bool32 IsBetweenHours(s32 hour, s32 begin, s32 end)
 {
-    if (sErrorStatus & RTC_ERR_FLAG_MASK)
+    if (end < begin)
     {
-        sRtc = sRtcDummy;
+        if (hour >= begin)
+            return TRUE;
+
+        if (hour < end)
+            return TRUE;
     }
     else
     {
-        RtcGetStatus(&sRtc);
-        RtcDisableInterrupts();
-        SiiRtcGetTime(&sRtc);
-        RtcRestoreInterrupts();
+        if (hour >= begin)
+        {
+            if (hour < end)
+                return TRUE;
+        }
     }
-    RtcCalcTimeDifference(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
+    return FALSE;
+}
+
+u32 GetTimeOfDay(void)
+{
+    if (IsBetweenHours(gLocalTime.hours, MORNING_HOUR_BEGIN, MORNING_HOUR_END))
+        return TIME_MORNING;
+    else if (IsBetweenHours(gLocalTime.hours, NIGHT_HOUR_BEGIN, NIGHT_HOUR_END))
+        return TIME_NIGHT;
+    else
+        return TIME_DAY;
 }
 
 void RtcInitLocalTimeOffset(s32 hour, s32 minute)

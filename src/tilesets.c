@@ -6,5 +6,4 @@
 
 #include "data/tilesets/graphics.h"
 #include "data/tilesets/metatiles.h"
-#include "data/tilesets/overrides.h"
 #include "data/tilesets/headers.h"

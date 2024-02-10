@@ -1755,7 +1755,6 @@ static void VBlankCB_Field(void)
     FieldUpdateBgTilemapScroll();
     TransferPlttBuffer();
     TransferTilesetAnimsBuffer();
-    CheckClockForImmediateTimeEvents();
 }
 
 static bool32 LoadMapInStepsLink(u8 *state)
@@ -3038,7 +3037,7 @@ static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion)
 
     if (linkPlayerObjEvent->active)
     {
-        objEvent->spriteId = CreateObjectGraphicsSprite(GetLinkPlayerAvatarGraphicsIdByGender(gameVersion, linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0, FALSE);
+        objEvent->spriteId = CreateObjectGraphicsSprite(GetLinkPlayerAvatarGraphicsIdByGender(gameVersion, linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0);
         sprite = &gSprites[objEvent->spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->data[0] = linkPlayerId;

@@ -117,7 +117,7 @@ static void ApplyReflectionPalette(u16 paletteTag, struct Sprite *sprite)
             *dest++ = RGB2(R, G, B);
         }
     }
-    sprite->oam.paletteNum = LoadSpritePaletteWithDNSTint(&filteredPal);
+    sprite->oam.paletteNum = LoadSpritePalette(&filteredPal);
     UpdatePaletteColorMap(sprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
     UpdateSpritePaletteWithWeather(sprite->oam.paletteNum);
 }
@@ -148,7 +148,7 @@ void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite 
 
         reflectionSprite->sReflectionVerticalOffset = bridgeReflectionVerticalOffsets[bridgeType - 1];
         CpuFill16(RGB(9, 14, 21), blueData, PLTT_SIZE_4BPP);
-        reflectionSprite->oam.paletteNum = LoadSpritePaletteWithDNSTint(&bluePalette);
+        reflectionSprite->oam.paletteNum = LoadSpritePalette(&bluePalette);
         UpdatePaletteColorMap(reflectionSprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
         UpdateSpritePaletteWithWeather(reflectionSprite->oam.paletteNum);
     }
@@ -1655,8 +1655,8 @@ void LoadFieldEffectPalette(u8 fieldEffect, u8 colorMap)
     const struct SpriteTemplate *spriteTemplate = gFieldEffectObjectTemplatePointers[fieldEffect];
     if (spriteTemplate->paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate->paletteTag, FALSE);
-        PatchObjectPalette(spriteTemplate->paletteTag, IndexOfSpritePaletteTag(spriteTemplate->paletteTag), TRUE);
+        LoadObjectEventPalette(spriteTemplate->paletteTag);
+        PatchObjectPalette(spriteTemplate->paletteTag, IndexOfSpritePaletteTag(spriteTemplate->paletteTag));
         UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), colorMap);
     }
 }

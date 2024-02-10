@@ -686,7 +686,7 @@ static void Task_FossilFallAndSink(u8 taskId)
         {
             struct SpriteTemplate fossilTemplate = sSpriteTemplate_FallingFossil;
             fossilTemplate.images = sFallingFossil->frameImage;
-            LoadObjectEventPalette(sSpriteTemplate_FallingFossil.paletteTag, TRUE);
+            LoadObjectEventPalette(sSpriteTemplate_FallingFossil.paletteTag);
             sFallingFossil->spriteId = CreateSprite(&fossilTemplate, 128, -16, 1);
             gSprites[sFallingFossil->spriteId].centerToCornerVecX = 0;
             gSprites[sFallingFossil->spriteId].data[0] = gSprites[sFallingFossil->spriteId].x;

@@ -665,7 +665,7 @@ static u8 RotatingGate_CreateGate(u8 gateId, s16 deltaX, s16 deltaY)
         template = sSpriteTemplate_RotatingGateLarge;
 
     template.tileTag = gate->shape + ROTATING_GATE_TILE_TAG;
-    LoadObjectEventPalette(template.paletteTag, FALSE);
+    LoadObjectEventPalette(template.paletteTag);
 
     spriteId = CreateSprite(&template, 0, 0, 0x94);
     if (spriteId == MAX_SPRITES)

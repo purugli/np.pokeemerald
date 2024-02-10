@@ -48,7 +48,6 @@
 #include "constants/trainers.h"
 #include "constants/union_room.h"
 #include "palette.h"
-#include "constants/day_night.h"
 #include "region_map.h"
 #include "new_game.h"
 #include "pokemon_icon.h"

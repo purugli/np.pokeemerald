@@ -782,8 +782,7 @@ void FieldEffectScript_LoadFadedPalette(u8 **script)
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
     u8 paletteSlot;
     (*script) += 4;
-    LoadSpritePalette_HandleDNSTint(palette, FieldEffectScript_ReadByte(script));
-    (*script)++;
+    LoadSpritePalette(palette);
     paletteSlot = IndexOfSpritePaletteTag(palette->tag);
     UpdatePaletteColorMap(paletteSlot, FieldEffectScript_ReadByte(script));
     UpdateSpritePaletteWithWeather(paletteSlot);
@@ -794,8 +793,7 @@ void FieldEffectScript_LoadPalette(u8 **script)
 {
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
     (*script) += 4;
-    LoadSpritePalette_HandleDNSTint(palette, FieldEffectScript_ReadByte(script));
-    (*script)++;
+    LoadSpritePalette(palette);
 }
 
 void FieldEffectScript_CallNative(u8 **script, u32 *val)

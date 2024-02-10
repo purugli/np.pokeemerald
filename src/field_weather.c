@@ -195,7 +195,7 @@ void StartWeather(void)
     {
         u32 i;
         u8 index = 15;
-        LoadPaletteWithDNSTint(gFogPalette, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
+        CpuCopy32(gFogPalette, &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
         for (i = 0; i < NUM_PALS_TOTAL; i++)
             sBasePaletteColorMapTypes[i] = COLOR_MAP_DARK_CONTRAST;
         sPaletteColorMapTypes = sBasePaletteColorMapTypes;
@@ -812,7 +812,7 @@ void ApplyWeatherColorMapToPal(u8 paletteIndex)
 
 void LoadCustomWeatherSpritePalette(const struct SpritePalette *palette)
 {
-    LoadSpritePaletteWithDNSTint(palette);
+    LoadSpritePalette(palette);
     UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(palette->tag));
 }
 

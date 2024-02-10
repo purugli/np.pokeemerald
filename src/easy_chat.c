@@ -4999,7 +4999,7 @@ static void TryAddInterviewObjectEvents(void)
         return;
 
     // Add object for reporter/interviewing fan (facing left)
-    spriteId = CreateObjectGraphicsSprite(graphicsId, SpriteCallbackDummy, 76, 40, 0, FALSE);
+    spriteId = CreateObjectGraphicsSprite(graphicsId, SpriteCallbackDummy, 76, 40, 0);
     if (spriteId != MAX_SPRITES)
     {
         gSprites[spriteId].oam.priority = 0;
@@ -5012,7 +5012,7 @@ static void TryAddInterviewObjectEvents(void)
         SpriteCallbackDummy,
         52,
         40,
-        0, FALSE);
+        0);
 
     if (spriteId != MAX_SPRITES)
     {

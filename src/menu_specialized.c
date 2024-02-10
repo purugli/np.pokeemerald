@@ -903,6 +903,7 @@ static u8 *GetConditionMenuMonString(u8 *dst, u16 boxId, u16 monId)
     u16 box, mon, species, level, gender;
     struct BoxPokemon *boxMon;
     u8 *str;
+    u8 language;
 
     box = boxId;
     mon = monId;
@@ -916,6 +917,7 @@ static u8 *GetConditionMenuMonString(u8 *dst, u16 boxId, u16 monId)
     GetBoxOrPartyMonData(box, mon, MON_DATA_NICKNAME, dst);
     StringGet_Nickname(dst);
     species = GetBoxOrPartyMonData(box, mon, MON_DATA_SPECIES, NULL);
+    language = GetBoxOrPartyMonData(box, mon, MON_DATA_LANGUAGE, NULL);
     if (box == TOTAL_BOXES_COUNT) // Party mon.
     {
         level = GetMonData(&gPlayerParty[mon], MON_DATA_LEVEL);
@@ -928,7 +930,7 @@ static u8 *GetConditionMenuMonString(u8 *dst, u16 boxId, u16 monId)
         level = GetLevelFromBoxMonExp(boxMon);
     }
 
-    if ((species == SPECIES_NIDORAN_F || species == SPECIES_NIDORAN_M) && !StringCompare(dst, gSpeciesNames[species]))
+    if ((species == SPECIES_NIDORAN_F || species == SPECIES_NIDORAN_M) && IsMonNotNicknamed(dst, species, language))
         gender = MON_GENDERLESS;
 
     for (str = dst; *str != EOS; str++)

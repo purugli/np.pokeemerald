@@ -1777,7 +1777,7 @@ static void PopulateSpeciesFromTrainerLocation(int matchCallId, u8 *destStr)
 
             if (numSpecies)
             {
-                StringCopy(destStr, gSpeciesNames[species[Random() % numSpecies]]);
+                StringCopy(destStr, GetSpeciesName(species[Random() % numSpecies]));
                 return;
             }
         }
@@ -1797,7 +1797,7 @@ static void PopulateSpeciesFromTrainerParty(int matchCallId, u8 *destStr)
     party = gTrainers[trainerId].party;
     monId = Random() % gTrainers[trainerId].partySize;
 
-    speciesName = gSpeciesNames[party[monId].species];
+    speciesName = GetSpeciesName(party[monId].species);
 
     StringCopy(destStr, speciesName);
 }

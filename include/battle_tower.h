@@ -84,5 +84,6 @@ s32 GetHighestLevelInPlayerParty(void);
 u8 GetFrontierTrainerFixedIvs(u16 trainerId);
 u16 FacilityClassToGraphicsId(u8 facilityClass);
 void TrySetLinkBattleTowerEnemyPartyLevel(void);
+u8 GetFacilityClassEncounterMusicId(u8 facilityClass);
 
 #endif //GUARD_BATTLE_TOWER_H

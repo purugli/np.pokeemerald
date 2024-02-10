@@ -388,7 +388,7 @@ gSongTable::
 	song mus_b_dome, 0, 0
 	song mus_b_pike, 0, 0
 	song mus_b_factory, 0, 0
-	song mus_vs_rayquaza, 0, 0
+	song mus_gsc_vs_trainer_kanto, 0, 0
 	song mus_vs_frontier_brain, 0, 0
 	song mus_vs_mew, 0, 0
 	song mus_b_dome_lobby, 0, 0
@@ -405,13 +405,13 @@ gSongTable::
 	song mus_rg_follow_me, 0, 0
 	song mus_rg_game_corner, 0, 0
 	song mus_rg_rocket_hideout, 0, 0
-	song mus_rg_gym, 0, 0
+	song mus_gsc_viridian_forest, 0, 0
 	song mus_rg_jigglypuff, 2, 2
 	song mus_rg_intro_fight, 0, 0
 	song mus_rg_title, 0, 0
 	song mus_rg_cinnabar, 0, 0
 	song mus_rg_lavender, 0, 0
-	song mus_rg_heal, 0, 0
+	song mus_gsc_route3, 0, 0
 	song mus_rg_cycling, 0, 0
 	song mus_rg_encounter_rocket, 0, 0
 	song mus_rg_encounter_girl, 0, 0
@@ -440,7 +440,7 @@ gSongTable::
 	song mus_rg_silph, 0, 0
 	song mus_rg_fuchsia, 0, 0
 	song mus_rg_celadon, 0, 0
-	song mus_gsc_vs_trainer_kanto, 0, 0
+	song mus_rg_victory_trainer, 0, 0
 	song mus_rg_victory_wild, 0, 0
 	song mus_rg_victory_gym_leader, 0, 0
 	song mus_rg_vermillion, 0, 0
@@ -477,8 +477,6 @@ gSongTable::
 	song mus_rg_trainer_tower, 0, 0
 	song mus_rg_slow_pallet, 0, 0
 	song mus_rg_teachy_tv_menu, 0, 0
-	song mus_gsc_viridian_forest, 0, 0
-	song mus_gsc_route3, 0, 0
 	song ph_trap_blend, 2, 2
 	song ph_trap_held, 2, 2
 	song ph_trap_solo, 2, 2

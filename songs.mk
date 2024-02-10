@@ -169,7 +169,7 @@ $(MID_SUBDIR)/mus_oceanic_museum.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Goceanic_museum -V080
 
 $(MID_SUBDIR)/mus_gym.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Ggym -V080
+	$(MID) $< $@ -E -R$(STD_REVERB) -Ggym -V090
 
 $(MID_SUBDIR)/mus_encounter_may.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Gencounter_may -V078
@@ -378,8 +378,8 @@ $(MID_SUBDIR)/mus_rg_caught.s: %.s: %.mid
 $(MID_SUBDIR)/mus_rg_cinnabar.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_cinnabar -V090
 
-$(MID_SUBDIR)/mus_rg_gym.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_gym -V090
+$(MID_SUBDIR)/mus_gsc_viridian_forest.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_viridian_forest -V090
 
 $(MID_SUBDIR)/mus_rg_fuchsia.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_fuchsia -V090
@@ -387,8 +387,8 @@ $(MID_SUBDIR)/mus_rg_fuchsia.s: %.s: %.mid
 $(MID_SUBDIR)/mus_rg_poke_jump.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_game_corner -V090
 
-$(MID_SUBDIR)/mus_rg_heal.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_heal -V090
+$(MID_SUBDIR)/mus_gsc_route3.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_route3 -V083
 
 $(MID_SUBDIR)/mus_rg_oak_lab.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_oak_lab -V075
@@ -511,7 +511,7 @@ $(MID_SUBDIR)/mus_rg_viridian_forest.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_viridian_forest -V090
 
 $(MID_SUBDIR)/mus_rg_trainer_tower.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_gym -V090
+	$(MID) $< $@ -E -R$(STD_REVERB) -Ggym -V090
 
 $(MID_SUBDIR)/mus_rg_celadon.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_celadon -V070
@@ -552,8 +552,8 @@ $(MID_SUBDIR)/mus_rg_vs_wild.s: %.s: %.mid
 $(MID_SUBDIR)/mus_rg_victory_gym_leader.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_victory_gym_leader -V090
 
-$(MID_SUBDIR)/mus_gsc_vs_trainer_kanto.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Gvs_frontier_brain -v090 -P1
+$(MID_SUBDIR)/mus_rg_victory_trainer.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_victory_trainer -V089
 
 $(MID_SUBDIR)/mus_rg_victory_wild.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_victory_wild -V090
@@ -592,16 +592,16 @@ $(MID_SUBDIR)/mus_encounter_rich.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Gencounter_rich -V094
 
 $(MID_SUBDIR)/mus_link_contest_p1.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Glink_contest_p1 -V079
+	$(MID) $< $@ -E -R$(STD_REVERB) -Gcontest -V079
 
 $(MID_SUBDIR)/mus_link_contest_p2.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Glink_contest_p2 -V090
+	$(MID) $< $@ -E -R$(STD_REVERB) -Gcontest -V090
 
 $(MID_SUBDIR)/mus_link_contest_p3.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Glink_contest_p3 -V075
+	$(MID) $< $@ -E -R$(STD_REVERB) -Gcontest -V075
 
 $(MID_SUBDIR)/mus_link_contest_p4.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Glink_contest_p4 -V090
+	$(MID) $< $@ -E -R$(STD_REVERB) -Gcontest -V090
 
 $(MID_SUBDIR)/mus_littleroot_test.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Glittleroot_test -V099
@@ -627,8 +627,8 @@ $(MID_SUBDIR)/mus_vs_frontier_brain.s: %.s: %.mid
 $(MID_SUBDIR)/mus_vs_mew.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Gvs_mew -V090
 
-$(MID_SUBDIR)/mus_vs_rayquaza.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Gvs_rayquaza -V080 -P1
+$(MID_SUBDIR)/mus_gsc_vs_trainer_kanto.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -Gvs_frontier_brain -v090 -P1
 
 $(MID_SUBDIR)/mus_encounter_hiker.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Gencounter_hiker -V076
@@ -1259,11 +1259,3 @@ $(MID_SUBDIR)/se_m_leer.s: %.s: %.mid
 
 $(MID_SUBDIR)/se_dex_search.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -Gsfx_rs_1 -v100 -P5
-
-### New Music ###
-
-$(MID_SUBDIR)/mus_gsc_route3.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_route3 -V083
-
-$(MID_SUBDIR)/mus_gsc_viridian_forest.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -Grg_viridian_forest -V090

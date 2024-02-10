@@ -1095,7 +1095,7 @@ SECTIONS {
         sound/songs/midi/mus_b_dome.o(.rodata);
         sound/songs/midi/mus_b_pike.o(.rodata);
         sound/songs/midi/mus_b_factory.o(.rodata);
-        sound/songs/midi/mus_vs_rayquaza.o(.rodata);
+        sound/songs/midi/mus_gsc_vs_trainer_kanto.o(.rodata);
         sound/songs/midi/mus_vs_frontier_brain.o(.rodata);
         sound/songs/midi/mus_vs_mew.o(.rodata);
         sound/songs/midi/mus_b_dome_lobby.o(.rodata);
@@ -1112,13 +1112,13 @@ SECTIONS {
         sound/songs/midi/mus_rg_follow_me.o(.rodata);
         sound/songs/midi/mus_rg_game_corner.o(.rodata);
         sound/songs/midi/mus_rg_rocket_hideout.o(.rodata);
-        sound/songs/midi/mus_rg_gym.o(.rodata);
+        sound/songs/midi/mus_gsc_viridian_forest.o(.rodata);
         sound/songs/midi/mus_rg_jigglypuff.o(.rodata);
         sound/songs/midi/mus_rg_intro_fight.o(.rodata);
         sound/songs/midi/mus_rg_title.o(.rodata);
         sound/songs/midi/mus_rg_cinnabar.o(.rodata);
         sound/songs/midi/mus_rg_lavender.o(.rodata);
-        sound/songs/midi/mus_rg_heal.o(.rodata);
+        sound/songs/midi/mus_gsc_route3.o(.rodata);
         sound/songs/midi/mus_rg_cycling.o(.rodata);
         sound/songs/midi/mus_rg_encounter_rocket.o(.rodata);
         sound/songs/midi/mus_rg_encounter_girl.o(.rodata);
@@ -1147,7 +1147,7 @@ SECTIONS {
         sound/songs/midi/mus_rg_silph.o(.rodata);
         sound/songs/midi/mus_rg_fuchsia.o(.rodata);
         sound/songs/midi/mus_rg_celadon.o(.rodata);
-        sound/songs/midi/mus_gsc_vs_trainer_kanto.o(.rodata);
+        sound/songs/midi/mus_rg_victory_trainer.o(.rodata);
         sound/songs/midi/mus_rg_victory_wild.o(.rodata);
         sound/songs/midi/mus_rg_victory_gym_leader.o(.rodata);
         sound/songs/midi/mus_rg_vermillion.o(.rodata);
@@ -1184,8 +1184,6 @@ SECTIONS {
         sound/songs/midi/mus_rg_trainer_tower.o(.rodata);
         sound/songs/midi/mus_rg_slow_pallet.o(.rodata);
         sound/songs/midi/mus_rg_teachy_tv_menu.o(.rodata);
-        sound/songs/midi/mus_gsc_viridian_forest.o(.rodata);
-        sound/songs/midi/mus_gsc_route3.o(.rodata);
         sound/songs/midi/ph_trap_blend.o(.rodata);
         sound/songs/midi/ph_trap_held.o(.rodata);
         sound/songs/midi/ph_trap_solo.o(.rodata);

@@ -3019,6 +3019,21 @@ static void FillPartnerParty(u16 trainerId)
     }
 }
 
+static void RubyFacilityClassToEmerald(u8 facilityClassToCheck, u8 *dstFacilityClass, u8 which)
+{
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(sRubyFacilityClassToEmerald); i++)
+    {
+        if (sRubyFacilityClassToEmerald[i][!which] == facilityClassToCheck)
+            break;
+    }
+    if (i != FACILITY_CLASSES_COUNT)
+        *dstFacilityClass = sRubyFacilityClassToEmerald[i][which];
+    else
+        *dstFacilityClass = sRubyFacilityClassToEmerald[RS_FACILITY_CLASS_YOUNGSTER][which];
+}
+
 bool32 RubyBattleTowerRecordToEmerald(struct RSBattleTowerRecord *src, struct EmeraldBattleTowerRecord *dst)
 {
     s32 i, validMons = 0;
@@ -3038,15 +3053,7 @@ bool32 RubyBattleTowerRecordToEmerald(struct RSBattleTowerRecord *src, struct Em
     {
         dst->lvlMode = src->lvlMode;
         dst->winStreak = src->winStreak;
-        for (i = 0; i < ARRAY_COUNT(sRubyFacilityClassToEmerald); i++)
-        {
-            if (sRubyFacilityClassToEmerald[i][0] == src->facilityClass)
-                break;
-        }
-        if (i != FACILITY_CLASSES_COUNT)
-            dst->facilityClass = sRubyFacilityClassToEmerald[i][1];
-        else
-            dst->facilityClass = FACILITY_CLASS_YOUNGSTER;
+        RubyFacilityClassToEmerald(src->facilityClass, &dst->facilityClass, 1);
 
         for (i = 0; i < PLAYER_NAME_LENGTH + 1; i++)
             dst->name[i] = src->name[i];
@@ -3086,15 +3093,7 @@ bool32 EmeraldBattleTowerRecordToRuby(struct EmeraldBattleTowerRecord *src, stru
     {
         dst->lvlMode = src->lvlMode;
         dst->winStreak = src->winStreak;
-        for (i = 0; i < ARRAY_COUNT(sRubyFacilityClassToEmerald); i++)
-        {
-            if (sRubyFacilityClassToEmerald[i][1] == src->facilityClass)
-                break;
-        }
-        if (i != FACILITY_CLASSES_COUNT)
-            dst->facilityClass = sRubyFacilityClassToEmerald[i][0];
-        else
-            dst->facilityClass = RS_FACILITY_CLASS_YOUNGSTER;
+        RubyFacilityClassToEmerald(src->facilityClass, &dst->facilityClass, 0);
 
         for (i = 0; i < PLAYER_NAME_LENGTH + 1; i++)
             dst->name[i] = src->name[i];

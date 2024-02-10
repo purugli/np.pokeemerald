@@ -768,7 +768,8 @@ u8 GetTrainerBattleTransition(void)
 u8 GetSpecialBattleTransition(s32 id)
 {
     u16 var;
-    u8 enemyLevel, playerLevel;
+    u8 enemyLevel;
+    u8 playerLevel;
 
     switch (id)
     {

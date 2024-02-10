@@ -2074,37 +2074,7 @@ static void ExitMovePositionSwitchMode(u8 taskId, bool8 swapMoves)
 
 static void SwapMonMoves(struct Pokemon *mon, u8 moveIndex1, u8 moveIndex2)
 {
-    struct PokeSummary* summary = &sMonSummaryScreen->summary;
-
-    u16 move1 = summary->moves[moveIndex1];
-    u16 move2 = summary->moves[moveIndex2];
-    u8 move1pp = summary->pp[moveIndex1];
-    u8 move2pp = summary->pp[moveIndex2];
-    u8 ppBonuses = summary->ppBonuses;
-
-    // Calculate PP bonuses
-    u8 ppUpMask1 = gPPUpGetMask[moveIndex1];
-    u8 ppBonusMove1 = (ppBonuses & ppUpMask1) >> (moveIndex1 * 2);
-    u8 ppUpMask2 = gPPUpGetMask[moveIndex2];
-    u8 ppBonusMove2 = (ppBonuses & ppUpMask2) >> (moveIndex2 * 2);
-    ppBonuses &= ~ppUpMask1;
-    ppBonuses &= ~ppUpMask2;
-    ppBonuses |= (ppBonusMove1 << (moveIndex2 * 2)) + (ppBonusMove2 << (moveIndex1 * 2));
-
-    // Swap the moves
-    SetMonData(mon, MON_DATA_MOVE1 + moveIndex1, &move2);
-    SetMonData(mon, MON_DATA_MOVE1 + moveIndex2, &move1);
-    SetMonData(mon, MON_DATA_PP1 + moveIndex1, &move2pp);
-    SetMonData(mon, MON_DATA_PP1 + moveIndex2, &move1pp);
-    SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
-
-    summary->moves[moveIndex1] = move2;
-    summary->moves[moveIndex2] = move1;
-
-    summary->pp[moveIndex1] = move2pp;
-    summary->pp[moveIndex2] = move1pp;
-
-    summary->ppBonuses = ppBonuses;
+    SwapBoxMonMoves(&mon->box, moveIndex1, moveIndex2);
 }
 
 static void SwapBoxMonMoves(struct BoxPokemon *mon, u8 moveIndex1, u8 moveIndex2)

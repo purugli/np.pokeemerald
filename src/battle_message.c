@@ -2725,12 +2725,14 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 break;
             }
 
-            // missing if (toCpy != NULL) check
-            while (*toCpy != EOS)
+            if (toCpy != NULL)
             {
-                dst[dstID] = *toCpy;
-                dstID++;
-                toCpy++;
+                while (*toCpy != EOS)
+                {
+                    dst[dstID] = *toCpy;
+                    dstID++;
+                    toCpy++;
+                }
             }
             if (*src == B_TXT_TRAINER1_LOSE_TEXT || *src == B_TXT_TRAINER2_LOSE_TEXT
                 || *src == B_TXT_TRAINER1_WIN_TEXT || *src == B_TXT_TRAINER2_WIN_TEXT)

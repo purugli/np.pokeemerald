@@ -71,7 +71,7 @@ void SetTrainerId(u32 trainerId, u8 *dst)
 
 u32 GetTrainerId(u8 *trainerId)
 {
-    return (trainerId[3] << 24) | (trainerId[2] << 16) | (trainerId[1] << 8) | (trainerId[0]);
+    return T1_READ_32(trainerId);
 }
 
 void CopyTrainerId(u8 *dst, u8 *src)

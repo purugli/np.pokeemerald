@@ -39,6 +39,6 @@ void UpdateShortGrassFieldEffect(struct Sprite *);
 void UpdateHotSpringsWaterFieldEffect(struct Sprite *);
 void UpdateBubblesFieldEffect(struct Sprite *);
 void UpdateSparkleFieldEffect(struct Sprite *);
-void LoadFieldEffectPalette(u8 fieldEffect, u8 colorMap);
+void LoadFieldEffectPalette(struct Sprite *, const u16 *, u8 colorMap);
 
 #endif //GUARD_FIELD_EFFECT_HELPERS_H

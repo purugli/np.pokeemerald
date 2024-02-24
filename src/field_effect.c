@@ -781,19 +781,19 @@ void FieldEffectScript_LoadFadedPalette(u8 **script)
 {
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
     u8 paletteSlot;
-    (*script) += 4;
     LoadSpritePalette(palette);
+    (*script) += 4;
     paletteSlot = IndexOfSpritePaletteTag(palette->tag);
     UpdatePaletteColorMap(paletteSlot, FieldEffectScript_ReadByte(script));
-    UpdateSpritePaletteWithWeather(paletteSlot);
+    UpdateSpritePaletteWithWeather(paletteSlot, TRUE);
     (*script)++;
 }
 
 void FieldEffectScript_LoadPalette(u8 **script)
 {
     struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
-    (*script) += 4;
     LoadSpritePalette(palette);
+    (*script) += 4;
 }
 
 void FieldEffectScript_CallNative(u8 **script, u32 *val)
@@ -3112,7 +3112,7 @@ u8 FldEff_NPCFlyOut(void)
     u8 spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 0x78, 0, 1);
     struct Sprite *sprite = &gSprites[spriteId];
 
-    sprite->oam.paletteNum = 0;
+    sprite->oam.paletteNum = IndexOfSpritePaletteTag(GetObjectEventGraphicsInfo(GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_NORMAL))->paletteTag);
     sprite->oam.priority = 1;
     sprite->callback = SpriteCB_NPCFlyOut;
     sprite->data[1] = gFieldEffectArguments[0];
@@ -3294,7 +3294,7 @@ static u8 CreateFlyBirdSprite(void)
     struct Sprite *sprite;
     spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 0xff, 0xb4, 0x1);
     sprite = &gSprites[spriteId];
-    sprite->oam.paletteNum = 0;
+    sprite->oam.paletteNum = IndexOfSpritePaletteTag(GetObjectEventGraphicsInfo(GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_NORMAL))->paletteTag);
     sprite->oam.priority = 1;
     sprite->callback = SpriteCB_FlyBirdLeaveBall;
     return spriteId;

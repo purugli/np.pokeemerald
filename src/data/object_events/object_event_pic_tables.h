@@ -18,8 +18,8 @@ static const struct SpriteFrameImage sPicTable_BrendanFieldMove[] = {
     overworld_ascending_frames(gObjectEventPic_BrendanFieldMove, 2, 4),
 };
 
-static const struct SpriteFrameImage sPicTable_QuintyPlump[] = {
-    overworld_ascending_frames(gObjectEventPic_QuintyPlump, 4, 4),
+static const struct SpriteFrameImage sPicTable_BallLight[] = {
+    obj_frame_tiles(gFieldEffectObjectPic_BallLight),
 };
 
 static const struct SpriteFrameImage sPicTable_NinjaBoy[] = {

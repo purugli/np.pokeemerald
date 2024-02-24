@@ -88,6 +88,7 @@ static void ApplyAffineAnimFrame(u8 matrixNum, struct AffineAnimFrameCmd *frameC
 static u8 IndexOfSpriteTileTag(u16 tag);
 static void AllocSpriteTileRange(u16 tag, u16 start, u16 count);
 static void UpdateSpriteMatrixAnchorPos(struct Sprite *, s32, s32);
+static u8 DoLoadSpritePalette(const struct SpritePalette *, u8);
 
 typedef void (*AnimFunc)(struct Sprite *);
 typedef void (*AnimCmdFunc)(struct Sprite *);
@@ -1346,6 +1347,32 @@ u16 LoadSpriteSheet(const struct SpriteSheet *sheet)
     }
 }
 
+// Like LoadSpriteSheet, but checks if already loaded, and uses template image frames
+u16 LoadSpriteSheetByTemplate(const struct SpriteTemplate *template, u8 frame)
+{
+    u16 tileStart;
+
+    // error if template is null or tile tag or images not set
+    if (!template || template->tileTag == TAG_NONE || !template->images)
+        return TAG_NONE;
+
+    tileStart = tileStart = GetSpriteTileStartByTag(template->tileTag);
+    if (tileStart != TAG_NONE) // return if already loaded
+    {
+        return tileStart;
+    }
+    else
+    {
+        struct SpriteSheet tempSheet =
+        {
+            .data = template->images[frame].data,
+            .size = template->images[frame].size,
+            .tag = template->tileTag,
+        };
+        return LoadSpriteSheet(&tempSheet);
+    }
+}
+
 void LoadSpriteSheets(const struct SpriteSheet *sheets)
 {
     u32 i;
@@ -1446,9 +1473,7 @@ u8 LoadSpritePalette(const struct SpritePalette *palette)
     }
     else
     {
-        sSpritePaletteTags[index] = palette->tag;
-        LoadPaletteFast(palette->data, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
-        return index;
+        return DoLoadSpritePalette(palette, index);
     }
 }
 
@@ -1458,6 +1483,18 @@ void LoadSpritePalettes(const struct SpritePalette *palettes)
     for (i = 0; palettes[i].data != NULL; i++)
         if (LoadSpritePalette(&palettes[i]) == 0xFF)
             break;
+}
+
+static u8 DoLoadSpritePalette(const struct SpritePalette *palette, u8 index)
+{
+    sSpritePaletteTags[index] = palette->tag;
+    LoadPaletteFast(palette->data, OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
+    return index;
+}
+
+u8 LoadSpritePaletteInSlot(const struct SpritePalette *palette, u8 paletteNum)
+{
+    return DoLoadSpritePalette(palette, min(15, paletteNum));
 }
 
 u8 AllocSpritePalette(u16 tag)

@@ -1,6 +1,19 @@
+// Whether a palette has a night version, located at ((x + 9) % 16).pal
+#define SWAP_PAL(palId, version) ((palId) < NUM_PALS_IN_PRIMARY_##version ? 1 << (palId) : 1 << ((palId) - NUM_PALS_IN_PRIMARY_##version))
+
+// NOTE: Instead of using LIGHT_PAL, 
+// consider taking a look at the .pla files
+// to mark colors as lights, instead.
+// The old method *should* still work, however.
+
+// Whether a palette has lights
+// the color indices to blend are stored in the palette's color 0
+#define LIGHT_PAL(x, version) ((x) < NUM_PALS_IN_PRIMARY_##version ? 1 << (x) : 1 << ((x) - NUM_PALS_IN_PRIMARY_##version))
+
 const struct Tileset gTileset_General =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(4, EMERALD),
     .isSecondary = FALSE,
     .numTiles = NUM_TILES_IN_PRIMARY_EMERALD,
     .tiles = gTilesetTiles_General,
@@ -13,6 +26,7 @@ const struct Tileset gTileset_General =
 const struct Tileset gTileset_Petalburg =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(9, EMERALD),
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_Petalburg,
     .palettes = gTilesetPalettes_Petalburg,
@@ -79,6 +93,7 @@ const struct Tileset gTileset_Lavaridge =
 const struct Tileset gTileset_Fallarbor =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(7, EMERALD),
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_Fallarbor,
     .palettes = gTilesetPalettes_Fallarbor,
@@ -101,6 +116,7 @@ const struct Tileset gTileset_Fortree =
 const struct Tileset gTileset_Lilycove =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(6, EMERALD),
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_Lilycove,
     .palettes = gTilesetPalettes_Lilycove,
@@ -112,6 +128,7 @@ const struct Tileset gTileset_Lilycove =
 const struct Tileset gTileset_Mossdeep =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(8, EMERALD),
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_Mossdeep,
     .palettes = gTilesetPalettes_Mossdeep,
@@ -123,6 +140,7 @@ const struct Tileset gTileset_Mossdeep =
 const struct Tileset gTileset_EverGrande =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(8, EMERALD),
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_EverGrande,
     .palettes = gTilesetPalettes_EverGrande,
@@ -134,6 +152,7 @@ const struct Tileset gTileset_EverGrande =
 const struct Tileset gTileset_Pacifidlog =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(9, EMERALD),
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_Pacifidlog,
     .palettes = gTilesetPalettes_Pacifidlog,
@@ -145,6 +164,7 @@ const struct Tileset gTileset_Pacifidlog =
 const struct Tileset gTileset_Sootopolis =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(6, EMERALD),
     .isSecondary = TRUE,
     .tiles = gTilesetTiles_Sootopolis,
     .palettes = gTilesetPalettes_Sootopolis,

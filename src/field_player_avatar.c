@@ -1379,8 +1379,6 @@ void PlayerUseAcroBikeOnBumpySlope(u8 direction)
     SeekSpriteAnim(&gSprites[gPlayerAvatar.spriteId], 1);
 }
 
-extern const struct SpritePalette gSpritePalette_ArrowEmotionsFieldEffect;
-
 #define sPrevX data[0]
 #define sPrevY data[1]
 
@@ -1409,7 +1407,6 @@ static void HideShowWarpArrow(struct ObjectEvent *objectEvent)
                 sprite->invisible = FALSE;
                 sprite->sPrevX = x;
                 sprite->sPrevY = y;
-                sprite->oam.paletteNum = LoadSpritePalette(&gSpritePalette_ArrowEmotionsFieldEffect);
                 StartSpriteAnim(sprite, direction - 1);
             }
             return;

@@ -88,21 +88,21 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BrendanFieldMove =
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_QuintyPlump = {
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BallLight = {
     .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_STEVEN,
+    .paletteTag = OBJ_EVENT_PAL_TAG_LIGHT,
     .size = 512,
     .width = 32,
     .height = 32,
     .textColor = NPC_TEXT_COLOR_NEUTRAL,
     .shadowSize = SHADOW_SIZE_L,
-    .inanimate = FALSE,
+    .inanimate = TRUE,
     .disableReflectionPaletteLoad = FALSE,
-    .tracks = TRACKS_FOOT,
-    .anims = OBJ_EVENT_ANIM_QUINTY_PLUMP,
+    .tracks = TRACKS_NONE,
+    .anims = OBJ_EVENT_ANIM_INANIMATE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .images = sPicTable_QuintyPlump,
+    .images = sPicTable_BallLight,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 

@@ -17,20 +17,6 @@
 
 #define RTC_ERR_FLAG_MASK      0x0FF0
 
-#define MORNING_HOUR_BEGIN 4
-#define MORNING_HOUR_END   10
-
-#define DAY_HOUR_BEGIN     10
-#define DAY_HOUR_END       20
-
-#define NIGHT_HOUR_BEGIN   20
-#define NIGHT_HOUR_END     4
-
-#define TIME_DAY 0
-#define TIME_MORNING 1
-#define TIME_NIGHT 2
-#define TIMES_OF_DAY_COUNT 3
-
 extern struct Time gLocalTime;
 
 void RtcDisableInterrupts(void);
@@ -54,6 +40,5 @@ void RtcCalcLocalTimeOffset(s32 days, s32 hours, s32 minutes, s32 seconds);
 void CalcTimeDifference(struct Time *result, struct Time *t1, struct Time *t2);
 u32 RtcGetMinuteCount(void);
 u32 RtcGetLocalDayCount(void);
-u32 GetTimeOfDay(void);
 
 #endif // GUARD_RTC_UTIL_H

@@ -60,9 +60,12 @@ typedef void (*TilesetCB)(void);
 
 struct Tileset
 {
-    /*0x00*/ bool16 isCompressed:1;
-             bool16 isSecondary:1;
-             u16 numTiles:14;
+    /*0x00*/ bool32 isCompressed:1;
+             bool32 isSecondary:1;
+             u32 numTiles:12;
+             u32 swapPalettes:6; // bitmask determining whether palette has an alternate, night-time palette
+             u32 lightPalettes:6; // Bitmask determining whether a palette should be time-blended as a light
+             u32 customLightColor:6; // Bitmask determining which light palettes have custom light colors (color 15)
     /*0x04*/ const u32 *tiles;
     /*0x08*/ const u16 (*palettes)[16];
     /*0x0C*/ const u16 *metatiles;
@@ -89,7 +92,7 @@ struct BackupMapLayout
     u16 *map;
 };
 
-struct ObjectEventTemplate
+struct __attribute__((packed, aligned(4))) ObjectEventTemplate
 {
     /*0x00*/ u8 localId;
     /*0x01*/ u8 kind; // The "kind" field determines how to access objUnion union below.

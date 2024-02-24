@@ -18,6 +18,9 @@
 #include "constants/event_object_movement.h"
 #include "constants/field_effects.h"
 #include "constants/trainer_types.h"
+#include "constants/field_weather.h"
+#include "field_effect_helpers.h"
+#include "graphics.h"
 
 // this file's functions
 static u8 CheckTrainer(u8 objectEventId);
@@ -713,6 +716,7 @@ static u8 SetIconSpriteData(u8 spriteAnimNum)
 
         sprite->oam.priority = 1;
         sprite->coordOffsetEnabled = 1;
+        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_NONE);
 
         sprite->sLocalId = gFieldEffectArguments[0];
         sprite->sMapNum = gFieldEffectArguments[1];

@@ -69,6 +69,7 @@
 #include "region_map.h"
 #include "field_player_avatar.h"
 #include "constants/event_objects.h"
+#include "siirtc.h"
 
 struct CableClubPlayer
 {
@@ -761,8 +762,7 @@ bool8 SetDiveWarpDive(u16 x, u16 y)
 
 void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
 {
-    s32 paletteIndex;
-    u32 numPrimaryPals;
+    u8 numPrimaryPals;
 
     SetWarpDestination(mapGroup, mapNum, WARP_ID_NONE, -1, -1);
 
@@ -786,11 +786,10 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     RunOnTransitionMapScript();
     InitMap();
     CopySecondaryTilesetToVramUsingHeap(gMapHeader.mapLayout);
-    LoadSecondaryTilesetPalette(gMapHeader.mapLayout);
+    LoadSecondaryTilesetPalette(gMapHeader.mapLayout, TRUE); // skip copying to Faded, gamma shift will take care of it
 
     numPrimaryPals = NUM_PALS_IN_PRIMARY_EMERALD + gMapHeader.mapLayout->secondaryTileset->dontUsePal7;
-    for (paletteIndex = numPrimaryPals; paletteIndex < NUM_PALS_TOTAL; paletteIndex++)
-        ApplyWeatherColorMapToPal(paletteIndex);
+    ApplyColorMap(numPrimaryPals, NUM_PALS_TOTAL - numPrimaryPals, gWeatherPtr->colorMapIndex); // palettes [6,12]
 
     InitSecondaryTilesetAnimation();
     UpdateLocationHistoryForRoamer();
@@ -2079,7 +2078,7 @@ static void InitObjectEventsLink(void)
     gTotalCameraPixelOffsetX = 0;
     gTotalCameraPixelOffsetY = 0;
     ResetObjectEvents();
-    TrySpawnObjectEvents(0, 0);
+    TrySpawnObjectEvents(0, 0, FALSE);
     TryRunOnWarpIntoMapScript();
 }
 
@@ -2096,7 +2095,7 @@ static void InitObjectEventsLocal(void)
     InitPlayerAvatar(x, y, player->direction);
     SetPlayerAvatarTransitionFlags(player->transitionFlags);
     ResetInitialPlayerAvatarState();
-    TrySpawnObjectEvents(0, 0);
+    TrySpawnObjectEvents(0, 0, FALSE);
     TryRunOnWarpIntoMapScript();
 }
 

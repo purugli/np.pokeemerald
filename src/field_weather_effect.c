@@ -93,8 +93,6 @@ static const struct SpriteTemplate sCloudSpriteTemplate =
     .callback = UpdateCloudSprite,
 };
 
-static const struct SpritePalette sCloudsSpritePalette = {gCloudsWeatherPalette, PALTAG_WEATHER_2};
-
 void Clouds_InitVars(void)
 {
     gWeatherPtr->targetColorMapIndex = 0;
@@ -169,7 +167,7 @@ static void CreateCloudSprites(void)
         return;
 
     LoadSpriteSheet(&sCloudSpriteSheet);
-    LoadCustomWeatherSpritePalette(&sCloudsSpritePalette);
+    LoadCustomWeatherSpritePalette(gCloudsWeatherPalette);
     for (i = 0; i < NUM_CLOUD_SPRITES; i++)
     {
         spriteId = CreateSprite(&sCloudSpriteTemplate, 0, 0, 0xFF);
@@ -1447,7 +1445,6 @@ static void CreateFogHorizontalSprites(void)
                 sprite->x = (i % 5) * 64 + 32;
                 sprite->y = (i / 5) * 64 + 32;
                 gWeatherPtr->sprites.s2.fogHSprites[i] = sprite;
-                sprite->oam.paletteNum = gWeatherPtr->contrastColorMapSpritePalIndex;
             }
             else
             {
@@ -1496,7 +1493,6 @@ void Ash_InitVars(void)
     if (!gWeatherPtr->ashSpritesCreated)
     {
         Weather_SetBlendCoeffs(0, 16);
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(64, 63)); // These aren't valid blend coefficients!
     }
 }
 
@@ -1613,8 +1609,6 @@ static const struct SpriteTemplate sAshSpriteTemplate =
     .callback = UpdateAshSprite,
 };
 
-static const struct SpritePalette sFogSpritePalette = {gFogPalette, PALTAG_WEATHER};
-
 #define tOffsetY      data[0]
 #define tCounterY     data[1]
 #define tSpriteColumn data[2]
@@ -1630,7 +1624,6 @@ static void CreateAshSprites(void)
     {
         for (i = 0; i < NUM_ASH_SPRITES; i++)
         {
-            LoadCustomWeatherSpritePalette(&sFogSpritePalette);
             spriteId = CreateSpriteAtEnd(&sAshSpriteTemplate, 0, 0, 0x4E);
             if (spriteId != MAX_SPRITES)
             {
@@ -1836,7 +1829,6 @@ static void CreateFogDiagonalSprites(void)
     {
         fogDiagonalSpriteSheet = sFogDiagonalSpriteSheet;
         LoadSpriteSheet(&fogDiagonalSpriteSheet);
-        LoadCustomWeatherSpritePalette(&sFogSpritePalette);
         for (i = 0; i < NUM_FOG_DIAGONAL_SPRITES; i++)
         {
             spriteId = CreateSpriteAtEnd(&sFogDiagonalSpriteTemplate, 0, (i / 5) * 64, 0xFF);
@@ -2077,8 +2069,6 @@ static const struct SpriteSheet sSandstormSpriteSheet =
     .tag = GFXTAG_SANDSTORM,
 };
 
-static const struct SpritePalette sSandstormSpritePalette = {gSandstormWeatherPalette, PALTAG_WEATHER_2};
-
 // Regular sandstorm sprites
 #define tSpriteColumn  data[0]
 #define tSpriteRow     data[1]
@@ -2097,7 +2087,7 @@ static void CreateSandstormSprites(void)
     if (!gWeatherPtr->sandstormSpritesCreated)
     {
         LoadSpriteSheet(&sSandstormSpriteSheet);
-        LoadCustomWeatherSpritePalette(&sSandstormSpritePalette);
+        LoadCustomWeatherSpritePalette(gSandstormWeatherPalette);
         for (i = 0; i < NUM_SANDSTORM_SPRITES; i++)
         {
             spriteId = CreateSpriteAtEnd(&sSandstormSpriteTemplate, 0, (i / 5) * 64, 1);

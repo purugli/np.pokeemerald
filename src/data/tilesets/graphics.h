@@ -1,6 +1,6 @@
 const u32 gTilesetTiles_Petalburg[] = INCBIN_U32("data/tilesets/secondary/petalburg/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Petalburg[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Petalburg[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/petalburg/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/petalburg/palettes/01.gbapal"),
@@ -22,7 +22,7 @@ const u16 gTilesetPalettes_Petalburg[][16] =
 
 const u32 gTilesetTiles_Rustboro[] = INCBIN_U32("data/tilesets/secondary/rustboro/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Rustboro[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Rustboro[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/rustboro/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/rustboro/palettes/01.gbapal"),
@@ -44,7 +44,7 @@ const u16 gTilesetPalettes_Rustboro[][16] =
 
 const u32 gTilesetTiles_Dewford[] = INCBIN_U32("data/tilesets/secondary/dewford/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Dewford[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Dewford[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/dewford/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/dewford/palettes/01.gbapal"),
@@ -66,7 +66,7 @@ const u16 gTilesetPalettes_Dewford[][16] =
 
 const u32 gTilesetTiles_Slateport[] = INCBIN_U32("data/tilesets/secondary/slateport/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Slateport[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Slateport[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/slateport/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/slateport/palettes/01.gbapal"),
@@ -88,7 +88,7 @@ const u16 gTilesetPalettes_Slateport[][16] =
 
 const u32 gTilesetTiles_Mauville[] = INCBIN_U32("data/tilesets/secondary/mauville/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Mauville[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Mauville[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/mauville/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/mauville/palettes/01.gbapal"),
@@ -110,7 +110,7 @@ const u16 gTilesetPalettes_Mauville[][16] =
 
 const u32 gTilesetTiles_Lavaridge[] = INCBIN_U32("data/tilesets/secondary/lavaridge/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Lavaridge[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Lavaridge[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/lavaridge/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/lavaridge/palettes/01.gbapal"),
@@ -132,7 +132,7 @@ const u16 gTilesetPalettes_Lavaridge[][16] =
 
 const u32 gTilesetTiles_Fallarbor[] = INCBIN_U32("data/tilesets/secondary/fallarbor/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Fallarbor[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Fallarbor[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/fallarbor/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/fallarbor/palettes/01.gbapal"),
@@ -154,7 +154,7 @@ const u16 gTilesetPalettes_Fallarbor[][16] =
 
 const u32 gTilesetTiles_Fortree[] = INCBIN_U32("data/tilesets/secondary/fortree/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Fortree[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Fortree[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/fortree/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/fortree/palettes/01.gbapal"),
@@ -176,7 +176,7 @@ const u16 gTilesetPalettes_Fortree[][16] =
 
 const u32 gTilesetTiles_Lilycove[] = INCBIN_U32("data/tilesets/secondary/lilycove/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Lilycove[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Lilycove[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/lilycove/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/lilycove/palettes/01.gbapal"),
@@ -198,7 +198,7 @@ const u16 gTilesetPalettes_Lilycove[][16] =
 
 const u32 gTilesetTiles_Mossdeep[] = INCBIN_U32("data/tilesets/secondary/mossdeep/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Mossdeep[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Mossdeep[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/mossdeep/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/mossdeep/palettes/01.gbapal"),
@@ -220,7 +220,7 @@ const u16 gTilesetPalettes_Mossdeep[][16] =
 
 const u32 gTilesetTiles_EverGrande[] = INCBIN_U32("data/tilesets/secondary/ever_grande/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_EverGrande[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_EverGrande[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/ever_grande/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/ever_grande/palettes/01.gbapal"),
@@ -242,7 +242,7 @@ const u16 gTilesetPalettes_EverGrande[][16] =
 
 const u32 gTilesetTiles_Pacifidlog[] = INCBIN_U32("data/tilesets/secondary/pacifidlog/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Pacifidlog[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Pacifidlog[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/pacifidlog/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/pacifidlog/palettes/01.gbapal"),
@@ -264,7 +264,7 @@ const u16 gTilesetPalettes_Pacifidlog[][16] =
 
 const u32 gTilesetTiles_Sootopolis[] = INCBIN_U32("data/tilesets/secondary/sootopolis/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Sootopolis[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Sootopolis[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/sootopolis/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/sootopolis/palettes/01.gbapal"),
@@ -286,7 +286,7 @@ const u16 gTilesetPalettes_Sootopolis[][16] =
 
 const u32 gTilesetTiles_BattleFrontierOutsideWest[] = INCBIN_U32("data/tilesets/secondary/battle_frontier_outside_west/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattleFrontierOutsideWest[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattleFrontierOutsideWest[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_frontier_outside_west/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_frontier_outside_west/palettes/01.gbapal"),
@@ -308,7 +308,7 @@ const u16 gTilesetPalettes_BattleFrontierOutsideWest[][16] =
 
 const u32 gTilesetTiles_BattleFrontierOutsideEast[] = INCBIN_U32("data/tilesets/secondary/battle_frontier_outside_east/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattleFrontierOutsideEast[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattleFrontierOutsideEast[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_frontier_outside_east/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_frontier_outside_east/palettes/01.gbapal"),
@@ -330,7 +330,7 @@ const u16 gTilesetPalettes_BattleFrontierOutsideEast[][16] =
 
 const u32 gTilesetTiles_InsideBuilding[] = INCBIN_U32("data/tilesets/primary/building/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_InsideBuilding[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_InsideBuilding[][16] =
 {
 	INCBIN_U16("data/tilesets/primary/building/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/primary/building/palettes/01.gbapal"),
@@ -352,7 +352,7 @@ const u16 gTilesetPalettes_InsideBuilding[][16] =
 
 const u32 gTilesetTiles_Shop[] = INCBIN_U32("data/tilesets/secondary/shop/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Shop[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Shop[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/shop/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/shop/palettes/01.gbapal"),
@@ -374,7 +374,7 @@ const u16 gTilesetPalettes_Shop[][16] =
 
 const u32 gTilesetTiles_PokemonCenter[] = INCBIN_U32("data/tilesets/secondary/pokemon_center/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_PokemonCenter[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_PokemonCenter[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/pokemon_center/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/pokemon_center/palettes/01.gbapal"),
@@ -396,7 +396,7 @@ const u16 gTilesetPalettes_PokemonCenter[][16] =
 
 const u32 gTilesetTiles_Cave[] = INCBIN_U32("data/tilesets/secondary/cave/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Cave[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Cave[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/cave/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/cave/palettes/01.gbapal"),
@@ -418,7 +418,7 @@ const u16 gTilesetPalettes_Cave[][16] =
 
 const u32 gTilesetTiles_PokemonSchool[] = INCBIN_U32("data/tilesets/secondary/pokemon_school/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_PokemonSchool[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_PokemonSchool[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/pokemon_school/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/pokemon_school/palettes/01.gbapal"),
@@ -440,7 +440,7 @@ const u16 gTilesetPalettes_PokemonSchool[][16] =
 
 const u32 gTilesetTiles_PokemonFanClub[] = INCBIN_U32("data/tilesets/secondary/pokemon_fan_club/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_PokemonFanClub[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_PokemonFanClub[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/pokemon_fan_club/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/pokemon_fan_club/palettes/01.gbapal"),
@@ -462,7 +462,7 @@ const u16 gTilesetPalettes_PokemonFanClub[][16] =
 
 const u32 gTilesetTiles_MeteorFalls[] = INCBIN_U32("data/tilesets/secondary/meteor_falls/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_MeteorFalls[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_MeteorFalls[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/meteor_falls/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/meteor_falls/palettes/01.gbapal"),
@@ -484,7 +484,7 @@ const u16 gTilesetPalettes_MeteorFalls[][16] =
 
 const u32 gTilesetTiles_OceanicMuseum[] = INCBIN_U32("data/tilesets/secondary/oceanic_museum/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_OceanicMuseum[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_OceanicMuseum[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/oceanic_museum/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/oceanic_museum/palettes/01.gbapal"),
@@ -506,7 +506,7 @@ const u16 gTilesetPalettes_OceanicMuseum[][16] =
 
 const u32 gTilesetTiles_CableClub[] = INCBIN_U32("data/tilesets/secondary/cable_club/tiles.4bpp");
 
-const u16 gTilesetPalettes_CableClub[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_CableClub[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/cable_club/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/cable_club/palettes/01.gbapal"),
@@ -528,7 +528,7 @@ const u16 gTilesetPalettes_CableClub[][16] =
 
 const u32 gTilesetTiles_SeashoreHouse[] = INCBIN_U32("data/tilesets/secondary/seashore_house/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_SeashoreHouse[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SeashoreHouse[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/seashore_house/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/seashore_house/palettes/01.gbapal"),
@@ -550,7 +550,7 @@ const u16 gTilesetPalettes_SeashoreHouse[][16] =
 
 const u32 gTilesetTiles_PrettyPetalFlowerShop[] = INCBIN_U32("data/tilesets/secondary/pretty_petal_flower_shop/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_PrettyPetalFlowerShop[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_PrettyPetalFlowerShop[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/pretty_petal_flower_shop/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/pretty_petal_flower_shop/palettes/01.gbapal"),
@@ -572,7 +572,7 @@ const u16 gTilesetPalettes_PrettyPetalFlowerShop[][16] =
 
 const u32 gTilesetTiles_PokemonDayCare[] = INCBIN_U32("data/tilesets/secondary/pokemon_day_care/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_PokemonDayCare[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_PokemonDayCare[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/pokemon_day_care/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/pokemon_day_care/palettes/01.gbapal"),
@@ -594,7 +594,7 @@ const u16 gTilesetPalettes_PokemonDayCare[][16] =
 
 const u32 gTilesetTiles_Facility[] = INCBIN_U32("data/tilesets/secondary/facility/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Facility[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Facility[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/facility/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/facility/palettes/01.gbapal"),
@@ -616,7 +616,7 @@ const u16 gTilesetPalettes_Facility[][16] =
 
 const u32 gTilesetTiles_BikeShop[] = INCBIN_U32("data/tilesets/secondary/bike_shop/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BikeShop[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BikeShop[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/bike_shop/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/bike_shop/palettes/01.gbapal"),
@@ -638,7 +638,7 @@ const u16 gTilesetPalettes_BikeShop[][16] =
 
 const u32 gTilesetTiles_RusturfTunnel[] = INCBIN_U32("data/tilesets/secondary/rusturf_tunnel/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RusturfTunnel[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RusturfTunnel[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/rusturf_tunnel/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/rusturf_tunnel/palettes/01.gbapal"),
@@ -658,7 +658,7 @@ const u16 gTilesetPalettes_RusturfTunnel[][16] =
 	INCBIN_U16("data/tilesets/secondary/rusturf_tunnel/palettes/15.gbapal"),
 };
 
-const u16 gTilesetPalettes_SecretBaseBrownCave[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SecretBaseBrownCave[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/brown_cave/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/brown_cave/palettes/01.gbapal"),
@@ -678,7 +678,7 @@ const u16 gTilesetPalettes_SecretBaseBrownCave[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/brown_cave/palettes/15.gbapal"),
 };
 
-const u16 gTilesetPalettes_SecretBaseTree[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SecretBaseTree[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/tree/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/tree/palettes/01.gbapal"),
@@ -698,7 +698,7 @@ const u16 gTilesetPalettes_SecretBaseTree[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/tree/palettes/15.gbapal"),
 };
 
-const u16 gTilesetPalettes_SecretBaseShrub[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SecretBaseShrub[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/shrub/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/shrub/palettes/01.gbapal"),
@@ -718,7 +718,7 @@ const u16 gTilesetPalettes_SecretBaseShrub[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/shrub/palettes/15.gbapal"),
 };
 
-const u16 gTilesetPalettes_SecretBaseBlueCave[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SecretBaseBlueCave[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/blue_cave/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/blue_cave/palettes/01.gbapal"),
@@ -738,7 +738,7 @@ const u16 gTilesetPalettes_SecretBaseBlueCave[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/blue_cave/palettes/15.gbapal"),
 };
 
-const u16 gTilesetPalettes_SecretBaseYellowCave[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SecretBaseYellowCave[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/yellow_cave/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/yellow_cave/palettes/01.gbapal"),
@@ -758,7 +758,7 @@ const u16 gTilesetPalettes_SecretBaseYellowCave[][16] =
 	INCBIN_U16("data/tilesets/secondary/secret_base/yellow_cave/palettes/15.gbapal"),
 };
 
-const u16 gTilesetPalettes_SecretBaseRedCave[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SecretBaseRedCave[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/secret_base/red_cave/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/secret_base/red_cave/palettes/01.gbapal"),
@@ -787,7 +787,7 @@ const u32 gTilesetTiles_SecretBaseRedCave[] = INCBIN_U32("data/tilesets/secondar
 
 const u32 gTilesetTiles_InsideOfTruck[] = INCBIN_U32("data/tilesets/secondary/inside_of_truck/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_InsideOfTruck[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_InsideOfTruck[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/inside_of_truck/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/inside_of_truck/palettes/01.gbapal"),
@@ -809,7 +809,7 @@ const u16 gTilesetPalettes_InsideOfTruck[][16] =
 
 const u32 gTilesetTiles_Contest[] = INCBIN_U32("data/tilesets/secondary/contest/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Contest[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Contest[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/contest/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/contest/palettes/01.gbapal"),
@@ -831,7 +831,7 @@ const u16 gTilesetPalettes_Contest[][16] =
 
 const u32 gTilesetTiles_LilycoveMuseum[] = INCBIN_U32("data/tilesets/secondary/lilycove_museum/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_LilycoveMuseum[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_LilycoveMuseum[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/lilycove_museum/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/lilycove_museum/palettes/01.gbapal"),
@@ -853,7 +853,7 @@ const u16 gTilesetPalettes_LilycoveMuseum[][16] =
 
 const u32 gTilesetTiles_BrendansMaysHouse[] = INCBIN_U32("data/tilesets/secondary/brendans_mays_house/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BrendansMaysHouse[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BrendansMaysHouse[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/brendans_mays_house/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/brendans_mays_house/palettes/01.gbapal"),
@@ -875,7 +875,7 @@ const u16 gTilesetPalettes_BrendansMaysHouse[][16] =
 
 const u32 gTilesetTiles_Lab[] = INCBIN_U32("data/tilesets/secondary/lab/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Lab[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Lab[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/lab/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/lab/palettes/01.gbapal"),
@@ -897,7 +897,7 @@ const u16 gTilesetPalettes_Lab[][16] =
 
 const u32 gTilesetTiles_Underwater[] = INCBIN_U32("data/tilesets/secondary/underwater/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Underwater[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Underwater[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/underwater/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/underwater/palettes/01.gbapal"),
@@ -919,7 +919,7 @@ const u16 gTilesetPalettes_Underwater[][16] =
 
 const u32 gTilesetTiles_GenericBuilding[] = INCBIN_U32("data/tilesets/secondary/generic_building/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_GenericBuilding[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_GenericBuilding[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/generic_building/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/generic_building/palettes/01.gbapal"),
@@ -941,7 +941,7 @@ const u16 gTilesetPalettes_GenericBuilding[][16] =
 
 const u32 gTilesetTiles_MauvilleGameCorner[] = INCBIN_U32("data/tilesets/secondary/mauville_game_corner/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_MauvilleGameCorner[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_MauvilleGameCorner[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/mauville_game_corner/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/mauville_game_corner/palettes/01.gbapal"),
@@ -963,7 +963,7 @@ const u16 gTilesetPalettes_MauvilleGameCorner[][16] =
 
 const u32 gTilesetTiles_Unused2[] = INCBIN_U32("data/tilesets/secondary/unused_2/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Unused2[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Unused2[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/unused_2/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/unused_2/palettes/01.gbapal"),
@@ -985,7 +985,7 @@ const u16 gTilesetPalettes_Unused2[][16] =
 
 const u32 gTilesetTiles_RustboroGym[] = INCBIN_U32("data/tilesets/secondary/rustboro_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RustboroGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RustboroGym[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/rustboro_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/rustboro_gym/palettes/01.gbapal"),
@@ -1007,7 +1007,7 @@ const u16 gTilesetPalettes_RustboroGym[][16] =
 
 const u32 gTilesetTiles_DewfordGym[] = INCBIN_U32("data/tilesets/secondary/dewford_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_DewfordGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_DewfordGym[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/dewford_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/dewford_gym/palettes/01.gbapal"),
@@ -1029,7 +1029,7 @@ const u16 gTilesetPalettes_DewfordGym[][16] =
 
 const u32 gTilesetTiles_MauvilleGym[] = INCBIN_U32("data/tilesets/secondary/mauville_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_MauvilleGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_MauvilleGym[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/mauville_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/mauville_gym/palettes/01.gbapal"),
@@ -1051,7 +1051,7 @@ const u16 gTilesetPalettes_MauvilleGym[][16] =
 
 const u32 gTilesetTiles_LavaridgeGym[] = INCBIN_U32("data/tilesets/secondary/lavaridge_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_LavaridgeGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_LavaridgeGym[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/lavaridge_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/lavaridge_gym/palettes/01.gbapal"),
@@ -1073,7 +1073,7 @@ const u16 gTilesetPalettes_LavaridgeGym[][16] =
 
 const u32 gTilesetTiles_PetalburgGym[] = INCBIN_U32("data/tilesets/secondary/petalburg_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_PetalburgGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_PetalburgGym[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/petalburg_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/petalburg_gym/palettes/01.gbapal"),
@@ -1095,7 +1095,7 @@ const u16 gTilesetPalettes_PetalburgGym[][16] =
 
 const u32 gTilesetTiles_FortreeGym[] = INCBIN_U32("data/tilesets/secondary/fortree_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_FortreeGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_FortreeGym[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/fortree_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/fortree_gym/palettes/01.gbapal"),
@@ -1117,7 +1117,7 @@ const u16 gTilesetPalettes_FortreeGym[][16] =
 
 const u32 gTilesetTiles_MossdeepGym[] = INCBIN_U32("data/tilesets/secondary/mossdeep_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_MossdeepGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_MossdeepGym[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/mossdeep_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/mossdeep_gym/palettes/01.gbapal"),
@@ -1139,7 +1139,7 @@ const u16 gTilesetPalettes_MossdeepGym[][16] =
 
 const u32 gTilesetTiles_SootopolisGym[] = INCBIN_U32("data/tilesets/secondary/sootopolis_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_SootopolisGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SootopolisGym[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/sootopolis_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/sootopolis_gym/palettes/01.gbapal"),
@@ -1161,7 +1161,7 @@ const u16 gTilesetPalettes_SootopolisGym[][16] =
 
 const u32 gTilesetTiles_TrickHousePuzzle[] = INCBIN_U32("data/tilesets/secondary/trick_house_puzzle/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_TrickHousePuzzle[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_TrickHousePuzzle[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/trick_house_puzzle/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/trick_house_puzzle/palettes/01.gbapal"),
@@ -1183,7 +1183,7 @@ const u16 gTilesetPalettes_TrickHousePuzzle[][16] =
 
 const u32 gTilesetTiles_InsideShip[] = INCBIN_U32("data/tilesets/secondary/inside_ship/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_InsideShip[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_InsideShip[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/inside_ship/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/inside_ship/palettes/01.gbapal"),
@@ -1206,7 +1206,7 @@ const u16 gTilesetPalettes_InsideShip[][16] =
 const u32 gTilesetTiles_SecretBase[] = INCBIN_U32("data/tilesets/primary/secret_base/tiles.4bpp");
 const u32 gTilesetTiles_UnknownSecretBase[] = INCBIN_U32("data/tilesets/primary/secret_base/unknown_tiles.4bpp");
 
-const u16 gTilesetPalettes_SecretBase[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_SecretBase[][16] =
 {
 	INCBIN_U16("data/tilesets/primary/secret_base/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/primary/secret_base/palettes/01.gbapal"),
@@ -1228,7 +1228,7 @@ const u16 gTilesetPalettes_SecretBase[][16] =
 
 const u32 gTilesetTiles_EliteFour[] = INCBIN_U32("data/tilesets/secondary/elite_four/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_EliteFour[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_EliteFour[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/elite_four/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/elite_four/palettes/01.gbapal"),
@@ -1250,7 +1250,7 @@ const u16 gTilesetPalettes_EliteFour[][16] =
 
 const u32 gTilesetTiles_BattleFrontier[] = INCBIN_U32("data/tilesets/secondary/battle_frontier/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattleFrontier[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattleFrontier[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_frontier/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_frontier/palettes/01.gbapal"),
@@ -1272,7 +1272,7 @@ const u16 gTilesetPalettes_BattleFrontier[][16] =
 
 const u32 gTilesetTiles_BattlePalace[] = INCBIN_U32("data/tilesets/secondary/battle_palace/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattlePalace[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattlePalace[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_palace/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_palace/palettes/01.gbapal"),
@@ -1294,7 +1294,7 @@ const u16 gTilesetPalettes_BattlePalace[][16] =
 
 const u32 gTilesetTiles_BattleDome[] = INCBIN_U32("data/tilesets/secondary/battle_dome/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattleDome[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattleDome[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_dome/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_dome/palettes/01.gbapal"),
@@ -1316,7 +1316,7 @@ const u16 gTilesetPalettes_BattleDome[][16] =
 
 const u32 gTilesetTiles_BattleFactory[] = INCBIN_U32("data/tilesets/secondary/battle_factory/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattleFactory[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattleFactory[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_factory/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_factory/palettes/01.gbapal"),
@@ -1338,7 +1338,7 @@ const u16 gTilesetPalettes_BattleFactory[][16] =
 
 const u32 gTilesetTiles_BattlePike[] = INCBIN_U32("data/tilesets/secondary/battle_pike/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattlePike[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattlePike[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_pike/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_pike/palettes/01.gbapal"),
@@ -1360,7 +1360,7 @@ const u16 gTilesetPalettes_BattlePike[][16] =
 
 const u32 gTilesetTiles_BattleArena[] = INCBIN_U32("data/tilesets/secondary/battle_arena/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattleArena[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattleArena[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_arena/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_arena/palettes/01.gbapal"),
@@ -1382,7 +1382,7 @@ const u16 gTilesetPalettes_BattleArena[][16] =
 
 const u32 gTilesetTiles_BattlePyramid[] = INCBIN_U32("data/tilesets/secondary/battle_pyramid/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattlePyramid[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattlePyramid[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_pyramid/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_pyramid/palettes/01.gbapal"),
@@ -1404,7 +1404,7 @@ const u16 gTilesetPalettes_BattlePyramid[][16] =
 
 const u32 gTilesetTiles_MirageTower[] = INCBIN_U32("data/tilesets/secondary/mirage_tower/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_MirageTower[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_MirageTower[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/mirage_tower/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/mirage_tower/palettes/01.gbapal"),
@@ -1426,7 +1426,7 @@ const u16 gTilesetPalettes_MirageTower[][16] =
 
 const u32 gTilesetTiles_MossdeepGameCorner[] = INCBIN_U32("data/tilesets/secondary/mossdeep_game_corner/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_MossdeepGameCorner[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_MossdeepGameCorner[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/mossdeep_game_corner/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/mossdeep_game_corner/palettes/01.gbapal"),
@@ -1448,7 +1448,7 @@ const u16 gTilesetPalettes_MossdeepGameCorner[][16] =
 
 const u32 gTilesetTiles_TrainerHill[] = INCBIN_U32("data/tilesets/secondary/trainer_hill/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_TrainerHill[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_TrainerHill[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/trainer_hill/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/trainer_hill/palettes/01.gbapal"),
@@ -1470,7 +1470,7 @@ const u16 gTilesetPalettes_TrainerHill[][16] =
 
 const u32 gTilesetTiles_BattleFrontierRankingHall[] = INCBIN_U32("data/tilesets/secondary/battle_frontier_ranking_hall/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattleFrontierRankingHall[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattleFrontierRankingHall[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_frontier_ranking_hall/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_frontier_ranking_hall/palettes/01.gbapal"),
@@ -1492,7 +1492,7 @@ const u16 gTilesetPalettes_BattleFrontierRankingHall[][16] =
 
 const u32 gTilesetTiles_BattleTent[] = INCBIN_U32("data/tilesets/secondary/battle_tent/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_BattleTent[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_BattleTent[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/battle_tent/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/battle_tent/palettes/01.gbapal"),
@@ -1514,7 +1514,7 @@ const u16 gTilesetPalettes_BattleTent[][16] =
 
 const u32 gTilesetTiles_MysteryEventsHouse[] = INCBIN_U32("data/tilesets/secondary/mystery_events_house/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_MysteryEventsHouse[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_MysteryEventsHouse[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/mystery_events_house/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/mystery_events_house/palettes/01.gbapal"),
@@ -1534,7 +1534,7 @@ const u16 gTilesetPalettes_MysteryEventsHouse[][16] =
 	INCBIN_U16("data/tilesets/secondary/mystery_events_house/palettes/15.gbapal"),
 };
 
-const u16 gTilesetPalettes_UnionRoom[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_UnionRoom[][16] =
 {
 	INCBIN_U16("data/tilesets/secondary/union_room/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/secondary/union_room/palettes/01.gbapal"),
@@ -1558,7 +1558,7 @@ const u32 gTilesetTiles_UnionRoom[] = INCBIN_U32("data/tilesets/secondary/union_
 
 const u32 gTilesetTiles_RG_General[] = INCBIN_U32("data/tilesets/frlg/primary/general/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_General[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_General[][16] =
 {
     INCBIN_U16("data/tilesets/frlg/primary/general/palettes/00.gbapal"),
     INCBIN_U16("data/tilesets/frlg/primary/general/palettes/01.gbapal"),
@@ -1580,7 +1580,7 @@ const u16 gTilesetPalettes_RG_General[][16] =
 
 const u32 gTilesetTiles_RG_GenericBuilding1[] = INCBIN_U32("data/tilesets/frlg/secondary/generic_building_1/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_GenericBuilding1[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_GenericBuilding1[][16] =
 {
     INCBIN_U16("data/tilesets/frlg/secondary/generic_building_1/palettes/00.gbapal"),
     INCBIN_U16("data/tilesets/frlg/secondary/generic_building_1/palettes/01.gbapal"),
@@ -1602,7 +1602,7 @@ const u16 gTilesetPalettes_RG_GenericBuilding1[][16] =
 
 const u32 gTilesetTiles_RG_DepartmentStore[] = INCBIN_U32("data/tilesets/frlg/secondary/department_store/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_DepartmentStore[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_DepartmentStore[][16] =
 {
     INCBIN_U16("data/tilesets/frlg/secondary/department_store/palettes/00.gbapal"),
     INCBIN_U16("data/tilesets/frlg/secondary/department_store/palettes/01.gbapal"),
@@ -1624,7 +1624,7 @@ const u16 gTilesetPalettes_RG_DepartmentStore[][16] =
 
 const u32 gTilesetTiles_RG_PalletTown[] = INCBIN_U32("data/tilesets/frlg/secondary/pallet_town/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_PalletTown[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_PalletTown[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pallet_town/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pallet_town/palettes/01.gbapal"),
@@ -1646,7 +1646,7 @@ const u16 gTilesetPalettes_RG_PalletTown[][16] =
 
 const u32 gTilesetTiles_RG_ViridianCity[] = INCBIN_U32("data/tilesets/frlg/secondary/viridian_city/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_ViridianCity[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_ViridianCity[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/viridian_city/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/viridian_city/palettes/01.gbapal"),
@@ -1668,7 +1668,7 @@ const u16 gTilesetPalettes_RG_ViridianCity[][16] =
 
 const u32 gTilesetTiles_RG_PewterCity[] = INCBIN_U32("data/tilesets/frlg/secondary/pewter_city/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_PewterCity[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_PewterCity[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pewter_city/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pewter_city/palettes/01.gbapal"),
@@ -1690,7 +1690,7 @@ const u16 gTilesetPalettes_RG_PewterCity[][16] =
 
 const u32 gTilesetTiles_RG_CeruleanCity[] = INCBIN_U32("data/tilesets/frlg/secondary/cerulean_city/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_CeruleanCity[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_CeruleanCity[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/cerulean_city/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/cerulean_city/palettes/01.gbapal"),
@@ -1712,7 +1712,7 @@ const u16 gTilesetPalettes_RG_CeruleanCity[][16] =
 
 const u32 gTilesetTiles_RG_LavenderTown[] = INCBIN_U32("data/tilesets/frlg/secondary/lavender_town/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_LavenderTown[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_LavenderTown[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/lavender_town/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/lavender_town/palettes/01.gbapal"),
@@ -1734,7 +1734,7 @@ const u16 gTilesetPalettes_RG_LavenderTown[][16] =
 
 const u32 gTilesetTiles_RG_VermilionCity[] = INCBIN_U32("data/tilesets/frlg/secondary/vermilion_city/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_VermilionCity[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_VermilionCity[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/vermilion_city/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/vermilion_city/palettes/01.gbapal"),
@@ -1756,7 +1756,7 @@ const u16 gTilesetPalettes_RG_VermilionCity[][16] =
 
 const u32 gTilesetTiles_RG_CeladonCity[] = INCBIN_U32("data/tilesets/frlg/secondary/celadon_city/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_CeladonCity[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_CeladonCity[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/celadon_city/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/celadon_city/palettes/01.gbapal"),
@@ -1778,7 +1778,7 @@ const u16 gTilesetPalettes_RG_CeladonCity[][16] =
 
 const u32 gTilesetTiles_RG_FuchsiaCity[] = INCBIN_U32("data/tilesets/frlg/secondary/fuchsia_city/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_FuchsiaCity[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_FuchsiaCity[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/fuchsia_city/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/fuchsia_city/palettes/01.gbapal"),
@@ -1800,7 +1800,7 @@ const u16 gTilesetPalettes_RG_FuchsiaCity[][16] =
 
 const u32 gTilesetTiles_RG_CinnabarIsland[] = INCBIN_U32("data/tilesets/frlg/secondary/cinnabar_island/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_CinnabarIsland[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_CinnabarIsland[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/cinnabar_island/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/cinnabar_island/palettes/01.gbapal"),
@@ -1822,7 +1822,7 @@ const u16 gTilesetPalettes_RG_CinnabarIsland[][16] =
 
 const u32 gTilesetTiles_RG_IndigoPlateau[] = INCBIN_U32("data/tilesets/frlg/secondary/indigo_plateau/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_IndigoPlateau[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_IndigoPlateau[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/indigo_plateau/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/indigo_plateau/palettes/01.gbapal"),
@@ -1844,7 +1844,7 @@ const u16 gTilesetPalettes_RG_IndigoPlateau[][16] =
 
 const u32 gTilesetTiles_RG_SaffronCity[] = INCBIN_U32("data/tilesets/frlg/secondary/saffron_city/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SaffronCity[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SaffronCity[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/saffron_city/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/saffron_city/palettes/01.gbapal"),
@@ -1866,7 +1866,7 @@ const u16 gTilesetPalettes_RG_SaffronCity[][16] =
 
 const u32 gTilesetTiles_RG_Building[] = INCBIN_U32("data/tilesets/frlg/primary/building/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_Building[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_Building[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/primary/building/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/primary/building/palettes/01.gbapal"),
@@ -1888,7 +1888,7 @@ const u16 gTilesetPalettes_RG_Building[][16] =
 
 const u32 gTilesetTiles_RG_Mart[] = INCBIN_U32("data/tilesets/frlg/secondary/mart/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_Mart[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_Mart[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/mart/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/mart/palettes/01.gbapal"),
@@ -1910,7 +1910,7 @@ const u16 gTilesetPalettes_RG_Mart[][16] =
 
 const u32 gTilesetTiles_RG_PokemonCenter[] = INCBIN_U32("data/tilesets/frlg/secondary/pokemon_center/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_PokemonCenter[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_PokemonCenter[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_center/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_center/palettes/01.gbapal"),
@@ -1932,7 +1932,7 @@ const u16 gTilesetPalettes_RG_PokemonCenter[][16] =
 
 const u32 gTilesetTiles_RG_Cave[] = INCBIN_U32("data/tilesets/frlg/secondary/cave/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_Cave[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_Cave[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/cave/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/cave/palettes/01.gbapal"),
@@ -1954,7 +1954,7 @@ const u16 gTilesetPalettes_RG_Cave[][16] =
 
 const u32 gTilesetTiles_RG_Museum[] = INCBIN_U32("data/tilesets/frlg/secondary/museum/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_Museum[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_Museum[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/museum/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/museum/palettes/01.gbapal"),
@@ -1976,7 +1976,7 @@ const u16 gTilesetPalettes_RG_Museum[][16] =
 
 const u32 gTilesetTiles_RG_BikeShop[] = INCBIN_U32("data/tilesets/frlg/secondary/bike_shop/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_BikeShop[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_BikeShop[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/bike_shop/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/bike_shop/palettes/01.gbapal"),
@@ -1998,7 +1998,7 @@ const u16 gTilesetPalettes_RG_BikeShop[][16] =
 
 const u32 gTilesetTiles_RG_Lab[] = INCBIN_U32("data/tilesets/frlg/secondary/lab/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_Lab[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_Lab[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/lab/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/lab/palettes/01.gbapal"),
@@ -2020,7 +2020,7 @@ const u16 gTilesetPalettes_RG_Lab[][16] =
 
 const u32 gTilesetTiles_RG_GameCorner[] = INCBIN_U32("data/tilesets/frlg/secondary/game_corner/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_GameCorner[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_GameCorner[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/game_corner/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/game_corner/palettes/01.gbapal"),
@@ -2042,7 +2042,7 @@ const u16 gTilesetPalettes_RG_GameCorner[][16] =
 
 const u32 gTilesetTiles_RG_PewterGym[] = INCBIN_U32("data/tilesets/frlg/secondary/pewter_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_PewterGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_PewterGym[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pewter_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pewter_gym/palettes/01.gbapal"),
@@ -2064,7 +2064,7 @@ const u16 gTilesetPalettes_RG_PewterGym[][16] =
 
 const u32 gTilesetTiles_RG_CeruleanGym[] = INCBIN_U32("data/tilesets/frlg/secondary/cerulean_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_CeruleanGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_CeruleanGym[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/cerulean_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/cerulean_gym/palettes/01.gbapal"),
@@ -2086,7 +2086,7 @@ const u16 gTilesetPalettes_RG_CeruleanGym[][16] =
 
 const u32 gTilesetTiles_RG_VermilionGym[] = INCBIN_U32("data/tilesets/frlg/secondary/vermilion_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_VermilionGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_VermilionGym[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/vermilion_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/vermilion_gym/palettes/01.gbapal"),
@@ -2108,7 +2108,7 @@ const u16 gTilesetPalettes_RG_VermilionGym[][16] =
 
 const u32 gTilesetTiles_RG_CeladonGym[] = INCBIN_U32("data/tilesets/frlg/secondary/celadon_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_CeladonGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_CeladonGym[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/celadon_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/celadon_gym/palettes/01.gbapal"),
@@ -2130,7 +2130,7 @@ const u16 gTilesetPalettes_RG_CeladonGym[][16] =
 
 const u32 gTilesetTiles_RG_FuchsiaGym[] = INCBIN_U32("data/tilesets/frlg/secondary/fuchsia_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_FuchsiaGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_FuchsiaGym[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/fuchsia_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/fuchsia_gym/palettes/01.gbapal"),
@@ -2152,7 +2152,7 @@ const u16 gTilesetPalettes_RG_FuchsiaGym[][16] =
 
 const u32 gTilesetTiles_RG_SaffronGym[] = INCBIN_U32("data/tilesets/frlg/secondary/saffron_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SaffronGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SaffronGym[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/saffron_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/saffron_gym/palettes/01.gbapal"),
@@ -2174,7 +2174,7 @@ const u16 gTilesetPalettes_RG_SaffronGym[][16] =
 
 const u32 gTilesetTiles_RG_CinnabarGym[] = INCBIN_U32("data/tilesets/frlg/secondary/cinnabar_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_CinnabarGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_CinnabarGym[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/cinnabar_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/cinnabar_gym/palettes/01.gbapal"),
@@ -2196,7 +2196,7 @@ const u16 gTilesetPalettes_RG_CinnabarGym[][16] =
 
 const u32 gTilesetTiles_RG_ViridianGym[] = INCBIN_U32("data/tilesets/frlg/secondary/viridian_gym/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_ViridianGym[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_ViridianGym[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/viridian_gym/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/viridian_gym/palettes/01.gbapal"),
@@ -2218,7 +2218,7 @@ const u16 gTilesetPalettes_RG_ViridianGym[][16] =
 
 const u32 gTilesetTiles_RG_SSAnne[] = INCBIN_U32("data/tilesets/frlg/secondary/ss_anne/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SSAnne[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SSAnne[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/ss_anne/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/ss_anne/palettes/01.gbapal"),
@@ -2240,7 +2240,7 @@ const u16 gTilesetPalettes_RG_SSAnne[][16] =
 
 const u32 gTilesetTiles_RG_ViridianForest[] = INCBIN_U32("data/tilesets/frlg/secondary/viridian_forest/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_ViridianForest[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_ViridianForest[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/viridian_forest/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/viridian_forest/palettes/01.gbapal"),
@@ -2262,7 +2262,7 @@ const u16 gTilesetPalettes_RG_ViridianForest[][16] =
 
 const u32 gTilesetTiles_RG_RockTunnel[] = INCBIN_U32("data/tilesets/frlg/secondary/rock_tunnel/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_RockTunnel[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_RockTunnel[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/rock_tunnel/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/rock_tunnel/palettes/01.gbapal"),
@@ -2284,7 +2284,7 @@ const u16 gTilesetPalettes_RG_RockTunnel[][16] =
 
 const u32 gTilesetTiles_RG_DiglettsCave[] = INCBIN_U32("data/tilesets/frlg/secondary/digletts_cave/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_DiglettsCave[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_DiglettsCave[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/digletts_cave/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/digletts_cave/palettes/01.gbapal"),
@@ -2306,7 +2306,7 @@ const u16 gTilesetPalettes_RG_DiglettsCave[][16] =
 
 const u32 gTilesetTiles_RG_SeafoamIslands[] = INCBIN_U32("data/tilesets/frlg/secondary/seafoam_islands/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SeafoamIslands[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SeafoamIslands[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/seafoam_islands/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/seafoam_islands/palettes/01.gbapal"),
@@ -2328,7 +2328,7 @@ const u16 gTilesetPalettes_RG_SeafoamIslands[][16] =
 
 const u32 gTilesetTiles_RG_CeruleanCave[] = INCBIN_U32("data/tilesets/frlg/secondary/cerulean_cave/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_CeruleanCave[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_CeruleanCave[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/cerulean_cave/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/cerulean_cave/palettes/01.gbapal"),
@@ -2350,7 +2350,7 @@ const u16 gTilesetPalettes_RG_CeruleanCave[][16] =
 
 const u32 gTilesetTiles_RG_GenericBuilding2[] = INCBIN_U32("data/tilesets/frlg/secondary/generic_building_2/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_GenericBuilding2[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_GenericBuilding2[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/generic_building_2/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/generic_building_2/palettes/01.gbapal"),
@@ -2372,7 +2372,7 @@ const u16 gTilesetPalettes_RG_GenericBuilding2[][16] =
 
 const u32 gTilesetTiles_RG_PowerPlant[] = INCBIN_U32("data/tilesets/frlg/secondary/power_plant/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_PowerPlant[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_PowerPlant[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/power_plant/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/power_plant/palettes/01.gbapal"),
@@ -2394,7 +2394,7 @@ const u16 gTilesetPalettes_RG_PowerPlant[][16] =
 
 const u32 gTilesetTiles_RG_SeaCottage[] = INCBIN_U32("data/tilesets/frlg/secondary/sea_cottage/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SeaCottage[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SeaCottage[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/sea_cottage/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/sea_cottage/palettes/01.gbapal"),
@@ -2418,7 +2418,7 @@ const u16 gTilesetPalettes_RG_SeaCottage[][16] =
 const u32 gTilesetTiles_RG_Condominiums[] = INCBIN_U32("data/tilesets/frlg/secondary/condominiums/tiles.4bpp.lz");
 
 // Shared by SilphCo
-const u16 gTilesetPalettes_RG_Condominiums[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_Condominiums[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/condominiums/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/condominiums/palettes/01.gbapal"),
@@ -2440,7 +2440,7 @@ const u16 gTilesetPalettes_RG_Condominiums[][16] =
 
 const u32 gTilesetTiles_RG_UndergroundPath[] = INCBIN_U32("data/tilesets/frlg/secondary/underground_path/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_UndergroundPath[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_UndergroundPath[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/underground_path/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/underground_path/palettes/01.gbapal"),
@@ -2462,7 +2462,7 @@ const u16 gTilesetPalettes_RG_UndergroundPath[][16] =
 
 const u32 gTilesetTiles_RG_PokemonTower[] = INCBIN_U32("data/tilesets/frlg/secondary/pokemon_tower/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_PokemonTower[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_PokemonTower[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_tower/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_tower/palettes/01.gbapal"),
@@ -2484,7 +2484,7 @@ const u16 gTilesetPalettes_RG_PokemonTower[][16] =
 
 const u32 gTilesetTiles_RG_SafariZoneBuilding[] = INCBIN_U32("data/tilesets/frlg/secondary/safari_zone_building/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SafariZoneBuilding[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SafariZoneBuilding[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/safari_zone_building/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/safari_zone_building/palettes/01.gbapal"),
@@ -2506,7 +2506,7 @@ const u16 gTilesetPalettes_RG_SafariZoneBuilding[][16] =
 
 const u32 gTilesetTiles_RG_PokemonMansion[] = INCBIN_U32("data/tilesets/frlg/secondary/pokemon_mansion/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_PokemonMansion[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_PokemonMansion[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_mansion/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_mansion/palettes/01.gbapal"),
@@ -2528,7 +2528,7 @@ const u16 gTilesetPalettes_RG_PokemonMansion[][16] =
 
 const u32 gTilesetTiles_RG_RestaurantHotel[] = INCBIN_U32("data/tilesets/frlg/secondary/restaurant_hotel/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_RestaurantHotel[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_RestaurantHotel[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/restaurant_hotel/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/restaurant_hotel/palettes/01.gbapal"),
@@ -2550,7 +2550,7 @@ const u16 gTilesetPalettes_RG_RestaurantHotel[][16] =
 
 const u32 gTilesetTiles_RG_School[] = INCBIN_U32("data/tilesets/frlg/secondary/school/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_School[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_School[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/school/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/school/palettes/01.gbapal"),
@@ -2572,7 +2572,7 @@ const u16 gTilesetPalettes_RG_School[][16] =
 
 const u32 gTilesetTiles_RG_FanClubDaycare[] = INCBIN_U32("data/tilesets/frlg/secondary/fan_club_daycare/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_FanClubDaycare[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_FanClubDaycare[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/fan_club_daycare/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/fan_club_daycare/palettes/01.gbapal"),
@@ -2594,7 +2594,7 @@ const u16 gTilesetPalettes_RG_FanClubDaycare[][16] =
 
 const u32 gTilesetTiles_RG_BurgledHouse[] = INCBIN_U32("data/tilesets/frlg/secondary/burgled_house/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_BurgledHouse[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_BurgledHouse[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/burgled_house/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/burgled_house/palettes/01.gbapal"),
@@ -2616,7 +2616,7 @@ const u16 gTilesetPalettes_RG_BurgledHouse[][16] =
 
 const u32 gTilesetTiles_RG_MtEmber[] = INCBIN_U32("data/tilesets/frlg/secondary/mt_ember/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_MtEmber[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_MtEmber[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/mt_ember/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/mt_ember/palettes/01.gbapal"),
@@ -2638,7 +2638,7 @@ const u16 gTilesetPalettes_RG_MtEmber[][16] =
 
 const u32 gTilesetTiles_RG_BerryForest[] = INCBIN_U32("data/tilesets/frlg/secondary/berry_forest/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_BerryForest[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_BerryForest[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/berry_forest/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/berry_forest/palettes/01.gbapal"),
@@ -2660,7 +2660,7 @@ const u16 gTilesetPalettes_RG_BerryForest[][16] =
 
 const u32 gTilesetTiles_NavelRock[] = INCBIN_U32("data/tilesets/frlg/secondary/navel_rock/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_NavelRock[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_NavelRock[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/navel_rock/palettes/01.gbapal"),
@@ -2682,7 +2682,7 @@ const u16 gTilesetPalettes_NavelRock[][16] =
 
 const u32 gTilesetTiles_RG_TanobyRuins[] = INCBIN_U32("data/tilesets/frlg/secondary/tanoby_ruins/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_TanobyRuins[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_TanobyRuins[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/tanoby_ruins/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/tanoby_ruins/palettes/01.gbapal"),
@@ -2704,7 +2704,7 @@ const u16 gTilesetPalettes_RG_TanobyRuins[][16] =
 
 const u32 gTilesetTiles_RG_SeviiIslands123[] = INCBIN_U32("data/tilesets/frlg/secondary/sevii_islands_123/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SeviiIslands123[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SeviiIslands123[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/sevii_islands_123/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/sevii_islands_123/palettes/01.gbapal"),
@@ -2726,7 +2726,7 @@ const u16 gTilesetPalettes_RG_SeviiIslands123[][16] =
 
 const u32 gTilesetTiles_RG_SeviiIslands45[] = INCBIN_U32("data/tilesets/frlg/secondary/sevii_islands_45/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SeviiIslands45[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SeviiIslands45[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/sevii_islands_45/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/sevii_islands_45/palettes/01.gbapal"),
@@ -2748,7 +2748,7 @@ const u16 gTilesetPalettes_RG_SeviiIslands45[][16] =
 
 const u32 gTilesetTiles_RG_SeviiIslands67[] = INCBIN_U32("data/tilesets/frlg/secondary/sevii_islands_67/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_SeviiIslands67[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_SeviiIslands67[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/sevii_islands_67/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/sevii_islands_67/palettes/01.gbapal"),
@@ -2770,7 +2770,7 @@ const u16 gTilesetPalettes_RG_SeviiIslands67[][16] =
 
 const u32 gTilesetTiles_RG_TrainerTower[] = INCBIN_U32("data/tilesets/frlg/secondary/trainer_tower/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_TrainerTower[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_TrainerTower[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/trainer_tower/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/trainer_tower/palettes/01.gbapal"),
@@ -2792,7 +2792,7 @@ const u16 gTilesetPalettes_RG_TrainerTower[][16] =
 
 const u32 gTilesetTiles_RG_IslandHarbor[] = INCBIN_U32("data/tilesets/frlg/secondary/island_harbor/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_IslandHarbor[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_IslandHarbor[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/island_harbor/palettes/01.gbapal"),
@@ -2814,7 +2814,7 @@ const u16 gTilesetPalettes_RG_IslandHarbor[][16] =
 
 const u32 gTilesetTiles_RG_PokemonLeague[] = INCBIN_U32("data/tilesets/frlg/secondary/pokemon_league/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_RG_PokemonLeague[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_RG_PokemonLeague[][16] =
 {
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_league/palettes/00.gbapal"),
 	INCBIN_U16("data/tilesets/frlg/secondary/pokemon_league/palettes/01.gbapal"),
@@ -2836,7 +2836,7 @@ const u16 gTilesetPalettes_RG_PokemonLeague[][16] =
 
 const u32 gTilesetTiles_Custom_General[] = INCBIN_U32("data/tilesets/custom/primary/general/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_Custom_General[][16] =
+const u16 ALIGNED(4) gTilesetPalettes_Custom_General[][16] =
 {
     INCBIN_U16("data/tilesets/custom/primary/general/palettes/00.gbapal"),
     INCBIN_U16("data/tilesets/custom/primary/general/palettes/01.gbapal"),

@@ -16,6 +16,7 @@
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
 #include "field_player_avatar.h"
+#include "graphics.h"
 
 static void UpdateObjectReflectionSprite(struct Sprite *);
 static void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite *sprite);
@@ -119,7 +120,7 @@ static void ApplyReflectionPalette(u16 paletteTag, struct Sprite *sprite)
     }
     sprite->oam.paletteNum = LoadSpritePalette(&filteredPal);
     UpdatePaletteColorMap(sprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
-    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum);
+    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum, TRUE);
 }
 
 #define OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION OBJ_EVENT_PAL_TAG_NONE // Tag reused as it isn't assigned to anything and the game prevents this tag from being used for a OW palette
@@ -150,7 +151,7 @@ void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite 
         CpuFill16(RGB(9, 14, 21), blueData, PLTT_SIZE_4BPP);
         reflectionSprite->oam.paletteNum = LoadSpritePalette(&bluePalette);
         UpdatePaletteColorMap(reflectionSprite->oam.paletteNum, COLOR_MAP_DARK_CONTRAST);
-        UpdateSpritePaletteWithWeather(reflectionSprite->oam.paletteNum);
+        UpdateSpritePaletteWithWeather(reflectionSprite->oam.paletteNum, TRUE);
     }
     else
     {
@@ -237,6 +238,7 @@ u8 CreateWarpArrowSprite(void)
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
+        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_NONE);
         sprite->oam.priority = 1;
         sprite->coordOffsetEnabled = TRUE;
         sprite->invisible = TRUE;
@@ -261,16 +263,16 @@ u32 FldEff_Shadow(void)
 {
     u8 objectEventId = GetObjectEventIdByLocalIdAndMap(gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
     const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(gObjectEvents[objectEventId].graphicsId);
-    u8 spriteId;
-    LoadFieldEffectPalette(graphicsInfo->shadowSize, COLOR_MAP_NONE);
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[graphicsInfo->shadowSize], 0, 0, 148);
+    u8 spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[graphicsInfo->shadowSize], 0, 0, 148);
     if (spriteId != MAX_SPRITES)
     {
-        gSprites[spriteId].coordOffsetEnabled = TRUE;
-        gSprites[spriteId].sLocalId = gFieldEffectArguments[0];
-        gSprites[spriteId].sMapNum = gFieldEffectArguments[1];
-        gSprites[spriteId].sMapGroup = gFieldEffectArguments[2];
-        gSprites[spriteId].sYOffset = (graphicsInfo->height >> 1) - gShadowVerticalOffsets[graphicsInfo->shadowSize];
+        struct Sprite *sprite = &gSprites[spriteId];
+        sprite->coordOffsetEnabled = TRUE;
+        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_NONE);
+        sprite->sLocalId = gFieldEffectArguments[0];
+        sprite->sMapNum = gFieldEffectArguments[1];
+        sprite->sMapGroup = gFieldEffectArguments[2];
+        sprite->sYOffset = (graphicsInfo->height >> 1) - gShadowVerticalOffsets[graphicsInfo->shadowSize];
     }
     return 0;
 }
@@ -971,7 +973,7 @@ u32 FldEff_SurfBlob(void)
     {
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
-        sprite->oam.paletteNum = 0;
+        sprite->oam.paletteNum = LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_BRENDAN);
         sprite->sPlayerObjId = gFieldEffectArguments[2];
         sprite->sVelocity = -1;
         sprite->sPrevX = -1;
@@ -1255,13 +1257,13 @@ u32 FldEff_BerryTreeGrowthSparkle(void)
     u8 spriteId;
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 4);
-    LoadFieldEffectPalette(FLDEFFOBJ_SPARKLE, COLOR_MAP_DARK_CONTRAST);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SPARKLE], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
+        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_DARK_CONTRAST);
         sprite->sWaitFldEff = FLDEFF_BERRY_TREE_GROWTH_SPARKLE;
     }
     return 0;
@@ -1294,12 +1296,12 @@ static u32 ShowDisguiseFieldEffect(u8 fldEff, u8 fldEffObj)
         FieldEffectActiveListRemove(fldEff);
         return MAX_SPRITES;
     }
-    LoadFieldEffectPalette(fldEffObj, COLOR_MAP_CONTRAST);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[fldEffObj], 0, 0, 0);
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled ++;
+        sprite->oam.paletteNum = LoadObjectEventPalette(sprite->paletteTag);
         sprite->sFldEff = fldEff;
         sprite->sLocalId = gFieldEffectArguments[0];
         sprite->sMapNum = gFieldEffectArguments[1];
@@ -1650,13 +1652,15 @@ static void UpdateGrassFieldEffectSubpriority(struct Sprite *sprite, u8 elevatio
     }
 }
 
-void LoadFieldEffectPalette(u8 fieldEffect, u8 colorMap)
+void LoadFieldEffectPalette(struct Sprite *sprite, const u16 *palette, u8 colorMap)
 {
-    const struct SpriteTemplate *spriteTemplate = gFieldEffectObjectTemplatePointers[fieldEffect];
-    if (spriteTemplate->paletteTag != TAG_NONE)
+    if (sprite->paletteTag != TAG_NONE)
     {
-        LoadObjectEventPalette(spriteTemplate->paletteTag);
-        PatchObjectPalette(spriteTemplate->paletteTag, IndexOfSpritePaletteTag(spriteTemplate->paletteTag));
-        UpdatePaletteColorMap(IndexOfSpritePaletteTag(spriteTemplate->paletteTag), colorMap);
+        struct SpritePalette spritePalette =
+        {
+            .data = palette,
+            .tag  = sprite->paletteTag,
+        };
+        UpdateSpritePalette(&spritePalette, sprite, colorMap);
     }
 }

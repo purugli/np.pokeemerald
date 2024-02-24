@@ -338,6 +338,7 @@ SECTIONS {
         src/battle_util3.o(.text);
         src/pokemon_forms.o(.text);
         src/trainer_control.o(.text);
+        src/merrp_dns.o(.text);
     } > ROM =0
 
     script_data :
@@ -701,6 +702,7 @@ SECTIONS {
         data/mystery_gift.o(.rodata);
         src/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
+        src/merrp_dns.o(.rodata);
     } > ROM =0
 
     song_data :

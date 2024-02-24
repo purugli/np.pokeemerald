@@ -76,12 +76,6 @@ struct StepAnimTable
     u8 animPos[4];
 };
 
-struct PairedPalettes
-{
-    u16 tag;
-    const u16 *data;
-};
-
 struct LockedAnimObjectEvents
 {
     u8 localIds[OBJECT_EVENTS_COUNT];
@@ -113,13 +107,16 @@ u8 GetFaceDirectionAnimNum(u8 direction);
 void SetSpritePosToOffsetMapCoords(s16 *x, s16 *y, s16 dx, s16 dy);
 void ObjectEventClearHeldMovement(struct ObjectEvent *);
 void ObjectEventClearHeldMovementIfActive(struct ObjectEvent *);
-void TrySpawnObjectEvents(s16 cameraX, s16 cameraY);
+void UpdateLightSprite(struct Sprite *sprite);
+void TrySpawnObjectEvents(s16 cameraX, s16 cameraY, bool32 justLights);
 u8 CreateObjectGraphicsSprite(u16, void (*)(struct Sprite *), s16 x, s16 y, u8 subpriority);
 u8 TrySpawnObjectEvent(u8 localId, u8 mapNum, u8 mapGroup);
 u8 SpawnSpecialObjectEventParameterized(u16 graphicsId, u8 movementBehavior, u8 localId, s16 x, s16 y, u8 elevation);
 u8 SpawnSpecialObjectEvent(struct ObjectEventTemplate *);
 void SetSpritePosToMapCoords(s16 mapX, s16 mapY, s16 *destX, s16 *destY);
 void CameraObjectReset1(void);
+void UpdateSpritePalette(const struct SpritePalette *, struct Sprite *, u8 colorMap);
+void UpdateSpritePaletteByTemplate(struct Sprite *, u8 colorMap);
 void ObjectEventSetGraphicsId(struct ObjectEvent *, u16 graphicsId);
 void ObjectEventTurn(struct ObjectEvent *, u8 direction);
 void ObjectEventTurnByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup, u8 direction);
@@ -210,7 +207,7 @@ void UpdateObjectEventSpriteInvisibility(struct Sprite *sprite, bool8 invisible)
 s16 GetFigure8XOffset(s16 idx);
 s16 GetFigure8YOffset(s16 idx);
 void CameraObjectReset2(void);
-void LoadObjectEventPalette(u16 paletteTag);
+u8 LoadObjectEventPalette(u16 paletteTag);
 u8 GetObjectEventBerryTreeId(u8 objectEventId);
 void SetBerryTreeJustPicked(u8 mapId, u8 mapNumber, u8 mapGroup);
 bool8 IsBerryTreeSparkling(u8 localId, u8 mapNum, u8 mapGroup);

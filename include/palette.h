@@ -5,6 +5,7 @@
 #define gPaletteFade_blendCnt         (gPaletteFade.multipurpose1) // hardware fade
 #define gPaletteFade_delay            (gPaletteFade.multipurpose2) // normal and hardware fade
 #define gPaletteFade_submode          (gPaletteFade.multipurpose2) // fast fade
+#define gPaletteFade_denominator      (gPaletteFade.multipurpose2) // optimized fade
 
 #define PLTT_BUFFER_SIZE (PLTT_SIZE / sizeof(u16))
 
@@ -43,15 +44,14 @@ struct PaletteFadeControl
     u16 targetY:6; // target blend coefficient
     bool16 bufferTransferDisabled:1;
     bool16 shouldResetBlendRegisters:1;
-    u16 multipurpose2:6;
     bool16 hardwareFadeFinishing:1;
     bool16 objPaletteToggle:1;
-    u16 blendColor:15;
-    bool16 yChanged:1;
     u16 softwareFadeFinishingCounter:3;
     bool16 doEndDelay:1;
+    u16 blendColor:15;
+    bool16 yChanged:1;
     u16 y; // blend coefficient
-    u16 denominator;
+    u16 multipurpose2;
 };
 
 extern struct PaletteFadeControl gPaletteFade;
@@ -67,17 +67,21 @@ void FillPalette(u16 value, u16 offset, u16 size);
 void TransferPlttBuffer(void);
 u32 UpdatePaletteFade(void);
 void ResetPaletteFade(void);
-bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, u16 blendColor);
+void BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, u16 blendColor);
+void BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, u16 blendColor);
 void InvertPlttBuffer(u32 selectedPalettes);
 void BeginFastPaletteFade(u32 submode);
 void BeginHardwarePaletteFade(u32 blendCnt, u32 delay, u32 y, u32 targetY, u32 shouldResetBlendRegisters);
 void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color);
+void BlendPalettesFine(u32 selectedPalettes, u16 *palDataSrc, u16 *palDataDst, u32 coeff, u32 blendColor);
 void BlendPalettesUnfaded(u32 selectedPalettes, u8 coeff, u16 color);
 void BlendPalettesGradually(u32 selectedPalettes, s8 delay, u8 coeff, u8 coeffTarget, u16 color, u8 priority, u8 id);
 void TintPalette_GrayScale(u16 *palette, u16 count);
 void TintPalette_GrayScale2(u16 *palette, u16 count);
 void TintPalette_SepiaTone(u16 *palette, u16 count);
 void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 bTone);
+
+#include "merrp_dns.h"
 
 static inline void SetBackdropFromColor(u16 color)
 {

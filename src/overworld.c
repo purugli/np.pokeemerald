@@ -1452,6 +1452,23 @@ void CB2_OverworldBasic(void)
     UpdatePaletteFade();
     UpdateTilesetAnimations();
     DoScheduledBgTilemapCopiesToVram();
+    // Every minute if no palette fade is active, update TOD blending as needed
+    if (!gPaletteFade.active && gTimeUpdateCounter++ >= SECONDS_PER_MINUTE)
+    {
+        struct TimeBlendSettings cachedBlend =
+        {
+            .time0 = gCurrentTimeBlend.time0,
+            .time1 = gCurrentTimeBlend.time1,
+            .weight = gCurrentTimeBlend.weight,
+        };
+        gTimeUpdateCounter = 0;
+        UpdateTimeOfDay();
+        if (cachedBlend.time0 != gCurrentTimeBlend.time0 || cachedBlend.time1 != gCurrentTimeBlend.time1 || cachedBlend.weight != gCurrentTimeBlend.weight)
+        {
+            UpdateAltBgPalettes(PALETTES_BG);
+            UpdatePalettesWithTime(PALETTES_ALL);
+        }
+    }
 }
 
 void CB2_Overworld(void)

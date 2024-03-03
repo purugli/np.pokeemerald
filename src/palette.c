@@ -428,7 +428,7 @@ void BlendPalettesUnfaded(u32 selectedPalettes, u8 coeff, u16 color)
     BlendPalettes(selectedPalettes, coeff, color);
 }
 
-static void TintPalette_GrayScaleRoundDown(u16 *palette, u16 count, bool32 roundDown)
+void TintPalette_GrayScale(u16 *palette, u16 count, bool32 roundDown)
 {
     s32 r, g, b, i;
     u32 gray;
@@ -450,16 +450,6 @@ static void TintPalette_GrayScaleRoundDown(u16 *palette, u16 count, bool32 round
         }
         *palette++ = RGB2(gray, gray, gray);
     }
-}
-
-void TintPalette_GrayScale(u16 *palette, u16 count)
-{
-    TintPalette_GrayScaleRoundDown(palette, count, FALSE);
-}
-
-void TintPalette_GrayScale2(u16 *palette, u16 count)
-{
-    TintPalette_GrayScaleRoundDown(palette, count, TRUE);
 }
 
 void TintPalette_SepiaTone(u16 *palette, u16 count)

@@ -60,21 +60,17 @@ struct Trainer
              bool8 mugshotEnabled:1;
     /*0x03*/ u8 trainerPic;
     /*0x04*/ const u8 *trainerName;
-    union
-    {
-        struct
-        {
+    union {
+        struct {
             /*0x08*/ u16 items[MAX_TRAINER_ITEMS];
             /*0x10*/ u32 aiFlags;
         } trainer;
-        struct
-        {
+        struct {
             /*0x08*/ u32 otId;
             /*0x0C*/ u8 padding[4];
             /*0x10*/ u32 aiFlags;
         } partner;
-        struct
-        {
+        struct {
             /*0x08*/ u8 streakAppearances[4];
             // Flags to change the conversation when the Frontier Brain is encountered for a battle
             // First bit is has battled them before and not won yet, second bit is has battled them and won (obtained a Symbol)

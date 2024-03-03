@@ -28,6 +28,7 @@
 #include "constants/rgb.h"
 #include "constants/trade.h"
 #include "trainer_pokemon_sprites.h"
+#include "data.h"
 
 // Window IDs for the link error screens
 enum {
@@ -532,7 +533,7 @@ static void ProcessRecvCmds(void)
                         block = (struct LinkPlayerBlock *)&gBlockRecvBuffer[i];
                         linkPlayer = &gLinkPlayers[i];
                         *linkPlayer = block->linkPlayer;
-                        if ((linkPlayer->version & 0xFF) == VERSION_RUBY || (linkPlayer->version & 0xFF) == VERSION_SAPPHIRE)
+                        if (GetLinkPlayerVersionId(linkPlayer->version) == PLAYER_RS)
                         {
                             linkPlayer->progressFlagsCopy = 0;
                             linkPlayer->neverRead = 0;
@@ -680,7 +681,7 @@ u8 GetLinkPlayerCount(void)
     return EXTRACT_PLAYER_COUNT(gLinkStatus);
 }
 
-static int AreAnyLinkPlayersUsingVersions(u32 version1, u32 version2)
+static int AreAnyLinkPlayersUsingVersions(u32 versionId)
 {
     int i;
     u8 nPlayers;
@@ -688,8 +689,7 @@ static int AreAnyLinkPlayersUsingVersions(u32 version1, u32 version2)
     nPlayers = GetLinkPlayerCount();
     for (i = 0; i < nPlayers; i++)
     {
-        if ((gLinkPlayers[i].version & 0xFF) == version1
-         || (gLinkPlayers[i].version & 0xFF) == version2)
+        if (GetLinkPlayerVersionId(gLinkPlayers[i].version) == versionId)
             return 1;
     }
     return -1;
@@ -702,7 +702,7 @@ u32 LinkDummy_Return2(void)
 
 bool32 Link_AnyPartnersPlayingRubyOrSapphire(void)
 {
-    if (AreAnyLinkPlayersUsingVersions(VERSION_RUBY, VERSION_SAPPHIRE) >= 0)
+    if (AreAnyLinkPlayersUsingVersions(PLAYER_RS) >= 0)
     {
         return TRUE;
     }
@@ -713,7 +713,7 @@ bool32 Link_AnyPartnersPlayingFRLG_JP(void)
 {
     int i;
 
-    i = AreAnyLinkPlayersUsingVersions(VERSION_FIRE_RED, VERSION_LEAF_GREEN);
+    i = AreAnyLinkPlayersUsingVersions(PLAYER_FRLG);
     if (i >= 0 && gLinkPlayers[i].language == LANGUAGE_JAPANESE)
     {
         return TRUE;
@@ -2168,26 +2168,4 @@ void ResetRecvBuffer(void)
                 gLink.recvQueue.data[i][j][k] = LINKCMD_NONE;
         }
     }
-}
-
-u32 GetVersionId(u8 version)
-{
-    u32 versionId = 0;
-    if (version < VERSION_EMERALD)
-        versionId = 1;
-    else if (version > VERSION_EMERALD)
-        versionId = 2;
-    return versionId;
-}
-
-u16 GetLinkPlayerFrontTrainerPicId(u8 multiplayerId)
-{
-    struct LinkPlayer *linkPlayer = &gLinkPlayers[multiplayerId];
-    return GetPlayerFrontTrainerPicId((u8)linkPlayer->version, linkPlayer->gender);
-}
-
-u8 GetLinkPlayerBackTrainerPicId(u8 multiplayerId)
-{
-    struct LinkPlayer *linkPlayer = &gLinkPlayers[multiplayerId];
-    return GetPlayerBackTrainerPicId((u8)linkPlayer->version, linkPlayer->gender);
 }

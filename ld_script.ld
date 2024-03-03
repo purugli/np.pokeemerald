@@ -118,6 +118,7 @@ SECTIONS {
         src/field_door.o(.text);
         src/field_player_avatar.o(.text);
         src/event_object_movement.o(.text);
+        src/player_sprites.o(.text);
         src/field_message_box.o(.text);
         src/event_object_lock.o(.text);
         src/text_window.o(.text);
@@ -1308,6 +1309,7 @@ SECTIONS {
     ALIGN(4)
     {
         src/graphics.o(.rodata);
+        src/player_sprites.o(.rodata);
     } > ROM =0
 
     extra :

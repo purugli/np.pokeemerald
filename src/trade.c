@@ -2411,8 +2411,7 @@ static u32 CanTradeSelectedMon(struct Pokemon *playerParty, int partyCount, int 
     }
 
     partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
-    if ((partner->version & 0xFF) != VERSION_RUBY &&
-        (partner->version & 0xFF) != VERSION_SAPPHIRE)
+    if (GetLinkPlayerVersionId(partner->version) != PLAYER_RS)
     {
         // Does partner not have National Dex
         if (!(partner->progressFlagsCopy & 0xF))
@@ -2455,26 +2454,19 @@ s32 GetGameProgressForLinkTrade(void)
 {
     // The usage of this value is a little unusual given it's treated as a bool,
     // but it's the result of its usage in FRLG, where 0 is FRLG, 1 is RS, and 2 is Emerald.
-    s32 versionId; // 0: RSE, 2: FRLG
-    u16 version;
+    s32 versionId; // 0: E, 1: RS, 2: FRLG
 
     if (gReceivedRemoteLinkPlayers)
     {
-        versionId = 0;
-        version = (gLinkPlayers[GetMultiplayerId() ^ 1].version & 0xFF);
-
-        if (version == VERSION_RUBY || version == VERSION_SAPPHIRE || version == VERSION_EMERALD)
-            versionId = 0;
-        else if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
-            versionId = 2;
+        versionId = (s32)GetLinkPlayerVersionId(gLinkPlayers[GetMultiplayerId() ^ 1].version);
 
         // If trading with FRLG, both players must have progessed the story enough
-        if (versionId > 0)
+        if (versionId > PLAYER_RS)
         {
             // Is player champion
             if (gLinkPlayers[GetMultiplayerId()].progressFlagsCopy & 0xF0)
             {
-                if (versionId == 2) // Check is only relevant in FRLG, this will always be true
+                if (versionId == PLAYER_FRLG) // Check is only relevant in FRLG, this will always be true
                 {
                     // Has FRLG partner finished the Sevii Islands
                     if (gLinkPlayers[GetMultiplayerId() ^ 1].progressFlagsCopy & 0xF0)

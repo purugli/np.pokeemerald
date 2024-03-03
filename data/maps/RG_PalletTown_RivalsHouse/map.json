@@ -16,7 +16,7 @@
   "object_events": [
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_DAISY",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_DAISY",
       "x": 10,
       "y": 6,
       "elevation": 3,
@@ -30,7 +30,7 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_TOWN_MAP",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_TOWN_MAP",
       "x": 6,
       "y": 4,
       "elevation": 3,

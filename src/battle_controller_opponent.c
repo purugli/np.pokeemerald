@@ -1271,10 +1271,7 @@ static void OpponentHandleDrawTrainerPic(void)
 
     DecompressTrainerFrontPic(trainerPicId, gActiveBattler);
     SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));
-    gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate,
-                                               xPos,
-                                               40,
-                                               GetBattlerSpriteSubpriority(gActiveBattler));
+    gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate, xPos, 40, GetBattlerSpriteSubpriority(gActiveBattler));
 
     gSprites[gBattlerSpriteIds[gActiveBattler]].x2 = -DISPLAY_WIDTH;
     gSprites[gBattlerSpriteIds[gActiveBattler]].sSpeedX = 2;

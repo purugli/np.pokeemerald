@@ -212,32 +212,3 @@ u16 CreateTrainerCardTrainerPicSprite(u16 trainerPicId, u16 destX, u16 destY)
     }
     return 0xFFFF;
 }
-
-u16 GetPlayerFrontTrainerPicId(u8 version, u8 gender)
-{
-    u16 trainerPicId = TRAINER_PIC_BRENDAN;
-    switch (GetVersionId(version))
-    {
-    case 1:
-        trainerPicId = TRAINER_PIC_RS_BRENDAN;
-        break;
-    case 2:
-        trainerPicId = TRAINER_PIC_RG_RED;
-        break;
-    }
-    return trainerPicId + gender;
-}
-
-u8 GetPlayerBackTrainerPicId(u8 version, u8 gender)
-{
-    switch (GetVersionId(version))
-    {
-    case 1:
-        gender += TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
-        break;
-    case 2:
-        gender += TRAINER_BACK_PIC_RG_RED;
-        break;
-    }
-    return gender;
-}

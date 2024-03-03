@@ -48,6 +48,22 @@ enum ReflectionTypes
     NUM_REFLECTION_TYPES
 };
 
+enum {
+    OBJ_EVENT_ANIM_INANIMATE,
+    OBJ_EVENT_ANIM_QUINTY_PLUMP,
+    OBJ_EVENT_ANIM_STANDARD,
+    OBJ_EVENT_ANIM_HO_OH,
+    OBJ_EVENT_ANIM_RAYQUAZA,
+    OBJ_EVENT_ANIM_BIKE,
+    OBJ_EVENT_ANIM_SURFING,
+    OBJ_EVENT_ANIM_NURSE,
+    OBJ_EVENT_ANIM_FIELD_MOVE,
+    OBJ_EVENT_ANIM_BERRY_TREE,
+    OBJ_EVENT_ANIM_BREAKABLE_ROCK,
+    OBJ_EVENT_ANIM_CUTTABLE_TREE,
+    OBJ_EVENT_ANIM_FISHING
+};
+
 #define FIGURE_8_LENGTH 72
 
 #define GROUND_EFFECT_FLAG_TALL_GRASS_ON_SPAWN   (1 << 0)
@@ -89,6 +105,7 @@ extern const struct SpriteTemplate *const gFieldEffectObjectTemplatePointers[];
 extern const u8 *const gBerryTreeObjectEventGraphicsIdTablePointers[];
 extern const struct SpriteFrameImage *const gBerryTreePicTablePointers[];
 extern const u8 *const gBerryTreePaletteSlotTablePointers[];
+extern const struct SpritePalette gObjectEventSpritePalettes[];
 
 void ResetObjectEvents(void);
 u8 GetMoveDirectionAnimNum(u8 direction);
@@ -208,6 +225,7 @@ s16 GetFigure8XOffset(s16 idx);
 s16 GetFigure8YOffset(s16 idx);
 void CameraObjectReset2(void);
 u8 LoadObjectEventPalette(u16 paletteTag);
+u32 FindObjectEventPaletteIndexByTag(u16 tag);
 u8 GetObjectEventBerryTreeId(u8 objectEventId);
 void SetBerryTreeJustPicked(u8 mapId, u8 mapNumber, u8 mapGroup);
 bool8 IsBerryTreeSparkling(u8 localId, u8 mapNum, u8 mapGroup);

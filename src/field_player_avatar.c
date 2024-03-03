@@ -33,6 +33,7 @@
 #include "constants/metatile_behaviors.h"
 #include "m4a.h"
 #include "link.h"
+#include "data.h"
 
 #define NUM_ACRO_BIKE_COLLISIONS 5
 
@@ -218,22 +219,7 @@ static bool8 (*const sArrowWarpMetatileBehaviorChecks[])(u8) =
     [DIR_EAST - 1]  = MetatileBehavior_IsEastArrowWarp,
 };
 
-static const u16 sPlayerAvatarGfxIds[][2] =
-{
-    [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_BRENDAN_NORMAL,     OBJ_EVENT_GFX_MAY_NORMAL},
-    [PLAYER_AVATAR_STATE_BIKE]       = {OBJ_EVENT_GFX_BRENDAN_BIKE,       OBJ_EVENT_GFX_MAY_BIKE},
-    [PLAYER_AVATAR_STATE_SURFING]    = {OBJ_EVENT_GFX_BRENDAN_SURFING,    OBJ_EVENT_GFX_MAY_SURFING},
-    [PLAYER_AVATAR_STATE_UNDERWATER] = {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, OBJ_EVENT_GFX_MAY_UNDERWATER},
-};
-
-static const u16 sPlayerAvatarAnimGfxIds[][2] =
-{
-    [PLAYER_AVATAR_GFX_FIELD_MOVE] = {OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_MAY_FIELD_MOVE},
-    [PLAYER_AVATAR_GFX_FISHING]    = {OBJ_EVENT_GFX_BRENDAN_FISHING,    OBJ_EVENT_GFX_MAY_FISHING},
-    [PLAYER_AVATAR_GFX_WATERING]   = {OBJ_EVENT_GFX_BRENDAN_WATERING,   OBJ_EVENT_GFX_MAY_WATERING},
-};
-
-static const u8 sPlayerAvatarGfxToStateFlag[4] =
+static const u8 sPlayerAvatarGfxToStateFlag[PLAYER_AVATAR_STATE_COUNT - 3] =
 {
     [PLAYER_AVATAR_STATE_NORMAL]     = PLAYER_AVATAR_FLAG_ON_FOOT,
     [PLAYER_AVATAR_STATE_BIKE]       = PLAYER_AVATAR_FLAG_BIKE,
@@ -1215,22 +1201,7 @@ void StopPlayerAvatar(void)
 
 u16 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
-    return sPlayerAvatarGfxIds[state][gender];
-}
-
-u16 GetLinkPlayerAvatarGraphicsIdByGender(u8 version, u8 gender)
-{
-    u16 gfxId = sPlayerAvatarGfxIds[PLAYER_AVATAR_STATE_NORMAL][gender];
-    switch (GetVersionId(version))
-    {
-    case 2:
-        gfxId = OBJ_EVENT_GFX_RG_RED_NORMAL + gender;
-        break;
-    case 1:
-        gfxId = OBJ_EVENT_GFX_LINK_RS_BRENDAN + gender;
-        break;
-    }
-    return gfxId;
+    return PlayerSprites_GetAvatarGraphics(PLAYER_VERSION, state, gender);
 }
 
 u16 GetPlayerAvatarGraphicsIdByStateId(u8 state)
@@ -1360,22 +1331,17 @@ void SetPlayerInvisibility(bool8 invisible)
         gSprites[gObjectEvents[gPlayerAvatar.objectEventId].fieldEffectSpriteId].invisible = invisible;
 }
 
-void SetPlayerAvatarAnimation(u32 playerAnimId, u32 animNum)
-{
-    u16 gfxId = sPlayerAvatarAnimGfxIds[playerAnimId][gSaveBlock2Ptr->playerGender];
-    ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], gfxId);
-    StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], animNum);
-}
-
 void SetPlayerAvatarFieldMove(void)
 {
-    SetPlayerAvatarAnimation(PLAYER_AVATAR_GFX_FIELD_MOVE, ANIM_FIELD_MOVE);
+    u8 playerAnimId = PLAYER_AVATAR_GFX_FIELD_MOVE;
+    if (playerAnimId == PLAYER_AVATAR_GFX_FIELD_MOVE && gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BIKE)
+        playerAnimId = PLAYER_AVATAR_GFX_FIELD_MOVE_BIKE;
+    SetPlayerAvatarAnimation(playerAnimId, ANIM_FIELD_MOVE);
 }
 
 void PlayerUseAcroBikeOnBumpySlope(u8 direction)
 {
-    ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_BIKE));
-    StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetAcroWheelieDirectionAnimNum(direction));
+    SetPlayerAnimation(GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_BIKE), GetAcroWheelieDirectionAnimNum(direction));
     SeekSpriteAnim(&gSprites[gPlayerAvatar.spriteId], 1);
 }
 

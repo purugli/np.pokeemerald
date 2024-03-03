@@ -2478,13 +2478,10 @@ void SetLinkContestPlayerGfx(void)
     {
         for (i = 0; i < gNumLinkContestPlayers; i++)
         {
-            int version = (u8)gLinkPlayers[i].version;
-            if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
+            int version = gLinkPlayers[i].version;
+            if (GetLinkPlayerVersionId(version) == PLAYER_RS)
             {
-                if (gLinkPlayers[i].gender == MALE)
-                    gContestMons[i].trainerGfxId = OBJ_EVENT_GFX_LINK_RS_BRENDAN;
-                else
-                    gContestMons[i].trainerGfxId = OBJ_EVENT_GFX_LINK_RS_MAY;
+                gContestMons[i].trainerGfxId = GetLinkPlayerAvatarGraphics(version, gLinkPlayers[i].gender);
             }
         }
 
@@ -2511,21 +2508,8 @@ void LoadLinkContestPlayerPalettes(void)
             objectEventId = GetObjectEventIdByLocalIdAndMap(sContestantLocalIds[i], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
             sprite = &gSprites[gObjectEvents[objectEventId].spriteId];
             sprite->oam.paletteNum = 6 + i;
-            version = (u8)gLinkPlayers[i].version;
-            if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
-            {
-                if (gLinkPlayers[i].gender == MALE)
-                    LoadPalette(gObjectEventPal_RubySapphireBrendan, OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
-                else
-                    LoadPalette(gObjectEventPal_RubySapphireMay, OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
-            }
-            else
-            {
-                if (gLinkPlayers[i].gender == MALE)
-                    LoadPalette(gObjectEventPal_Brendan, OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
-                else
-                    LoadPalette(gObjectEventPal_May, OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
-            }
+            version = gLinkPlayers[i].version;
+            LoadPalette(GetObjectEventPaletteFromGraphicsId(GetLinkPlayerAvatarGraphics(version, gLinkPlayers[i].gender)), OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
         }
     }
 }

@@ -238,7 +238,7 @@ u8 CreateWarpArrowSprite(void)
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
-        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_NONE);
+        LoadFieldEffectPalette(sprite, gObjectEventPal_FRLGRedLeaf, COLOR_MAP_NONE);
         sprite->oam.priority = 1;
         sprite->coordOffsetEnabled = TRUE;
         sprite->invisible = TRUE;
@@ -268,7 +268,7 @@ u32 FldEff_Shadow(void)
     {
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
-        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_NONE);
+        LoadFieldEffectPalette(sprite, gObjectEventPal_FRLGRedLeaf, COLOR_MAP_NONE);
         sprite->sLocalId = gFieldEffectArguments[0];
         sprite->sMapNum = gFieldEffectArguments[1];
         sprite->sMapGroup = gFieldEffectArguments[2];
@@ -1263,7 +1263,7 @@ u32 FldEff_BerryTreeGrowthSparkle(void)
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_DARK_CONTRAST);
+        LoadFieldEffectPalette(sprite, gObjectEventPal_FRLGRedLeaf, COLOR_MAP_DARK_CONTRAST);
         sprite->sWaitFldEff = FLDEFF_BERRY_TREE_GROWTH_SPARKLE;
     }
     return 0;

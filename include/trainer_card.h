@@ -6,13 +6,6 @@
 
 enum
 {
-    CARD_TYPE_FRLG,
-    CARD_TYPE_RS,
-    CARD_TYPE_EMERALD,
-};
-
-enum
-{
     MON_ICON_TINT_NORMAL,
     MON_ICON_TINT_BLACK,
     MON_ICON_TINT_PINK,

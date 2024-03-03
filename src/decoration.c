@@ -1,5 +1,6 @@
 #include "global.h"
 #include "malloc.h"
+#include "data.h"
 #include "decompress.h"
 #include "decoration.h"
 #include "decoration_inventory.h"
@@ -1381,7 +1382,7 @@ static void ConfigureCameraObjectForPlacingDecoration(struct PlaceDecorationGrap
 
 static void CreateplayerDecoratingSprite(u8 x)
 {
-    sDecor_CameraSpriteObjectIdx2 = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_BRENDAN_DECORATING + gSaveBlock2Ptr->playerGender, SpriteCallbackDummy, x, 72, 0);
+    sDecor_CameraSpriteObjectIdx2 = CreateObjectGraphicsSprite(PlayerSprites_GetAvatarAnimGraphics(PLAYER_VERSION, PLAYER_AVATAR_GFX_DECORATING, gSaveBlock2Ptr->playerGender), SpriteCallbackDummy, x, 72, 0);
 }
 
 static void SetUpPlacingDecorationPlayerAvatar(u8 taskId, struct PlaceDecorationGraphicsDataBuffer *data)

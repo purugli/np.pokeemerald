@@ -16,7 +16,7 @@
   "object_events": [
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_SCIENTIST",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_SCIENTIST",
       "x": 3,
       "y": 11,
       "elevation": 3,
@@ -30,7 +30,7 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_WORKER_F",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_WORKER_F",
       "x": 2,
       "y": 10,
       "elevation": 3,
@@ -44,7 +44,7 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_SCIENTIST",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_SCIENTIST",
       "x": 11,
       "y": 10,
       "elevation": 3,
@@ -58,7 +58,7 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_PROF_OAK",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_PROF_OAK",
       "x": 6,
       "y": 3,
       "elevation": 3,
@@ -114,7 +114,7 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_BLUE",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_BLUE",
       "x": 5,
       "y": 4,
       "elevation": 3,
@@ -128,7 +128,7 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_POKEDEX",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_POKEDEX",
       "x": 4,
       "y": 1,
       "elevation": 0,
@@ -142,7 +142,7 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_RG_POKEDEX",
+      "graphics_id": "OBJ_EVENT_GFX_FRLG_POKEDEX",
       "x": 5,
       "y": 1,
       "elevation": 0,

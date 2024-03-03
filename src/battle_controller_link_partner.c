@@ -552,7 +552,7 @@ static void LinkPartnerHandleDrawTrainerPic(void)
             xPos = 32;
     }
 
-    trainerPicId = GetLinkPlayerBackTrainerPicId(GetBattlerMultiplayerId(gActiveBattler));
+    trainerPicId = GetLinkPlayerBackTrainerPic(GetBattlerMultiplayerId(gActiveBattler));
     DecompressTrainerBackPic(trainerPicId, gActiveBattler);
     SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));
     gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate, xPos, 80, GetBattlerSpriteSubpriority(gActiveBattler));
@@ -820,7 +820,7 @@ static void LinkPartnerHandleIntroTrainerBallThrow(void)
 
     paletteNum = AllocSpritePalette(0xD6F9);
 
-    trainerPicId = GetLinkPlayerBackTrainerPicId(GetBattlerMultiplayerId(gActiveBattler));
+    trainerPicId = GetLinkPlayerBackTrainerPic(GetBattlerMultiplayerId(gActiveBattler));
 
     DecompressTrainerBackPic(trainerPicId, paletteNum);
 

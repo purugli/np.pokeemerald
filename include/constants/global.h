@@ -29,6 +29,20 @@
 #define GAME_VERSION (VERSION_EMERALD)
 #define GAME_LANGUAGE (LANGUAGE_ENGLISH)
 
+// Not actual game version but the version the players themselves are in.
+#define PLAYER_EMERALD 0
+#define PLAYER_RS 1
+#define PLAYER_FRLG 2
+#define PLAYER_VERSION_COUNT 3
+
+#if GAME_VERSION <= VERSION_RUBY
+#define PLAYER_VERSION (PLAYER_RS)
+#elif GAME_VERSION >= VERSION_FIRE_RED
+#define PLAYER_VERSION (PLAYER_FRLG)
+#else
+#define PLAYER_VERSION (PLAYER_EMERALD)
+#endif
+
 // party sizes
 #define PARTY_SIZE 6
 #define MULTI_PARTY_SIZE (PARTY_SIZE / 2)

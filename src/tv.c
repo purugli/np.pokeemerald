@@ -3491,7 +3491,7 @@ void HideBattleTowerReporter(void)
 void ReceiveTvShowsData(void *src, u32 size, u8 playersLinkId)
 {
     u8 i;
-    u16 version;
+    u32 version;
     TVShow (*rmBuffer2)[MAX_LINK_PLAYERS][TV_SHOWS_COUNT];
     TVShow (*rmBuffer)[MAX_LINK_PLAYERS][TV_SHOWS_COUNT];
 
@@ -3504,10 +3504,10 @@ void ReceiveTvShowsData(void *src, u32 size, u8 playersLinkId)
         rmBuffer = rmBuffer2;
         for (i = 0; i < GetLinkPlayerCount(); i++)
         {
-            version = (u8)gLinkPlayers[i].version;
-            if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
+            version = GetLinkPlayerVersionId(gLinkPlayers[i].version);
+            if (version == PLAYER_RS)
                 TranslateRubyShows((*rmBuffer)[i]);
-            else if (version == VERSION_EMERALD && gLinkPlayers[i].language == LANGUAGE_JAPANESE)
+            else if (version == PLAYER_EMERALD && gLinkPlayers[i].language == LANGUAGE_JAPANESE)
                 TranslateJapaneseEmeraldShows((*rmBuffer)[i]);
         }
 

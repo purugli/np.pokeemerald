@@ -527,7 +527,7 @@ const u8 *GetTrainerNameFromId(u16 trainerId);
 struct MonSpritesGfxManager *CreateMonSpritesGfxManager(void);
 void DestroyMonSpritesGfxManager(void);
 u8 *MonSpritesGfxManager_GetSpritePtr(void);
-u8 PlayerGenderToBackTrainerPicId(u8 playerGender);
+u16 PlayerGenderToBackTrainerPicId(u8 playerGender);
 const u8 *GetSpeciesNameOfLanguage(u16 species, u8 language);
 bool32 IsMonNotNicknamed(u8 *nickname, u16 species, u8 language);
 

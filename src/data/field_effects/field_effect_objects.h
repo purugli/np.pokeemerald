@@ -1,12 +1,14 @@
 const struct SpritePalette gSpritePalette_GeneralFieldEffect0 = {gFieldEffectObjectPalette0, FLDEFF_PAL_TAG_GENERAL_0};
 const struct SpritePalette gSpritePalette_GeneralFieldEffect1 = {gFieldEffectObjectPalette1, FLDEFF_PAL_TAG_GENERAL_1};
-static const union AnimCmd sAnim_DisguiseReveal[];
+const struct SpritePalette gSpritePalette_GeneralFieldEffect2 = {gFieldEffectObjectPalette2, FLDEFF_PAL_TAG_GENERAL_2};
 
 static const union AnimCmd sAnim_Shadow[] =
 {
     ANIMCMD_FRAME(0, 1),
     ANIMCMD_END,
 };
+
+static const union AnimCmd sAnim_DisguiseReveal[];
 
 static const union AnimCmd *const sAnimTable_Shadow[] =
 {
@@ -30,12 +32,12 @@ static const struct SpriteFrameImage sPicTable_ShadowExtraLarge[] = {
     obj_frame_tiles(gFieldEffectObjectPic_ShadowExtraLarge),
 };
 
-static const struct SpriteFrameImage sPicTable_PokeCenterLight[] = {
-    obj_frame_tiles(gFieldEffectObjectPic_PokeCenterLight),
+static const struct SpriteFrameImage sPicTable_DNSPokeCenterLight[] = {
+    obj_frame_tiles(gFieldEffectObjectPic_DNSPokeCenterLight),
 };
 
-static const struct SpriteFrameImage sPicTable_MartLight[] = {
-    obj_frame_tiles(gFieldEffectObjectPic_MartLight),
+static const struct SpriteFrameImage sPicTable_DNSMartLight[] = {
+    obj_frame_tiles(gFieldEffectObjectPic_DNSMartLight),
 };
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowSmall = {
@@ -78,31 +80,31 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowExtraLarge = {
     .callback = UpdateShadowFieldEffect,
 };
 
-const struct SpriteTemplate gFieldEffectObjectTemplate_Light[LIGHT_TYPE_COUNT] = {
+const struct SpriteTemplate gFieldEffectObjectTemplate_DNSLight[LIGHT_TYPE_COUNT] = {
     [LIGHT_TYPE_BALL] = {
-        .tileTag = OBJ_EVENT_PAL_TAG_LIGHT,
-        .paletteTag = OBJ_EVENT_PAL_TAG_LIGHT,
+        .tileTag = OBJ_EVENT_PAL_TAG_DNS_LIGHT,
+        .paletteTag = OBJ_EVENT_PAL_TAG_DNS_LIGHT,
         .oam = &gObjectEventBaseOam_32x32,
         .anims = sAnimTable_Inanimate,
-        .images = sPicTable_BallLight,
+        .images = sPicTable_DNSBallLight,
         .affineAnims = gDummySpriteAffineAnimTable,
         .callback = UpdateLightSprite,
     },
     [LIGHT_TYPE_POKE_CENTER_SIGN] = {
         .tileTag = TAG_NONE,
-        .paletteTag = OBJ_EVENT_PAL_TAG_NEON_LIGHT,
+        .paletteTag = OBJ_EVENT_PAL_TAG_DNS_NEON_LIGHT,
         .oam = &gObjectEventBaseOam_16x16,
         .anims = sAnimTable_Inanimate,
-        .images = sPicTable_PokeCenterLight,
+        .images = sPicTable_DNSPokeCenterLight,
         .affineAnims = gDummySpriteAffineAnimTable,
         .callback = UpdateLightSprite,
     },
     [LIGHT_TYPE_POKE_MART_SIGN] = {
         .tileTag = TAG_NONE,
-        .paletteTag = OBJ_EVENT_PAL_TAG_NEON_LIGHT,
+        .paletteTag = OBJ_EVENT_PAL_TAG_DNS_NEON_LIGHT,
         .oam = &gObjectEventBaseOam_16x16,
         .anims = sAnimTable_Inanimate,
-        .images = sPicTable_MartLight,
+        .images = sPicTable_DNSMartLight,
         .affineAnims = gDummySpriteAffineAnimTable,
         .callback = UpdateLightSprite,
     }
@@ -801,8 +803,6 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_AshPuff =
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_AshPuff
 };
-
-const struct SpritePalette gSpritePalette_GeneralFieldEffect2 = {gFieldEffectObjectPalette2, FLDEFF_PAL_TAG_GENERAL_2};
 
 static const struct SpriteFrameImage sPicTable_AshLaunch[] = {
     overworld_ascending_frames(gFieldEffectObjectPic_AshLaunch, 2, 2),

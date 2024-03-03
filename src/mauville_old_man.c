@@ -22,6 +22,7 @@
 #include "trader.h"
 #include "m4a.h"
 #include "constants/mauville_old_man.h"
+#include "data.h"
 
 static void InitGiddyTaleList(void);
 static void StartBardSong(bool8 useTemporaryLyrics);
@@ -765,7 +766,7 @@ void SanitizeReceivedEmeraldOldMan(union OldMan * oldMan, u32 version, u32 langu
 
 void SanitizeReceivedRubyOldMan(union OldMan * oldMan, u32 version, u32 language)
 {
-    bool32 isRuby = (version == VERSION_SAPPHIRE || version == VERSION_RUBY);
+    bool32 isRuby = (GetLinkPlayerVersionId(version) == PLAYER_RS);
 
     switch (oldMan->common.id)
     {

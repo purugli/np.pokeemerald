@@ -69,6 +69,7 @@
 #include "region_map.h"
 #include "field_player_avatar.h"
 #include "constants/event_objects.h"
+#include "data.h"
 #include "siirtc.h"
 
 struct CableClubPlayer
@@ -3053,7 +3054,7 @@ static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion)
 
     if (linkPlayerObjEvent->active)
     {
-        objEvent->spriteId = CreateObjectGraphicsSprite(GetLinkPlayerAvatarGraphicsIdByGender(gameVersion, linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0);
+        objEvent->spriteId = CreateObjectGraphicsSprite(GetLinkPlayerAvatarGraphics(gameVersion, linkGender(objEvent)), SpriteCB_LinkPlayer, 0, 0, 0);
         sprite = &gSprites[objEvent->spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->data[0] = linkPlayerId;

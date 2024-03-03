@@ -716,7 +716,7 @@ static u8 SetIconSpriteData(u8 spriteAnimNum)
 
         sprite->oam.priority = 1;
         sprite->coordOffsetEnabled = 1;
-        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_NONE);
+        LoadFieldEffectPalette(sprite, gObjectEventPal_FRLGRedLeaf, COLOR_MAP_NONE);
 
         sprite->sLocalId = gFieldEffectArguments[0];
         sprite->sMapNum = gFieldEffectArguments[1];

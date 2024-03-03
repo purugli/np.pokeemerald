@@ -1990,21 +1990,21 @@ static const struct SpriteTemplate sTrainerBackSpriteTemplates[] =
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
-    [TRAINER_BACK_PIC_RG_RED] = {
+    [TRAINER_BACK_PIC_FRLG_RED] = {
         .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_RG_RED,
+        .paletteTag = TRAINER_BACK_PIC_FRLG_RED,
         .oam = &gOamData_BattleSpritePlayerSide,
         .anims = gBackAnims_5Frames,
-        .images = gTrainerBackPicTable_RG_Red,
+        .images = gTrainerBackPicTable_FRLGRed,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
-    [TRAINER_BACK_PIC_RG_LEAF] = {
+    [TRAINER_BACK_PIC_FRLG_LEAF] = {
         .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_RG_LEAF,
+        .paletteTag = TRAINER_BACK_PIC_FRLG_LEAF,
         .oam = &gOamData_BattleSpritePlayerSide,
         .anims = gBackAnims_5Frames,
-        .images = gTrainerBackPicTable_RG_Leaf,
+        .images = gTrainerBackPicTable_FRLGLeaf,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
@@ -2044,21 +2044,21 @@ static const struct SpriteTemplate sTrainerBackSpriteTemplates[] =
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
-    [TRAINER_BACK_PIC_RG_POKEDUDE] = {
+    [TRAINER_BACK_PIC_FRLG_POKEDUDE] = {
         .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_RG_POKEDUDE,
+        .paletteTag = TRAINER_BACK_PIC_FRLG_POKEDUDE,
         .oam = &gOamData_BattleSpritePlayerSide,
         .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_RG_Pokedude,
+        .images = gTrainerBackPicTable_FRLGPokedude,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
-    [TRAINER_BACK_PIC_RG_OLD_MAN] = {
+    [TRAINER_BACK_PIC_FRLG_OLD_MAN] = {
         .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_RG_OLD_MAN,
+        .paletteTag = TRAINER_BACK_PIC_FRLG_OLD_MAN,
         .oam = &gOamData_BattleSpritePlayerSide,
         .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_RG_OldMan,
+        .images = gTrainerBackPicTable_FRLGOldMan,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
@@ -6664,7 +6664,7 @@ u8 GetOpposingLinkMultiBattlerId(bool8 rightSide, u8 multiplayerId)
 
 u16 PlayerGenderToFrontTrainerPicId(u8 playerGender)
 {
-    return GetPlayerFrontTrainerPicId(GAME_VERSION, playerGender);
+    return PlayerSprites_GetTrainerPic(PLAYER_VERSION, PLAYER_TRAINER_FRONT_PIC, playerGender);
 }
 
 void HandleSetPokedexFlag(u16 nationalNum, u8 caseId, u32 personality)
@@ -6824,9 +6824,9 @@ u8 *MonSpritesGfxManager_GetSpritePtr(void)
     }
 }
 
-u8 PlayerGenderToBackTrainerPicId(u8 playerGender)
+u16 PlayerGenderToBackTrainerPicId(u8 playerGender)
 {
-    return GetPlayerBackTrainerPicId(GAME_VERSION, playerGender);
+    return PlayerSprites_GetTrainerPic(PLAYER_VERSION, PLAYER_TRAINER_BACK_PIC, playerGender);
 }
 
 bool32 IsMonNotNicknamed(u8 *nickname, u16 species, u8 language)

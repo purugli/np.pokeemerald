@@ -25,6 +25,7 @@
 #include "constants/field_weather.h"
 #include "field_effect_helpers.h"
 #include "graphics.h"
+#include "data.h"
 
 EWRAM_DATA struct MapPosition gPlayerFacingPosition = {0};
 
@@ -969,7 +970,7 @@ void DoSecretBaseGlitterMatSparkle(void)
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = 1;
-        LoadFieldEffectPalette(sprite, gObjectEventPal_RG_RedLeaf, COLOR_MAP_DARK_CONTRAST);
+        LoadFieldEffectPalette(sprite, gObjectEventPal_FRLGRedLeaf, COLOR_MAP_DARK_CONTRAST);
         sprite->callback = SpriteCB_GlitterMatSparkle;
         sprite->data[0] = 0;
     }

@@ -278,7 +278,6 @@ struct ObjectEventGraphicsInfo
     /*0x0C*/ const struct OamData *oam;
     /*0x10*/ const struct SubspriteTable *subspriteTables;
     /*0x14*/ const struct SpriteFrameImage *images;
-    /*0x18*/ const union AffineAnimCmd *const *affineAnims;
 };
 
 enum {
@@ -289,6 +288,7 @@ enum {
     PLAYER_AVATAR_STATE_CONTROLLABLE,
     PLAYER_AVATAR_STATE_FORCED,
     PLAYER_AVATAR_STATE_DASH,
+    PLAYER_AVATAR_STATE_COUNT
 };
 
 #define PLAYER_AVATAR_FLAG_ON_FOOT      (1 << PLAYER_AVATAR_STATE_NORMAL)
@@ -303,6 +303,9 @@ enum {
     PLAYER_AVATAR_GFX_FIELD_MOVE,
     PLAYER_AVATAR_GFX_FISHING,
     PLAYER_AVATAR_GFX_WATERING,
+    PLAYER_AVATAR_GFX_DECORATING,
+    PLAYER_AVATAR_GFX_FIELD_MOVE_BIKE,
+    PLAYER_AVATAR_GFX_COUNT
 };
 
 enum

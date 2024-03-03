@@ -103,10 +103,10 @@ extern const struct SpriteFrameImage gBattlerPicTable_PlayerRight[];
 extern const struct SpriteFrameImage gBattlerPicTable_OpponentRight[];
 extern const struct SpriteFrameImage gTrainerBackPicTable_Brendan[];
 extern const struct SpriteFrameImage gTrainerBackPicTable_May[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_RG_Red[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_RG_Leaf[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_RG_Pokedude[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_RG_OldMan[];
+extern const struct SpriteFrameImage gTrainerBackPicTable_FRLGRed[];
+extern const struct SpriteFrameImage gTrainerBackPicTable_FRLGLeaf[];
+extern const struct SpriteFrameImage gTrainerBackPicTable_FRLGPokedude[];
+extern const struct SpriteFrameImage gTrainerBackPicTable_FRLGOldMan[];
 extern const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireBrendan[];
 extern const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireMay[];
 extern const struct SpriteFrameImage gTrainerBackPicTable_Wally[];
@@ -142,6 +142,7 @@ extern const u8 gGermanSpeciesNames[][POKEMON_NAME_LENGTH + 1];
 extern const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1];
 
 #include "trainer_control.h"
+#include "player_sprites.h"
 
 extern const struct Trainer gPartners[];
 extern const struct Trainer gFrontierBrains[];

@@ -640,10 +640,10 @@ static void Task_ValidateMixingGameLanguage(u8 taskId)
             playerCount = GetLinkPlayerCount();
             for (i = 0; i < playerCount; i++)
             {
-                u32 version = (u8)gLinkPlayers[i].version;
+                u32 version = GetLinkPlayerVersionId(gLinkPlayers[i].version);
                 u32 language = gLinkPlayers[i].language;
 
-                if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
+                if (version == PLAYER_RS)
                 {
                     if (language == LANGUAGE_JAPANESE)
                     {
@@ -655,7 +655,7 @@ static void Task_ValidateMixingGameLanguage(u8 taskId)
                         isEnglishRSLinked = TRUE;
                     }
                 }
-                else if (version == VERSION_EMERALD)
+                else if (version == PLAYER_EMERALD)
                 {
                     if (language == LANGUAGE_JAPANESE)
                     {

@@ -2198,7 +2198,7 @@ static void PlayerHandleDrawTrainerPic(void)
     {
         trainerPicId = PlayerGenderToBackTrainerPicId(gSaveBlock2Ptr->playerGender);
         if (gBattleTypeFlags & BATTLE_TYPE_LINK)
-            trainerPicId = GetLinkPlayerBackTrainerPicId(GetMultiplayerId());
+            trainerPicId = GetLinkPlayerBackTrainerPic(GetMultiplayerId());
         DecompressTrainerBackPic(trainerPicId, gActiveBattler);
         SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));
         gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate, xPos, 80, GetBattlerSpriteSubpriority(gActiveBattler));
@@ -2217,7 +2217,7 @@ static void PlayerHandleTrainerSlide(void)
     u32 trainerPicId = PlayerGenderToBackTrainerPicId(gSaveBlock2Ptr->playerGender);
 
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
-        trainerPicId = GetLinkPlayerBackTrainerPicId(GetMultiplayerId());
+        trainerPicId = GetLinkPlayerBackTrainerPic(GetMultiplayerId());
 
     DecompressTrainerBackPic(trainerPicId, gActiveBattler);
     SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));

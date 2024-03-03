@@ -669,7 +669,7 @@ static void LinkOpponentHandleDrawTrainerPic(void)
         }
         else
         {
-            trainerPicId = GetLinkPlayerFrontTrainerPicId(GetBattlerMultiplayerId(gActiveBattler));
+            trainerPicId = GetLinkPlayerFrontTrainerPic(GetBattlerMultiplayerId(gActiveBattler));
         }
     }
     else
@@ -681,16 +681,13 @@ static void LinkOpponentHandleDrawTrainerPic(void)
         }
         else
         {
-            trainerPicId = GetLinkPlayerFrontTrainerPicId(GetMultiplayerId() ^ BIT_SIDE);
+            trainerPicId = GetLinkPlayerFrontTrainerPic(GetMultiplayerId() ^ BIT_SIDE);
         }
     }
 
     DecompressTrainerFrontPic(trainerPicId, gActiveBattler);
     SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));
-    gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate,
-                                               xPos,
-                                               40,
-                                               GetBattlerSpriteSubpriority(gActiveBattler));
+    gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate, xPos, 40, GetBattlerSpriteSubpriority(gActiveBattler));
 
     gSprites[gBattlerSpriteIds[gActiveBattler]].x2 = -DISPLAY_WIDTH;
     gSprites[gBattlerSpriteIds[gActiveBattler]].sSpeedX = 2;

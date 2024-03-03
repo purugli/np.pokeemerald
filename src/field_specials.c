@@ -564,7 +564,7 @@ void SpawnLinkPartnerObjectEvent(void)
     {
         if (myLinkPlayerNumber != i)
         {
-            linkSpriteId = GetLinkPlayerAvatarGraphicsIdByGender((u8)gLinkPlayers[i].version, gLinkPlayers[i].gender);
+            linkSpriteId = GetLinkPlayerAvatarGraphics(gLinkPlayers[i].version, gLinkPlayers[i].gender);
             SpawnSpecialObjectEventParameterized(linkSpriteId, movementTypes[j], 240 - i, coordOffsets[j][0] + x + MAP_OFFSET, coordOffsets[j][1] + y + MAP_OFFSET, 0);
             j++;
             if (j == MAX_LINK_PLAYERS)
@@ -2712,7 +2712,7 @@ void SetBattleTowerLinkPlayerGfx(void)
     u32 i;
     for (i = 0; i < 2; i++)
     {
-        VarSet(VAR_OBJ_GFX_ID_F - i, GetLinkPlayerAvatarGraphicsIdByGender((u8)gLinkPlayers[i].version, gLinkPlayers[i].gender));
+        VarSet(VAR_OBJ_GFX_ID_F - i, GetLinkPlayerAvatarGraphics(gLinkPlayers[i].version, gLinkPlayers[i].gender));
     }
 }
 

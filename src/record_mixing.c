@@ -34,6 +34,7 @@
 #include "international_string_util.h"
 #include "constants/battle_frontier.h"
 #include "dewford_trend.h"
+#include "data.h"
 
 // Number of bytes of the record transferred at a time
 #define BUFFER_CHUNK_SIZE 200
@@ -796,7 +797,7 @@ static void ReceiveDaycareMailData(struct RecordMixingDaycareMail *records, size
 
         mixMail = (void *)records + i * recordSize;
         language = gLinkPlayers[i].language;
-        version = gLinkPlayers[i].version & 0xFF;
+        version = GetLinkPlayerVersionId(gLinkPlayers[i].version);
 
         for (j = 0; j < mixMail->numDaycareMons; j++)
         {
@@ -831,7 +832,7 @@ static void ReceiveDaycareMailData(struct RecordMixingDaycareMail *records, size
                 }
 
                 // Set languages
-                if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
+                if (version == PLAYER_RS)
                 {
                     daycareMail->gameLanguage = otNameLanguage;
                     daycareMail->monLanguage = nicknameLanguage;

@@ -119,7 +119,7 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_GROUDON_SIDE",
+      "graphics_id": "OBJ_EVENT_GFX_GROUDON",
       "x": 28,
       "y": 44,
       "elevation": 0,
@@ -132,7 +132,7 @@
       "flag": "FLAG_HIDE_SOOTOPOLIS_CITY_GROUDON"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_KYOGRE_SIDE",
+      "graphics_id": "OBJ_EVENT_GFX_KYOGRE",
       "x": 34,
       "y": 44,
       "elevation": 1,

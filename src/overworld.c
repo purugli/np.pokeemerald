@@ -1365,20 +1365,24 @@ u8 GetCurrentMapBattleScene(void)
     return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->battleType;
 }
 
+static inline void ResetScreenForMapLoad(void)
+{
+    SetGpuReg(REG_OFFSET_DISPCNT, 0);
+    ScanlineEffect_Stop();
+
+    DmaClear16(3, PLTT + 2, PLTT_SIZE - 2);
+    DmaFillLarge16(3, 0, (void *)VRAM, VRAM_SIZE, 0x1000);
+    ResetOamRange(0, 128);
+    LoadOam();
+}
+
 static void InitOverworldBgs(bool8 resetHeap)
 {
     if (resetHeap)
     {
         ClearMirageTowerPulseBlend();
         MoveSaveBlocks_ResetHeap();
-
-        SetGpuReg(REG_OFFSET_DISPCNT, 0);
-        ScanlineEffect_Stop();
-
-        DmaClear16(3, PLTT + 2, PLTT_SIZE - 2);
-        DmaFillLarge16(3, 0, (void *)VRAM, VRAM_SIZE, 0x1000);
-        ResetOamRange(0, 128);
-        LoadOam();
+        ResetScreenForMapLoad();
     }
     ResetBgsAndClearDma3BusyFlags(FALSE);
     InitBgsFromTemplates(0, sOverworldBgTemplates, ARRAY_COUNT(sOverworldBgTemplates));
@@ -1774,6 +1778,22 @@ static void VBlankCB_Field(void)
     TransferTilesetAnimsBuffer();
 }
 
+static inline void InitCurrentFlashLevelScanlineEffect(void)
+{
+    u8 flashLevel;
+
+    if (InBattlePyramid_())
+    {
+        WriteBattlePyramidViewScanlineEffectBuffer();
+        ScanlineEffect_SetParams(sFlashEffectParams);
+    }
+    else if ((flashLevel = GetFlashLevel()))
+    {
+        WriteFlashScanlineEffectBuffer(flashLevel);
+        ScanlineEffect_SetParams(sFlashEffectParams);
+    }
+}
+
 static bool32 LoadMapInStepsLink(u8 *state)
 {
     switch (*state)
@@ -2023,23 +2043,8 @@ static void DoMapLoadLoop(u8 *state)
     while (!LoadMapInStepsLocal(state, FALSE));
 }
 
-static void InitViewGraphics(void)
+static inline void InitOverworldGraphicsRegisters(void)
 {
-    u8 flashLevel;
-
-    // Flash level scanline effect
-    if (InBattlePyramid_())
-    {
-        WriteBattlePyramidViewScanlineEffectBuffer();
-        ScanlineEffect_SetParams(sFlashEffectParams);
-    }
-    else if ((flashLevel = GetFlashLevel()))
-    {
-        WriteFlashScanlineEffectBuffer(flashLevel);
-        ScanlineEffect_SetParams(sFlashEffectParams);
-    }
-
-    // Overworld graphics registers
     ClearScheduledBgCopiesToVram();
     ResetTempTileDataBuffers();
     SetGpuReg(REG_OFFSET_MOSAIC, 0);
@@ -2069,6 +2074,12 @@ static void InitViewGraphics(void)
     ChangeBgY(2, 0, BG_COORD_SET);
     ChangeBgX(3, 0, BG_COORD_SET);
     ChangeBgY(3, 0, BG_COORD_SET);
+}
+
+static void InitViewGraphics(void)
+{
+    InitCurrentFlashLevelScanlineEffect();
+    InitOverworldGraphicsRegisters();
 }
 
 static void ResumeMap(bool32 a1)

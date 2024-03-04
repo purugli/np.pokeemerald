@@ -135,14 +135,19 @@ string generate_map_header_text(Json map_data, Json layouts_data) {
         text << "\t.4byte NULL\n";
 
     text << "\t.2byte " << json_to_string(map_data, "music") << "\n"
-         << "\t.2byte " << json_to_string(layout, "id") << "\n"
-         << "\t.byte "  << json_to_string(map_data, "region_map_section") << "\n"
-         << "\t.byte "  << json_to_string(map_data, "requires_flash") << "\n"
+         << "\t.2byte " << json_to_string(layout, "id") << "\n";
+
+    if (map_data.object_items().find("night_music") != map_data.object_items().end())
+        text << "\t.2byte " << json_to_string(map_data, "night_music") << "\n";
+    else
+        text << "\t.2byte 0\n";
+
+    text << "\t.byte "  << json_to_string(map_data, "region_map_section") << "\n"
          << "\t.byte "  << json_to_string(map_data, "weather") << "\n"
          << "\t.byte "  << json_to_string(map_data, "map_type") << "\n";
 
     if (version != "firered")
-        text << "\t.2byte 0\n";
+        text << "\t.byte 0\n";
 
     if (version == "ruby")
         text << "\t.byte " << json_to_string(map_data, "show_map_name") << "\n";
@@ -151,7 +156,8 @@ string generate_map_header_text(Json map_data, Json layouts_data) {
              << "allow_cycling=" << json_to_string(map_data, "allow_cycling") << ", "
              << "allow_escaping=" << json_to_string(map_data, "allow_escaping") << ", "
              << "allow_running=" << json_to_string(map_data, "allow_running") << ", "
-             << "show_map_name=" << json_to_string(map_data, "show_map_name") << "\n";
+             << "show_map_name=" << json_to_string(map_data, "show_map_name") << ", "
+             << "requires_flash=" << json_to_string(map_data, "requires_flash") << "\n";
 
     if (version == "firered")
         text << "\t.byte " << json_to_string(map_data, "floor_number") << "\n";

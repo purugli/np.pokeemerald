@@ -2659,13 +2659,13 @@ static void HBlankCB_Mugshots(void)
 
 static void Mugshots_CreateTrainerPics(struct Task *task)
 {
+    u8 trainerPicId = gTrainers[gTrainerBattleOpponent_A].trainerPic;
+    const struct TrainerFrontPic *trainerFrontPic = &gTrainerFrontPicTable[trainerPicId];
     struct Sprite *opponentSprite, *playerSprite;
 
-    u8 trainerPicId = gTrainers[gTrainerBattleOpponent_A].trainerPic;
-    const struct TrainerSprite *trainerSprite = &gTrainerSpriteTable[trainerPicId];
     task->tOpponentSpriteId = CreateTrainerSprite(trainerPicId,
-                                                  trainerSprite->mugshotCoords.x - 32,
-                                                  trainerSprite->mugshotCoords.y + 42,
+                                                  trainerFrontPic->mugshotCoords.x - 32,
+                                                  trainerFrontPic->mugshotCoords.y + 42,
                                                   0, gDecompressionBuffer);
     task->tPlayerSpriteId = CreateTrainerSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender),
                                                 DISPLAY_WIDTH + 32,
@@ -2693,7 +2693,7 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
     CalcCenterToCornerVec(opponentSprite, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
     CalcCenterToCornerVec(playerSprite, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
 
-    SetOamMatrixRotationScaling(opponentSprite->oam.matrixNum, trainerSprite->mugshotRotation, trainerSprite->mugshotRotation, 0);
+    SetOamMatrixRotationScaling(opponentSprite->oam.matrixNum, trainerFrontPic->mugshotRotation, trainerFrontPic->mugshotRotation, 0);
     SetOamMatrixRotationScaling(playerSprite->oam.matrixNum, -512, 512, 0);
 }
 

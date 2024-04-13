@@ -889,10 +889,10 @@ bool8 FieldEffectActiveListContains(u8 id)
 u8 CreateTrainerSprite(u8 trainerSpriteID, s16 x, s16 y, u8 subpriority, u8 *buffer)
 {
     struct SpriteTemplate spriteTemplate;
-    const struct TrainerSprite *trainerSprite = &gTrainerSpriteTable[trainerSpriteID];
+    const struct TrainerFrontPic *trainerFrontPic = &gTrainerFrontPicTable[trainerSpriteID];
     u8 paletteNum = AllocSpritePalette(trainerSpriteID);
-    LoadPalette(trainerSprite->palette, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
-    LoadCompressedSpriteSheetOverrideBuffer(&trainerSprite->sprite, buffer);
+    LoadPalette(trainerFrontPic->palette, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+    LoadCompressedSpriteSheetOverrideBuffer(&trainerFrontPic->sprite, buffer);
     spriteTemplate.tileTag = trainerSpriteID;
     spriteTemplate.paletteTag = trainerSpriteID;
     spriteTemplate.oam = &sOam_64x64;

@@ -127,7 +127,7 @@ u16 CreateTrainerPicSprite(u16 trainerPicId, s16 x, s16 y, u8 paletteSlot)
     struct SpriteFrameImage *images;
     int j;
     u8 spriteId;
-    const struct TrainerSprite *trainerSprite = &gTrainerSpriteTable[trainerPicId];
+    const struct TrainerFrontPic *trainerFrontPic = &gTrainerFrontPicTable[trainerPicId];
 
     for (i = 0; i < PICS_COUNT; i++)
     {
@@ -147,7 +147,7 @@ u16 CreateTrainerPicSprite(u16 trainerPicId, s16 x, s16 y, u8 paletteSlot)
         Free(framePics);
         return 0xFFFF;
     }
-    LZ77UnCompWram(trainerSprite->sprite.data, framePics);
+    LZ77UnCompWram(trainerFrontPic->sprite.data, framePics);
     for (j = 0; j < MAX_TRAINER_PIC_FRAMES; j ++)
     {
         images[j].data = framePics + TRAINER_PIC_SIZE * j;
@@ -160,7 +160,7 @@ u16 CreateTrainerPicSprite(u16 trainerPicId, s16 x, s16 y, u8 paletteSlot)
     sCreatingSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
     sCreatingSpriteTemplate.callback = DummyPicSpriteCallback;
     sCreatingSpriteTemplate.paletteTag = TAG_NONE;
-    LoadPalette(trainerSprite->palette, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
+    LoadPalette(trainerFrontPic->palette, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
     spriteId = CreateSprite(&sCreatingSpriteTemplate, x, y, 0);
     gSprites[spriteId].oam.paletteNum = paletteSlot;
     sSpritePics[i].frames = framePics;
@@ -203,10 +203,10 @@ u16 CreateTrainerCardTrainerPicSprite(u16 trainerPicId, u16 destX, u16 destY)
     framePics = Alloc(TRAINER_PIC_SIZE);
     if (framePics)
     {
-        const struct TrainerSprite *trainerSprite = &gTrainerSpriteTable[trainerPicId];
-        LZ77UnCompWram(trainerSprite->sprite.data, framePics);
+        const struct TrainerFrontPic *trainerFrontPic = &gTrainerFrontPicTable[trainerPicId];
+        LZ77UnCompWram(trainerFrontPic->sprite.data, framePics);
         BlitBitmapRectToWindow(WIN_TRAINER_PIC, framePics, 0, 0, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT, destX, destY, TRAINER_PIC_WIDTH, TRAINER_PIC_HEIGHT);
-        LoadPalette(trainerSprite->palette, PLTT_ID(8), PLTT_SIZE_4BPP);
+        LoadPalette(trainerFrontPic->palette, PLTT_ID(8), PLTT_SIZE_4BPP);
         Free(framePics);
         return 0;
     }

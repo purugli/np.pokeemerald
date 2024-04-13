@@ -607,12 +607,12 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId)
 
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battlerId)
 {
-    const struct TrainerSprite *trainerSprite = &gTrainerSpriteTable[frontPicId];
+    const struct TrainerFrontPic *trainerFrontPic = &gTrainerFrontPicTable[frontPicId];
     u8 position = GetBattlerPosition(battlerId);
-    LZ77UnCompWram(trainerSprite->sprite.data,
-                   gMonSpritesGfxPtr->sprites.ptr[position]);
+    LZ77UnCompWram(trainerFrontPic->sprite.data,
+                   gMonSpritesGfxPtr->spritesGfx[position]);
     position = AllocSpritePalette(frontPicId);
-    LoadPalette(trainerSprite->palette,
+    LoadPalette(trainerFrontPic->palette,
                 OBJ_PLTT_ID(position), PLTT_SIZE_4BPP);
 }
 

@@ -82,7 +82,7 @@ struct Trainer
     /*0x14*/ const struct TrainerMon *party;
 };
 
-struct TrainerSprite
+struct TrainerFrontPic
 {
     struct CompressedSpriteSheet sprite;
     const u16 *palette;
@@ -116,7 +116,7 @@ extern const u32 *const gMonBackPicTable[];
 extern const struct SpritePalette gMonPaletteTable[];
 extern const struct SpritePalette gMonShinyPaletteTable[];
 extern const union AnimCmd *const gAnims_None[];
-extern const struct TrainerSprite gTrainerSpriteTable[];
+extern const struct TrainerFrontPic gTrainerFrontPicTable[];
 extern const struct TrainerBackPic gTrainerBackPicTable[];
 
 extern const u8 gEnemyMonElevation[NUM_SPECIES];

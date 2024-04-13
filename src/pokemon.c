@@ -1970,100 +1970,6 @@ const struct SpriteTemplate gBattlerSpriteTemplates[MAX_BATTLERS_COUNT] =
     },
 };
 
-static const struct SpriteTemplate sTrainerBackSpriteTemplates[] =
-{
-    [TRAINER_BACK_PIC_BRENDAN] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_BRENDAN,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_Brendan,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_MAY] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_MAY,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_May,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_FRLG_RED] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_FRLG_RED,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_5Frames,
-        .images = gTrainerBackPicTable_FRLGRed,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_FRLG_LEAF] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_FRLG_LEAF,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_5Frames,
-        .images = gTrainerBackPicTable_FRLGLeaf,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_RubySapphireBrendan,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_RUBY_SAPPHIRE_MAY] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_RUBY_SAPPHIRE_MAY,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_RubySapphireMay,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_WALLY] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_WALLY,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_Wally,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_STEVEN] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_STEVEN,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_Steven,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_FRLG_POKEDUDE] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_FRLG_POKEDUDE,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_FRLGPokedude,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_FRLG_OLD_MAN] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = TRAINER_BACK_PIC_FRLG_OLD_MAN,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = gBackAnims_4Frames,
-        .images = gTrainerBackPicTable_FRLGOldMan,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-};
-
 #define NUM_SECRET_BASE_CLASSES 5
 static const u8 sSecretBaseFacilityClasses[GENDER_COUNT][NUM_SECRET_BASE_CLASSES] =
 {
@@ -3406,7 +3312,14 @@ void SetMultiuseSpriteTemplateToTrainerBack(u16 trainerPicId, u8 battlerPosition
 {
     if (battlerPosition == B_POSITION_PLAYER_LEFT || battlerPosition == B_POSITION_PLAYER_RIGHT)
     {
-        gMultiuseSpriteTemplate = sTrainerBackSpriteTemplates[trainerPicId];
+        const struct TrainerBackPic *trainerBackPic = &gTrainerBackPicTable[trainerPicId];
+        gMultiuseSpriteTemplate.tileTag = TAG_NONE;
+        gMultiuseSpriteTemplate.paletteTag = trainerPicId;
+        gMultiuseSpriteTemplate.oam = &gOamData_BattleSpritePlayerSide;
+        gMultiuseSpriteTemplate.anims = trainerBackPic->anims;
+        gMultiuseSpriteTemplate.images = trainerBackPic->images;
+        gMultiuseSpriteTemplate.affineAnims = gAffineAnims_BattleSpritePlayerSide;
+        gMultiuseSpriteTemplate.callback = SpriteCB_BattleSpriteStartSlideLeft;
     }
     else
     {

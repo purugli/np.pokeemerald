@@ -90,6 +90,13 @@ struct TrainerSprite
     s16 mugshotRotation;
 };
 
+struct TrainerBackPic
+{
+    const union AnimCmd *const *anims;
+    const struct SpriteFrameImage *images;
+    const u16 *palette;
+};
+
 extern const u16 gMinigameDigits_Pal[];
 extern const u32 gMinigameDigits_Gfx[];
 
@@ -97,16 +104,6 @@ extern const struct SpriteFrameImage gBattlerPicTable_PlayerLeft[];
 extern const struct SpriteFrameImage gBattlerPicTable_OpponentLeft[];
 extern const struct SpriteFrameImage gBattlerPicTable_PlayerRight[];
 extern const struct SpriteFrameImage gBattlerPicTable_OpponentRight[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_Brendan[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_May[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_FRLGRed[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_FRLGLeaf[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_FRLGPokedude[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_FRLGOldMan[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireBrendan[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireMay[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_Wally[];
-extern const struct SpriteFrameImage gTrainerBackPicTable_Steven[];
 
 extern const union AffineAnimCmd *const gAffineAnims_BattleSpritePlayerSide[];
 extern const union AffineAnimCmd *const gAffineAnims_BattleSpriteOpponentSide[];
@@ -120,9 +117,7 @@ extern const struct SpritePalette gMonPaletteTable[];
 extern const struct SpritePalette gMonShinyPaletteTable[];
 extern const union AnimCmd *const gAnims_None[];
 extern const struct TrainerSprite gTrainerSpriteTable[];
-extern const union AnimCmd *const gBackAnims_4Frames[];
-extern const union AnimCmd *const gBackAnims_5Frames[];
-extern const u16 *const gTrainerBackPicPaletteTable[];
+extern const struct TrainerBackPic gTrainerBackPicTable[];
 
 extern const u8 gEnemyMonElevation[NUM_SPECIES];
 

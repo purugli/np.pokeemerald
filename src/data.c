@@ -50,54 +50,54 @@ const struct SpriteFrameImage gBattlerPicTable_OpponentRight[] =
     {BATTLER_OFFSET(15), MON_PIC_SIZE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_Brendan[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_Brendan[] =
 {
-    {gTrainerBackPic_Brendan + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_Brendan, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE}
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_May[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_May[] =
 {
-    {gTrainerBackPic_May + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_May, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_FRLGRed[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_FRLGRed[] =
 {
-    {gTrainerBackPic_FRLGRed + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_FRLGRed, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_FRLGLeaf[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_FRLGLeaf[] =
 {
-    {gTrainerBackPic_FRLGLeaf + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_FRLGLeaf, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_FRLGPokedude[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_FRLGPokedude[] =
 {
-    {gTrainerBackPic_FRLGPokedude + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_FRLGPokedude, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_FRLGOldMan[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_FRLGOldMan[] =
 {
-    {gTrainerBackPic_FRLGOldMan + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_FRLGOldMan, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireBrendan[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_RubySapphireBrendan[] =
 {
-    {gTrainerBackPic_RubySapphireBrendan + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_RubySapphireBrendan, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_RubySapphireMay[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_RubySapphireMay[] =
 {
-    {gTrainerBackPic_RubySapphireMay + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_RubySapphireMay, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_Wally[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_Wally[] =
 {
-    {gTrainerBackPic_Wally + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_Wally, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
-const struct SpriteFrameImage gTrainerBackPicTable_Steven[] =
+static const struct SpriteFrameImage sTrainerBackPicTable_Steven[] =
 {
-    {gTrainerBackPic_Steven + TRAINER_PIC_SIZE * 0, TRAINER_PIC_SIZE, TRUE},
+    {.data = gTrainerBackPic_Steven, .size = TRAINER_PIC_SIZE, .relativeFrames = TRUE},
 };
 
 static const union AnimCmd sAnim_GeneralFrame0[] =
@@ -292,7 +292,6 @@ const union AnimCmd *const gAnims_None[] =
 #include "data/pokemon_graphics/shiny_palette_table.h"
 
 #include "data/trainer_graphics/front_pic_tables.h"
-#include "data/trainer_graphics/back_pic_anims.h"
 #include "data/trainer_graphics/back_pic_tables.h"
 
 #include "data/pokemon_graphics/enemy_mon_elevation.h"

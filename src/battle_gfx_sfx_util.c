@@ -618,7 +618,7 @@ void DecompressTrainerFrontPic(u16 frontPicId, u8 battlerId)
 
 void DecompressTrainerBackPic(u16 backPicId, u8 battlerId)
 {
-    LoadPalette(gTrainerBackPicPaletteTable[backPicId],
+    LoadPalette(gTrainerBackPicTable[backPicId].palette,
                 OBJ_PLTT_ID(battlerId), PLTT_SIZE_4BPP);
 }
 

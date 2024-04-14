@@ -576,7 +576,7 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u8 battlerId)
     else
         handleDeoxys = TRUE;
 
-    LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[GetBattlerPosition(battlerId)],
+    LoadSpecialPokePic(gMonSpritesGfxPtr->spritesGfx[GetBattlerPosition(battlerId)],
                        species, currentPersonality,
                        side, handleDeoxys);
 
@@ -820,7 +820,7 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool8 castform)
             personalityValue = gContestResources->moveAnim->personality;
             otId = gContestResources->moveAnim->otId;
 
-            LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[position],
+            LoadSpecialPokePic(gMonSpritesGfxPtr->spritesGfx[position],
                                targetSpecies,
                                personalityValue,
                                FALSE, FALSE);
@@ -847,13 +847,13 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool8 castform)
             otId = GetMonData(party, MON_DATA_OT_ID);
 
             position = GetBattlerPosition(battlerAtk);
-            LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[position],
+            LoadSpecialPokePic(gMonSpritesGfxPtr->spritesGfx[position],
                            targetSpecies,
                            gTransformedPersonalities[battlerAtk],
                            side, FALSE);
         }
 
-        src = gMonSpritesGfxPtr->sprites.ptr[position];
+        src = gMonSpritesGfxPtr->spritesGfx[position];
         dst = (void *)(OBJ_VRAM0 + gSprites[gBattlerSpriteIds[battlerAtk]].oam.tileNum * 32);
         DmaCopy32(3, src, dst, MON_PIC_SIZE);
         paletteOffset = OBJ_PLTT_ID(battlerAtk);
@@ -898,11 +898,11 @@ void BattleLoadSubstituteOrMonSpriteGfx(u8 battlerId, bool8 loadMonSprite)
             position = B_POSITION_PLAYER_LEFT;
         else
             position = GetBattlerPosition(battlerId);
-        LZ77UnCompVram(substituteDollGfx, gMonSpritesGfxPtr->sprites.ptr[position]);
+        LZ77UnCompVram(substituteDollGfx, gMonSpritesGfxPtr->spritesGfx[position]);
 
         for (i = 1; i < 4; i++)
         {
-            Dma3CopyLarge32_(gMonSpritesGfxPtr->sprites.ptr[position], &gMonSpritesGfxPtr->sprites.byte[position][MON_PIC_SIZE * i], MON_PIC_SIZE);
+            Dma3CopyLarge32_(gMonSpritesGfxPtr->spritesGfx[position], &gMonSpritesGfxPtr->spritesGfx[position][MON_PIC_SIZE * i], MON_PIC_SIZE);
         }
 
         palOffset = OBJ_PLTT_ID(battlerId);
@@ -1160,14 +1160,14 @@ void AllocateMonSpritesGfx(void)
 
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
-        gMonSpritesGfxPtr->sprites.ptr[i] = gMonSpritesGfxPtr->firstDecompressed + (i * MON_PIC_SIZE * 4);
-        *(gMonSpritesGfxPtr->templates + i) = gBattlerSpriteTemplates[i];
+        gMonSpritesGfxPtr->spritesGfx[i] = gMonSpritesGfxPtr->firstDecompressed + (i * MON_PIC_SIZE * 4);
+        gMonSpritesGfxPtr->templates[i] = gBattlerSpriteTemplates[i];
 
         for (j = 0; j < 4; j++)
         {
-            if (gMonSpritesGfxPtr->sprites.ptr[i] != NULL)
+            if (gMonSpritesGfxPtr->spritesGfx[i] != NULL)
             {
-                gMonSpritesGfxPtr->frameImages[i][j].data = gMonSpritesGfxPtr->sprites.ptr[i] + (j * MON_PIC_SIZE);
+                gMonSpritesGfxPtr->frameImages[i][j].data = gMonSpritesGfxPtr->spritesGfx[i] + (j * MON_PIC_SIZE);
                 gMonSpritesGfxPtr->frameImages[i][j].size = MON_PIC_SIZE;
             }
         }
@@ -1186,10 +1186,10 @@ void FreeMonSpritesGfx(void)
     TRY_FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
     FREE_AND_SET_NULL(gMonSpritesGfxPtr->barFontGfx);
     FREE_AND_SET_NULL(gMonSpritesGfxPtr->firstDecompressed);
-    gMonSpritesGfxPtr->sprites.ptr[B_POSITION_PLAYER_LEFT] = NULL;
-    gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT] = NULL;
-    gMonSpritesGfxPtr->sprites.ptr[B_POSITION_PLAYER_RIGHT] = NULL;
-    gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_RIGHT] = NULL;
+    gMonSpritesGfxPtr->spritesGfx[B_POSITION_PLAYER_LEFT] = NULL;
+    gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT] = NULL;
+    gMonSpritesGfxPtr->spritesGfx[B_POSITION_PLAYER_RIGHT] = NULL;
+    gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_RIGHT] = NULL;
     FREE_AND_SET_NULL(gMonSpritesGfxPtr);
 }
 

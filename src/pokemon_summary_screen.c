@@ -3831,7 +3831,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
     case 0:
         if (gMain.inBattle)
         {
-            LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT],
+            LoadSpecialPokePic(gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
                                summary->species2,
                                summary->pid,
                                TRUE, !ShouldIgnoreDeoxysForm(DEOXYS_CHECK_TRADE_MAIN, sMonSummaryScreen->curMonIndex));
@@ -3844,7 +3844,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
 
             if (gMonSpritesGfxPtr != NULL)
             {
-                LoadSpecialPokePic(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT],
+                LoadSpecialPokePic(gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
                                    summary->species2,
                                    summary->pid,
                                    TRUE, handleDeoxys);

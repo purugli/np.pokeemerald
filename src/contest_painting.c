@@ -366,10 +366,10 @@ static void InitContestMonPixels(u16 species)
     const void *pal = GetMonSpritePalFromSpeciesAndPersonality(species, gContestPaintingWinner->trainerId, gContestPaintingWinner->personality);
     CpuCopy16(pal, gContestPaintingMonPalette, PLTT_SIZEOF(16));
     LoadSpecialPokePic(
-        gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT],
+        gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
         species,
         gContestPaintingWinner->personality, TRUE, FALSE);
-    _InitContestMonPixels(gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT], gContestPaintingMonPalette, (void *)gContestMonPixels);
+    _InitContestMonPixels(gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT], gContestPaintingMonPalette, (void *)gContestMonPixels);
 }
 
 static void _InitContestMonPixels(u8 *spriteGfx, u16 *palette, u16 (*destPixels)[64][64])

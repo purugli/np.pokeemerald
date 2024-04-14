@@ -40,8 +40,8 @@ static const union AnimCmd *const sBackAnims_5Frames[] =
 
 const struct TrainerBackPic gTrainerBackPicTable[] =
 {
-    TRAINER_BACK_SPRITE(BRENDAN, 4Frames, Brendan, Palette_Brendan),
-    TRAINER_BACK_SPRITE(MAY, 4Frames, May, Palette_May),
+    TRAINER_BACK_SPRITE(BRENDAN, 5Frames, Brendan, Palette_Brendan),
+    TRAINER_BACK_SPRITE(MAY, 5Frames, May, Palette_May),
     TRAINER_BACK_SPRITE(FRLG_RED, 5Frames, FRLGRed, BackPicPalette_FRLGRedLeaf),
     TRAINER_BACK_SPRITE(FRLG_LEAF, 5Frames, FRLGLeaf, BackPicPalette_FRLGRedLeaf),
     TRAINER_BACK_SPRITE(RUBY_SAPPHIRE_BRENDAN, 4Frames, RubySapphireBrendan, Palette_RubySapphireBrendan),

@@ -678,7 +678,7 @@ void AnimTask_ThrowBall_StandingTrainer(u8 taskId)
     else
     {
         x = 23;
-        y = 5;
+        y = 11 + (gSaveBlock2Ptr->playerGender * 2);
     }
 
     subpriority = GetBattlerSpriteSubpriority(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)) + 1;
@@ -810,7 +810,7 @@ static void SpriteCB_Ball_MonShrink_Step(struct Sprite *sprite)
     taskId = sprite->sTaskId;
 
     if (++gTasks[taskId].sTimer == 11)
-        PlaySE(SE_BALL_TRADE);
+        m4aSongNumStart(SE_BALL_TRADE);
 
     switch (gTasks[taskId].tState)
     {

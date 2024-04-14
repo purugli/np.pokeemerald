@@ -549,7 +549,17 @@ void AddBagItemIconSprite(u16 itemId, u8 id)
 
 void RemoveBagItemIconSprite(u8 id)
 {
-    RemoveBagSprite(id + ITEMMENUSPRITE_ITEM);
+    u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_ITEM];
+
+    // Hide current icon, remove icon from two instances ago
+    if (spriteId[id ^ 1] != SPRITE_NONE)
+        gSprites[spriteId[id ^ 1]].invisible = TRUE;
+
+    if (spriteId[id] != SPRITE_NONE)
+    {
+        DestroySpriteAndFreeResources(&gSprites[spriteId[id]]);
+        spriteId[id] = SPRITE_NONE;
+    }
 }
 
 void CreateItemMenuSwapLine(void)

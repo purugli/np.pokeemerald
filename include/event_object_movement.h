@@ -86,6 +86,12 @@ enum {
 #define GROUND_EFFECT_FLAG_HOT_SPRINGS           (1 << 17)
 #define GROUND_EFFECT_FLAG_SEAWEED               (1 << 18)
 
+// Sprite data for the CameraObject functions
+#define sCamera_FollowSpriteId data[0]
+#define sCamera_State          data[1]
+#define sCamera_MoveX          data[2]
+#define sCamera_MoveY          data[3]
+
 struct StepAnimTable
 {
     const union AnimCmd *const *anims;
@@ -131,10 +137,8 @@ u8 TrySpawnObjectEvent(u8 localId, u8 mapNum, u8 mapGroup);
 u8 SpawnSpecialObjectEventParameterized(u16 graphicsId, u8 movementBehavior, u8 localId, s16 x, s16 y, u8 elevation);
 u8 SpawnSpecialObjectEvent(struct ObjectEventTemplate *);
 void SetSpritePosToMapCoords(s16 mapX, s16 mapY, s16 *destX, s16 *destY);
-void CameraObjectReset1(void);
-void UpdateSpritePalette(const struct SpritePalette *, struct Sprite *, u8 colorMap);
-void UpdateSpritePaletteByTemplate(struct Sprite *, u8 colorMap);
-void ObjectEventSetGraphicsId(struct ObjectEvent *, u16 graphicsId);
+void CameraObjectReset(void);
+void ObjectEventSetGraphicsId(struct ObjectEvent *, u8 graphicsId);
 void ObjectEventTurn(struct ObjectEvent *, u8 direction);
 void ObjectEventTurnByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup, u8 direction);
 const struct ObjectEventGraphicsInfo *GetObjectEventGraphicsInfo(u16 graphicsId);
@@ -223,9 +227,7 @@ void CameraObjectSetFollowedSpriteId(u8 objectId);
 void UpdateObjectEventSpriteInvisibility(struct Sprite *sprite, bool8 invisible);
 s16 GetFigure8XOffset(s16 idx);
 s16 GetFigure8YOffset(s16 idx);
-void CameraObjectReset2(void);
-u8 LoadObjectEventPalette(u16 paletteTag);
-u32 FindObjectEventPaletteIndexByTag(u16 tag);
+void CameraObjectFreeze(void);
 u8 GetObjectEventBerryTreeId(u8 objectEventId);
 void SetBerryTreeJustPicked(u8 mapId, u8 mapNumber, u8 mapGroup);
 bool8 IsBerryTreeSparkling(u8 localId, u8 mapNum, u8 mapGroup);

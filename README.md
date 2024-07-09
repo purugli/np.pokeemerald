@@ -1,11 +1,20 @@
-# Pokémon Emerald
+# Nostalgia Proof Pokémon Emerald
 
-This is a decompilation of Pokémon Emerald.
+This is a true to spirit Romhack of Pokemon Emerald designed to refresh and update the game without modernizing it too much.
+Our goal is to improve the difficulty curve, viability of most pokemon lines, and quality of life using primarily tools
+that were in the original toolbox of the game.
 
-It builds the following ROM:
+To set up the repository and build the ROM, see [INSTALL.md](INSTALL.md).
 
-* [**pokeemerald.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=1961) `sha1: f3ae088181bf583e55daf962a92bb46f4f1d07b7`
 
-To set up the repository, see [INSTALL.md](INSTALL.md).
+Acknowledgements:
 
-For contacts and other pret projects, see [pret.github.io](https://pret.github.io/).
+None of this would be possible without the pret disassembly team: [pret.github.io](https://pret.github.io/).
+
+Trainer control improvements were imported from the Emerald Expansion project ( https://github.com/rh-hideout/pokeemerald-expansion )
+and combined with some custom Battle Frontier improvements from ShinyDragonHunter ( https://github.com/ShinyDragonHunter )  these
+improvements can be found isolated as a feature branch under "trainercontrol" in this repo.
+
+For questions, suggestions and playtest information you can contact the developer at purugli.np@gmail.com
+
+Thank you and I hope you enjoy the project!

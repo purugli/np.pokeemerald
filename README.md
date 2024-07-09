@@ -1,11 +1,9 @@
-# Pokémon Emerald
+# Trainer Control for vanilla Pokeemerald
 
-This is a decompilation of Pokémon Emerald.
+This is a feature branch for vanilla pokeemerald that includes trainer control features and Battle Frontier updates
+that allow you to interact with frontier trainers the same way you would regular trainers.
 
-It builds the following ROM:
+The trainer control features are from the Emerald Expansion (https://github.com/rh-hideout/pokeemerald-expansion)
+while the BF changes were put together by ShinyDragonHunter (https://github.com/ShinyDragonHunter)
 
-* [**pokeemerald.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=1961) `sha1: f3ae088181bf583e55daf962a92bb46f4f1d07b7`
 
-To set up the repository, see [INSTALL.md](INSTALL.md).
-
-For contacts and other pret projects, see [pret.github.io](https://pret.github.io/).
